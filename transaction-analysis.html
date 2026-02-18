@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Analysis | BUSI 305 Accounting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .fset-table th, .fset-table td { padding: 6px 10px; text-align: center; font-size: 0.85rem; }
+        .fset-table th { font-weight: 600; }
+        .positive { color: #34d399; }
+        .negative { color: #f87171; }
+        .zero { color: #94a3b8; }
+        select option { background: #1e293b; color: white; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+
+    <!-- Header -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="text-sky-400 hover:text-sky-300 text-sm flex items-center gap-1 mb-4 w-fit">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+        <h1 class="text-3xl font-bold mb-1">Transaction Analysis</h1>
+        <p class="text-slate-400">Chapter 2 &mdash; The Financial Statement Effect Template (FSET) Approach</p>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="max-w-7xl mx-auto px-4 mb-6">
+        <div class="flex gap-1 border-b border-slate-700 overflow-x-auto">
+            <button onclick="switchTab('concepts')" id="tab-concepts" class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg border-b-2 border-sky-500 text-sky-400 bg-slate-800/50 whitespace-nowrap">How Transactions Work</button>
+            <button onclick="switchTab('examples')" id="tab-examples" class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-white whitespace-nowrap">Worked Examples</button>
+            <button onclick="switchTab('builder')" id="tab-builder" class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-white whitespace-nowrap">Interactive FSET Builder</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-5 py-3 text-sm font-medium rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-white whitespace-nowrap">Practice Questions</button>
+        </div>
+    </div>
+
+    <!-- TAB CONTENT CONTAINER -->
+    <div class="max-w-7xl mx-auto px-4 pb-16">
+
+        <!-- ======================== TAB 1: CONCEPTS ======================== -->
+        <div id="panel-concepts" class="tab-panel">
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Duality Principle -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-sky-400 mb-4">The Duality Principle</h2>
+                    <p class="text-slate-300 mb-3">Every transaction affects <span class="text-amber-400 font-semibold">at least two accounts</span>. This is the fundamental concept behind double-entry bookkeeping.</p>
+                    <p class="text-slate-300 mb-3">When a company receives cash from a customer, for example, Cash increases but another account must also change &mdash; perhaps Revenue is earned, or a receivable is settled.</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mt-4 border border-slate-600">
+                        <p class="text-sm text-sky-300 font-semibold mb-2">Key Takeaway</p>
+                        <p class="text-slate-300 text-sm">No single transaction can affect only one account. The accounting equation must <span class="text-emerald-400 font-semibold">ALWAYS</span> balance after every transaction.</p>
+                    </div>
+                </div>
+
+                <!-- Accounting Equation -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-sky-400 mb-4">The Accounting Equation</h2>
+                    <div class="bg-sky-900/30 rounded-lg p-5 text-center border border-sky-800 mb-4">
+                        <p class="text-2xl font-bold">
+                            <span class="text-emerald-400">Assets</span>
+                            <span class="text-slate-400 mx-2">=</span>
+                            <span class="text-amber-400">Liabilities</span>
+                            <span class="text-slate-400 mx-2">+</span>
+                            <span class="text-purple-400">Stockholders' Equity</span>
+                        </p>
+                    </div>
+                    <p class="text-slate-300 mb-2">Stockholders' Equity breaks into:</p>
+                    <ul class="text-slate-300 space-y-1 text-sm ml-4 list-disc">
+                        <li><span class="text-purple-300 font-medium">Contributed Capital</span> &mdash; what owners invested</li>
+                        <li><span class="text-purple-300 font-medium">Retained Earnings</span> &mdash; accumulated net income minus dividends</li>
+                    </ul>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mt-4 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="text-amber-400 font-semibold">A = L + CC + RE</span> &mdash; This expanded form is what the FSET uses.</p>
+                    </div>
+                </div>
+
+                <!-- FSET Explanation -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 md:col-span-2">
+                    <h2 class="text-xl font-bold text-sky-400 mb-4">The Financial Statement Effect Template (FSET)</h2>
+                    <p class="text-slate-300 mb-4">The FSET is a tabular tool that shows how each transaction simultaneously affects the Balance Sheet and the Income Statement. Each row represents one transaction.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="text-left p-2 text-slate-400" rowspan="2">Transaction</th>
+                                    <th class="text-center p-2 text-emerald-400 border-l border-slate-600" colspan="5">Balance Sheet</th>
+                                    <th class="text-center p-2 text-amber-400 border-l border-slate-600" colspan="3">Income Statement</th>
+                                </tr>
+                                <tr class="border-b border-slate-600 text-xs">
+                                    <th class="p-2 text-emerald-300 border-l border-slate-600">Cash</th>
+                                    <th class="p-2 text-emerald-300">Noncash Assets</th>
+                                    <th class="p-2 text-amber-300">Liabilities</th>
+                                    <th class="p-2 text-purple-300">Contrib. Capital</th>
+                                    <th class="p-2 text-purple-300">Retained Earnings</th>
+                                    <th class="p-2 text-amber-300 border-l border-slate-600">Revenue</th>
+                                    <th class="p-2 text-amber-300">Expense</th>
+                                    <th class="p-2 text-amber-300">Net Income</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-700/50 text-slate-400 italic">
+                                    <td class="p-2 text-left">Example: Earn service revenue, $1,000 cash</td>
+                                    <td class="p-2 text-emerald-400 border-l border-slate-600">+1,000</td>
+                                    <td class="p-2">&mdash;</td>
+                                    <td class="p-2">&mdash;</td>
+                                    <td class="p-2">&mdash;</td>
+                                    <td class="p-2 text-emerald-400">+1,000</td>
+                                    <td class="p-2 text-emerald-400 border-l border-slate-600">+1,000</td>
+                                    <td class="p-2">&mdash;</td>
+                                    <td class="p-2 text-emerald-400">+1,000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Revenue & Expense Rules -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-emerald-400 mb-4">Revenue &rarr; Increases RE</h2>
+                    <p class="text-slate-300 mb-3">When a company earns revenue, two things happen on the FSET:</p>
+                    <ul class="space-y-2 text-sm text-slate-300 ml-4 list-disc">
+                        <li><span class="text-emerald-400 font-medium">Balance Sheet</span>: Retained Earnings increases (and an asset increases or a liability decreases)</li>
+                        <li><span class="text-amber-400 font-medium">Income Statement</span>: Revenue increases, which increases Net Income</li>
+                    </ul>
+                    <div class="bg-emerald-900/20 border border-emerald-800/50 rounded-lg p-3 mt-4">
+                        <p class="text-emerald-300 text-sm font-semibold">The RE column change always equals the Net Income column change.</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-rose-400 mb-4">Expenses &rarr; Decrease RE</h2>
+                    <p class="text-slate-300 mb-3">When a company incurs an expense, two things happen on the FSET:</p>
+                    <ul class="space-y-2 text-sm text-slate-300 ml-4 list-disc">
+                        <li><span class="text-emerald-400 font-medium">Balance Sheet</span>: Retained Earnings decreases (and an asset decreases or a liability increases)</li>
+                        <li><span class="text-amber-400 font-medium">Income Statement</span>: Expense increases, which decreases Net Income</li>
+                    </ul>
+                    <div class="bg-rose-900/20 border border-rose-800/50 rounded-lg p-3 mt-4">
+                        <p class="text-rose-300 text-sm font-semibold">Expenses are shown as positive numbers in the Expense column but reduce Net Income.</p>
+                    </div>
+                </div>
+
+                <!-- The Key Rule -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-sky-600/50 md:col-span-2">
+                    <h2 class="text-xl font-bold text-sky-400 mb-3">The Key Rule: RE Links the Two Statements</h2>
+                    <p class="text-slate-300 mb-3">Retained Earnings on the Balance Sheet changes by the Net Income amount. This is the bridge between the Balance Sheet and the Income Statement.</p>
+                    <div class="grid md:grid-cols-3 gap-4 mt-4">
+                        <div class="bg-emerald-900/20 rounded-lg p-4 text-center border border-emerald-800/50">
+                            <p class="text-emerald-400 font-bold text-lg mb-1">Revenue Transaction</p>
+                            <p class="text-slate-300 text-sm">RE goes UP by revenue amount</p>
+                        </div>
+                        <div class="bg-rose-900/20 rounded-lg p-4 text-center border border-rose-800/50">
+                            <p class="text-rose-400 font-bold text-lg mb-1">Expense Transaction</p>
+                            <p class="text-slate-300 text-sm">RE goes DOWN by expense amount</p>
+                        </div>
+                        <div class="bg-purple-900/20 rounded-lg p-4 text-center border border-purple-800/50">
+                            <p class="text-purple-400 font-bold text-lg mb-1">Neither (e.g., borrow)</p>
+                            <p class="text-slate-300 text-sm">RE does NOT change; IS is blank</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 2: WORKED EXAMPLES ======================== -->
+        <div id="panel-examples" class="tab-panel hidden">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-sky-400 mb-2">Owl Bakery &mdash; First Month of Operations</h2>
+                <p class="text-slate-300 text-sm">Click <span class="text-sky-400 font-semibold">"Show Effect"</span> for each transaction to reveal its FSET impact. Watch the running totals update and verify that A = L + SE after every entry.</p>
+            </div>
+
+            <div id="examples-container" class="space-y-4"></div>
+
+            <!-- Running Totals Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mt-6">
+                <h3 class="text-lg font-bold text-sky-400 mb-3">Running Totals</h3>
+                <div class="overflow-x-auto">
+                    <table class="fset-table w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left text-slate-400">After Txn</th>
+                                <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                <th class="text-sky-300">Noncash Assets</th>
+                                <th class="text-amber-300">Liabilities</th>
+                                <th class="text-purple-300">CC</th>
+                                <th class="text-purple-300">RE</th>
+                                <th class="text-emerald-300 border-l border-slate-600">A = L + SE?</th>
+                            </tr>
+                        </thead>
+                        <tbody id="running-totals-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Final Statements -->
+            <div id="final-statements" class="hidden mt-6 grid md:grid-cols-2 gap-6 fade-in">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-emerald-700/50">
+                    <h3 class="text-lg font-bold text-emerald-400 mb-4">Balance Sheet &mdash; Owl Bakery</h3>
+                    <div id="final-bs"></div>
+                </div>
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-amber-700/50">
+                    <h3 class="text-lg font-bold text-amber-400 mb-4">Income Statement &mdash; Owl Bakery</h3>
+                    <div id="final-is"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 3: BUILDER ======================== -->
+        <div id="panel-builder" class="tab-panel hidden">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-sky-400 mb-4">Interactive FSET Builder</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Transaction Type</label>
+                        <select id="builder-type" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white">
+                            <option value="issue_stock">Issue common stock for cash</option>
+                            <option value="borrow_cash">Borrow cash (notes payable)</option>
+                            <option value="purchase_asset_cash">Purchase asset for cash</option>
+                            <option value="purchase_on_account">Purchase supplies on account</option>
+                            <option value="service_cash">Provide services for cash</option>
+                            <option value="service_account">Provide services on account</option>
+                            <option value="pay_expense">Pay an expense (e.g., rent, wages)</option>
+                            <option value="pay_ap">Pay accounts payable</option>
+                            <option value="collect_receivable">Collect receivable</option>
+                            <option value="pay_dividends">Pay dividends</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Dollar Amount</label>
+                        <input type="number" id="builder-amount" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white" placeholder="e.g. 5000" min="1">
+                    </div>
+                    <div class="flex items-end gap-2">
+                        <button onclick="recordBuilderTransaction()" class="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition">Record Transaction</button>
+                        <button onclick="resetBuilder()" class="px-5 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Balance Check -->
+            <div id="builder-balance-check" class="bg-slate-800/50 rounded-xl p-4 border border-slate-700 mb-6 flex items-center gap-3">
+                <div id="balance-indicator" class="w-8 h-8 rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold" id="balance-text">Balanced</p>
+                    <p class="text-xs text-slate-400" id="balance-detail">Assets: $0 = Liabilities: $0 + SE: $0</p>
+                </div>
+            </div>
+
+            <!-- Builder FSET Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <div class="overflow-x-auto">
+                    <table class="fset-table w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left text-slate-400" rowspan="2">#</th>
+                                <th class="text-left text-slate-400" rowspan="2">Transaction</th>
+                                <th class="text-sky-400 border-l border-slate-600" colspan="5">Balance Sheet</th>
+                                <th class="text-amber-400 border-l border-slate-600" colspan="3">Income Statement</th>
+                            </tr>
+                            <tr class="border-b border-slate-600 text-xs">
+                                <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                <th class="text-sky-300">Noncash Assets</th>
+                                <th class="text-amber-300">Liabilities</th>
+                                <th class="text-purple-300">CC</th>
+                                <th class="text-purple-300">RE</th>
+                                <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                <th class="text-amber-300">Expense</th>
+                                <th class="text-amber-300">Net Income</th>
+                            </tr>
+                        </thead>
+                        <tbody id="builder-body"></tbody>
+                        <tfoot>
+                            <tr class="border-t-2 border-slate-500 font-bold">
+                                <td></td>
+                                <td class="text-left text-slate-300">Totals</td>
+                                <td id="bt-cash" class="border-l border-slate-600">0</td>
+                                <td id="bt-nca">0</td>
+                                <td id="bt-liab">0</td>
+                                <td id="bt-cc">0</td>
+                                <td id="bt-re">0</td>
+                                <td id="bt-rev" class="border-l border-slate-600">0</td>
+                                <td id="bt-exp">0</td>
+                                <td id="bt-ni">0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <p id="builder-empty" class="text-slate-500 text-center py-8">No transactions recorded yet. Select a type and amount above.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 4: PRACTICE ======================== -->
+        <div id="panel-practice" class="tab-panel hidden">
+            <div class="flex items-center justify-between mb-6">
+                <div class="bg-slate-800/50 rounded-xl p-4 border border-slate-700 flex items-center gap-4">
+                    <p class="text-slate-300 text-sm">Score: <span id="practice-score" class="text-emerald-400 font-bold text-lg">0</span> / <span id="practice-total" class="text-slate-400 font-bold text-lg">0</span></p>
+                    <div class="w-px h-8 bg-slate-600"></div>
+                    <p class="text-slate-300 text-sm">Streak: <span id="practice-streak" class="text-amber-400 font-bold text-lg">0</span></p>
+                </div>
+                <button onclick="generateQuestion()" class="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition">Next Question</button>
+            </div>
+            <div id="question-area" class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <p class="text-slate-400 text-center py-8">Click "Next Question" to start practicing.</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ==================== TAB SWITCHING ====================
+function switchTab(tab) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('border-sky-500', 'text-sky-400', 'bg-slate-800/50');
+        b.classList.add('border-transparent', 'text-slate-400');
+    });
+    document.getElementById('panel-' + tab).classList.remove('hidden');
+    const btn = document.getElementById('tab-' + tab);
+    btn.classList.add('border-sky-500', 'text-sky-400', 'bg-slate-800/50');
+    btn.classList.remove('border-transparent', 'text-slate-400');
+}
+
+// ==================== HELPERS ====================
+function fmt(n) {
+    if (n === 0) return '<span class="zero">&mdash;</span>';
+    const sign = n > 0 ? '+' : '';
+    const cls = n > 0 ? 'positive' : 'negative';
+    return `<span class="${cls}">${sign}${n.toLocaleString()}</span>`;
+}
+function fmtPlain(n) {
+    return '$' + Math.abs(n).toLocaleString();
+}
+
+// ==================== TAB 2: WORKED EXAMPLES ====================
+const owlTransactions = [
+    { id: 1, desc: "Owners invest $50,000 cash to start Owl Bakery", cash: 50000, nca: 0, liab: 0, cc: 50000, re: 0, rev: 0, exp: 0, ni: 0, detail: "Cash increases by $50,000 and Contributed Capital increases by $50,000. No revenue or expense is involved \u2014 this is an owner investment." },
+    { id: 2, desc: "Borrows $20,000 from the bank (notes payable)", cash: 20000, nca: 0, liab: 20000, cc: 0, re: 0, rev: 0, exp: 0, ni: 0, detail: "Cash increases and Notes Payable (a liability) increases. Borrowing is not revenue \u2014 it creates an obligation to repay." },
+    { id: 3, desc: "Purchases baking equipment for $15,000 cash", cash: -15000, nca: 15000, liab: 0, cc: 0, re: 0, rev: 0, exp: 0, ni: 0, detail: "Cash decreases but Equipment (a noncash asset) increases. Total assets are unchanged \u2014 just a swap between asset types." },
+    { id: 4, desc: "Purchases $8,000 of baking supplies on account", cash: 0, nca: 8000, liab: 8000, cc: 0, re: 0, rev: 0, exp: 0, ni: 0, detail: "Supplies (noncash asset) increases and Accounts Payable (liability) increases. No cash changes hands yet." },
+    { id: 5, desc: "Provides baking services to customers for $12,000 cash", cash: 12000, nca: 0, liab: 0, cc: 0, re: 12000, rev: 12000, exp: 0, ni: 12000, detail: "Cash increases and Revenue is earned, which flows through to increase Retained Earnings and Net Income." },
+    { id: 6, desc: "Provides $5,000 of catering services on account", cash: 0, nca: 5000, liab: 0, cc: 0, re: 5000, rev: 5000, exp: 0, ni: 5000, detail: "Accounts Receivable (noncash asset) increases. Revenue is earned even though cash hasn't been collected yet (accrual basis)." },
+    { id: 7, desc: "Pays employees $3,000 in wages", cash: -3000, nca: 0, liab: 0, cc: 0, re: -3000, rev: 0, exp: 3000, ni: -3000, detail: "Cash decreases. Wages Expense increases, which reduces Net Income and Retained Earnings." },
+    { id: 8, desc: "Pays $4,000 toward accounts payable", cash: -4000, nca: 0, liab: -4000, cc: 0, re: 0, rev: 0, exp: 0, ni: 0, detail: "Cash decreases and Accounts Payable decreases. This is paying off a prior obligation \u2014 no expense, no revenue." },
+    { id: 9, desc: "Collects $2,000 from customers on account", cash: 2000, nca: -2000, liab: 0, cc: 0, re: 0, rev: 0, exp: 0, ni: 0, detail: "Cash increases but Accounts Receivable decreases. Revenue was already recorded when the service was provided (Txn 6). This is just collecting what's owed." },
+    { id: 10, desc: "Pays $1,000 rent for the month", cash: -1000, nca: 0, liab: 0, cc: 0, re: -1000, rev: 0, exp: 1000, ni: -1000, detail: "Cash decreases. Rent Expense increases, reducing Net Income and Retained Earnings." }
+];
+
+let revealedCount = 0;
+
+function buildExamples() {
+    const container = document.getElementById('examples-container');
+    container.innerHTML = '';
+    revealedCount = 0;
+    owlTransactions.forEach((txn, idx) => {
+        const card = document.createElement('div');
+        card.className = 'bg-slate-800/50 rounded-xl p-5 border border-slate-700';
+        card.innerHTML = `
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <span class="text-sky-400 font-bold text-sm">Transaction ${txn.id}</span>
+                    <p class="text-white font-medium mt-1">${txn.desc}</p>
+                </div>
+                <button id="reveal-btn-${idx}" onclick="revealEffect(${idx})" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Effect</button>
+            </div>
+            <div id="effect-${idx}" class="hidden mt-4 fade-in">
+                <div class="overflow-x-auto">
+                    <table class="fset-table w-full text-sm border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-600 text-xs">
+                                <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                <th class="text-sky-300">Noncash Assets</th>
+                                <th class="text-amber-300">Liabilities</th>
+                                <th class="text-purple-300">CC</th>
+                                <th class="text-purple-300">RE</th>
+                                <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                <th class="text-amber-300">Expense</th>
+                                <th class="text-amber-300">Net Income</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border-l border-slate-600">${fmt(txn.cash)}</td>
+                                <td>${fmt(txn.nca)}</td>
+                                <td>${fmt(txn.liab)}</td>
+                                <td>${fmt(txn.cc)}</td>
+                                <td>${fmt(txn.re)}</td>
+                                <td class="border-l border-slate-600">${fmt(txn.rev)}</td>
+                                <td>${fmt(txn.exp)}</td>
+                                <td>${fmt(txn.ni)}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-slate-400 text-sm mt-3">${txn.detail}</p>
+            </div>`;
+        container.appendChild(card);
+    });
+}
+
+function revealEffect(idx) {
+    const el = document.getElementById('effect-' + idx);
+    const btn = document.getElementById('reveal-btn-' + idx);
+    if (!el.classList.contains('hidden')) return;
+    el.classList.remove('hidden');
+    btn.textContent = 'Shown';
+    btn.disabled = true;
+    btn.classList.replace('bg-sky-600', 'bg-slate-600');
+    btn.classList.replace('hover:bg-sky-500', 'hover:bg-slate-600');
+    revealedCount++;
+    updateRunningTotals();
+    if (revealedCount === owlTransactions.length) {
+        showFinalStatements();
+    }
+}
+
+function updateRunningTotals() {
+    const tbody = document.getElementById('running-totals-body');
+    tbody.innerHTML = '';
+    let cash = 0, nca = 0, liab = 0, cc = 0, re = 0;
+    for (let i = 0; i < revealedCount; i++) {
+        const t = owlTransactions[i];
+        cash += t.cash; nca += t.nca; liab += t.liab; cc += t.cc; re += t.re;
+        const assets = cash + nca;
+        const lse = liab + cc + re;
+        const balanced = assets === lse;
+        const row = document.createElement('tr');
+        row.className = 'border-b border-slate-700/50 fade-in';
+        row.innerHTML = `
+            <td class="text-left text-slate-400">#${i + 1}</td>
+            <td class="border-l border-slate-600">${cash.toLocaleString()}</td>
+            <td>${nca.toLocaleString()}</td>
+            <td>${liab.toLocaleString()}</td>
+            <td>${cc.toLocaleString()}</td>
+            <td>${re.toLocaleString()}</td>
+            <td class="border-l border-slate-600 ${balanced ? 'text-emerald-400' : 'text-rose-400'}">${balanced ? 'Yes' : 'NO'} (${assets.toLocaleString()} = ${lse.toLocaleString()})</td>`;
+        tbody.appendChild(row);
+    }
+}
+
+function showFinalStatements() {
+    document.getElementById('final-statements').classList.remove('hidden');
+    let cash = 0, nca = 0, liab = 0, cc = 0, re = 0, rev = 0, exp = 0;
+    owlTransactions.forEach(t => {
+        cash += t.cash; nca += t.nca; liab += t.liab; cc += t.cc; re += t.re; rev += t.rev; exp += t.exp;
+    });
+    const ni = rev - exp;
+    const totalAssets = cash + nca;
+    const totalLSE = liab + cc + re;
+
+    document.getElementById('final-bs').innerHTML = `
+        <div class="space-y-2 text-sm">
+            <p class="font-bold text-emerald-300 border-b border-slate-600 pb-1">Assets</p>
+            <div class="flex justify-between"><span class="text-slate-300">Cash</span><span class="text-white">$${cash.toLocaleString()}</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">Accounts Receivable</span><span class="text-white">$3,000</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">Supplies</span><span class="text-white">$8,000</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">Equipment</span><span class="text-white">$15,000</span></div>
+            <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-emerald-400">Total Assets</span><span class="text-emerald-400">$${totalAssets.toLocaleString()}</span></div>
+            <p class="font-bold text-amber-300 border-b border-slate-600 pb-1 mt-4">Liabilities</p>
+            <div class="flex justify-between"><span class="text-slate-300">Accounts Payable</span><span class="text-white">$4,000</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">Notes Payable</span><span class="text-white">$20,000</span></div>
+            <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-amber-400">Total Liabilities</span><span class="text-amber-400">$${liab.toLocaleString()}</span></div>
+            <p class="font-bold text-purple-300 border-b border-slate-600 pb-1 mt-4">Stockholders' Equity</p>
+            <div class="flex justify-between"><span class="text-slate-300">Contributed Capital</span><span class="text-white">$${cc.toLocaleString()}</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">Retained Earnings</span><span class="text-white">$${re.toLocaleString()}</span></div>
+            <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-purple-400">Total SE</span><span class="text-purple-400">$${(cc + re).toLocaleString()}</span></div>
+            <div class="flex justify-between font-bold border-t-2 border-slate-500 pt-2 mt-2"><span class="text-sky-400">Total L + SE</span><span class="text-sky-400">$${totalLSE.toLocaleString()}</span></div>
+        </div>`;
+
+    document.getElementById('final-is').innerHTML = `
+        <div class="space-y-2 text-sm">
+            <p class="font-bold text-emerald-300 border-b border-slate-600 pb-1">Revenues</p>
+            <div class="flex justify-between"><span class="text-slate-300">Service Revenue</span><span class="text-white">$${rev.toLocaleString()}</span></div>
+            <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-emerald-400">Total Revenue</span><span class="text-emerald-400">$${rev.toLocaleString()}</span></div>
+            <p class="font-bold text-rose-300 border-b border-slate-600 pb-1 mt-4">Expenses</p>
+            <div class="flex justify-between"><span class="text-slate-300">Wages Expense</span><span class="text-white">$3,000</span></div>
+            <div class="flex justify-between"><span class="text-slate-300">Rent Expense</span><span class="text-white">$1,000</span></div>
+            <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-rose-400">Total Expenses</span><span class="text-rose-400">$${exp.toLocaleString()}</span></div>
+            <div class="flex justify-between font-bold border-t-2 border-slate-500 pt-2 mt-4 text-lg"><span class="text-amber-400">Net Income</span><span class="text-amber-400">$${ni.toLocaleString()}</span></div>
+        </div>`;
+}
+
+// ==================== TAB 3: BUILDER ====================
+let builderRows = [];
+let builderTotals = { cash: 0, nca: 0, liab: 0, cc: 0, re: 0, rev: 0, exp: 0, ni: 0 };
+
+const txnTemplates = {
+    issue_stock:         { label: "Issue stock for cash",        cash: 1, nca: 0, liab: 0, cc: 1, re: 0, rev: 0, exp: 0, ni: 0 },
+    borrow_cash:         { label: "Borrow cash (notes payable)", cash: 1, nca: 0, liab: 1, cc: 0, re: 0, rev: 0, exp: 0, ni: 0 },
+    purchase_asset_cash: { label: "Purchase asset for cash",     cash: -1, nca: 1, liab: 0, cc: 0, re: 0, rev: 0, exp: 0, ni: 0 },
+    purchase_on_account: { label: "Purchase supplies on account",cash: 0, nca: 1, liab: 1, cc: 0, re: 0, rev: 0, exp: 0, ni: 0 },
+    service_cash:        { label: "Provide services for cash",   cash: 1, nca: 0, liab: 0, cc: 0, re: 1, rev: 1, exp: 0, ni: 1 },
+    service_account:     { label: "Provide services on account", cash: 0, nca: 1, liab: 0, cc: 0, re: 1, rev: 1, exp: 0, ni: 1 },
+    pay_expense:         { label: "Pay expense",                 cash: -1, nca: 0, liab: 0, cc: 0, re: -1, rev: 0, exp: 1, ni: -1 },
+    pay_ap:              { label: "Pay accounts payable",        cash: -1, nca: 0, liab: -1, cc: 0, re: 0, rev: 0, exp: 0, ni: 0 },
+    collect_receivable:  { label: "Collect receivable",          cash: 1, nca: -1, liab: 0, cc: 0, re: 0, rev: 0, exp: 0, ni: 0 },
+    pay_dividends:       { label: "Pay dividends",              cash: -1, nca: 0, liab: 0, cc: 0, re: -1, rev: 0, exp: 0, ni: 0 }
+};
+
+function recordBuilderTransaction() {
+    const type = document.getElementById('builder-type').value;
+    const amount = parseInt(document.getElementById('builder-amount').value);
+    if (!amount || amount <= 0) { alert('Please enter a positive dollar amount.'); return; }
+
+    const tmpl = txnTemplates[type];
+    const row = {
+        label: tmpl.label,
+        cash: tmpl.cash * amount, nca: tmpl.nca * amount, liab: tmpl.liab * amount,
+        cc: tmpl.cc * amount, re: tmpl.re * amount, rev: tmpl.rev * amount,
+        exp: tmpl.exp * amount, ni: tmpl.ni * amount
+    };
+    builderRows.push(row);
+    ['cash','nca','liab','cc','re','rev','exp','ni'].forEach(k => builderTotals[k] += row[k]);
+    renderBuilder();
+    document.getElementById('builder-amount').value = '';
+}
+
+function resetBuilder() {
+    builderRows = [];
+    builderTotals = { cash: 0, nca: 0, liab: 0, cc: 0, re: 0, rev: 0, exp: 0, ni: 0 };
+    renderBuilder();
+}
+
+function renderBuilder() {
+    const tbody = document.getElementById('builder-body');
+    const empty = document.getElementById('builder-empty');
+    tbody.innerHTML = '';
+    if (builderRows.length === 0) {
+        empty.classList.remove('hidden');
+    } else {
+        empty.classList.add('hidden');
+        builderRows.forEach((r, i) => {
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-slate-700/50 fade-in';
+            tr.innerHTML = `
+                <td class="text-slate-400">${i + 1}</td>
+                <td class="text-left text-white">${r.label} (${fmtPlain(r.cash || r.nca || r.rev || r.exp || r.liab || r.cc)})</td>
+                <td class="border-l border-slate-600">${fmt(r.cash)}</td>
+                <td>${fmt(r.nca)}</td>
+                <td>${fmt(r.liab)}</td>
+                <td>${fmt(r.cc)}</td>
+                <td>${fmt(r.re)}</td>
+                <td class="border-l border-slate-600">${fmt(r.rev)}</td>
+                <td>${fmt(r.exp)}</td>
+                <td>${fmt(r.ni)}</td>`;
+            tbody.appendChild(tr);
+        });
+    }
+    // Update totals
+    const t = builderTotals;
+    document.getElementById('bt-cash').innerHTML = fmt(t.cash);
+    document.getElementById('bt-nca').innerHTML = fmt(t.nca);
+    document.getElementById('bt-liab').innerHTML = fmt(t.liab);
+    document.getElementById('bt-cc').innerHTML = fmt(t.cc);
+    document.getElementById('bt-re').innerHTML = fmt(t.re);
+    document.getElementById('bt-rev').innerHTML = fmt(t.rev);
+    document.getElementById('bt-exp').innerHTML = fmt(t.exp);
+    document.getElementById('bt-ni').innerHTML = fmt(t.ni);
+
+    // Balance check
+    const assets = t.cash + t.nca;
+    const lse = t.liab + t.cc + t.re;
+    const balanced = assets === lse;
+    const indicator = document.getElementById('balance-indicator');
+    const btext = document.getElementById('balance-text');
+    const bdetail = document.getElementById('balance-detail');
+    if (balanced) {
+        indicator.className = 'w-8 h-8 rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center';
+        indicator.innerHTML = '<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
+        btext.textContent = 'Balanced';
+        btext.className = 'text-sm font-semibold text-emerald-400';
+    } else {
+        indicator.className = 'w-8 h-8 rounded-full bg-rose-500/20 border-2 border-rose-500 flex items-center justify-center';
+        indicator.innerHTML = '<svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+        btext.textContent = 'NOT Balanced';
+        btext.className = 'text-sm font-semibold text-rose-400';
+    }
+    bdetail.textContent = `Assets: $${assets.toLocaleString()} = Liabilities: $${t.liab.toLocaleString()} + SE: $${(t.cc + t.re).toLocaleString()}`;
+}
+
+// ==================== TAB 4: PRACTICE ====================
+let score = 0, total = 0, streak = 0;
+
+function randAmount() {
+    const vals = [1000, 2000, 2500, 3000, 4000, 5000, 6000, 7500, 8000, 10000, 12000, 15000, 20000, 25000];
+    return vals[Math.floor(Math.random() * vals.length)];
+}
+
+function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function generateQuestion() {
+    const qType = Math.floor(Math.random() * 5);
+    switch (qType) {
+        case 0: genRecordQuestion(); break;
+        case 1: genMissingAmount(); break;
+        case 2: genBalanceCheck(); break;
+        case 3: genBuildStatement(); break;
+        case 4: genConceptual(); break;
+    }
+}
+
+function showFeedback(correct, explanation) {
+    total++;
+    if (correct) { score++; streak++; } else { streak = 0; }
+    document.getElementById('practice-score').textContent = score;
+    document.getElementById('practice-total').textContent = total;
+    document.getElementById('practice-streak').textContent = streak;
+
+    const fb = document.getElementById('feedback-area');
+    if (fb) {
+        fb.innerHTML = `
+            <div class="mt-4 p-4 rounded-lg border ${correct ? 'bg-emerald-900/20 border-emerald-700' : 'bg-rose-900/20 border-rose-700'} fade-in">
+                <p class="font-bold ${correct ? 'text-emerald-400' : 'text-rose-400'}">${correct ? 'Correct!' : 'Incorrect'}</p>
+                <p class="text-slate-300 text-sm mt-1">${explanation}</p>
+            </div>`;
+    }
+    // Disable all answer buttons
+    document.querySelectorAll('.answer-btn').forEach(b => { b.disabled = true; b.classList.add('opacity-50', 'cursor-not-allowed'); });
+    document.querySelectorAll('.answer-input').forEach(i => { i.disabled = true; });
+}
+
+// TYPE 1: Record this transaction
+function genRecordQuestion() {
+    const amt = randAmount();
+    const scenarios = [
+        { text: `The company issues common stock for $${amt.toLocaleString()} cash.`, correct: { cash: amt, nca: 0, liab: 0, cc: amt, re: 0 },
+          label: `Cash +${amt.toLocaleString()}, CC +${amt.toLocaleString()}`, explanation: "Issuing stock increases Cash (asset) and Contributed Capital (equity). No revenue is earned." },
+        { text: `The company borrows $${amt.toLocaleString()} from a bank, signing a note.`, correct: { cash: amt, nca: 0, liab: amt, cc: 0, re: 0 },
+          label: `Cash +${amt.toLocaleString()}, Notes Payable +${amt.toLocaleString()}`, explanation: "Borrowing increases Cash and creates a liability (Notes Payable). This is not revenue." },
+        { text: `The company purchases equipment for $${amt.toLocaleString()} cash.`, correct: { cash: -amt, nca: amt, liab: 0, cc: 0, re: 0 },
+          label: `Cash -${amt.toLocaleString()}, Equipment +${amt.toLocaleString()}`, explanation: "Cash decreases but Equipment (noncash asset) increases. Total assets stay the same." },
+        { text: `The company provides services for $${amt.toLocaleString()} cash.`, correct: { cash: amt, nca: 0, liab: 0, cc: 0, re: amt },
+          label: `Cash +${amt.toLocaleString()}, RE +${amt.toLocaleString()} (Rev +${amt.toLocaleString()})`, explanation: "Cash increases and Revenue is earned, increasing Retained Earnings and Net Income." },
+        { text: `The company pays $${amt.toLocaleString()} in wages to employees.`, correct: { cash: -amt, nca: 0, liab: 0, cc: 0, re: -amt },
+          label: `Cash -${amt.toLocaleString()}, RE -${amt.toLocaleString()} (Exp +${amt.toLocaleString()})`, explanation: "Cash decreases and an expense is incurred, decreasing Retained Earnings and Net Income." },
+        { text: `The company provides $${amt.toLocaleString()} of services on account.`, correct: { cash: 0, nca: amt, liab: 0, cc: 0, re: amt },
+          label: `AR +${amt.toLocaleString()}, RE +${amt.toLocaleString()} (Rev +${amt.toLocaleString()})`, explanation: "Accounts Receivable (asset) increases and Revenue is earned. Cash is not received yet but revenue is recognized." },
+        { text: `The company pays $${amt.toLocaleString()} on its accounts payable.`, correct: { cash: -amt, nca: 0, liab: -amt, cc: 0, re: 0 },
+          label: `Cash -${amt.toLocaleString()}, AP -${amt.toLocaleString()}`, explanation: "Cash decreases and Accounts Payable decreases. Paying off a liability is not an expense." },
+        { text: `The company collects $${amt.toLocaleString()} from a customer on account.`, correct: { cash: amt, nca: -amt, liab: 0, cc: 0, re: 0 },
+          label: `Cash +${amt.toLocaleString()}, AR -${amt.toLocaleString()}`, explanation: "Cash increases but Accounts Receivable decreases. Revenue was already recognized earlier. This is just a collection." },
+        { text: `The company pays $${amt.toLocaleString()} rent for the month.`, correct: { cash: -amt, nca: 0, liab: 0, cc: 0, re: -amt },
+          label: `Cash -${amt.toLocaleString()}, RE -${amt.toLocaleString()} (Exp +${amt.toLocaleString()})`, explanation: "Cash decreases. Rent expense reduces Retained Earnings and Net Income." },
+        { text: `The company purchases $${amt.toLocaleString()} of supplies on account.`, correct: { cash: 0, nca: amt, liab: amt, cc: 0, re: 0 },
+          label: `Supplies +${amt.toLocaleString()}, AP +${amt.toLocaleString()}`, explanation: "Supplies (noncash asset) increases and Accounts Payable (liability) increases. No cash moves." }
+    ];
+    const s = scenarios[Math.floor(Math.random() * scenarios.length)];
+
+    // Generate wrong answers
+    const wrongOptions = [
+        `Cash +${amt.toLocaleString()}, RE +${amt.toLocaleString()} (Rev +${amt.toLocaleString()})`,
+        `Cash -${amt.toLocaleString()}, RE -${amt.toLocaleString()} (Exp +${amt.toLocaleString()})`,
+        `Cash +${amt.toLocaleString()}, Liabilities +${amt.toLocaleString()}`,
+        `Cash -${amt.toLocaleString()}, Equipment +${amt.toLocaleString()}`,
+        `Cash +${amt.toLocaleString()}, CC +${amt.toLocaleString()}`,
+        `AR +${amt.toLocaleString()}, RE +${amt.toLocaleString()} (Rev +${amt.toLocaleString()})`,
+        `Cash -${amt.toLocaleString()}, AP -${amt.toLocaleString()}`,
+        `Cash +${amt.toLocaleString()}, AR -${amt.toLocaleString()}`,
+        `Supplies +${amt.toLocaleString()}, AP +${amt.toLocaleString()}`,
+        `Cash -${amt.toLocaleString()}, CC -${amt.toLocaleString()}`
+    ].filter(o => o !== s.label);
+
+    const wrongPicks = shuffle(wrongOptions).slice(0, 3);
+    const options = shuffle([{ text: s.label, correct: true }, ...wrongPicks.map(w => ({ text: w, correct: false }))]);
+
+    const area = document.getElementById('question-area');
+    area.innerHTML = `
+        <p class="text-xs text-sky-400 font-semibold mb-2 uppercase tracking-wide">Record This Transaction</p>
+        <p class="text-white text-lg font-medium mb-6">${s.text}</p>
+        <p class="text-slate-400 text-sm mb-3">Which FSET effect is correct?</p>
+        <div class="space-y-3">
+            ${options.map((o, i) => `
+                <button class="answer-btn w-full text-left px-4 py-3 rounded-lg border border-slate-600 hover:border-sky-500 hover:bg-sky-900/20 transition text-sm text-slate-200"
+                    onclick="showFeedback(${o.correct}, '${s.explanation.replace(/'/g, "\\'")}'); this.classList.add('${o.correct ? 'border-emerald-500' : 'border-rose-500'}', '${o.correct ? 'bg-emerald-900/30' : 'bg-rose-900/30'}')">
+                    <span class="text-slate-500 font-bold mr-2">${String.fromCharCode(65 + i)}.</span> ${o.text}
+                </button>`).join('')}
+        </div>
+        <div id="feedback-area"></div>`;
+}
+
+// TYPE 2: Missing amount
+function genMissingAmount() {
+    const amt = randAmount();
+    const scenarios = [
+        { text: `The company borrows cash from a bank. Cash increases by $${amt.toLocaleString()}. Notes Payable increases by <span class="text-amber-400 font-bold">???</span>.`, answer: amt, explanation: `Notes Payable must also increase by $${amt.toLocaleString()} to keep the equation balanced. A = L + SE: both sides increase by $${amt.toLocaleString()}.` },
+        { text: `The company earns service revenue on account for $${amt.toLocaleString()}. AR increases by $${amt.toLocaleString()}. Retained Earnings changes by <span class="text-amber-400 font-bold">???</span>.`, answer: amt, explanation: `Retained Earnings increases by $${amt.toLocaleString()} because Revenue of $${amt.toLocaleString()} flows into Net Income, which increases RE.` },
+        { text: `The company pays wages of $${amt.toLocaleString()}. Cash decreases by $${amt.toLocaleString()}. Retained Earnings changes by <span class="text-amber-400 font-bold">???</span>.`, answer: -amt, explanation: `Retained Earnings decreases by $${amt.toLocaleString()} (enter -${amt.toLocaleString()}). The wages expense reduces Net Income, which reduces RE.` },
+        { text: `The company purchases equipment for cash. Equipment increases by $${amt.toLocaleString()}. Cash changes by <span class="text-amber-400 font-bold">???</span>.`, answer: -amt, explanation: `Cash decreases by $${amt.toLocaleString()} (enter -${amt.toLocaleString()}). This is an asset swap: one asset goes up, the other goes down by the same amount.` },
+        { text: `The company issues stock for $${amt.toLocaleString()} cash. Cash increases by $${amt.toLocaleString()}. Contributed Capital changes by <span class="text-amber-400 font-bold">???</span>.`, answer: amt, explanation: `Contributed Capital increases by $${amt.toLocaleString()} to balance the increase in Cash.` }
+    ];
+    const s = scenarios[Math.floor(Math.random() * scenarios.length)];
+    const area = document.getElementById('question-area');
+    area.innerHTML = `
+        <p class="text-xs text-amber-400 font-semibold mb-2 uppercase tracking-wide">What's the Missing Amount?</p>
+        <p class="text-white text-lg font-medium mb-6">${s.text}</p>
+        <div class="flex items-center gap-3 mb-4">
+            <label class="text-slate-400 text-sm">Enter the missing amount (use negative for decreases):</label>
+            <input type="number" id="missing-input" class="answer-input bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="e.g. -5000">
+            <button class="answer-btn px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition" onclick="checkMissing(${s.answer}, '${s.explanation.replace(/'/g, "\\'")}')">Submit</button>
+        </div>
+        <div id="feedback-area"></div>`;
+}
+
+function checkMissing(answer, explanation) {
+    const input = document.getElementById('missing-input');
+    const val = parseInt(input.value);
+    if (isNaN(val)) { alert('Please enter a number.'); return; }
+    showFeedback(val === answer, explanation);
+}
+
+// TYPE 3: Does this balance?
+function genBalanceCheck() {
+    const a1 = randAmount(), a2 = randAmount(), a3 = randAmount();
+    const makeError = Math.random() > 0.5;
+    let txns, hasError, explanation;
+
+    if (makeError) {
+        const errorAmt = [500, 1000, 2000][Math.floor(Math.random() * 3)];
+        txns = [
+            { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0 },
+            { desc: `Earn service revenue of $${a2.toLocaleString()} cash`, cash: a2, nca: 0, liab: 0, cc: 0, re: a2 },
+            { desc: `Pay rent of $${a3.toLocaleString()}`, cash: -a3, nca: 0, liab: 0, cc: 0, re: -a3 + errorAmt }
+        ];
+        hasError = true;
+        explanation = `The third transaction has an error. Paying rent of $${a3.toLocaleString()} should decrease RE by $${a3.toLocaleString()}, but it shows RE changing by -$${(a3 - errorAmt).toLocaleString()}. The equation does NOT balance.`;
+    } else {
+        txns = [
+            { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0 },
+            { desc: `Borrow $${a2.toLocaleString()} from bank`, cash: a2, nca: 0, liab: a2, cc: 0, re: 0 },
+            { desc: `Purchase equipment for $${a3.toLocaleString()} cash`, cash: -a3, nca: a3, liab: 0, cc: 0, re: 0 }
+        ];
+        hasError = false;
+        explanation = `All three transactions are correctly recorded. After all transactions: Assets ($${(a1 + a2 - a3 + a3).toLocaleString()}) = Liabilities ($${a2.toLocaleString()}) + SE ($${a1.toLocaleString()}).`;
+    }
+
+    let tCash = 0, tNca = 0, tLiab = 0, tCc = 0, tRe = 0;
+    txns.forEach(t => { tCash += t.cash; tNca += t.nca; tLiab += t.liab; tCc += t.cc; tRe += t.re; });
+
+    const area = document.getElementById('question-area');
+    area.innerHTML = `
+        <p class="text-xs text-purple-400 font-semibold mb-2 uppercase tracking-wide">Does This Balance?</p>
+        <p class="text-white text-lg font-medium mb-4">After these three transactions, does A = L + SE?</p>
+        <div class="overflow-x-auto mb-6">
+            <table class="fset-table w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-600 text-xs">
+                        <th class="text-left text-slate-400">Transaction</th>
+                        <th class="text-sky-300">Cash</th><th class="text-sky-300">Noncash Assets</th>
+                        <th class="text-amber-300">Liabilities</th><th class="text-purple-300">CC</th><th class="text-purple-300">RE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${txns.map(t => `<tr class="border-b border-slate-700/50">
+                        <td class="text-left text-slate-300">${t.desc}</td>
+                        <td>${fmt(t.cash)}</td><td>${fmt(t.nca)}</td><td>${fmt(t.liab)}</td><td>${fmt(t.cc)}</td><td>${fmt(t.re)}</td>
+                    </tr>`).join('')}
+                    <tr class="border-t-2 border-slate-500 font-bold">
+                        <td class="text-left text-slate-300">Totals</td>
+                        <td>${fmt(tCash)}</td><td>${fmt(tNca)}</td><td>${fmt(tLiab)}</td><td>${fmt(tCc)}</td><td>${fmt(tRe)}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="flex gap-3">
+            <button class="answer-btn px-6 py-3 rounded-lg border border-slate-600 hover:border-emerald-500 hover:bg-emerald-900/20 transition text-emerald-400 font-medium"
+                onclick="showFeedback(${!hasError}, '${explanation.replace(/'/g, "\\'")}'); this.classList.add('${!hasError ? 'border-emerald-500 bg-emerald-900/30' : 'border-rose-500 bg-rose-900/30'}')">
+                Yes, it balances
+            </button>
+            <button class="answer-btn px-6 py-3 rounded-lg border border-slate-600 hover:border-rose-500 hover:bg-rose-900/20 transition text-rose-400 font-medium"
+                onclick="showFeedback(${hasError}, '${explanation.replace(/'/g, "\\'")}'); this.classList.add('${hasError ? 'border-emerald-500 bg-emerald-900/30' : 'border-rose-500 bg-rose-900/30'}')">
+                No, there is an error
+            </button>
+        </div>
+        <div id="feedback-area"></div>`;
+}
+
+// TYPE 4: Build the financial statement
+function genBuildStatement() {
+    const a1 = randAmount(), a2 = randAmount(), a3 = randAmount(), a4 = randAmount();
+    const questionTypes = [
+        {
+            txns: [
+                { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0, rev: 0, exp: 0 },
+                { desc: `Earn service revenue of $${a2.toLocaleString()} cash`, cash: a2, nca: 0, liab: 0, cc: 0, re: a2, rev: a2, exp: 0 },
+                { desc: `Pay wages of $${a3.toLocaleString()}`, cash: -a3, nca: 0, liab: 0, cc: 0, re: -a3, rev: 0, exp: a3 },
+                { desc: `Pay rent of $${a4.toLocaleString()}`, cash: -a4, nca: 0, liab: 0, cc: 0, re: -a4, rev: 0, exp: a4 }
+            ],
+            question: "What is the company's <span class='text-amber-400 font-bold'>Net Income</span> after these transactions?",
+            answer: a2 - a3 - a4,
+            explanation: `Net Income = Revenue - Expenses = $${a2.toLocaleString()} - $${a3.toLocaleString()} - $${a4.toLocaleString()} = $${(a2 - a3 - a4).toLocaleString()}.`
+        },
+        {
+            txns: [
+                { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0, rev: 0, exp: 0 },
+                { desc: `Borrow $${a2.toLocaleString()} from bank`, cash: a2, nca: 0, liab: a2, cc: 0, re: 0, rev: 0, exp: 0 },
+                { desc: `Purchase equipment for $${a3.toLocaleString()} cash`, cash: -a3, nca: a3, liab: 0, cc: 0, re: 0, rev: 0, exp: 0 },
+                { desc: `Earn $${a4.toLocaleString()} revenue on account`, cash: 0, nca: a4, liab: 0, cc: 0, re: a4, rev: a4, exp: 0 }
+            ],
+            question: "What are <span class='text-emerald-400 font-bold'>Total Assets</span> after these transactions?",
+            answer: a1 + a2 - a3 + a3 + a4,
+            explanation: `Total Assets = Cash ($${(a1 + a2 - a3).toLocaleString()}) + Equipment ($${a3.toLocaleString()}) + AR ($${a4.toLocaleString()}) = $${(a1 + a2 + a4).toLocaleString()}.`
+        },
+        {
+            txns: [
+                { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0, rev: 0, exp: 0 },
+                { desc: `Earn $${a2.toLocaleString()} service revenue (cash)`, cash: a2, nca: 0, liab: 0, cc: 0, re: a2, rev: a2, exp: 0 },
+                { desc: `Pay wages of $${a3.toLocaleString()}`, cash: -a3, nca: 0, liab: 0, cc: 0, re: -a3, rev: 0, exp: a3 }
+            ],
+            question: "What is <span class='text-purple-400 font-bold'>Retained Earnings</span> after these transactions?",
+            answer: a2 - a3,
+            explanation: `Retained Earnings = Net Income (since there are no dividends) = Revenue ($${a2.toLocaleString()}) - Expenses ($${a3.toLocaleString()}) = $${(a2 - a3).toLocaleString()}.`
+        }
+    ];
+
+    const q = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+    let tCash = 0, tNca = 0, tLiab = 0, tCc = 0, tRe = 0;
+    q.txns.forEach(t => { tCash += t.cash; tNca += t.nca; tLiab += t.liab; tCc += t.cc; tRe += t.re; });
+
+    const area = document.getElementById('question-area');
+    area.innerHTML = `
+        <p class="text-xs text-emerald-400 font-semibold mb-2 uppercase tracking-wide">Build the Financial Statement</p>
+        <p class="text-white text-lg font-medium mb-4">Given these transactions:</p>
+        <div class="overflow-x-auto mb-4">
+            <table class="fset-table w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-600 text-xs">
+                        <th class="text-left text-slate-400">#</th>
+                        <th class="text-left text-slate-400">Transaction</th>
+                        <th class="text-sky-300">Cash</th><th class="text-sky-300">Noncash Assets</th>
+                        <th class="text-amber-300">Liabilities</th><th class="text-purple-300">CC</th><th class="text-purple-300">RE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${q.txns.map((t, i) => `<tr class="border-b border-slate-700/50">
+                        <td class="text-slate-400">${i + 1}</td>
+                        <td class="text-left text-slate-300">${t.desc}</td>
+                        <td>${fmt(t.cash)}</td><td>${fmt(t.nca)}</td><td>${fmt(t.liab)}</td><td>${fmt(t.cc)}</td><td>${fmt(t.re)}</td>
+                    </tr>`).join('')}
+                </tbody>
+            </table>
+        </div>
+        <p class="text-white mb-4">${q.question}</p>
+        <div class="flex items-center gap-3 mb-4">
+            <input type="number" id="statement-input" class="answer-input bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="e.g. 15000">
+            <button class="answer-btn px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition" onclick="checkStatement(${q.answer}, '${q.explanation.replace(/'/g, "\\'")}')">Submit</button>
+        </div>
+        <div id="feedback-area"></div>`;
+}
+
+function checkStatement(answer, explanation) {
+    const val = parseInt(document.getElementById('statement-input').value);
+    if (isNaN(val)) { alert('Please enter a number.'); return; }
+    showFeedback(val === answer, explanation);
+}
+
+// TYPE 5: Conceptual
+function genConceptual() {
+    const questions = [
+        {
+            text: "Which type of transaction increases <strong>both</strong> assets and liabilities?",
+            options: [
+                { text: "Borrowing cash from a bank", correct: true },
+                { text: "Issuing stock for cash", correct: false },
+                { text: "Providing services for cash", correct: false },
+                { text: "Paying employees wages", correct: false }
+            ],
+            explanation: "Borrowing cash increases Cash (an asset) and Notes Payable (a liability). Issuing stock increases assets and equity, not liabilities."
+        },
+        {
+            text: "Which transaction affects the Income Statement?",
+            options: [
+                { text: "Earning service revenue", correct: true },
+                { text: "Borrowing from a bank", correct: false },
+                { text: "Collecting an accounts receivable", correct: false },
+                { text: "Paying off accounts payable", correct: false }
+            ],
+            explanation: "Earning revenue is recorded on the Income Statement. Borrowing, collecting receivables, and paying AP are all balance-sheet-only transactions."
+        },
+        {
+            text: "When a company provides services on account, which accounts are affected?",
+            options: [
+                { text: "Accounts Receivable increases, Revenue increases", correct: true },
+                { text: "Cash increases, Revenue increases", correct: false },
+                { text: "Accounts Receivable increases, Cash increases", correct: false },
+                { text: "Accounts Payable increases, Revenue increases", correct: false }
+            ],
+            explanation: "'On account' means the customer will pay later. AR (asset) increases and Revenue is earned, increasing RE. Cash does not change until collection."
+        },
+        {
+            text: "Paying accounts payable is an example of what type of transaction?",
+            options: [
+                { text: "Decrease in an asset and decrease in a liability", correct: true },
+                { text: "Decrease in an asset and an expense", correct: false },
+                { text: "Increase in a liability and decrease in equity", correct: false },
+                { text: "Decrease in an asset and decrease in equity", correct: false }
+            ],
+            explanation: "Paying AP reduces Cash (asset) and AP (liability). The expense was already recorded when the purchase was made on account. Payment is not an additional expense."
+        },
+        {
+            text: "Which transaction has NO effect on total assets?",
+            options: [
+                { text: "Collecting cash from a customer who owed money", correct: true },
+                { text: "Earning cash revenue from a new customer", correct: false },
+                { text: "Issuing stock for cash", correct: false },
+                { text: "Borrowing money from a bank", correct: false }
+            ],
+            explanation: "Collecting a receivable swaps one asset (AR) for another (Cash). Total assets stay the same. Earning revenue, issuing stock, and borrowing all increase total assets."
+        },
+        {
+            text: "Retained Earnings on the balance sheet is increased by:",
+            options: [
+                { text: "Net Income", correct: true },
+                { text: "Owner investments", correct: false },
+                { text: "Borrowing from a bank", correct: false },
+                { text: "Purchasing equipment", correct: false }
+            ],
+            explanation: "Retained Earnings increases with Net Income (Revenue minus Expenses) and decreases with dividends. Owner investments go to Contributed Capital."
+        },
+        {
+            text: "Why does the accounting equation still balance after paying a cash expense?",
+            options: [
+                { text: "Assets decrease (Cash) and Equity decreases (RE) by the same amount", correct: true },
+                { text: "Assets decrease and Liabilities increase", correct: false },
+                { text: "Both sides increase by the same amount", correct: false },
+                { text: "The Income Statement absorbs the change so the BS is unaffected", correct: false }
+            ],
+            explanation: "Paying an expense reduces Cash (left side) and reduces RE through the expense hitting Net Income (right side). Both sides decrease equally."
+        },
+        {
+            text: "A company purchases $5,000 of supplies on account. What happens to total assets?",
+            options: [
+                { text: "Total assets increase by $5,000", correct: true },
+                { text: "Total assets decrease by $5,000", correct: false },
+                { text: "Total assets are unchanged", correct: false },
+                { text: "Total assets increase by $10,000", correct: false }
+            ],
+            explanation: "Supplies (a noncash asset) increases by $5,000. Cash is not affected since the purchase is on account. So total assets rise by $5,000, balanced by AP rising $5,000."
+        },
+        {
+            text: "Which of the following is NOT a balance-sheet-only transaction?",
+            options: [
+                { text: "Paying monthly rent expense", correct: true },
+                { text: "Purchasing equipment for cash", correct: false },
+                { text: "Collecting an accounts receivable", correct: false },
+                { text: "Paying off a bank loan", correct: false }
+            ],
+            explanation: "Paying rent is an expense that affects both the Balance Sheet (Cash decreases, RE decreases) and the Income Statement (Expense increases, NI decreases)."
+        },
+        {
+            text: "If a company has Revenue of $40,000 and Expenses of $25,000, what is the effect on Retained Earnings?",
+            options: [
+                { text: "RE increases by $15,000", correct: true },
+                { text: "RE increases by $40,000", correct: false },
+                { text: "RE decreases by $25,000", correct: false },
+                { text: "RE increases by $65,000", correct: false }
+            ],
+            explanation: "Net Income = $40,000 - $25,000 = $15,000. Retained Earnings increases by the Net Income amount ($15,000), assuming no dividends."
+        }
+    ];
+
+    const q = questions[Math.floor(Math.random() * questions.length)];
+    const options = shuffle(q.options);
+
+    const area = document.getElementById('question-area');
+    area.innerHTML = `
+        <p class="text-xs text-rose-400 font-semibold mb-2 uppercase tracking-wide">Conceptual Question</p>
+        <p class="text-white text-lg font-medium mb-6">${q.text}</p>
+        <div class="space-y-3">
+            ${options.map((o, i) => `
+                <button class="answer-btn w-full text-left px-4 py-3 rounded-lg border border-slate-600 hover:border-sky-500 hover:bg-sky-900/20 transition text-sm text-slate-200"
+                    onclick="showFeedback(${o.correct}, '${q.explanation.replace(/'/g, "\\'")}'); this.classList.add('${o.correct ? 'border-emerald-500' : 'border-rose-500'}', '${o.correct ? 'bg-emerald-900/30' : 'bg-rose-900/30'}')">
+                    <span class="text-slate-500 font-bold mr-2">${String.fromCharCode(65 + i)}.</span> ${o.text}
+                </button>`).join('')}
+        </div>
+        <div id="feedback-area"></div>`;
+}
+
+// ==================== INIT ====================
+buildExamples();
+</script>
+</body>
+</html>

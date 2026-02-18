@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Accounting Methods | BUSI 305 Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(244,63,94,0.15); }
+        .tab-btn.active { border-color: #f43f5e; color: #f43f5e; background: rgba(244,63,94,0.1); }
+        .card { transition: transform 0.15s ease; }
+        .card:hover { transform: translateY(-1px); }
+        .warehouse-layer { transition: all 0.3s ease; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+    <script>
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+    </script>
+
+    <!-- Header -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-rose-400 transition-colors mb-6 group">
+            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Home
+        </a>
+
+        <div class="flex items-center gap-4 mb-8">
+            <div class="w-12 h-12 bg-rose-500/20 rounded-xl flex items-center justify-center">
+                <svg class="w-7 h-7 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold">Inventory Accounting Methods</h1>
+                <p class="text-slate-400">Chapter 7 &mdash; FIFO, LIFO &amp; Weighted Average</p>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(0)">Inventory Basics</button>
+            <button class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(1)">Side-by-Side Comparison</button>
+            <button class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(2)">Interactive Calculator</button>
+            <button class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(3)">Financial Statement Impact</button>
+            <button class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(4)">Practice Questions</button>
+        </div>
+
+        <!-- ==================== TAB 0: INVENTORY BASICS ==================== -->
+        <div id="tab-0" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- What is Inventory -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-rose-400 mb-4">What Is Inventory?</h2>
+                    <p class="text-slate-300 mb-4">Inventory consists of goods held for sale in the normal course of business operations. For a merchandiser, this includes finished goods purchased from suppliers. For a manufacturer, it includes raw materials, work-in-process, and finished goods.</p>
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-slate-400 mb-2 font-semibold uppercase tracking-wider">Why It Matters</p>
+                        <p class="text-slate-300">Inventory is typically one of the <span class="text-rose-400 font-semibold">largest assets</span> on a company's balance sheet, and Cost of Goods Sold is usually the <span class="text-rose-400 font-semibold">largest expense</span> on the income statement. How you account for inventory directly affects both.</p>
+                    </div>
+                </div>
+
+                <!-- The Inventory Equation -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-emerald-400 mb-4">The Inventory Equation</h2>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                        <p class="text-lg font-mono">
+                            <span class="text-sky-400">Beginning Inventory</span> + <span class="text-amber-400">Purchases</span> = <span class="text-rose-400">COGS</span> + <span class="text-emerald-400">Ending Inventory</span>
+                        </p>
+                    </div>
+                    <p class="text-slate-300 mb-3">Rearranged to solve for COGS:</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                        <p class="text-lg font-mono">
+                            <span class="text-rose-400">COGS</span> = <span class="text-sky-400">Beg. Inv.</span> + <span class="text-amber-400">Purchases</span> &minus; <span class="text-emerald-400">End. Inv.</span>
+                        </p>
+                    </div>
+                    <p class="text-slate-300 text-sm">The total cost of goods available for sale is fixed. The inventory method determines how that total is <span class="text-amber-400 font-semibold">allocated</span> between COGS (income statement) and Ending Inventory (balance sheet).</p>
+                </div>
+
+                <!-- Why Method Matters -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-amber-400 mb-4">Why Does the Inventory Method Matter?</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-rose-500/30">
+                            <p class="font-semibold text-rose-400 mb-2">Reported Profits</p>
+                            <p class="text-slate-300 text-sm">Higher COGS means lower gross profit. The method you choose directly changes the bottom line, even though the actual goods sold are identical.</p>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-emerald-500/30">
+                            <p class="font-semibold text-emerald-400 mb-2">Tax Payments</p>
+                            <p class="text-slate-300 text-sm">Lower reported profits mean lower taxable income and lower tax payments. This creates real cash flow differences between methods.</p>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-sky-500/30">
+                            <p class="font-semibold text-sky-400 mb-2">Balance Sheet Values</p>
+                            <p class="text-slate-300 text-sm">Ending inventory appears as a current asset. Different methods assign different values to the same physical inventory, affecting ratios and financial health metrics.</p>
+                        </div>
+                    </div>
+                    <div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4">
+                        <p class="text-rose-300 font-semibold mb-1">Key Insight for Finance Students</p>
+                        <p class="text-slate-300 text-sm">The choice of inventory method is an <span class="font-semibold text-white">accounting policy decision</span>, not an operational one. The same physical goods are bought and sold regardless of method. But the financial statements look different, which affects how investors, creditors, and tax authorities view the company.</p>
+                    </div>
+                </div>
+
+                <!-- The Three Methods -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-purple-400 mb-4">The Three Methods</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- FIFO -->
+                        <div class="bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-sky-500/20 rounded-lg flex items-center justify-center">
+                                    <span class="text-sky-400 font-bold text-sm">FIFO</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-sky-400">First-In, First-Out</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-300 text-sm mb-3">The oldest inventory costs are assigned to COGS first. Ending inventory reflects the most recent purchase prices.</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm">
+                                <p class="text-slate-400">Think of a grocery store shelf: the milk at the front (oldest) sells first, the newest milk sits in back.</p>
+                            </div>
+                        </div>
+                        <!-- LIFO -->
+                        <div class="bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-rose-500/20 rounded-lg flex items-center justify-center">
+                                    <span class="text-rose-400 font-bold text-sm">LIFO</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-rose-400">Last-In, First-Out</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-300 text-sm mb-3">The newest inventory costs are assigned to COGS first. Ending inventory reflects the oldest purchase prices.</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm">
+                                <p class="text-slate-400">Think of a coal pile: new coal is dumped on top, and you shovel from the top first.</p>
+                            </div>
+                        </div>
+                        <!-- Weighted Average -->
+                        <div class="bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center">
+                                    <span class="text-amber-400 font-bold text-xs">AVG</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-amber-400">Weighted Average</p>
+                                </div>
+                            </div>
+                            <p class="text-slate-300 text-sm mb-3">A weighted average cost per unit is calculated. Both COGS and ending inventory use the same average cost.</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm">
+                                <p class="text-slate-400">Think of mixing paint: once blended, every gallon has the same average cost.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warehouse Visual -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-sky-400 mb-4">Warehouse Analogy: Visualizing the Flow</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <p class="font-semibold text-sky-400 mb-3">FIFO: Sell from the Front</p>
+                            <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                                <div class="space-y-2">
+                                    <div class="warehouse-layer bg-rose-500/30 border border-rose-500/50 rounded p-2 text-sm">
+                                        <span class="text-rose-300">Oldest &rarr; SOLD FIRST</span>
+                                    </div>
+                                    <div class="warehouse-layer bg-rose-500/20 border border-rose-500/30 rounded p-2 text-sm">
+                                        <span class="text-rose-300">Middle &rarr; Sold next</span>
+                                    </div>
+                                    <div class="warehouse-layer bg-emerald-500/20 border border-emerald-500/40 rounded p-2 text-sm">
+                                        <span class="text-emerald-300">Newest &rarr; Stays in EI</span>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-3">EI = most recent costs</p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-semibold text-rose-400 mb-3">LIFO: Sell from the Top</p>
+                            <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                                <div class="space-y-2">
+                                    <div class="warehouse-layer bg-emerald-500/20 border border-emerald-500/40 rounded p-2 text-sm">
+                                        <span class="text-emerald-300">Oldest &rarr; Stays in EI</span>
+                                    </div>
+                                    <div class="warehouse-layer bg-rose-500/20 border border-rose-500/30 rounded p-2 text-sm">
+                                        <span class="text-rose-300">Middle &rarr; Sold next</span>
+                                    </div>
+                                    <div class="warehouse-layer bg-rose-500/30 border border-rose-500/50 rounded p-2 text-sm">
+                                        <span class="text-rose-300">Newest &rarr; SOLD FIRST</span>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-3">EI = oldest costs</p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-semibold text-amber-400 mb-3">Weighted Avg: Blend All</p>
+                            <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                                <div class="space-y-2">
+                                    <div class="warehouse-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
+                                        <span class="text-amber-300">All mixed &rarr; Same cost</span>
+                                    </div>
+                                    <div class="warehouse-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
+                                        <span class="text-amber-300">All mixed &rarr; Same cost</span>
+                                    </div>
+                                    <div class="warehouse-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
+                                        <span class="text-amber-300">All mixed &rarr; Same cost</span>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-3">EI &amp; COGS at avg cost</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Periodic vs Perpetual -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-emerald-400 mb-4">Periodic vs. Perpetual Inventory Systems</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-emerald-500/30">
+                            <p class="font-semibold text-emerald-400 mb-2">Periodic System</p>
+                            <p class="text-slate-300 text-sm mb-2">Inventory and COGS are calculated at the <span class="font-semibold text-white">end of the period</span>. A physical count determines ending inventory, and COGS is derived using the inventory equation.</p>
+                            <p class="text-xs text-slate-500">This is the system we focus on in this chapter. All examples here use the periodic approach.</p>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
+                            <p class="font-semibold text-sky-400 mb-2">Perpetual System</p>
+                            <p class="text-slate-300 text-sm mb-2">Inventory and COGS are updated <span class="font-semibold text-white">continuously</span> with each transaction. Modern point-of-sale and barcode systems make this common in practice.</p>
+                            <p class="text-xs text-slate-500">Under FIFO, periodic and perpetual give the same results. Under LIFO and Weighted Average, results may differ.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 1: SIDE-BY-SIDE COMPARISON ==================== -->
+        <div id="tab-1" class="tab-content hidden">
+            <!-- Example Data -->
+            <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-rose-400 mb-4">Example Data</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Transaction</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Units</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Cost/Unit</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-sky-400">Beginning Inventory</td>
+                                <td class="text-right py-2 px-3">100</td>
+                                <td class="text-right py-2 px-3">$10.00</td>
+                                <td class="text-right py-2 px-3 font-semibold">$1,000</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-amber-400">Purchase 1</td>
+                                <td class="text-right py-2 px-3">150</td>
+                                <td class="text-right py-2 px-3">$12.00</td>
+                                <td class="text-right py-2 px-3 font-semibold">$1,800</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-amber-400">Purchase 2</td>
+                                <td class="text-right py-2 px-3">200</td>
+                                <td class="text-right py-2 px-3">$14.00</td>
+                                <td class="text-right py-2 px-3 font-semibold">$2,800</td>
+                            </tr>
+                            <tr class="border-t-2 border-slate-500 font-bold">
+                                <td class="py-2 px-3 text-emerald-400">Goods Available for Sale</td>
+                                <td class="text-right py-2 px-3">450</td>
+                                <td class="text-right py-2 px-3"></td>
+                                <td class="text-right py-2 px-3">$5,600</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-rose-400">Units Sold</td>
+                                <td class="text-right py-2 px-3 text-rose-400 font-bold">300</td>
+                                <td class="text-right py-2 px-3 text-slate-500">?</td>
+                                <td class="text-right py-2 px-3 text-slate-500">depends on method</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 text-emerald-400">Units Remaining</td>
+                                <td class="text-right py-2 px-3 text-emerald-400 font-bold">150</td>
+                                <td class="text-right py-2 px-3 text-slate-500">?</td>
+                                <td class="text-right py-2 px-3 text-slate-500">depends on method</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-slate-400 text-sm mt-3">Note: Prices are <span class="text-rose-400 font-semibold">rising</span> ($10 &rarr; $12 &rarr; $14). This is important for understanding the differences between methods.</p>
+            </div>
+
+            <!-- Detailed Calculations -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <!-- FIFO Calc -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-sky-500/30">
+                    <h3 class="text-lg font-bold text-sky-400 mb-3">FIFO Calculation</h3>
+                    <p class="text-slate-400 text-xs mb-3 uppercase tracking-wider">Sell oldest units first</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3">
+                        <p class="font-semibold text-rose-400 mb-2">COGS (300 units):</p>
+                        <div class="text-sm text-slate-300 space-y-1 font-mono">
+                            <p>100 units &times; $10 = $1,000</p>
+                            <p>150 units &times; $12 = $1,800</p>
+                            <p>&nbsp;50 units &times; $14 = &nbsp;&nbsp;$700</p>
+                            <p class="border-t border-slate-600 pt-1 font-bold text-rose-400">COGS = $3,500</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4">
+                        <p class="font-semibold text-emerald-400 mb-2">Ending Inventory (150 units):</p>
+                        <div class="text-sm text-slate-300 space-y-1 font-mono">
+                            <p>150 units &times; $14 = $2,100</p>
+                            <p class="border-t border-slate-600 pt-1 font-bold text-emerald-400">EI = $2,100</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">Check: $3,500 + $2,100 = $5,600 &#10003;</p>
+                </div>
+
+                <!-- LIFO Calc -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-rose-500/30">
+                    <h3 class="text-lg font-bold text-rose-400 mb-3">LIFO Calculation</h3>
+                    <p class="text-slate-400 text-xs mb-3 uppercase tracking-wider">Sell newest units first</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3">
+                        <p class="font-semibold text-rose-400 mb-2">COGS (300 units):</p>
+                        <div class="text-sm text-slate-300 space-y-1 font-mono">
+                            <p>200 units &times; $14 = $2,800</p>
+                            <p>100 units &times; $12 = $1,200</p>
+                            <p class="border-t border-slate-600 pt-1 font-bold text-rose-400">COGS = $4,000</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4">
+                        <p class="font-semibold text-emerald-400 mb-2">Ending Inventory (150 units):</p>
+                        <div class="text-sm text-slate-300 space-y-1 font-mono">
+                            <p>100 units &times; $10 = $1,000</p>
+                            <p>&nbsp;50 units &times; $12 = &nbsp;&nbsp;$600</p>
+                            <p class="border-t border-slate-600 pt-1 font-bold text-emerald-400">EI = $1,600</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">Check: $4,000 + $1,600 = $5,600 &#10003;</p>
+                </div>
+
+                <!-- Weighted Average Calc -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-amber-500/30">
+                    <h3 class="text-lg font-bold text-amber-400 mb-3">Weighted Average</h3>
+                    <p class="text-slate-400 text-xs mb-3 uppercase tracking-wider">Compute average cost per unit</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3">
+                        <p class="font-semibold text-amber-400 mb-2">Average Cost/Unit:</p>
+                        <div class="text-sm text-slate-300 font-mono">
+                            <p>$5,600 &divide; 450 = $12.44</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3">
+                        <p class="font-semibold text-rose-400 mb-2">COGS (300 units):</p>
+                        <div class="text-sm text-slate-300 font-mono">
+                            <p>300 &times; $12.44 = $3,733</p>
+                            <p class="font-bold text-rose-400">COGS = $3,733</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4">
+                        <p class="font-semibold text-emerald-400 mb-2">Ending Inventory (150 units):</p>
+                        <div class="text-sm text-slate-300 font-mono">
+                            <p>150 &times; $12.44 = $1,867</p>
+                            <p class="font-bold text-emerald-400">EI = $1,867</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">Check: $3,733 + $1,867 = $5,600 &#10003;</p>
+                </div>
+            </div>
+
+            <!-- Income Statement & Balance Sheet Comparison -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-bold text-purple-400 mb-4">Income Statement Comparison</h3>
+                    <p class="text-slate-400 text-sm mb-3">Assume revenue = 300 units &times; $20 = $6,000</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="text-left py-2 px-2 text-slate-400"></th>
+                                    <th class="text-right py-2 px-2 text-sky-400">FIFO</th>
+                                    <th class="text-right py-2 px-2 text-rose-400">LIFO</th>
+                                    <th class="text-right py-2 px-2 text-amber-400">Wt. Avg</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="py-2 px-2">Revenue</td>
+                                    <td class="text-right py-2 px-2">$6,000</td>
+                                    <td class="text-right py-2 px-2">$6,000</td>
+                                    <td class="text-right py-2 px-2">$6,000</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="py-2 px-2">COGS</td>
+                                    <td class="text-right py-2 px-2">(3,500)</td>
+                                    <td class="text-right py-2 px-2">(4,000)</td>
+                                    <td class="text-right py-2 px-2">(3,733)</td>
+                                </tr>
+                                <tr class="border-t-2 border-slate-500 font-bold">
+                                    <td class="py-2 px-2">Gross Profit</td>
+                                    <td class="text-right py-2 px-2 text-sky-400">$2,500</td>
+                                    <td class="text-right py-2 px-2 text-rose-400">$2,000</td>
+                                    <td class="text-right py-2 px-2 text-amber-400">$2,267</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">FIFO shows the highest profit, LIFO the lowest &mdash; because prices are rising.</p>
+                </div>
+
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-bold text-purple-400 mb-4">Balance Sheet Comparison</h3>
+                    <p class="text-slate-400 text-sm mb-3">Inventory line on the balance sheet:</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="text-left py-2 px-2 text-slate-400"></th>
+                                    <th class="text-right py-2 px-2 text-sky-400">FIFO</th>
+                                    <th class="text-right py-2 px-2 text-rose-400">LIFO</th>
+                                    <th class="text-right py-2 px-2 text-amber-400">Wt. Avg</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="py-2 px-2">Ending Inventory</td>
+                                    <td class="text-right py-2 px-2 font-bold text-sky-400">$2,100</td>
+                                    <td class="text-right py-2 px-2 font-bold text-rose-400">$1,600</td>
+                                    <td class="text-right py-2 px-2 font-bold text-amber-400">$1,867</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-2 text-slate-500">LIFO Reserve</td>
+                                    <td class="text-right py-2 px-2 text-slate-500">&mdash;</td>
+                                    <td class="text-right py-2 px-2 text-slate-400">$500</td>
+                                    <td class="text-right py-2 px-2 text-slate-500">&mdash;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 mt-3 text-sm">
+                        <p class="text-slate-300"><span class="text-purple-400 font-semibold">LIFO Reserve</span> = FIFO Inventory &minus; LIFO Inventory = $2,100 &minus; $1,600 = <span class="font-bold text-white">$500</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bar Chart -->
+            <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h3 class="text-lg font-bold text-rose-400 mb-4">Visual Comparison</h3>
+                <div class="max-w-2xl mx-auto" style="height: 320px;">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Key Insight Boxes -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-rose-500/10 border border-rose-500/30 rounded-xl p-5">
+                    <p class="font-bold text-rose-400 mb-2">When Prices Are RISING</p>
+                    <p class="text-slate-300 text-sm">FIFO &rarr; <span class="text-sky-400">higher profit</span>, <span class="text-sky-400">higher inventory</span> on balance sheet<br>
+                    LIFO &rarr; <span class="text-rose-400">lower profit</span>, <span class="text-rose-400">lower inventory</span>, <span class="text-emerald-400">lower taxes</span></p>
+                </div>
+                <div class="bg-sky-500/10 border border-sky-500/30 rounded-xl p-5">
+                    <p class="font-bold text-sky-400 mb-2">When Prices Are FALLING</p>
+                    <p class="text-slate-300 text-sm">The effects reverse. FIFO would produce lower profits and lower inventory values, while LIFO would produce higher profits.</p>
+                </div>
+                <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-5">
+                    <p class="font-bold text-amber-400 mb-2">LIFO: US GAAP Only</p>
+                    <p class="text-slate-300 text-sm">LIFO is permitted under US GAAP but <span class="font-semibold text-white">prohibited under IFRS</span>. Companies reporting under IFRS must use FIFO or Weighted Average.</p>
+                </div>
+                <div class="bg-purple-500/10 border border-purple-500/30 rounded-xl p-5">
+                    <p class="font-bold text-purple-400 mb-2">LIFO Reserve</p>
+                    <p class="text-slate-300 text-sm font-mono">LIFO Reserve = FIFO Inventory &minus; LIFO Inventory</p>
+                    <p class="text-slate-400 text-xs mt-1">The LIFO reserve allows analysts to convert LIFO financial statements to FIFO for comparison purposes.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 2: INTERACTIVE CALCULATOR ==================== -->
+        <div id="tab-2" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Input Panel -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-rose-400 mb-4">Enter Inventory Data</h2>
+
+                    <div class="space-y-4">
+                        <!-- Beginning Inventory -->
+                        <div>
+                            <label class="text-sm text-slate-400 font-semibold mb-1 block">Beginning Inventory</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-xs text-slate-500">Units</label>
+                                    <input type="number" id="calc-bi-units" value="100" min="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-500">Cost/Unit ($)</label>
+                                    <input type="number" id="calc-bi-cost" value="10" min="0" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Purchase 1 -->
+                        <div>
+                            <label class="text-sm text-slate-400 font-semibold mb-1 block">Purchase 1</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-xs text-slate-500">Units</label>
+                                    <input type="number" id="calc-p1-units" value="150" min="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-500">Cost/Unit ($)</label>
+                                    <input type="number" id="calc-p1-cost" value="12" min="0" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Purchase 2 -->
+                        <div>
+                            <label class="text-sm text-slate-400 font-semibold mb-1 block">Purchase 2</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-xs text-slate-500">Units</label>
+                                    <input type="number" id="calc-p2-units" value="200" min="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-500">Cost/Unit ($)</label>
+                                    <input type="number" id="calc-p2-cost" value="14" min="0" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Purchase 3 -->
+                        <div>
+                            <label class="text-sm text-slate-400 font-semibold mb-1 block">Purchase 3 <span class="text-slate-600">(optional)</span></label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-xs text-slate-500">Units</label>
+                                    <input type="number" id="calc-p3-units" value="0" min="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-500">Cost/Unit ($)</label>
+                                    <input type="number" id="calc-p3-cost" value="0" min="0" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Purchase 4 -->
+                        <div>
+                            <label class="text-sm text-slate-400 font-semibold mb-1 block">Purchase 4 <span class="text-slate-600">(optional)</span></label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-xs text-slate-500">Units</label>
+                                    <input type="number" id="calc-p4-units" value="0" min="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-500">Cost/Unit ($)</label>
+                                    <input type="number" id="calc-p4-cost" value="0" min="0" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-slate-700">
+
+                        <!-- Units Sold -->
+                        <div>
+                            <label class="text-sm text-rose-400 font-semibold mb-1 block">Units Sold</label>
+                            <input type="number" id="calc-sold" value="300" min="0" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                        </div>
+
+                        <!-- Revenue -->
+                        <div>
+                            <label class="text-sm text-emerald-400 font-semibold mb-1 block">Revenue ($) <span class="text-slate-600 text-xs">(for income statement)</span></label>
+                            <input type="number" id="calc-revenue" value="6000" min="0" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                        </div>
+
+                        <button onclick="runCalculator()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                            Calculate All Methods
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div id="calc-error" class="hidden bg-rose-500/20 border border-rose-500/40 rounded-xl p-4 text-rose-300"></div>
+
+                    <!-- COGS & EI Results -->
+                    <div id="calc-results" class="hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                            <div class="card bg-slate-800/50 rounded-xl p-5 border border-sky-500/30">
+                                <h3 class="font-bold text-sky-400 mb-3">FIFO</h3>
+                                <div id="fifo-detail" class="text-sm text-slate-300 space-y-1"></div>
+                            </div>
+                            <div class="card bg-slate-800/50 rounded-xl p-5 border border-rose-500/30">
+                                <h3 class="font-bold text-rose-400 mb-3">LIFO</h3>
+                                <div id="lifo-detail" class="text-sm text-slate-300 space-y-1"></div>
+                            </div>
+                            <div class="card bg-slate-800/50 rounded-xl p-5 border border-amber-500/30">
+                                <h3 class="font-bold text-amber-400 mb-3">Weighted Average</h3>
+                                <div id="avg-detail" class="text-sm text-slate-300 space-y-1"></div>
+                            </div>
+                        </div>
+
+                        <!-- Calculator Chart -->
+                        <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                            <h3 class="font-bold text-rose-400 mb-3">Visual Comparison</h3>
+                            <div style="height: 280px;">
+                                <canvas id="calcChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Income Statement & Tax Comparison -->
+                        <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                            <h3 class="font-bold text-purple-400 mb-4">Income Statement &amp; Tax Comparison</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm" id="calc-income-table">
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Highlights -->
+                        <div id="calc-highlights" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 3: FINANCIAL STATEMENT IMPACT ==================== -->
+        <div id="tab-3" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Balance Sheet Impact -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-sky-400 mb-4">Balance Sheet Impact</h2>
+                    <p class="text-slate-300 mb-3">Inventory appears as a <span class="text-sky-400 font-semibold">current asset</span>. The method used determines the dollar value assigned to the inventory on hand.</p>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <span class="text-sky-400 mt-1">&#9679;</span>
+                            <span><span class="font-semibold text-sky-400">FIFO:</span> Ending inventory reflects the most recent (higher) costs, so inventory value on the balance sheet is <span class="text-emerald-400">higher</span>.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-rose-400 mt-1">&#9679;</span>
+                            <span><span class="font-semibold text-rose-400">LIFO:</span> Ending inventory reflects the oldest (lower) costs, so inventory value is <span class="text-rose-400">lower</span>. This can significantly understate the true economic value of inventory.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-1">&#9679;</span>
+                            <span><span class="font-semibold text-amber-400">Weighted Average:</span> Falls between FIFO and LIFO.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Income Statement Impact -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-emerald-400 mb-4">Income Statement Impact</h2>
+                    <p class="text-slate-300 mb-3">COGS is the <span class="text-emerald-400 font-semibold">largest expense</span> for most companies. Higher COGS means lower gross profit and net income.</p>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <span class="text-sky-400 mt-1">&#9679;</span>
+                            <span><span class="font-semibold text-sky-400">FIFO:</span> Assigns older, lower costs to COGS, resulting in <span class="text-emerald-400">higher gross profit</span> when prices rise.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-rose-400 mt-1">&#9679;</span>
+                            <span><span class="font-semibold text-rose-400">LIFO:</span> Assigns newer, higher costs to COGS, resulting in <span class="text-rose-400">lower gross profit</span> when prices rise &mdash; but better matches current costs with current revenues.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-1">&#9679;</span>
+                            <span><span class="font-semibold text-amber-400">Weighted Average:</span> Smooths out price fluctuations.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Cash Flow Impact -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-rose-400 mb-4">Cash Flow Impact</h2>
+                    <p class="text-slate-300 mb-3">The inventory method does not directly affect operating cash flows from sales/purchases, but it affects <span class="text-rose-400 font-semibold">tax payments</span>, which are real cash outflows.</p>
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-rose-500/30">
+                        <p class="font-semibold text-rose-400 mb-2">LIFO Tax Advantage (Rising Prices)</p>
+                        <p class="text-slate-300 text-sm">LIFO produces higher COGS &rarr; lower taxable income &rarr; lower tax payments &rarr; <span class="text-emerald-400 font-bold">higher after-tax cash flow</span>. This is a real economic benefit, not just an accounting difference.</p>
+                    </div>
+                    <p class="text-sm text-slate-400 mt-3">This tax advantage is one of the main reasons US companies choose LIFO despite showing lower reported profits.</p>
+                </div>
+
+                <!-- Ratio Impact -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-purple-400 mb-4">Impact on Financial Ratios</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="text-left py-2 text-slate-400">Ratio</th>
+                                    <th class="text-center py-2 text-sky-400">FIFO</th>
+                                    <th class="text-center py-2 text-rose-400">LIFO</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="py-2">Gross Margin</td>
+                                    <td class="text-center py-2 text-sky-300">Higher</td>
+                                    <td class="text-center py-2 text-rose-300">Lower</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="py-2">Inventory Turnover</td>
+                                    <td class="text-center py-2 text-sky-300">Lower</td>
+                                    <td class="text-center py-2 text-rose-300">Higher</td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="py-2">Current Ratio</td>
+                                    <td class="text-center py-2 text-sky-300">Higher</td>
+                                    <td class="text-center py-2 text-rose-300">Lower</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">Debt-to-Assets</td>
+                                    <td class="text-center py-2 text-sky-300">Lower</td>
+                                    <td class="text-center py-2 text-rose-300">Higher</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">All comparisons assume rising prices. Inventory turnover = COGS / Avg. Inventory; higher COGS and lower inventory both push the ratio up under LIFO.</p>
+                </div>
+
+                <!-- LIFO Reserve -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-amber-400 mb-4">LIFO Reserve</h2>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center mb-4">
+                        <p class="text-lg font-mono">
+                            <span class="text-amber-400">LIFO Reserve</span> = <span class="text-sky-400">FIFO Inventory</span> &minus; <span class="text-rose-400">LIFO Inventory</span>
+                        </p>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-3">Companies using LIFO must disclose the LIFO reserve in the notes to the financial statements. This allows analysts to:</p>
+                    <ul class="text-sm text-slate-300 space-y-2">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400">1.</span>
+                            <span>Convert LIFO inventory to FIFO for comparability: <span class="font-mono text-xs">FIFO Inv. = LIFO Inv. + LIFO Reserve</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400">2.</span>
+                            <span>Estimate cumulative tax savings: <span class="font-mono text-xs">Tax Savings = LIFO Reserve &times; Tax Rate</span></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400">3.</span>
+                            <span>Adjust COGS: <span class="font-mono text-xs">FIFO COGS = LIFO COGS &minus; &Delta;LIFO Reserve</span></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- LIFO Conformity Rule -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-rose-400 mb-4">LIFO Conformity Rule</h2>
+                    <p class="text-slate-300 text-sm mb-3">Under US tax law, if a company uses LIFO for <span class="text-rose-400 font-semibold">tax reporting</span>, it must also use LIFO for <span class="text-rose-400 font-semibold">financial reporting</span>.</p>
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600 mb-3">
+                        <p class="text-sm text-slate-300">This is unique &mdash; most accounting methods don't have this restriction. A company can use straight-line depreciation for financial reporting and accelerated for taxes, for example. But not with LIFO.</p>
+                    </div>
+                    <p class="text-slate-400 text-xs">The consequence: companies wanting the LIFO tax benefit must accept showing lower profits to shareholders and in financial reports.</p>
+                </div>
+
+                <!-- LCNRV -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-emerald-400 mb-4">Lower of Cost or Net Realizable Value (LCNRV)</h2>
+                    <p class="text-slate-300 text-sm mb-3">Regardless of method, inventory must be reported at the <span class="text-emerald-400 font-semibold">lower of its cost or net realizable value</span> (NRV).</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center mb-3">
+                        <p class="font-mono text-sm">NRV = Estimated Selling Price &minus; Costs to Complete &amp; Sell</p>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-3">If NRV drops below the carrying cost, the inventory must be <span class="text-rose-400 font-semibold">written down</span>. This write-down increases COGS and reduces the inventory asset on the balance sheet.</p>
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
+                        <p class="text-amber-300 text-sm">This is an application of conservatism: recognize losses immediately, but do not recognize gains until realized.</p>
+                    </div>
+                </div>
+
+                <!-- Inflation Chart -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-purple-400 mb-4">Inflation Environment: FIFO vs LIFO</h2>
+                    <div style="height: 280px;">
+                        <canvas id="inflationChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">In an inflationary environment, FIFO overstates economic profits by matching old, low costs against current revenues. LIFO provides a better cost-revenue match and real tax savings.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 4: PRACTICE QUESTIONS ==================== -->
+        <div id="tab-4" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Score Panel -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:sticky lg:top-6 self-start">
+                    <h2 class="text-xl font-bold text-rose-400 mb-4">Your Score</h2>
+                    <div class="text-center mb-4">
+                        <p class="text-5xl font-bold text-white" id="score-display">0/0</p>
+                        <p class="text-slate-400 text-sm mt-1" id="score-pct"></p>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-3 mb-6">
+                        <div class="bg-rose-500 h-3 rounded-full transition-all duration-500" id="score-bar" style="width: 0%"></div>
+                    </div>
+                    <button onclick="generateQuestion()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-3 rounded-lg transition-colors mb-3">
+                        Next Question
+                    </button>
+                    <button onclick="resetScore()" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">
+                        Reset Score
+                    </button>
+                </div>
+
+                <!-- Question Panel -->
+                <div class="lg:col-span-2">
+                    <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div id="question-area">
+                            <p class="text-slate-400 text-center py-8">Click "Next Question" to begin practicing.</p>
+                        </div>
+                        <div id="feedback-area" class="hidden mt-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+    // ===== TAB SWITCHING =====
+    let currentTab = 0;
+    const chartsInitialized = { 1: false, 3: false };
+
+    function switchTab(idx) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('tab-' + idx).classList.remove('hidden');
+        document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+        currentTab = idx;
+
+        if (idx === 1 && !chartsInitialized[1]) {
+            initComparisonChart();
+            chartsInitialized[1] = true;
+        }
+        if (idx === 3 && !chartsInitialized[3]) {
+            initInflationChart();
+            chartsInitialized[3] = true;
+        }
+    }
+
+    // ===== COMPARISON CHART (Tab 1) =====
+    function initComparisonChart() {
+        const ctx = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['FIFO', 'LIFO', 'Weighted Average'],
+                datasets: [
+                    {
+                        label: 'COGS',
+                        data: [3500, 4000, 3733],
+                        backgroundColor: ['rgba(56,189,248,0.6)', 'rgba(244,63,94,0.6)', 'rgba(245,158,11,0.6)'],
+                        borderColor: ['#38bdf8', '#f43f5e', '#f59e0b'],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Ending Inventory',
+                        data: [2100, 1600, 1867],
+                        backgroundColor: ['rgba(56,189,248,0.25)', 'rgba(244,63,94,0.25)', 'rgba(245,158,11,0.25)'],
+                        borderColor: ['#38bdf8', '#f43f5e', '#f59e0b'],
+                        borderWidth: 1,
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(v) { return '$' + v.toLocaleString(); }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // ===== INFLATION CHART (Tab 3) =====
+    function initInflationChart() {
+        const ctx = document.getElementById('inflationChart').getContext('2d');
+        const years = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'];
+        const fifoProfit = [5000, 5500, 6100, 6800, 7600];
+        const lifoProfit = [5000, 5100, 5200, 5300, 5400];
+        const taxSavings = [0, 100, 325, 700, 1250];
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'FIFO Gross Profit',
+                        data: fifoProfit,
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56,189,248,0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'LIFO Gross Profit',
+                        data: lifoProfit,
+                        borderColor: '#f43f5e',
+                        backgroundColor: 'rgba(244,63,94,0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Cumulative LIFO Tax Savings',
+                        data: taxSavings,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16,185,129,0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        borderDash: [5, 5]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(v) { return '$' + v.toLocaleString(); }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // ===== INTERACTIVE CALCULATOR (Tab 2) =====
+    let calcChart = null;
+
+    function getCalcInputs() {
+        const layers = [];
+        const biUnits = parseInt(document.getElementById('calc-bi-units').value) || 0;
+        const biCost = parseFloat(document.getElementById('calc-bi-cost').value) || 0;
+        if (biUnits > 0) layers.push({ units: biUnits, cost: biCost, label: 'Beg. Inv.' });
+
+        for (let i = 1; i <= 4; i++) {
+            const u = parseInt(document.getElementById('calc-p' + i + '-units').value) || 0;
+            const c = parseFloat(document.getElementById('calc-p' + i + '-cost').value) || 0;
+            if (u > 0 && c > 0) layers.push({ units: u, cost: c, label: 'Purchase ' + i });
+        }
+
+        const sold = parseInt(document.getElementById('calc-sold').value) || 0;
+        const revenue = parseFloat(document.getElementById('calc-revenue').value) || 0;
+        return { layers, sold, revenue };
+    }
+
+    function fmt(n) { return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
+    function fmt2(n) { return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+    function calcFIFO(layers, sold) {
+        let remaining = sold;
+        let cogs = 0;
+        const cogsDetail = [];
+        const eiDetail = [];
+
+        for (let i = 0; i < layers.length; i++) {
+            const l = layers[i];
+            if (remaining <= 0) {
+                eiDetail.push({ units: l.units, cost: l.cost, label: l.label });
+            } else if (remaining >= l.units) {
+                cogsDetail.push({ units: l.units, cost: l.cost, label: l.label });
+                cogs += l.units * l.cost;
+                remaining -= l.units;
+            } else {
+                cogsDetail.push({ units: remaining, cost: l.cost, label: l.label });
+                cogs += remaining * l.cost;
+                eiDetail.push({ units: l.units - remaining, cost: l.cost, label: l.label });
+                remaining = 0;
+            }
+        }
+        const ei = eiDetail.reduce((sum, d) => sum + d.units * d.cost, 0);
+        return { cogs, ei, cogsDetail, eiDetail };
+    }
+
+    function calcLIFO(layers, sold) {
+        let remaining = sold;
+        let cogs = 0;
+        const cogsDetail = [];
+        const eiDetail = [];
+
+        for (let i = layers.length - 1; i >= 0; i--) {
+            const l = layers[i];
+            if (remaining <= 0) {
+                eiDetail.unshift({ units: l.units, cost: l.cost, label: l.label });
+            } else if (remaining >= l.units) {
+                cogsDetail.unshift({ units: l.units, cost: l.cost, label: l.label });
+                cogs += l.units * l.cost;
+                remaining -= l.units;
+            } else {
+                cogsDetail.unshift({ units: remaining, cost: l.cost, label: l.label });
+                cogs += remaining * l.cost;
+                eiDetail.unshift({ units: l.units - remaining, cost: l.cost, label: l.label });
+                remaining = 0;
+            }
+        }
+        const ei = eiDetail.reduce((sum, d) => sum + d.units * d.cost, 0);
+        return { cogs, ei, cogsDetail, eiDetail };
+    }
+
+    function calcWA(layers, sold) {
+        const totalUnits = layers.reduce((s, l) => s + l.units, 0);
+        const totalCost = layers.reduce((s, l) => s + l.units * l.cost, 0);
+        const avgCost = totalCost / totalUnits;
+        const remaining = totalUnits - sold;
+        const cogs = Math.round(sold * avgCost);
+        const ei = Math.round(remaining * avgCost);
+        return { cogs, ei, avgCost, totalUnits, totalCost };
+    }
+
+    function renderDetail(el, result, type) {
+        let html = '';
+        if (type === 'fifo' || type === 'lifo') {
+            html += '<p class="font-semibold text-rose-400 mb-1">COGS:</p>';
+            result.cogsDetail.forEach(d => {
+                html += '<p class="font-mono text-xs">' + d.units + ' &times; ' + fmt2(d.cost) + ' = ' + fmt(d.units * d.cost) + '</p>';
+            });
+            html += '<p class="font-bold mt-1 border-t border-slate-600 pt-1">COGS = ' + fmt(result.cogs) + '</p>';
+            html += '<p class="font-semibold text-emerald-400 mb-1 mt-3">Ending Inventory:</p>';
+            result.eiDetail.forEach(d => {
+                html += '<p class="font-mono text-xs">' + d.units + ' &times; ' + fmt2(d.cost) + ' = ' + fmt(d.units * d.cost) + '</p>';
+            });
+            html += '<p class="font-bold mt-1 border-t border-slate-600 pt-1">EI = ' + fmt(result.ei) + '</p>';
+        } else {
+            html += '<p class="font-semibold text-amber-400 mb-1">Average Cost:</p>';
+            html += '<p class="font-mono text-xs">' + fmt(result.totalCost) + ' &divide; ' + result.totalUnits + ' = ' + fmt2(result.avgCost) + '</p>';
+            html += '<p class="font-semibold text-rose-400 mb-1 mt-3">COGS:</p>';
+            const soldUnits = result.totalUnits - Math.round(result.ei / result.avgCost);
+            html += '<p class="font-mono text-xs">' + (result.totalUnits - Math.round(result.ei / result.avgCost)) + ' &times; ' + fmt2(result.avgCost) + '</p>';
+            html += '<p class="font-bold mt-1">COGS = ' + fmt(result.cogs) + '</p>';
+            html += '<p class="font-semibold text-emerald-400 mb-1 mt-3">Ending Inventory:</p>';
+            html += '<p class="font-mono text-xs">' + Math.round(result.ei / result.avgCost) + ' &times; ' + fmt2(result.avgCost) + '</p>';
+            html += '<p class="font-bold mt-1">EI = ' + fmt(result.ei) + '</p>';
+        }
+        el.innerHTML = html;
+    }
+
+    function runCalculator() {
+        const { layers, sold, revenue } = getCalcInputs();
+        const errEl = document.getElementById('calc-error');
+        const resEl = document.getElementById('calc-results');
+
+        if (layers.length === 0) {
+            errEl.textContent = 'Please enter at least a beginning inventory or one purchase.';
+            errEl.classList.remove('hidden');
+            resEl.classList.add('hidden');
+            return;
+        }
+
+        const totalUnits = layers.reduce((s, l) => s + l.units, 0);
+        if (sold > totalUnits) {
+            errEl.textContent = 'Units sold (' + sold + ') cannot exceed total available units (' + totalUnits + ').';
+            errEl.classList.remove('hidden');
+            resEl.classList.add('hidden');
+            return;
+        }
+        if (sold <= 0) {
+            errEl.textContent = 'Please enter a positive number of units sold.';
+            errEl.classList.remove('hidden');
+            resEl.classList.add('hidden');
+            return;
+        }
+
+        errEl.classList.add('hidden');
+        resEl.classList.remove('hidden');
+
+        const fifo = calcFIFO(layers, sold);
+        const lifo = calcLIFO(layers, sold);
+        const wa = calcWA(layers, sold);
+
+        renderDetail(document.getElementById('fifo-detail'), fifo, 'fifo');
+        renderDetail(document.getElementById('lifo-detail'), lifo, 'lifo');
+        renderDetail(document.getElementById('avg-detail'), wa, 'avg');
+
+        // Chart
+        if (calcChart) calcChart.destroy();
+        const ctx = document.getElementById('calcChart').getContext('2d');
+        calcChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['FIFO', 'LIFO', 'Weighted Average'],
+                datasets: [
+                    {
+                        label: 'COGS',
+                        data: [fifo.cogs, lifo.cogs, wa.cogs],
+                        backgroundColor: ['rgba(56,189,248,0.6)', 'rgba(244,63,94,0.6)', 'rgba(245,158,11,0.6)'],
+                        borderColor: ['#38bdf8', '#f43f5e', '#f59e0b'],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Ending Inventory',
+                        data: [fifo.ei, lifo.ei, wa.ei],
+                        backgroundColor: ['rgba(56,189,248,0.25)', 'rgba(244,63,94,0.25)', 'rgba(245,158,11,0.25)'],
+                        borderColor: ['#38bdf8', '#f43f5e', '#f59e0b'],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(c) { return c.dataset.label + ': ' + fmt(c.parsed.y); }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { callback: function(v) { return fmt(v); } }
+                    }
+                }
+            }
+        });
+
+        // Income Statement Table
+        const taxRate = 0.25;
+        const fifoGP = revenue - fifo.cogs;
+        const lifoGP = revenue - lifo.cogs;
+        const waGP = revenue - wa.cogs;
+        const fifoTax = Math.round(Math.max(0, fifoGP) * taxRate);
+        const lifoTax = Math.round(Math.max(0, lifoGP) * taxRate);
+        const waTax = Math.round(Math.max(0, waGP) * taxRate);
+        const fifoNI = fifoGP - fifoTax;
+        const lifoNI = lifoGP - lifoTax;
+        const waNI = waGP - waTax;
+
+        const tbl = document.getElementById('calc-income-table');
+        tbl.innerHTML = `
+            <thead>
+                <tr class="border-b border-slate-600">
+                    <th class="text-left py-2 px-2 text-slate-400"></th>
+                    <th class="text-right py-2 px-2 text-sky-400">FIFO</th>
+                    <th class="text-right py-2 px-2 text-rose-400">LIFO</th>
+                    <th class="text-right py-2 px-2 text-amber-400">Wt. Avg</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b border-slate-700/50">
+                    <td class="py-2 px-2">Revenue</td>
+                    <td class="text-right py-2 px-2">${fmt(revenue)}</td>
+                    <td class="text-right py-2 px-2">${fmt(revenue)}</td>
+                    <td class="text-right py-2 px-2">${fmt(revenue)}</td>
+                </tr>
+                <tr class="border-b border-slate-700/50">
+                    <td class="py-2 px-2">COGS</td>
+                    <td class="text-right py-2 px-2">(${fmt(fifo.cogs)})</td>
+                    <td class="text-right py-2 px-2">(${fmt(lifo.cogs)})</td>
+                    <td class="text-right py-2 px-2">(${fmt(wa.cogs)})</td>
+                </tr>
+                <tr class="border-b border-slate-700/50 font-semibold">
+                    <td class="py-2 px-2">Gross Profit</td>
+                    <td class="text-right py-2 px-2 text-sky-400">${fmt(fifoGP)}</td>
+                    <td class="text-right py-2 px-2 text-rose-400">${fmt(lifoGP)}</td>
+                    <td class="text-right py-2 px-2 text-amber-400">${fmt(waGP)}</td>
+                </tr>
+                <tr class="border-b border-slate-700/50">
+                    <td class="py-2 px-2">Taxes (25%)</td>
+                    <td class="text-right py-2 px-2">(${fmt(fifoTax)})</td>
+                    <td class="text-right py-2 px-2">(${fmt(lifoTax)})</td>
+                    <td class="text-right py-2 px-2">(${fmt(waTax)})</td>
+                </tr>
+                <tr class="border-t-2 border-slate-500 font-bold">
+                    <td class="py-2 px-2">Net Income</td>
+                    <td class="text-right py-2 px-2 text-sky-400">${fmt(fifoNI)}</td>
+                    <td class="text-right py-2 px-2 text-rose-400">${fmt(lifoNI)}</td>
+                    <td class="text-right py-2 px-2 text-amber-400">${fmt(waNI)}</td>
+                </tr>
+                <tr>
+                    <td class="py-2 px-2 text-emerald-400">Ending Inventory</td>
+                    <td class="text-right py-2 px-2">${fmt(fifo.ei)}</td>
+                    <td class="text-right py-2 px-2">${fmt(lifo.ei)}</td>
+                    <td class="text-right py-2 px-2">${fmt(wa.ei)}</td>
+                </tr>
+            </tbody>
+        `;
+
+        // Highlights
+        const methods = [
+            { name: 'FIFO', gp: fifoGP, tax: fifoTax, ni: fifoNI, ei: fifo.ei, cogs: fifo.cogs },
+            { name: 'LIFO', gp: lifoGP, tax: lifoTax, ni: lifoNI, ei: lifo.ei, cogs: lifo.cogs },
+            { name: 'Wt. Avg', gp: waGP, tax: waTax, ni: waNI, ei: wa.ei, cogs: wa.cogs }
+        ];
+        const highProfit = methods.reduce((a, b) => a.ni > b.ni ? a : b);
+        const lowProfit = methods.reduce((a, b) => a.ni < b.ni ? a : b);
+        const highTax = methods.reduce((a, b) => a.tax > b.tax ? a : b);
+        const lowTax = methods.reduce((a, b) => a.tax < b.tax ? a : b);
+        const lifoReserve = fifo.ei - lifo.ei;
+
+        const hlEl = document.getElementById('calc-highlights');
+        hlEl.innerHTML = `
+            <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4">
+                <p class="font-bold text-emerald-400 mb-1">Highest Net Income</p>
+                <p class="text-slate-300 text-sm">${highProfit.name}: ${fmt(highProfit.ni)}</p>
+            </div>
+            <div class="bg-rose-500/10 border border-rose-500/30 rounded-xl p-4">
+                <p class="font-bold text-rose-400 mb-1">Lowest Net Income</p>
+                <p class="text-slate-300 text-sm">${lowProfit.name}: ${fmt(lowProfit.ni)}</p>
+            </div>
+            <div class="bg-sky-500/10 border border-sky-500/30 rounded-xl p-4">
+                <p class="font-bold text-sky-400 mb-1">Lowest Tax Bill</p>
+                <p class="text-slate-300 text-sm">${lowTax.name}: ${fmt(lowTax.tax)} (saves ${fmt(highTax.tax - lowTax.tax)} vs ${highTax.name})</p>
+            </div>
+            <div class="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4">
+                <p class="font-bold text-purple-400 mb-1">LIFO Reserve</p>
+                <p class="text-slate-300 text-sm">FIFO EI (${fmt(fifo.ei)}) &minus; LIFO EI (${fmt(lifo.ei)}) = ${fmt(lifoReserve)}</p>
+            </div>
+        `;
+    }
+
+    // ===== PRACTICE QUESTIONS (Tab 4) =====
+    let score = { correct: 0, total: 0 };
+    let currentQuestion = null;
+
+    function resetScore() {
+        score = { correct: 0, total: 0 };
+        updateScoreDisplay();
+        document.getElementById('question-area').innerHTML = '<p class="text-slate-400 text-center py-8">Click "Next Question" to begin practicing.</p>';
+        document.getElementById('feedback-area').classList.add('hidden');
+    }
+
+    function updateScoreDisplay() {
+        document.getElementById('score-display').textContent = score.correct + '/' + score.total;
+        const pct = score.total > 0 ? Math.round(score.correct / score.total * 100) : 0;
+        document.getElementById('score-pct').textContent = score.total > 0 ? pct + '% correct' : '';
+        document.getElementById('score-bar').style.width = pct + '%';
+    }
+
+    function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function randChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function shuffle(arr) {
+        const a = [...arr];
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function generateQuestion() {
+        document.getElementById('feedback-area').classList.add('hidden');
+        const type = randInt(0, 5);
+        switch (type) {
+            case 0: genCalculation(); break;
+            case 1: genComparison(); break;
+            case 2: genFinStmtEffect(); break;
+            case 3: genLIFOReserve(); break;
+            case 4: genConceptual(); break;
+            case 5: genWhichMethod(); break;
+        }
+    }
+
+    // --- Type 0: Calculation ---
+    function genCalculation() {
+        const biUnits = randInt(50, 200);
+        const biCost = randInt(5, 15);
+        const p1Units = randInt(50, 200);
+        const p1Cost = biCost + randInt(1, 5);
+        const p2Units = randInt(50, 200);
+        const p2Cost = p1Cost + randInt(1, 5);
+        const totalUnits = biUnits + p1Units + p2Units;
+        const soldUnits = randInt(Math.floor(totalUnits * 0.4), Math.floor(totalUnits * 0.8));
+        const remainUnits = totalUnits - soldUnits;
+
+        const layers = [
+            { units: biUnits, cost: biCost },
+            { units: p1Units, cost: p1Cost },
+            { units: p2Units, cost: p2Cost }
+        ];
+
+        const method = randChoice(['FIFO', 'LIFO', 'Weighted Average']);
+        const askFor = randChoice(['COGS', 'Ending Inventory']);
+
+        let answer, explanation;
+        if (method === 'FIFO') {
+            const r = calcFIFO(layers.map((l, i) => ({...l, label: i === 0 ? 'BI' : 'P'+i})), soldUnits);
+            answer = askFor === 'COGS' ? r.cogs : r.ei;
+            const detail = askFor === 'COGS' ? r.cogsDetail : r.eiDetail;
+            explanation = method + ' ' + askFor + ':\n' + detail.map(d => d.units + ' x $' + d.cost + ' = $' + (d.units * d.cost).toLocaleString()).join('\n') + '\nTotal = $' + answer.toLocaleString();
+        } else if (method === 'LIFO') {
+            const r = calcLIFO(layers.map((l, i) => ({...l, label: i === 0 ? 'BI' : 'P'+i})), soldUnits);
+            answer = askFor === 'COGS' ? r.cogs : r.ei;
+            const detail = askFor === 'COGS' ? r.cogsDetail : r.eiDetail;
+            explanation = method + ' ' + askFor + ':\n' + detail.map(d => d.units + ' x $' + d.cost + ' = $' + (d.units * d.cost).toLocaleString()).join('\n') + '\nTotal = $' + answer.toLocaleString();
+        } else {
+            const totalCost = layers.reduce((s, l) => s + l.units * l.cost, 0);
+            const avgCost = totalCost / totalUnits;
+            if (askFor === 'COGS') {
+                answer = Math.round(soldUnits * avgCost);
+            } else {
+                answer = Math.round(remainUnits * avgCost);
+            }
+            explanation = 'Weighted Average Cost = $' + totalCost.toLocaleString() + ' / ' + totalUnits + ' = $' + avgCost.toFixed(2) + '\n' +
+                askFor + ' = ' + (askFor === 'COGS' ? soldUnits : remainUnits) + ' x $' + avgCost.toFixed(2) + ' = $' + answer.toLocaleString();
+        }
+
+        const totalCost = layers.reduce((s, l) => s + l.units * l.cost, 0);
+
+        const html = `
+            <p class="text-xs text-rose-400 uppercase tracking-wider mb-2 font-semibold">Calculation Question</p>
+            <h3 class="text-lg font-bold mb-4">Calculate ${askFor} using ${method}</h3>
+            <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm">
+                <table class="w-full">
+                    <tr class="border-b border-slate-700"><td class="py-1">Beginning Inventory</td><td class="text-right">${biUnits} units @ $${biCost}</td><td class="text-right">$${(biUnits*biCost).toLocaleString()}</td></tr>
+                    <tr class="border-b border-slate-700"><td class="py-1">Purchase 1</td><td class="text-right">${p1Units} units @ $${p1Cost}</td><td class="text-right">$${(p1Units*p1Cost).toLocaleString()}</td></tr>
+                    <tr class="border-b border-slate-700"><td class="py-1">Purchase 2</td><td class="text-right">${p2Units} units @ $${p2Cost}</td><td class="text-right">$${(p2Units*p2Cost).toLocaleString()}</td></tr>
+                    <tr class="border-t-2 border-slate-500 font-bold"><td class="py-1">Total Available</td><td class="text-right">${totalUnits} units</td><td class="text-right">$${totalCost.toLocaleString()}</td></tr>
+                    <tr><td class="py-1 text-rose-400">Units Sold</td><td class="text-right text-rose-400">${soldUnits}</td><td></td></tr>
+                </table>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-slate-400">Your answer: $</span>
+                <input type="number" id="calc-answer" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="Enter amount">
+                <button onclick="checkCalcAnswer()" class="bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>
+            </div>
+        `;
+
+        currentQuestion = { type: 'calc', answer, explanation };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    function checkCalcAnswer() {
+        if (!currentQuestion) return;
+        const userAns = parseFloat(document.getElementById('calc-answer').value);
+        const correct = Math.abs(userAns - currentQuestion.answer) <= Math.max(5, currentQuestion.answer * 0.01);
+        score.total++;
+        if (correct) score.correct++;
+        updateScoreDisplay();
+        showFeedback(correct, currentQuestion.explanation);
+        currentQuestion = null;
+    }
+
+    // --- Type 1: Comparison ---
+    function genComparison() {
+        const questions = [
+            {
+                q: 'When prices are RISING, which inventory method produces the HIGHEST Cost of Goods Sold?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'All produce the same COGS'],
+                answer: 1,
+                explain: 'LIFO assigns the newest (highest) costs to COGS first. When prices are rising, this means COGS includes the most expensive units, making it the highest among the three methods.'
+            },
+            {
+                q: 'When prices are RISING, which inventory method reports the HIGHEST ending inventory on the balance sheet?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'All report the same'],
+                answer: 0,
+                explain: 'FIFO leaves the newest (highest cost) units in ending inventory. When prices are rising, this means the balance sheet inventory value is highest under FIFO.'
+            },
+            {
+                q: 'When prices are FALLING, which inventory method produces the LOWEST taxable income?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'It depends on the tax rate'],
+                answer: 0,
+                explain: 'When prices are falling, FIFO assigns the oldest (highest) costs to COGS, producing the highest COGS and lowest income. The effects are the reverse of the rising-price scenario.'
+            },
+            {
+                q: 'Which method always falls between FIFO and LIFO for both COGS and ending inventory?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'None of them'],
+                answer: 2,
+                explain: 'Weighted Average cost is a blend of all purchase prices, so it always produces COGS and ending inventory values between the FIFO and LIFO extremes.'
+            },
+            {
+                q: 'Which inventory method best matches current costs with current revenues on the income statement?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'All match equally well'],
+                answer: 1,
+                explain: 'LIFO assigns the most recent purchase costs to COGS, which means current revenues are matched against current costs. This is considered a better matching of costs and revenues.'
+            }
+        ];
+        const qObj = randChoice(questions);
+        const shuffledIndices = shuffle([0, 1, 2, 3]);
+        const shuffledChoices = shuffledIndices.map(i => qObj.choices[i]);
+        const correctIdx = shuffledIndices.indexOf(qObj.answer);
+
+        const html = `
+            <p class="text-xs text-sky-400 uppercase tracking-wider mb-2 font-semibold">Comparison Question</p>
+            <h3 class="text-lg font-bold mb-4">${qObj.q}</h3>
+            <div class="space-y-2">
+                ${shuffledChoices.map((c, i) => `
+                    <button onclick="checkMC(${i}, ${correctIdx})" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">
+                        <span class="font-semibold text-slate-400 mr-2">${String.fromCharCode(65 + i)}.</span> ${c}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+
+        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 2: Financial Statement Effects ---
+    function genFinStmtEffect() {
+        const questions = [
+            {
+                q: 'If a company switches from FIFO to LIFO during a period of rising prices, what happens to reported net income?',
+                choices: ['Net income increases', 'Net income decreases', 'Net income stays the same', 'Cannot be determined'],
+                answer: 1,
+                explain: 'Switching from FIFO to LIFO during inflation increases COGS (newer, higher costs flow to COGS), which decreases gross profit and net income.'
+            },
+            {
+                q: 'A company using LIFO during inflation will report _____ on its balance sheet compared to FIFO.',
+                choices: ['Higher inventory and higher retained earnings', 'Lower inventory and lower retained earnings', 'Higher inventory and lower retained earnings', 'Lower inventory and higher retained earnings'],
+                answer: 1,
+                explain: 'LIFO leaves older, lower costs in inventory (lower balance sheet value) and reports lower net income (which accumulates into lower retained earnings) compared to FIFO during inflation.'
+            },
+            {
+                q: 'How does the choice of inventory method affect a company\'s actual cash flows (assuming it affects the tax return)?',
+                choices: ['No effect on cash flows', 'Only affects operating cash flows through COGS', 'Affects cash flows through different tax payments', 'Affects cash flows through different purchase prices'],
+                answer: 2,
+                explain: 'The inventory method does not change the physical goods bought or sold. However, if LIFO is used for taxes, lower taxable income means lower tax payments, resulting in higher after-tax cash flows.'
+            },
+            {
+                q: 'If a company writes down inventory under the LCNRV rule, what is the effect on the current period income statement?',
+                choices: ['Revenue decreases', 'COGS increases, reducing gross profit', 'An extraordinary gain is recorded', 'No income statement effect; only the balance sheet changes'],
+                answer: 1,
+                explain: 'An inventory write-down under LCNRV increases COGS (or is reported as a separate loss), which reduces gross profit and net income in the current period.'
+            }
+        ];
+        const qObj = randChoice(questions);
+        const shuffledIndices = shuffle([0, 1, 2, 3]);
+        const shuffledChoices = shuffledIndices.map(i => qObj.choices[i]);
+        const correctIdx = shuffledIndices.indexOf(qObj.answer);
+
+        const html = `
+            <p class="text-xs text-emerald-400 uppercase tracking-wider mb-2 font-semibold">Financial Statement Effects</p>
+            <h3 class="text-lg font-bold mb-4">${qObj.q}</h3>
+            <div class="space-y-2">
+                ${shuffledChoices.map((c, i) => `
+                    <button onclick="checkMC(${i}, ${correctIdx})" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">
+                        <span class="font-semibold text-slate-400 mr-2">${String.fromCharCode(65 + i)}.</span> ${c}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+
+        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 3: LIFO Reserve ---
+    function genLIFOReserve() {
+        const fifoInv = randInt(500, 5000) * 10;
+        const lifoReserve = randInt(50, 500) * 10;
+        const lifoInv = fifoInv - lifoReserve;
+
+        const askFor = randChoice(['LIFO Inventory', 'FIFO Inventory', 'LIFO Reserve']);
+        let given, answer, explain;
+
+        if (askFor === 'LIFO Inventory') {
+            given = `FIFO Inventory = $${fifoInv.toLocaleString()}, LIFO Reserve = $${lifoReserve.toLocaleString()}`;
+            answer = lifoInv;
+            explain = `LIFO Inventory = FIFO Inventory - LIFO Reserve = $${fifoInv.toLocaleString()} - $${lifoReserve.toLocaleString()} = $${lifoInv.toLocaleString()}`;
+        } else if (askFor === 'FIFO Inventory') {
+            given = `LIFO Inventory = $${lifoInv.toLocaleString()}, LIFO Reserve = $${lifoReserve.toLocaleString()}`;
+            answer = fifoInv;
+            explain = `FIFO Inventory = LIFO Inventory + LIFO Reserve = $${lifoInv.toLocaleString()} + $${lifoReserve.toLocaleString()} = $${fifoInv.toLocaleString()}`;
+        } else {
+            given = `FIFO Inventory = $${fifoInv.toLocaleString()}, LIFO Inventory = $${lifoInv.toLocaleString()}`;
+            answer = lifoReserve;
+            explain = `LIFO Reserve = FIFO Inventory - LIFO Inventory = $${fifoInv.toLocaleString()} - $${lifoInv.toLocaleString()} = $${lifoReserve.toLocaleString()}`;
+        }
+
+        const html = `
+            <p class="text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">LIFO Reserve Calculation</p>
+            <h3 class="text-lg font-bold mb-4">Calculate the ${askFor}</h3>
+            <div class="bg-slate-900/60 rounded-lg p-4 mb-4">
+                <p class="text-slate-300 mb-2">Given: ${given}</p>
+                <p class="text-slate-400 text-sm">Recall: LIFO Reserve = FIFO Inventory &minus; LIFO Inventory</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-slate-400">Your answer: $</span>
+                <input type="number" id="calc-answer" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="Enter amount">
+                <button onclick="checkCalcAnswer()" class="bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>
+            </div>
+        `;
+
+        currentQuestion = { type: 'calc', answer, explanation: explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 4: Conceptual (True/False) ---
+    function genConceptual() {
+        const questions = [
+            {
+                statement: 'LIFO is permitted under both US GAAP and IFRS.',
+                answer: false,
+                explain: 'False. LIFO is permitted under US GAAP but is prohibited under IFRS. Companies reporting under IFRS must use FIFO or Weighted Average.'
+            },
+            {
+                statement: 'Under FIFO, ending inventory on the balance sheet approximates current replacement cost.',
+                answer: true,
+                explain: 'True. FIFO leaves the most recently purchased units in ending inventory, so the balance sheet value closely reflects current market prices.'
+            },
+            {
+                statement: 'A company can use LIFO for tax purposes and FIFO for financial reporting purposes.',
+                answer: false,
+                explain: 'False. The LIFO Conformity Rule requires that if a company uses LIFO for tax purposes, it must also use LIFO for financial reporting.'
+            },
+            {
+                statement: 'When prices are constant (no inflation or deflation), FIFO, LIFO, and Weighted Average all produce the same COGS.',
+                answer: true,
+                explain: 'True. If all units have the same cost, the order in which costs are assigned to COGS does not matter, and all three methods produce identical results.'
+            },
+            {
+                statement: 'Under the periodic inventory system, COGS is calculated at the end of the period, not with each sale.',
+                answer: true,
+                explain: 'True. The periodic system calculates COGS at period-end using the inventory equation: COGS = Beginning Inventory + Purchases - Ending Inventory.'
+            },
+            {
+                statement: 'Inventory write-downs under the LCNRV rule can be reversed in future periods under US GAAP.',
+                answer: false,
+                explain: 'False. Under US GAAP, once inventory is written down, the write-down cannot be reversed. However, IFRS does allow reversal of inventory write-downs (up to the original cost).'
+            },
+            {
+                statement: 'LIFO liquidation occurs when a company sells more units than it purchases during a period, dipping into old LIFO layers.',
+                answer: true,
+                explain: 'True. LIFO liquidation happens when old, lower-cost layers are matched against current revenues, which can artificially inflate profits and is considered a disadvantage of LIFO.'
+            },
+            {
+                statement: 'The weighted average method produces results between FIFO and LIFO for both COGS and ending inventory.',
+                answer: true,
+                explain: 'True. Since the weighted average cost is a blend of all costs, it will always fall between the oldest costs (used by one method for COGS) and the newest costs (used by the other).'
+            }
+        ];
+        const qObj = randChoice(questions);
+
+        const html = `
+            <p class="text-xs text-purple-400 uppercase tracking-wider mb-2 font-semibold">True or False</p>
+            <h3 class="text-lg font-bold mb-6">"${qObj.statement}"</h3>
+            <div class="flex gap-4">
+                <button onclick="checkTF(true)" class="flex-1 bg-emerald-600/20 hover:bg-emerald-600/40 border border-emerald-500/40 rounded-lg p-3 font-semibold text-emerald-400 transition-colors">True</button>
+                <button onclick="checkTF(false)" class="flex-1 bg-rose-600/20 hover:bg-rose-600/40 border border-rose-500/40 rounded-lg p-3 font-semibold text-rose-400 transition-colors">False</button>
+            </div>
+        `;
+
+        currentQuestion = { type: 'tf', answer: qObj.answer, explain: qObj.explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    function checkTF(userAnswer) {
+        if (!currentQuestion) return;
+        const correct = userAnswer === currentQuestion.answer;
+        score.total++;
+        if (correct) score.correct++;
+        updateScoreDisplay();
+        showFeedback(correct, currentQuestion.explain);
+        currentQuestion = null;
+    }
+
+    // --- Type 5: Which Method? ---
+    function genWhichMethod() {
+        const questions = [
+            {
+                scenario: 'A company wants to minimize its tax payments. Prices have been steadily increasing. Which inventory method should it choose (under US GAAP)?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'It does not matter'],
+                answer: 1,
+                explain: 'LIFO. When prices are rising, LIFO assigns the newest, highest costs to COGS, resulting in higher COGS, lower taxable income, and lower tax payments. This is only available under US GAAP.'
+            },
+            {
+                scenario: 'A startup wants to report the highest possible net income to attract investors. Prices for its inventory have been rising. Which method would it prefer?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'Specific Identification'],
+                answer: 0,
+                explain: 'FIFO. When prices are rising, FIFO assigns the oldest, lowest costs to COGS, resulting in lower COGS and higher gross profit/net income. This makes the company appear more profitable.'
+            },
+            {
+                scenario: 'A European company reporting under IFRS wants to use a method that smooths out price fluctuations. Which method should it use?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'Any method is acceptable under IFRS'],
+                answer: 2,
+                explain: 'Weighted Average. LIFO is not permitted under IFRS. Between FIFO and Weighted Average, the weighted average method blends all costs together, smoothing out price fluctuations.'
+            },
+            {
+                scenario: 'A company has experienced falling input prices over the past year. It wants to report the highest gross profit. Which method should it choose?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'The method does not affect gross profit when prices fall'],
+                answer: 1,
+                explain: 'LIFO. When prices are falling, LIFO assigns the newest (lower) costs to COGS, producing the lowest COGS and highest gross profit. This is the reverse of the rising-price scenario.'
+            },
+            {
+                scenario: 'A bank is evaluating a company\'s loan application and wants to see the most realistic current value of the company\'s inventory on the balance sheet. Which method provides this?',
+                choices: ['FIFO', 'LIFO', 'Weighted Average', 'All methods show current value'],
+                answer: 0,
+                explain: 'FIFO. Under FIFO, ending inventory consists of the most recently purchased units, so the balance sheet value best approximates the current replacement cost of inventory.'
+            }
+        ];
+        const qObj = randChoice(questions);
+        const shuffledIndices = shuffle([0, 1, 2, 3]);
+        const shuffledChoices = shuffledIndices.map(i => qObj.choices[i]);
+        const correctIdx = shuffledIndices.indexOf(qObj.answer);
+
+        const html = `
+            <p class="text-xs text-rose-400 uppercase tracking-wider mb-2 font-semibold">Which Method?</p>
+            <h3 class="text-lg font-bold mb-4">${qObj.scenario}</h3>
+            <div class="space-y-2">
+                ${shuffledChoices.map((c, i) => `
+                    <button onclick="checkMC(${i}, ${correctIdx})" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">
+                        <span class="font-semibold text-slate-400 mr-2">${String.fromCharCode(65 + i)}.</span> ${c}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+
+        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- MC Checker ---
+    function checkMC(selected, correct) {
+        if (!currentQuestion) return;
+        const btns = document.querySelectorAll('.mc-btn');
+        btns.forEach((btn, i) => {
+            btn.disabled = true;
+            btn.classList.remove('hover:bg-slate-700/60');
+            if (i === correct) {
+                btn.classList.add('border-emerald-500', 'bg-emerald-500/20');
+                btn.classList.remove('border-slate-600');
+            }
+            if (i === selected && selected !== correct) {
+                btn.classList.add('border-rose-500', 'bg-rose-500/20');
+                btn.classList.remove('border-slate-600');
+            }
+        });
+        const isCorrect = selected === correct;
+        score.total++;
+        if (isCorrect) score.correct++;
+        updateScoreDisplay();
+        showFeedback(isCorrect, currentQuestion.explain);
+        currentQuestion = null;
+    }
+
+    // --- Feedback ---
+    function showFeedback(correct, explanation) {
+        const el = document.getElementById('feedback-area');
+        el.classList.remove('hidden');
+        const colorClass = correct ? 'emerald' : 'rose';
+        el.innerHTML = `
+            <div class="bg-${colorClass}-500/10 border border-${colorClass}-500/30 rounded-lg p-4">
+                <p class="font-bold text-${colorClass}-400 mb-2">${correct ? 'Correct!' : 'Incorrect'}</p>
+                <p class="text-slate-300 text-sm whitespace-pre-line">${explanation}</p>
+            </div>
+        `;
+    }
+    </script>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Inventory Methods Study Tool &mdash; Based on Hanlon 7e, Chapter 7</p>
+    </div>
+</body>
+</html>
