@@ -25,7 +25,7 @@
             Back to Home
         </a>
         <h1 class="text-3xl font-bold mb-1">Transaction Analysis</h1>
-        <p class="text-slate-400">Chapter 2 &mdash; The Financial Statement Effect Template (FSET) Approach</p>
+        <p class="text-slate-400">Lectures 2&ndash;3 &mdash; The Financial Statement Effect Template (FSET) Approach</p>
     </div>
 
     <!-- Tab Navigation -->
@@ -115,6 +115,21 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30 mt-5">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                            <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-2">The FSET <strong class="text-white">is</strong> the accounting equation in action. Each column maps directly:</p>
+                        <div class="flex flex-wrap items-center gap-2 text-sm mb-2">
+                            <span class="bg-emerald-500/15 text-emerald-300 px-2 py-1 rounded">Cash + Noncash Assets</span>
+                            <span class="text-slate-400 font-bold">=</span>
+                            <span class="bg-amber-500/15 text-amber-300 px-2 py-1 rounded">Liabilities</span>
+                            <span class="text-slate-400 font-bold">+</span>
+                            <span class="bg-purple-500/15 text-purple-300 px-2 py-1 rounded">CC + RE</span>
+                        </div>
+                        <p class="text-xs text-slate-400">The Income Statement columns (Revenue, Expense, NI) track <em>why</em> RE changed. Every row keeps both sides equal. If you ever get stuck on a transaction, ask: "Which side went up? The other side must also go up, or something on the same side must go down."</p>
+                    </div>
                 </div>
 
                 <!-- Revenue & Expense Rules -->
@@ -128,6 +143,10 @@
                     <div class="bg-emerald-900/20 border border-emerald-800/50 rounded-lg p-3 mt-4">
                         <p class="text-emerald-300 text-sm font-semibold">The RE column change always equals the Net Income column change.</p>
                     </div>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
+                        <p class="text-xs text-emerald-400 font-semibold mb-1">= Equation Trace</p>
+                        <p class="text-xs text-slate-300">Revenue &uarr; &rarr; NI &uarr; &rarr; <span class="text-emerald-300 font-semibold">RE &uarr; (right side)</span> &rarr; An asset must also &uarr; to keep <span class="text-white font-semibold">A = L + SE</span></p>
+                    </div>
                 </div>
 
                 <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
@@ -139,6 +158,10 @@
                     </ul>
                     <div class="bg-rose-900/20 border border-rose-800/50 rounded-lg p-3 mt-4">
                         <p class="text-rose-300 text-sm font-semibold">Expenses are shown as positive numbers in the Expense column but reduce Net Income.</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
+                        <p class="text-xs text-emerald-400 font-semibold mb-1">= Equation Trace</p>
+                        <p class="text-xs text-slate-300">Expense &uarr; &rarr; NI &darr; &rarr; <span class="text-rose-300 font-semibold">RE &darr; (right side)</span> &rarr; An asset must also &darr; (or a liability &uarr;) to keep <span class="text-white font-semibold">A = L + SE</span></p>
                     </div>
                 </div>
 
@@ -161,6 +184,27 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Seeing the System -->
+                <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-xl p-6 border border-emerald-500/30 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="w-7 h-7 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-sm font-bold">=</div>
+                        <span class="text-emerald-400 font-bold text-lg">Seeing the System</span>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-3">Every topic in this course &mdash; inventory, revenue, depreciation, bonds, leases &mdash; is just a specific application of the same underlying system:</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center mb-3 border border-slate-700">
+                        <p class="text-2xl font-bold">
+                            <span class="text-sky-400">Assets</span>
+                            <span class="text-slate-500 mx-2">=</span>
+                            <span class="text-amber-400">Liabilities</span>
+                            <span class="text-slate-500 mx-2">+</span>
+                            <span class="text-purple-400">CC</span>
+                            <span class="text-slate-500 mx-2">+</span>
+                            <span class="text-emerald-400">RE</span>
+                        </p>
+                    </div>
+                    <p class="text-slate-300 text-sm">If you understand this equation and how transactions flow through it, you can work through <strong class="text-white">any</strong> accounting problem. When you encounter a new topic, always ask: <em class="text-emerald-300">"Which components of the equation are affected, and how does it stay in balance?"</em></p>
+                </div>
             </div>
         </div>
 
@@ -168,7 +212,11 @@
         <div id="panel-examples" class="tab-panel hidden">
             <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
                 <h2 class="text-xl font-bold text-sky-400 mb-2">Owl Bakery &mdash; First Month of Operations</h2>
-                <p class="text-slate-300 text-sm">Click <span class="text-sky-400 font-semibold">"Show Effect"</span> for each transaction to reveal its FSET impact. Watch the running totals update and verify that A = L + SE after every entry.</p>
+                <p class="text-slate-300 text-sm mb-3">Click <span class="text-sky-400 font-semibold">"Show Effect"</span> for each transaction to reveal its FSET impact. Watch the running totals update and verify that A = L + SE after every entry.</p>
+                <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30">
+                    <p class="text-xs text-emerald-400 font-semibold mb-1">= Remember</p>
+                    <p class="text-xs text-slate-300">After <em>every single transaction</em>, the equation must balance: <span class="text-white font-semibold">Assets = Liabilities + Stockholders' Equity</span>. If it doesn't, something was recorded incorrectly.</p>
+                </div>
             </div>
 
             <div id="examples-container" class="space-y-4"></div>
@@ -203,6 +251,640 @@
                 <div class="bg-slate-800/50 rounded-xl p-6 border border-amber-700/50">
                     <h3 class="text-lg font-bold text-amber-400 mb-4">Income Statement &mdash; Owl Bakery</h3>
                     <div id="final-is"></div>
+                </div>
+            </div>
+
+            <!-- ======================== EXAM PROBLEM: SUNSHINE CONSULTING ======================== -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-sky-700/50 mt-8">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 bg-sky-500/20 rounded-lg flex items-center justify-center text-sky-400 text-sm font-bold">!</div>
+                    <h2 class="text-xl font-bold text-sky-400">Practice Problem: Sunshine Consulting &mdash; First Quarter</h2>
+                </div>
+                <p class="text-slate-300 text-sm mb-3">This comprehensive problem ties everything together. Work through all 10 transactions, then build the financial statements from scratch and verify the accounting equation.</p>
+                <div class="bg-gradient-to-r from-sky-500/10 via-slate-800/50 to-amber-500/10 rounded-lg p-4 border border-sky-500/30 mb-4">
+                    <p class="text-sm text-sky-300 font-semibold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">Sunshine Consulting begins operations on January 1. The following transactions occur during Q1:</p>
+                </div>
+                <ol class="text-sm text-slate-300 space-y-1 mb-6 ml-4 list-decimal">
+                    <li><span class="text-slate-400">Jan 1:</span> Owners invest $200,000 cash and contribute office equipment worth $50,000</li>
+                    <li><span class="text-slate-400">Jan 5:</span> Borrows $80,000 from First National Bank (2-year note payable)</li>
+                    <li><span class="text-slate-400">Jan 15:</span> Pays $24,000 for 12 months of office rent in advance (prepaid rent)</li>
+                    <li><span class="text-slate-400">Feb 1:</span> Provides consulting services to Client A for $45,000 on account</li>
+                    <li><span class="text-slate-400">Feb 15:</span> Receives $30,000 cash from Client A (partial collection)</li>
+                    <li><span class="text-slate-400">Feb 28:</span> Pays employee salaries of $18,000</li>
+                    <li><span class="text-slate-400">Mar 1:</span> Receives $25,000 cash in advance from Client B for services to be provided next quarter (unearned revenue)</li>
+                    <li><span class="text-slate-400">Mar 15:</span> Provides $35,000 of consulting services for cash to Client C</li>
+                    <li><span class="text-slate-400">Mar 31:</span> Pays utility bill of $2,000</li>
+                    <li><span class="text-slate-400">Mar 31:</span> Records rent expense for Q1 (3 months of the prepaid rent = $6,000)</li>
+                </ol>
+
+                <!-- Step-by-step reveal container -->
+                <div id="sunshine-steps" class="space-y-4">
+
+                    <!-- Transaction 1 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 1</span>
+                                <p class="text-white font-medium mt-1">Jan 1: Owners invest $200,000 cash and contribute office equipment worth $50,000</p>
+                            </div>
+                            <button id="sun-btn-1" onclick="revealSunshine(1)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 1</button>
+                        </div>
+                        <div id="sun-detail-1" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="positive">+200,000</span></td>
+                                            <td><span class="positive">+50,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+250,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Cash                    $200,000
+  Dr. Office Equipment         $50,000
+      Cr. Common Stock              $250,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $250,000 | L = $0 | SE = $250,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Cash and equipment both increase. The owners' total investment of $250,000 goes to Contributed Capital. Equipment contributed by owners increases both Assets AND CC &mdash; not just cash investments count.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 2 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 2</span>
+                                <p class="text-white font-medium mt-1">Jan 5: Borrows $80,000 from First National Bank (2-year note payable)</p>
+                            </div>
+                            <button id="sun-btn-2" onclick="revealSunshine(2)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 2</button>
+                        </div>
+                        <div id="sun-detail-2" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="positive">+80,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+80,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Cash                     $80,000
+      Cr. Notes Payable               $80,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $330,000 | L = $80,000 | SE = $250,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Cash increases and Notes Payable (a liability) increases. Borrowing is NOT revenue &mdash; it creates an obligation to repay.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 3 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 3</span>
+                                <p class="text-white font-medium mt-1">Jan 15: Pays $24,000 for 12 months of office rent in advance (prepaid rent)</p>
+                            </div>
+                            <button id="sun-btn-3" onclick="revealSunshine(3)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 3</button>
+                        </div>
+                        <div id="sun-detail-3" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="negative">-24,000</span></td>
+                                            <td><span class="positive">+24,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Prepaid Rent              $24,000
+      Cr. Cash                          $24,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $330,000 | L = $80,000 | SE = $250,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Cash decreases but Prepaid Rent (a noncash asset) increases. This is an asset swap &mdash; total assets don't change. The $24,000 is NOT an expense yet because the benefit covers 12 future months.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 4 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 4</span>
+                                <p class="text-white font-medium mt-1">Feb 1: Provides consulting services to Client A for $45,000 on account</p>
+                            </div>
+                            <button id="sun-btn-4" onclick="revealSunshine(4)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 4</button>
+                        </div>
+                        <div id="sun-detail-4" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+45,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+45,000</span></td>
+                                            <td class="border-l border-slate-600"><span class="positive">+45,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+45,000</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Accounts Receivable       $45,000
+      Cr. Service Revenue               $45,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $375,000 | L = $80,000 | SE = $295,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Accounts Receivable (noncash asset) increases. Revenue is earned when the service is provided, not when cash is collected (accrual basis). RE increases through Net Income.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 5 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 5</span>
+                                <p class="text-white font-medium mt-1">Feb 15: Receives $30,000 cash from Client A (partial collection)</p>
+                            </div>
+                            <button id="sun-btn-5" onclick="revealSunshine(5)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 5</button>
+                        </div>
+                        <div id="sun-detail-5" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="positive">+30,000</span></td>
+                                            <td><span class="negative">-30,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Cash                     $30,000
+      Cr. Accounts Receivable          $30,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $375,000 | L = $80,000 | SE = $295,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Cash increases but AR decreases &mdash; an asset swap. Revenue was already recorded in Transaction 4 when the service was provided. Collecting cash is NOT additional revenue.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 6 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 6</span>
+                                <p class="text-white font-medium mt-1">Feb 28: Pays employee salaries of $18,000</p>
+                            </div>
+                            <button id="sun-btn-6" onclick="revealSunshine(6)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 6</button>
+                        </div>
+                        <div id="sun-detail-6" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="negative">-18,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="negative">-18,000</span></td>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+18,000</span></td>
+                                            <td><span class="negative">-18,000</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Wages Expense             $18,000
+      Cr. Cash                          $18,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $357,000 | L = $80,000 | SE = $277,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Cash decreases. Wages Expense increases, which reduces Net Income and therefore Retained Earnings. Both sides of the equation decrease by $18,000.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 7 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 7</span>
+                                <p class="text-white font-medium mt-1">Mar 1: Receives $25,000 cash in advance from Client B for services to be provided next quarter</p>
+                            </div>
+                            <button id="sun-btn-7" onclick="revealSunshine(7)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 7</button>
+                        </div>
+                        <div id="sun-detail-7" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="positive">+25,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+25,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Cash                     $25,000
+      Cr. Unearned Revenue              $25,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $382,000 | L = $105,000 | SE = $277,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Cash increases but this is NOT revenue &mdash; the service hasn't been provided yet. The $25,000 is a liability (Unearned Revenue) because Sunshine owes Client B future services.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 8 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 8</span>
+                                <p class="text-white font-medium mt-1">Mar 15: Provides $35,000 of consulting services for cash to Client C</p>
+                            </div>
+                            <button id="sun-btn-8" onclick="revealSunshine(8)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 8</button>
+                        </div>
+                        <div id="sun-detail-8" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="positive">+35,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+35,000</span></td>
+                                            <td class="border-l border-slate-600"><span class="positive">+35,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+35,000</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Cash                     $35,000
+      Cr. Service Revenue               $35,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $417,000 | L = $105,000 | SE = $312,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Cash increases and Revenue is earned because the service is provided now. This increases RE through Net Income. Both sides of the equation increase by $35,000.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 9 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 9</span>
+                                <p class="text-white font-medium mt-1">Mar 31: Pays utility bill of $2,000</p>
+                            </div>
+                            <button id="sun-btn-9" onclick="revealSunshine(9)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 9</button>
+                        </div>
+                        <div id="sun-detail-9" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="negative">-2,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="negative">-2,000</span></td>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+2,000</span></td>
+                                            <td><span class="negative">-2,000</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Utilities Expense          $2,000
+      Cr. Cash                           $2,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $415,000 | L = $105,000 | SE = $310,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Cash decreases. Utilities Expense increases, reducing Net Income and RE. Both sides of the equation decrease by $2,000.</p>
+                        </div>
+                    </div>
+
+                    <!-- Transaction 10 -->
+                    <div class="bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-sky-400 font-bold text-sm">Transaction 10</span>
+                                <p class="text-white font-medium mt-1">Mar 31: Records rent expense for Q1 (3 months of the prepaid rent = $6,000)</p>
+                            </div>
+                            <button id="sun-btn-10" onclick="revealSunshine(10)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm rounded-lg font-medium transition shrink-0">Show Transaction 10</button>
+                        </div>
+                        <div id="sun-detail-10" class="hidden mt-4 fade-in">
+                            <div class="overflow-x-auto">
+                                <table class="fset-table w-full text-sm border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-600 text-xs">
+                                            <th class="text-sky-300 border-l border-slate-600">Cash</th>
+                                            <th class="text-sky-300">Noncash Assets</th>
+                                            <th class="text-amber-300">Liabilities</th>
+                                            <th class="text-purple-300">CC</th>
+                                            <th class="text-purple-300">RE</th>
+                                            <th class="text-amber-300 border-l border-slate-600">Revenue</th>
+                                            <th class="text-amber-300">Expense</th>
+                                            <th class="text-amber-300">Net Income</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="negative">-6,000</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="zero">&mdash;</span></td>
+                                            <td><span class="negative">-6,000</span></td>
+                                            <td class="border-l border-slate-600"><span class="zero">&mdash;</span></td>
+                                            <td><span class="positive">+6,000</span></td>
+                                            <td><span class="negative">-6,000</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-slate-800/60 rounded-lg p-3 mt-3 border border-slate-600">
+                                <p class="text-xs text-slate-400 font-semibold mb-1">Journal Entry:</p>
+                                <pre class="text-sm text-slate-300 font-mono">  Dr. Rent Expense               $6,000
+      Cr. Prepaid Rent                   $6,000</pre>
+                            </div>
+                            <div class="flex items-center gap-2 mt-3">
+                                <span class="text-xs text-emerald-400 font-semibold">Running Totals:</span>
+                                <span class="text-xs text-slate-300">A = $409,000 | L = $105,000 | SE = $304,000</span>
+                                <span class="text-xs text-emerald-400 font-bold ml-1">&#10003;</span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-2">Prepaid Rent (noncash asset) decreases by $6,000 &mdash; only 3 of the 12 months have been used. Rent Expense increases, reducing NI and RE. Cash is NOT affected &mdash; the cash was already paid in Transaction 3.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Statements (revealed after all 10) -->
+                <div id="sunshine-financials" class="hidden mt-6 fade-in">
+                    <h3 class="text-lg font-bold text-sky-400 mb-4">Complete Financial Statements &mdash; Sunshine Consulting (Q1)</h3>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Income Statement -->
+                        <div class="bg-slate-800/50 rounded-xl p-6 border border-amber-700/50">
+                            <h4 class="text-lg font-bold text-amber-400 mb-4">Income Statement (Q1)</h4>
+                            <div class="space-y-2 text-sm">
+                                <p class="font-bold text-emerald-300 border-b border-slate-600 pb-1">Revenues</p>
+                                <div class="flex justify-between"><span class="text-slate-300">Service Revenue ($45,000 + $35,000)</span><span class="text-white">$80,000</span></div>
+                                <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-emerald-400">Total Revenue</span><span class="text-emerald-400">$80,000</span></div>
+                                <p class="font-bold text-rose-300 border-b border-slate-600 pb-1 mt-4">Expenses</p>
+                                <div class="flex justify-between"><span class="text-slate-300">Wages Expense</span><span class="text-white">$18,000</span></div>
+                                <div class="flex justify-between"><span class="text-slate-300">Rent Expense (3 months only)</span><span class="text-white">$6,000</span></div>
+                                <div class="flex justify-between"><span class="text-slate-300">Utilities Expense</span><span class="text-white">$2,000</span></div>
+                                <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-rose-400">Total Expenses</span><span class="text-rose-400">$26,000</span></div>
+                                <div class="flex justify-between font-bold border-t-2 border-slate-500 pt-2 mt-4 text-lg"><span class="text-amber-400">Net Income</span><span class="text-amber-400">$54,000</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Balance Sheet -->
+                        <div class="bg-slate-800/50 rounded-xl p-6 border border-emerald-700/50">
+                            <h4 class="text-lg font-bold text-emerald-400 mb-4">Balance Sheet (March 31)</h4>
+                            <div class="space-y-2 text-sm">
+                                <p class="font-bold text-emerald-300 border-b border-slate-600 pb-1">Assets</p>
+                                <div class="flex justify-between"><span class="text-slate-300">Cash</span><span class="text-white">$326,000</span></div>
+                                <div class="flex justify-between text-xs text-slate-500 -mt-1"><span>($200k + $80k - $24k + $30k - $18k + $25k + $35k - $2k)</span></div>
+                                <div class="flex justify-between"><span class="text-slate-300">Accounts Receivable</span><span class="text-white">$15,000</span></div>
+                                <div class="flex justify-between text-xs text-slate-500 -mt-1"><span>($45,000 - $30,000)</span></div>
+                                <div class="flex justify-between"><span class="text-slate-300">Prepaid Rent</span><span class="text-white">$18,000</span></div>
+                                <div class="flex justify-between text-xs text-slate-500 -mt-1"><span>($24,000 - $6,000)</span></div>
+                                <div class="flex justify-between"><span class="text-slate-300">Office Equipment</span><span class="text-white">$50,000</span></div>
+                                <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-emerald-400">Total Assets</span><span class="text-emerald-400">$409,000</span></div>
+
+                                <p class="font-bold text-amber-300 border-b border-slate-600 pb-1 mt-4">Liabilities</p>
+                                <div class="flex justify-between"><span class="text-slate-300">Notes Payable</span><span class="text-white">$80,000</span></div>
+                                <div class="flex justify-between"><span class="text-slate-300">Unearned Revenue</span><span class="text-white">$25,000</span></div>
+                                <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-amber-400">Total Liabilities</span><span class="text-amber-400">$105,000</span></div>
+
+                                <p class="font-bold text-purple-300 border-b border-slate-600 pb-1 mt-4">Stockholders' Equity</p>
+                                <div class="flex justify-between"><span class="text-slate-300">Common Stock (CC)</span><span class="text-white">$250,000</span></div>
+                                <div class="flex justify-between"><span class="text-slate-300">Retained Earnings</span><span class="text-white">$54,000</span></div>
+                                <div class="flex justify-between font-bold border-t border-slate-600 pt-1"><span class="text-purple-400">Total SE</span><span class="text-purple-400">$304,000</span></div>
+                                <div class="flex justify-between font-bold border-t-2 border-slate-500 pt-2 mt-2"><span class="text-sky-400">Total L + SE</span><span class="text-sky-400">$409,000</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Teaching Points -->
+                    <div class="mt-6 space-y-3">
+                        <h4 class="text-md font-bold text-amber-400">Key Teaching Points</h4>
+
+                        <div class="bg-amber-900/20 border border-amber-700/50 rounded-lg p-4">
+                            <p class="text-sm text-amber-300 font-semibold mb-1">1. Unearned Revenue is a Liability</p>
+                            <p class="text-sm text-slate-300">The $25,000 from Client B is NOT revenue yet &mdash; it's a liability (Unearned Revenue) because the service hasn't been provided. Cash received &ne; Revenue earned.</p>
+                        </div>
+
+                        <div class="bg-amber-900/20 border border-amber-700/50 rounded-lg p-4">
+                            <p class="text-sm text-amber-300 font-semibold mb-1">2. Prepaid Expenses Convert Over Time</p>
+                            <p class="text-sm text-slate-300">Only 3 months ($6,000) of the $24,000 prepaid rent is expensed &mdash; the rest stays as an asset (Prepaid Rent: $18,000). Prepaid assets convert to expenses as the benefit is consumed.</p>
+                        </div>
+
+                        <div class="bg-amber-900/20 border border-amber-700/50 rounded-lg p-4">
+                            <p class="text-sm text-amber-300 font-semibold mb-1">3. Collections are NOT Revenue</p>
+                            <p class="text-sm text-slate-300">The $30,000 collection from Client A is NOT revenue &mdash; revenue was already recorded when services were provided (Transaction 4). Collecting cash just swaps one asset for another.</p>
+                        </div>
+
+                        <div class="bg-amber-900/20 border border-amber-700/50 rounded-lg p-4">
+                            <p class="text-sm text-amber-300 font-semibold mb-1">4. Non-Cash Investments Still Count</p>
+                            <p class="text-sm text-slate-300">Equipment contributed by owners increases both Assets AND Contributed Capital &mdash; not just cash investments count. Any asset contributed in exchange for stock increases CC.</p>
+                        </div>
+                    </div>
+
+                    <!-- Equation Callback -->
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30 mt-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                            <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">The System in Action</span>
+                        </div>
+                        <p class="text-sm text-slate-300">10 different transactions, all flowing through the same framework: A = L + SE. The equation balanced after every single one. Revenue increases RE through Net Income. Prepaid assets convert to expenses over time. Cash received in advance creates a liability, not revenue. This is the system.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -481,6 +1163,25 @@ function showFinalStatements() {
         </div>`;
 }
 
+// ==================== SUNSHINE CONSULTING WALKTHROUGH ====================
+let sunshineRevealed = 0;
+const sunshineTotalSteps = 10;
+
+function revealSunshine(step) {
+    const detail = document.getElementById('sun-detail-' + step);
+    const btn = document.getElementById('sun-btn-' + step);
+    if (!detail || detail.classList.contains('hidden') === false) return;
+    detail.classList.remove('hidden');
+    btn.textContent = 'Shown';
+    btn.disabled = true;
+    btn.classList.replace('bg-sky-600', 'bg-slate-600');
+    btn.classList.replace('hover:bg-sky-500', 'hover:bg-slate-600');
+    sunshineRevealed++;
+    if (sunshineRevealed === sunshineTotalSteps) {
+        document.getElementById('sunshine-financials').classList.remove('hidden');
+    }
+}
+
 // ==================== TAB 3: BUILDER ====================
 let builderRows = [];
 let builderTotals = { cash: 0, nca: 0, liab: 0, cc: 0, re: 0, rev: 0, exp: 0, ni: 0 };
@@ -597,13 +1298,14 @@ function shuffle(arr) {
 }
 
 function generateQuestion() {
-    const qType = Math.floor(Math.random() * 5);
+    const qType = Math.floor(Math.random() * 6);
     switch (qType) {
         case 0: genRecordQuestion(); break;
         case 1: genMissingAmount(); break;
         case 2: genBalanceCheck(); break;
         case 3: genBuildStatement(); break;
         case 4: genConceptual(); break;
+        case 5: genJournalEntry(); break;
     }
 }
 
@@ -981,6 +1683,274 @@ function genConceptual() {
                 </button>`).join('')}
         </div>
         <div id="feedback-area"></div>`;
+}
+
+// TYPE 6: Journal Entry
+function genJournalEntry() {
+    const amt = randAmount();
+    const scenarios = [
+        {
+            text: `The company issues common stock for $${amt.toLocaleString()} cash.`,
+            entries: [
+                { account: 'Cash', debit: amt, credit: 0 },
+                { account: 'Common Stock', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Cash $${amt.toLocaleString()} (asset increases), Credit Common Stock $${amt.toLocaleString()} (equity increases).`
+        },
+        {
+            text: `The company borrows $${amt.toLocaleString()} cash by signing a note payable.`,
+            entries: [
+                { account: 'Cash', debit: amt, credit: 0 },
+                { account: 'Notes Payable', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Cash $${amt.toLocaleString()} (asset increases), Credit Notes Payable $${amt.toLocaleString()} (liability increases).`
+        },
+        {
+            text: `The company purchases equipment for $${amt.toLocaleString()} cash.`,
+            entries: [
+                { account: 'Equipment', debit: amt, credit: 0 },
+                { account: 'Cash', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Equipment $${amt.toLocaleString()} (asset increases), Credit Cash $${amt.toLocaleString()} (asset decreases).`
+        },
+        {
+            text: `The company purchases $${amt.toLocaleString()} of supplies on account.`,
+            entries: [
+                { account: 'Supplies', debit: amt, credit: 0 },
+                { account: 'Accounts Payable', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Supplies $${amt.toLocaleString()} (asset increases), Credit Accounts Payable $${amt.toLocaleString()} (liability increases).`
+        },
+        {
+            text: `The company provides services for $${amt.toLocaleString()} cash.`,
+            entries: [
+                { account: 'Cash', debit: amt, credit: 0 },
+                { account: 'Service Revenue', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Cash $${amt.toLocaleString()} (asset increases), Credit Service Revenue $${amt.toLocaleString()} (revenue increases equity).`
+        },
+        {
+            text: `The company provides $${amt.toLocaleString()} of services on account.`,
+            entries: [
+                { account: 'Accounts Receivable', debit: amt, credit: 0 },
+                { account: 'Service Revenue', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Accounts Receivable $${amt.toLocaleString()} (asset increases), Credit Service Revenue $${amt.toLocaleString()} (revenue increases equity).`
+        },
+        {
+            text: `The company pays $${amt.toLocaleString()} in employee wages.`,
+            entries: [
+                { account: 'Wages Expense', debit: amt, credit: 0 },
+                { account: 'Cash', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Wages Expense $${amt.toLocaleString()} (expense increases, reducing equity), Credit Cash $${amt.toLocaleString()} (asset decreases).`
+        },
+        {
+            text: `The company pays $${amt.toLocaleString()} for rent expense.`,
+            entries: [
+                { account: 'Rent Expense', debit: amt, credit: 0 },
+                { account: 'Cash', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Rent Expense $${amt.toLocaleString()} (expense increases, reducing equity), Credit Cash $${amt.toLocaleString()} (asset decreases).`
+        },
+        {
+            text: `The company pays $${amt.toLocaleString()} on its accounts payable.`,
+            entries: [
+                { account: 'Accounts Payable', debit: amt, credit: 0 },
+                { account: 'Cash', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Accounts Payable $${amt.toLocaleString()} (liability decreases), Credit Cash $${amt.toLocaleString()} (asset decreases).`
+        },
+        {
+            text: `The company collects $${amt.toLocaleString()} from a customer on account.`,
+            entries: [
+                { account: 'Cash', debit: amt, credit: 0 },
+                { account: 'Accounts Receivable', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Cash $${amt.toLocaleString()} (asset increases), Credit Accounts Receivable $${amt.toLocaleString()} (asset decreases).`
+        },
+        {
+            text: `The company pays $${amt.toLocaleString()} in dividends to shareholders.`,
+            entries: [
+                { account: 'Dividends', debit: amt, credit: 0 },
+                { account: 'Cash', debit: 0, credit: amt }
+            ],
+            explanation: `Debit Dividends $${amt.toLocaleString()} (reduces equity), Credit Cash $${amt.toLocaleString()} (asset decreases).`
+        }
+    ];
+
+    const s = scenarios[Math.floor(Math.random() * scenarios.length)];
+
+    const accountList = ['', 'Cash', 'Accounts Receivable', 'Supplies', 'Equipment', 'Land',
+        'Accounts Payable', 'Notes Payable', 'Unearned Revenue',
+        'Common Stock', 'Additional Paid-in Capital', 'Retained Earnings',
+        'Service Revenue', 'Wages Expense', 'Rent Expense', 'Utilities Expense',
+        'Insurance Expense', 'Depreciation Expense', 'Interest Expense', 'Dividends'];
+
+    const optionsHtml = accountList.map(a =>
+        `<option value="${a}">${a || '-- Select Account --'}</option>`
+    ).join('');
+
+    const area = document.getElementById('question-area');
+    area.innerHTML = `
+        <p class="text-xs text-cyan-400 font-semibold mb-2 uppercase tracking-wide">Journal Entry</p>
+        <p class="text-white text-lg font-medium mb-6">${s.text}</p>
+        <p class="text-slate-400 text-sm mb-3">Record the journal entry for this transaction:</p>
+        <div class="overflow-x-auto mb-4">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-slate-600">
+                        <th class="text-left p-2 text-slate-400">Account</th>
+                        <th class="p-2 text-emerald-400 w-32">Debit</th>
+                        <th class="p-2 text-rose-400 w-32">Credit</th>
+                        <th class="w-10"></th>
+                    </tr>
+                </thead>
+                <tbody id="je-rows">
+                    <tr class="je-row" data-indent="0">
+                        <td class="p-2">
+                            <select class="je-account w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                ${optionsHtml}
+                            </select>
+                        </td>
+                        <td class="p-2"><input type="number" class="je-debit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
+                        <td class="p-2"><input type="number" class="je-credit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
+                        <td></td>
+                    </tr>
+                    <tr class="je-row" data-indent="1">
+                        <td class="p-2 pl-8">
+                            <select class="je-account w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                                ${optionsHtml}
+                            </select>
+                        </td>
+                        <td class="p-2"><input type="number" class="je-debit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
+                        <td class="p-2"><input type="number" class="je-credit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
+                        <td class="p-2"><button onclick="removeJERow(this)" class="text-slate-500 hover:text-rose-400 transition text-lg" title="Remove row">&times;</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="flex gap-3 mb-4">
+            <button onclick="addJERow()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg text-sm font-medium transition">+ Add Line</button>
+            <button class="answer-btn px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition" onclick="checkJournalEntry()">Check Answer</button>
+        </div>
+        <div id="feedback-area"></div>`;
+
+    // Store correct answer on the area element for checking
+    area.dataset.jeAnswer = JSON.stringify(s.entries);
+    area.dataset.jeExplanation = s.explanation;
+}
+
+function addJERow() {
+    const tbody = document.getElementById('je-rows');
+    const accountList = ['', 'Cash', 'Accounts Receivable', 'Supplies', 'Equipment', 'Land',
+        'Accounts Payable', 'Notes Payable', 'Unearned Revenue',
+        'Common Stock', 'Additional Paid-in Capital', 'Retained Earnings',
+        'Service Revenue', 'Wages Expense', 'Rent Expense', 'Utilities Expense',
+        'Insurance Expense', 'Depreciation Expense', 'Interest Expense', 'Dividends'];
+    const optionsHtml = accountList.map(a =>
+        `<option value="${a}">${a || '-- Select Account --'}</option>`
+    ).join('');
+    const tr = document.createElement('tr');
+    tr.className = 'je-row fade-in';
+    tr.dataset.indent = '1';
+    tr.innerHTML = `
+        <td class="p-2 pl-8">
+            <select class="je-account w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
+                ${optionsHtml}
+            </select>
+        </td>
+        <td class="p-2"><input type="number" class="je-debit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
+        <td class="p-2"><input type="number" class="je-credit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
+        <td class="p-2"><button onclick="removeJERow(this)" class="text-slate-500 hover:text-rose-400 transition text-lg" title="Remove row">&times;</button></td>`;
+    tbody.appendChild(tr);
+}
+
+function removeJERow(btn) {
+    const tbody = document.getElementById('je-rows');
+    if (tbody.querySelectorAll('.je-row').length > 2) {
+        btn.closest('tr').remove();
+    }
+}
+
+function checkJournalEntry() {
+    const area = document.getElementById('question-area');
+    const correctEntries = JSON.parse(area.dataset.jeAnswer);
+    const explanation = area.dataset.jeExplanation;
+
+    // Gather student entries (skip blank rows)
+    const rows = document.querySelectorAll('#je-rows .je-row');
+    const studentEntries = [];
+    let totalDebit = 0, totalCredit = 0;
+
+    rows.forEach(row => {
+        const account = row.querySelector('.je-account').value;
+        const debit = parseFloat(row.querySelector('.je-debit').value) || 0;
+        const credit = parseFloat(row.querySelector('.je-credit').value) || 0;
+        if (account || debit > 0 || credit > 0) {
+            studentEntries.push({ account, debit, credit });
+            totalDebit += debit;
+            totalCredit += credit;
+        }
+    });
+
+    // Build the correct entry display
+    let correctDisplay = '<div class="mt-3 p-3 bg-slate-900/60 rounded-lg border border-slate-600"><p class="text-sm text-slate-400 mb-2 font-semibold">Correct journal entry:</p><table class="w-full text-sm"><thead><tr class="border-b border-slate-700"><th class="text-left p-1 text-slate-500">Account</th><th class="p-1 text-emerald-400 w-28">Debit</th><th class="p-1 text-rose-400 w-28">Credit</th></tr></thead><tbody>';
+    correctEntries.forEach((e, i) => {
+        const indent = e.credit > 0 ? 'pl-6' : '';
+        correctDisplay += `<tr><td class="p-1 text-slate-300 ${indent}">${e.account}</td><td class="p-1 text-center ${e.debit > 0 ? 'text-emerald-400' : 'text-slate-600'}">${e.debit > 0 ? '$' + e.debit.toLocaleString() : ''}</td><td class="p-1 text-center ${e.credit > 0 ? 'text-rose-400' : 'text-slate-600'}">${e.credit > 0 ? '$' + e.credit.toLocaleString() : ''}</td></tr>`;
+    });
+    correctDisplay += '</tbody></table></div>';
+
+    // Validate
+    let errors = [];
+
+    if (studentEntries.length === 0) {
+        errors.push('No entries were provided.');
+    }
+
+    if (totalDebit !== totalCredit) {
+        errors.push(`Total debits ($${totalDebit.toLocaleString()}) do not equal total credits ($${totalCredit.toLocaleString()}).`);
+    }
+
+    // Check that each correct entry is matched
+    const matchedCorrect = new Array(correctEntries.length).fill(false);
+    const matchedStudent = new Array(studentEntries.length).fill(false);
+
+    correctEntries.forEach((ce, ci) => {
+        studentEntries.forEach((se, si) => {
+            if (!matchedStudent[si] && !matchedCorrect[ci]) {
+                if (se.account === ce.account && se.debit === ce.debit && se.credit === ce.credit) {
+                    matchedCorrect[ci] = true;
+                    matchedStudent[si] = true;
+                }
+            }
+        });
+    });
+
+    const allCorrectMatched = matchedCorrect.every(m => m);
+    const noExtraEntries = matchedStudent.every(m => m) && studentEntries.length === correctEntries.length;
+    const isCorrect = allCorrectMatched && noExtraEntries && totalDebit === totalCredit && studentEntries.length > 0;
+
+    if (!isCorrect && errors.length === 0) {
+        // Build specific feedback about what went wrong
+        matchedCorrect.forEach((m, i) => {
+            if (!m) {
+                const ce = correctEntries[i];
+                if (ce.debit > 0) errors.push(`Missing or incorrect debit: ${ce.account} for $${ce.debit.toLocaleString()}.`);
+                if (ce.credit > 0) errors.push(`Missing or incorrect credit: ${ce.account} for $${ce.credit.toLocaleString()}.`);
+            }
+        });
+        studentEntries.forEach((se, i) => {
+            if (!matchedStudent[i] && se.account) {
+                errors.push(`"${se.account}" with Debit $${se.debit.toLocaleString()} / Credit $${se.credit.toLocaleString()} is not part of the correct entry.`);
+            }
+        });
+    }
+
+    const fullExplanation = explanation + (errors.length > 0 ? '<br><br><strong>Issues:</strong> ' + errors.join(' ') : '') + correctDisplay;
+
+    showFeedback(isCorrect, fullExplanation);
 }
 
 // ==================== INIT ====================

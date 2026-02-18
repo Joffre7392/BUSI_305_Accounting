@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Accounts, Closing &amp; Accruals | BUSI 305</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(168,85,247,0.15); }
+        .tab-btn.active { border-color: #a855f7; color: #a855f7; background: rgba(168,85,247,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        .t-account { border: 2px solid #64748b; border-top: 3px solid #a855f7; border-radius: 0 0 8px 8px; }
+        .t-account-title { background: rgba(168,85,247,0.2); border-bottom: 2px solid #64748b; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-purple-400 transition-colors mb-6 group">
+            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+
+        <div class="flex items-center gap-4 mb-8">
+            <div class="text-4xl">&#x1F4CA;</div>
+            <div>
+                <h1 class="text-3xl font-bold text-purple-400">T-Accounts, Closing &amp; Accruals</h1>
+                <p class="text-slate-400">Lectures 4&ndash;5 &mdash; The full accounting cycle</p>
+            </div>
+            <span class="ml-auto text-xs bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full font-semibold">Lectures 4-5</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('taccounts')" id="tab-taccounts" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">T-Accounts &amp; Debits/Credits</button>
+            <button onclick="switchTab('accruals')" id="tab-accruals" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Accruals &amp; Deferrals</button>
+            <button onclick="switchTab('closing')" id="tab-closing" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Trial Balance &amp; Closing</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: T-ACCOUNTS ======================== -->
+        <div id="panel-taccounts" class="tab-panel active">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">What Is a T-Account?</h2>
+                <p class="text-slate-300 mb-4">A <strong class="text-white">T-account</strong> is a visual representation of a ledger account. The name comes from its shape: a horizontal line with a vertical line creating a &ldquo;T.&rdquo; Every account in the general ledger can be represented this way.</p>
+
+                <div class="max-w-sm mx-auto mb-6">
+                    <div class="t-account">
+                        <div class="t-account-title text-center py-2 font-bold text-purple-300">Account Name</div>
+                        <div class="grid grid-cols-2 divide-x divide-slate-600 min-h-[80px]">
+                            <div class="p-3 text-center">
+                                <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Debit (Dr)</p>
+                                <p class="text-sm text-slate-400">Always Left</p>
+                            </div>
+                            <div class="p-3 text-center">
+                                <p class="text-xs text-slate-500 uppercase tracking-wider mb-1">Credit (Cr)</p>
+                                <p class="text-sm text-slate-400">Always Right</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-slate-300 mb-2">One side records <strong class="text-white">increases</strong> and the other records <strong class="text-white">decreases</strong>. Which side does what depends on the type of account.</p>
+            </div>
+
+            <!-- Normal Balances -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-purple-400 mb-4">Normal Balances &amp; the Debit/Credit Rules</h2>
+                <p class="text-slate-300 mb-4">Accounts that sit on the <strong class="text-white">left side</strong> of the accounting equation (Assets, Expenses) increase with <strong class="text-purple-300">debits</strong>. Accounts on the <strong class="text-white">right side</strong> (Liabilities, Equity, Revenue) increase with <strong class="text-purple-300">credits</strong>.</p>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left p-3 text-slate-400">Account Type</th>
+                                <th class="text-center p-3 text-slate-400">Normal Balance</th>
+                                <th class="text-center p-3 text-slate-400">Increase</th>
+                                <th class="text-center p-3 text-slate-400">Decrease</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700"><td class="p-3 font-semibold text-emerald-400">Assets (A)</td><td class="text-center p-3">Debit</td><td class="text-center p-3 text-emerald-400">Dr</td><td class="text-center p-3 text-rose-400">Cr</td></tr>
+                            <tr class="border-b border-slate-700"><td class="p-3 font-semibold text-sky-400">Liabilities (L)</td><td class="text-center p-3">Credit</td><td class="text-center p-3 text-emerald-400">Cr</td><td class="text-center p-3 text-rose-400">Dr</td></tr>
+                            <tr class="border-b border-slate-700"><td class="p-3 font-semibold text-sky-400">Equity (SE)</td><td class="text-center p-3">Credit</td><td class="text-center p-3 text-emerald-400">Cr</td><td class="text-center p-3 text-rose-400">Dr</td></tr>
+                            <tr class="border-b border-slate-700"><td class="p-3 font-semibold text-amber-400">Revenue (R)</td><td class="text-center p-3">Credit</td><td class="text-center p-3 text-emerald-400">Cr</td><td class="text-center p-3 text-rose-400">Dr</td></tr>
+                            <tr><td class="p-3 font-semibold text-rose-400">Expenses (E)</td><td class="text-center p-3">Debit</td><td class="text-center p-3 text-emerald-400">Dr</td><td class="text-center p-3 text-rose-400">Cr</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 bg-purple-500/10 rounded-lg p-4 border border-purple-500/30">
+                    <p class="text-sm text-purple-300"><strong>Key rule:</strong> In every journal entry, total debits must always equal total credits. This is the double-entry system &mdash; it ensures the accounting equation stays in balance.</p>
+                </div>
+            </div>
+
+            <!-- Expanded Equation -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-purple-400 mb-4">The Expanded Accounting Equation</h2>
+                <div class="text-center mb-4">
+                    <p class="text-lg text-white font-mono"><span class="text-emerald-400">Assets</span> = <span class="text-sky-400">Liabilities</span> + <span class="text-amber-400">Common Stock</span> + <span class="text-amber-400">Retained Earnings</span></p>
+                    <p class="text-sm text-slate-500 mt-2">where RE changes from: + Revenue &minus; Expenses &minus; Dividends</p>
+                </div>
+                <p class="text-slate-300 text-sm">Revenue <em>increases</em> SE (credit). Expenses <em>decrease</em> SE (debit). This is why revenue has a normal credit balance and expenses have a normal debit balance &mdash; they mirror their effect on equity.</p>
+            </div>
+
+            <!-- Equation Callback -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-purple-500/10 rounded-lg p-4 border border-emerald-500/30 mt-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">The T-account system is a direct extension of <strong class="text-white">A = L + SE</strong>. Accounts on the left side of the equation (assets) increase with debits (left side of the T). Accounts on the right side (liabilities, equity) increase with credits (right side of the T). Debits always equal credits &mdash; just like the equation always balances.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 2: ACCRUALS & DEFERRALS ======================== -->
+        <div id="panel-accruals" class="tab-panel">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">Why Do We Need Adjusting Entries?</h2>
+                <p class="text-slate-300 mb-3">Under <strong class="text-white">accrual accounting</strong>, revenue is recognized when <em>earned</em> and expenses when <em>incurred</em> &mdash; regardless of when cash changes hands. At the end of each period, we make <strong class="text-white">adjusting entries</strong> to align the books with economic reality.</p>
+                <p class="text-slate-300">There are four types, split into two categories:</p>
+            </div>
+
+            <!-- Deferrals -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-amber-400 mb-1">Deferrals</h2>
+                <p class="text-slate-400 text-sm mb-5">Cash has already been exchanged &mdash; now we need to recognize the revenue or expense in the correct period.</p>
+
+                <div class="grid md:grid-cols-2 gap-5">
+                    <!-- Deferred Revenue -->
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                        <h3 class="text-lg font-semibold text-amber-300 mb-2">1. Deferred (Unearned) Revenue</h3>
+                        <p class="text-sm text-slate-300 mb-3">Cash received <strong class="text-white">before</strong> earning it. Initially recorded as a <strong class="text-sky-400">liability</strong> because we owe the customer goods/services.</p>
+                        <div class="bg-slate-800 rounded p-3 text-sm mb-3">
+                            <p class="text-slate-400 mb-1">Example: Receive $6,000 on Nov 1 for a 4-month subscription.</p>
+                            <p class="text-slate-400">At Nov 1: <span class="text-emerald-400">Dr Cash 6,000</span> / <span class="text-sky-400">Cr Unearned Revenue 6,000</span></p>
+                            <p class="text-slate-400 mt-1">Adjustment (each month, $1,500 earned):</p>
+                            <p class="text-slate-400"><span class="text-emerald-400">Dr Unearned Revenue 1,500</span> / <span class="text-sky-400">Cr Revenue 1,500</span></p>
+                        </div>
+                        <p class="text-xs text-slate-500">Liability &darr; &amp; Revenue &uarr;</p>
+                    </div>
+
+                    <!-- Prepaid Expense -->
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                        <h3 class="text-lg font-semibold text-amber-300 mb-2">2. Prepaid (Deferred) Expenses</h3>
+                        <p class="text-sm text-slate-300 mb-3">Cash paid <strong class="text-white">before</strong> using the benefit. Initially recorded as an <strong class="text-emerald-400">asset</strong> because future periods benefit.</p>
+                        <div class="bg-slate-800 rounded p-3 text-sm mb-3">
+                            <p class="text-slate-400 mb-1">Example: Pay $3,600 on Dec 1 for 3 months of rent.</p>
+                            <p class="text-slate-400">At Dec 1: <span class="text-emerald-400">Dr Prepaid Rent 3,600</span> / <span class="text-sky-400">Cr Cash 3,600</span></p>
+                            <p class="text-slate-400 mt-1">Adjustment (each month, $1,200 used):</p>
+                            <p class="text-slate-400"><span class="text-emerald-400">Dr Rent Expense 1,200</span> / <span class="text-sky-400">Cr Prepaid Rent 1,200</span></p>
+                        </div>
+                        <p class="text-xs text-slate-500">Asset &darr; &amp; Expense &uarr;</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accruals -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-purple-400 mb-1">Accruals</h2>
+                <p class="text-slate-400 text-sm mb-5">Revenue or expense has been incurred but cash has <strong>not</strong> yet changed hands.</p>
+
+                <div class="grid md:grid-cols-2 gap-5">
+                    <!-- Accrued Revenue -->
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                        <h3 class="text-lg font-semibold text-purple-300 mb-2">3. Accrued Revenue</h3>
+                        <p class="text-sm text-slate-300 mb-3">Revenue <strong class="text-white">earned</strong> but not yet received in cash. We need to record the asset (receivable) and the revenue.</p>
+                        <div class="bg-slate-800 rounded p-3 text-sm mb-3">
+                            <p class="text-slate-400 mb-1">Example: Subletting office space for $500/month. Tenant hasn&rsquo;t paid for December.</p>
+                            <p class="text-slate-400"><span class="text-emerald-400">Dr Rent Receivable 500</span> / <span class="text-sky-400">Cr Rent Revenue 500</span></p>
+                        </div>
+                        <p class="text-xs text-slate-500">Asset &uarr; &amp; Revenue &uarr;</p>
+                    </div>
+
+                    <!-- Accrued Expense -->
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                        <h3 class="text-lg font-semibold text-purple-300 mb-2">4. Accrued Expenses</h3>
+                        <p class="text-sm text-slate-300 mb-3">Expense <strong class="text-white">incurred</strong> but not yet paid. We record the expense and a liability (payable).</p>
+                        <div class="bg-slate-800 rounded p-3 text-sm mb-3">
+                            <p class="text-slate-400 mb-1">Example: Loan with 1% annual interest. $4,000 borrowed, 1 month accrued = $40.</p>
+                            <p class="text-slate-400"><span class="text-emerald-400">Dr Interest Expense 40</span> / <span class="text-sky-400">Cr Interest Payable 40</span></p>
+                        </div>
+                        <p class="text-xs text-slate-500">Expense &uarr; &amp; Liability &uarr;</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Timeline -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-purple-400 mb-4">Timing Diagram: Cash vs. Recognition</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">Deferrals</h3>
+                        <div class="flex items-center gap-2 text-sm text-slate-300 mb-2">
+                            <div class="w-24 text-right text-amber-400 font-semibold">Cash first</div>
+                            <div class="flex-1 h-1 bg-amber-500/30 rounded relative">
+                                <div class="absolute left-0 w-3 h-3 bg-amber-400 rounded-full -top-1"></div>
+                            </div>
+                            <div class="flex-1 h-1 bg-purple-500/30 rounded relative">
+                                <div class="absolute right-0 w-3 h-3 bg-purple-400 rounded-full -top-1"></div>
+                            </div>
+                            <div class="w-32 text-purple-400 font-semibold">Recognize later</div>
+                        </div>
+                        <p class="text-xs text-slate-500 ml-28">Prepaid expenses &amp; Unearned revenue</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-purple-400 uppercase tracking-wider mb-3">Accruals</h3>
+                        <div class="flex items-center gap-2 text-sm text-slate-300 mb-2">
+                            <div class="w-24 text-right text-purple-400 font-semibold">Recognize first</div>
+                            <div class="flex-1 h-1 bg-purple-500/30 rounded relative">
+                                <div class="absolute left-0 w-3 h-3 bg-purple-400 rounded-full -top-1"></div>
+                            </div>
+                            <div class="flex-1 h-1 bg-amber-500/30 rounded relative">
+                                <div class="absolute right-0 w-3 h-3 bg-amber-400 rounded-full -top-1"></div>
+                            </div>
+                            <div class="w-32 text-amber-400 font-semibold">Cash later</div>
+                        </div>
+                        <p class="text-xs text-slate-500 ml-28">Accrued revenue &amp; Accrued expenses</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-purple-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Every adjusting entry keeps <strong class="text-white">A = L + SE</strong> in balance. Deferrals reclassify between balance sheet and income statement accounts (e.g., moving a liability to revenue or an asset to expense). Accruals create new balance sheet items (receivables or payables) alongside the corresponding income statement recognition.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 3: TRIAL BALANCE & CLOSING ======================== -->
+        <div id="panel-closing" class="tab-panel">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-purple-400 mb-4">The Accounting Cycle</h2>
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
+                    <div class="bg-purple-500/10 rounded-lg p-3 text-center border border-purple-500/20">
+                        <p class="text-xs text-purple-400 font-bold mb-1">Step 1</p>
+                        <p class="text-xs text-slate-300">Record transactions</p>
+                    </div>
+                    <div class="bg-purple-500/10 rounded-lg p-3 text-center border border-purple-500/20">
+                        <p class="text-xs text-purple-400 font-bold mb-1">Step 2</p>
+                        <p class="text-xs text-slate-300">Post to T-accounts</p>
+                    </div>
+                    <div class="bg-purple-500/10 rounded-lg p-3 text-center border border-purple-500/20">
+                        <p class="text-xs text-purple-400 font-bold mb-1">Step 3</p>
+                        <p class="text-xs text-slate-300">Unadj. trial balance</p>
+                    </div>
+                    <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+                        <p class="text-xs text-amber-400 font-bold mb-1">Step 4</p>
+                        <p class="text-xs text-slate-300">Adjusting entries</p>
+                    </div>
+                    <div class="bg-amber-500/10 rounded-lg p-3 text-center border border-amber-500/20">
+                        <p class="text-xs text-amber-400 font-bold mb-1">Step 5</p>
+                        <p class="text-xs text-slate-300">Adj. trial balance</p>
+                    </div>
+                    <div class="bg-emerald-500/10 rounded-lg p-3 text-center border border-emerald-500/20">
+                        <p class="text-xs text-emerald-400 font-bold mb-1">Step 6</p>
+                        <p class="text-xs text-slate-300">Close &amp; prepare statements</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trial Balance -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-purple-400 mb-4">The Trial Balance</h2>
+                <p class="text-slate-300 mb-3">A trial balance lists <strong class="text-white">every account</strong> with its debit or credit balance. Accounts are listed in equation order: Assets, Liabilities, Equity, Revenue, Expenses. <strong class="text-white">Total debits must equal total credits.</strong></p>
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-3">
+                    <p class="text-sm text-purple-300 font-bold mb-2">Unadjusted Trial Balance &rarr; Adjustments &rarr; Adjusted Trial Balance</p>
+                    <p class="text-sm text-slate-400">After posting all regular transactions, we prepare the <strong class="text-white">unadjusted</strong> trial balance. Then we post adjusting entries and prepare the <strong class="text-white">adjusted</strong> trial balance. Financial statements are prepared from the adjusted trial balance.</p>
+                </div>
+            </div>
+
+            <!-- Permanent vs Temporary -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-purple-400 mb-4">Permanent vs. Temporary Accounts</h2>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-emerald-500/10 rounded-lg p-5 border border-emerald-500/20">
+                        <h3 class="font-bold text-emerald-400 mb-2">Permanent (Real) Accounts</h3>
+                        <p class="text-sm text-slate-300 mb-2">Balance carries forward period to period.</p>
+                        <p class="text-sm text-slate-400">Assets, Liabilities, Equity (Common Stock, Retained Earnings)</p>
+                        <p class="text-xs text-slate-500 mt-2">These are the balance sheet accounts.</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-5 border border-rose-500/20">
+                        <h3 class="font-bold text-rose-400 mb-2">Temporary Accounts</h3>
+                        <p class="text-sm text-slate-300 mb-2">Reset to zero at end of each period.</p>
+                        <p class="text-sm text-slate-400">Revenue, Expenses, Dividends</p>
+                        <p class="text-xs text-slate-500 mt-2">These are the income statement accounts &mdash; they measure activity for <em>one period</em> only.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Closing Process -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-purple-400 mb-4">The Closing Process</h2>
+                <p class="text-slate-300 mb-4">At the end of each accounting period, we <strong class="text-white">close</strong> temporary accounts by transferring their balances to Retained Earnings. This does two things: (1) resets Revenue and Expense accounts to zero for the next period, and (2) permanently updates Retained Earnings with the period&rsquo;s net income.</p>
+
+                <div class="space-y-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="text-sm font-bold text-emerald-400 mb-2">Entry 1: Close Revenue Accounts</h3>
+                        <p class="text-sm text-slate-300">Debit each revenue account for its balance (to bring it to zero). Credit Retained Earnings for the total.</p>
+                        <div class="bg-slate-800 rounded p-2 mt-2 text-sm text-slate-400 font-mono">
+                            Dr Sales Revenue &nbsp;&nbsp;&nbsp;&nbsp; 75,000<br>
+                            Dr Rental Revenue &nbsp;&nbsp; 500<br>
+                            &nbsp;&nbsp;&nbsp; Cr Retained Earnings &nbsp;&nbsp;&nbsp; 75,500
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="text-sm font-bold text-rose-400 mb-2">Entry 2: Close Expense Accounts</h3>
+                        <p class="text-sm text-slate-300">Credit each expense account for its balance (to bring it to zero). Debit Retained Earnings for the total.</p>
+                        <div class="bg-slate-800 rounded p-2 mt-2 text-sm text-slate-400 font-mono">
+                            Dr Retained Earnings &nbsp;&nbsp;&nbsp; 59,740<br>
+                            &nbsp;&nbsp;&nbsp; Cr COGS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 44,500<br>
+                            &nbsp;&nbsp;&nbsp; Cr Salary Expense &nbsp;&nbsp;&nbsp; 14,000<br>
+                            &nbsp;&nbsp;&nbsp; Cr Rent Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,200<br>
+                            &nbsp;&nbsp;&nbsp; Cr Interest Expense &nbsp;&nbsp; 40
+                        </div>
+                    </div>
+                    <div class="bg-purple-500/10 rounded-lg p-4 border border-purple-500/30">
+                        <p class="text-sm text-purple-300"><strong>Net effect on Retained Earnings:</strong> +75,500 &minus; 59,740 = <strong class="text-white">+15,760</strong> (= Net Income)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-purple-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Closing is how <strong class="text-white">Net Income flows from the income statement to the balance sheet</strong>. Revenue and expense accounts are temporary holding places. At year-end, their net effect (Net Income) transfers to Retained Earnings, permanently updating SE in A = L + SE. After closing, the only equity accounts with balances are Common Stock and Retained Earnings.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 4: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-purple-400 mb-2">Practice Problem: Valley Services &mdash; First Month</h2>
+                <p class="text-slate-400 text-sm mb-4">Walk through a complete accounting cycle: journalize, post to T-accounts, prepare a trial balance, make adjusting entries, close, and produce financial statements.</p>
+
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-purple-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300 mb-3">Valley Services, a consulting firm, begins operations on October 1. The following transactions occur during October:</p>
+                    <ol class="text-sm text-slate-300 space-y-1 ml-4 list-decimal">
+                        <li><span class="text-slate-500">Oct 1:</span> Owners invest <strong>$150,000</strong> cash for common stock</li>
+                        <li><span class="text-slate-500">Oct 1:</span> Pay <strong>$24,000</strong> for a 12-month insurance policy</li>
+                        <li><span class="text-slate-500">Oct 2:</span> Purchase office equipment for <strong>$36,000</strong> cash</li>
+                        <li><span class="text-slate-500">Oct 5:</span> Purchase supplies for <strong>$3,000</strong> on account</li>
+                        <li><span class="text-slate-500">Oct 10:</span> Provide consulting services for <strong>$42,000</strong> cash</li>
+                        <li><span class="text-slate-500">Oct 15:</span> Provide consulting services for <strong>$28,000</strong> on credit</li>
+                        <li><span class="text-slate-500">Oct 20:</span> Collect <strong>$18,000</strong> from credit clients</li>
+                        <li><span class="text-slate-500">Oct 25:</span> Pay <strong>$3,000</strong> toward accounts payable (supplies from #4)</li>
+                        <li><span class="text-slate-500">Oct 28:</span> Pay employee salaries of <strong>$15,000</strong></li>
+                        <li><span class="text-slate-500">Oct 30:</span> Receive <strong>$9,000</strong> cash advance for November project</li>
+                    </ol>
+                </div>
+
+                <!-- Step 1: Journal Entries -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-purple-400 font-bold">Step 1:</span> <span class="text-slate-300">Journal Entries for Transactions 1-10</span></div>
+                        <button onclick="revealStep(1)" id="step-btn-1" class="bg-purple-600 hover:bg-purple-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm font-mono text-slate-400 space-y-2">
+                        <p>(1) Dr Cash 150,000 / Cr Common Stock 150,000</p>
+                        <p>(2) Dr Prepaid Insurance 24,000 / Cr Cash 24,000</p>
+                        <p>(3) Dr Office Equipment 36,000 / Cr Cash 36,000</p>
+                        <p>(4) Dr Supplies 3,000 / Cr Accounts Payable 3,000</p>
+                        <p>(5) Dr Cash 42,000 / Cr Service Revenue 42,000</p>
+                        <p>(6) Dr Accounts Receivable 28,000 / Cr Service Revenue 28,000</p>
+                        <p>(7) Dr Cash 18,000 / Cr Accounts Receivable 18,000</p>
+                        <p>(8) Dr Accounts Payable 3,000 / Cr Cash 3,000</p>
+                        <p>(9) Dr Salary Expense 15,000 / Cr Cash 15,000</p>
+                        <p>(10) Dr Cash 9,000 / Cr Unearned Revenue 9,000</p>
+                    </div>
+                </div>
+
+                <!-- Step 2: T-Account Balances -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-purple-400 font-bold">Step 2:</span> <span class="text-slate-300">T-Account Ending Balances (Unadjusted)</span></div>
+                        <button onclick="revealStep(2)" id="step-btn-2" class="bg-purple-600 hover:bg-purple-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead><tr class="border-b border-slate-600"><th class="text-left p-2 text-slate-400">Account</th><th class="text-right p-2 text-slate-400">Debit</th><th class="text-right p-2 text-slate-400">Credit</th></tr></thead>
+                                <tbody class="text-slate-300">
+                                    <tr class="border-b border-slate-700"><td class="p-2">Cash</td><td class="text-right p-2">$136,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Accounts Receivable</td><td class="text-right p-2">$10,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Prepaid Insurance</td><td class="text-right p-2">$24,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Supplies</td><td class="text-right p-2">$3,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Office Equipment</td><td class="text-right p-2">$36,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Accounts Payable</td><td class="p-2"></td><td class="text-right p-2">$0</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Cash: 150,000 &minus; 24,000 &minus; 36,000 + 42,000 + 18,000 &minus; 3,000 &minus; 15,000 + 9,000 = <strong class="text-white">$141,000</strong></p>
+                        <p class="text-xs text-slate-500">A/R: 28,000 &minus; 18,000 = <strong class="text-white">$10,000</strong></p>
+
+                        <div class="overflow-x-auto mt-4">
+                            <table class="w-full text-sm">
+                                <thead><tr class="border-b border-slate-600"><th class="text-left p-2 text-purple-400">Unadjusted Trial Balance</th><th class="text-right p-2 text-slate-400">Debit</th><th class="text-right p-2 text-slate-400">Credit</th></tr></thead>
+                                <tbody class="text-slate-300">
+                                    <tr class="border-b border-slate-700"><td class="p-2">Cash</td><td class="text-right p-2">$141,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Accounts Receivable</td><td class="text-right p-2">10,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Prepaid Insurance</td><td class="text-right p-2">24,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Supplies</td><td class="text-right p-2">3,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Office Equipment</td><td class="text-right p-2">36,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Unearned Revenue</td><td class="p-2"></td><td class="text-right p-2">9,000</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Common Stock</td><td class="p-2"></td><td class="text-right p-2">150,000</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Service Revenue</td><td class="p-2"></td><td class="text-right p-2">70,000</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">Salary Expense</td><td class="text-right p-2">15,000</td><td class="p-2"></td></tr>
+                                    <tr class="border-b border-slate-600 font-bold"><td class="p-2">Totals</td><td class="text-right p-2">$229,000</td><td class="text-right p-2">$229,000</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Adjusting Entries -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-purple-400 font-bold">Step 3:</span> <span class="text-slate-300">Adjusting Entries (October 31)</span></div>
+                        <button onclick="revealStep(3)" id="step-btn-3" class="bg-purple-600 hover:bg-purple-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="step-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="space-y-3 text-sm">
+                            <div class="bg-slate-800 rounded p-3">
+                                <p class="text-amber-400 font-bold mb-1">A. Insurance expired for October</p>
+                                <p class="text-slate-400">$24,000 / 12 months = $2,000 per month</p>
+                                <p class="font-mono text-slate-400 mt-1">Dr Insurance Expense 2,000 / Cr Prepaid Insurance 2,000</p>
+                                <p class="text-xs text-slate-500 mt-1">Type: Prepaid Expense (deferred expense)</p>
+                            </div>
+                            <div class="bg-slate-800 rounded p-3">
+                                <p class="text-amber-400 font-bold mb-1">B. Depreciation on office equipment</p>
+                                <p class="text-slate-400">$36,000 / 5-year life = $7,200/year = $600/month</p>
+                                <p class="font-mono text-slate-400 mt-1">Dr Depreciation Expense 600 / Cr Accumulated Depreciation 600</p>
+                                <p class="text-xs text-slate-500 mt-1">Type: Prepaid Expense (deferred expense)</p>
+                            </div>
+                            <div class="bg-slate-800 rounded p-3">
+                                <p class="text-purple-400 font-bold mb-1">C. Accrued salaries (not yet paid)</p>
+                                <p class="text-slate-400">Employees earned $3,000 in the last days of October, to be paid in November</p>
+                                <p class="font-mono text-slate-400 mt-1">Dr Salary Expense 3,000 / Cr Salary Payable 3,000</p>
+                                <p class="text-xs text-slate-500 mt-1">Type: Accrued Expense</p>
+                            </div>
+                            <div class="bg-slate-800 rounded p-3">
+                                <p class="text-purple-400 font-bold mb-1">D. Revenue earned from advance payment</p>
+                                <p class="text-slate-400">Earned $3,000 of the $9,000 advance by Oct 31</p>
+                                <p class="font-mono text-slate-400 mt-1">Dr Unearned Revenue 3,000 / Cr Service Revenue 3,000</p>
+                                <p class="text-xs text-slate-500 mt-1">Type: Deferred Revenue</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Adjusted Trial Balance & Statements -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-purple-400 font-bold">Step 4:</span> <span class="text-slate-300">Adjusted Trial Balance &amp; Financial Statements</span></div>
+                        <button onclick="revealStep(4)" id="step-btn-4" class="bg-purple-600 hover:bg-purple-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="step-4" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="text-purple-400 font-bold text-sm mb-2">Income Statement (October)</h4>
+                                <table class="w-full text-sm text-slate-300">
+                                    <tr><td class="p-1">Service Revenue</td><td class="text-right p-1">$73,000</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-1 text-slate-500" colspan="2">Operating Expenses:</td></tr>
+                                    <tr><td class="p-1 pl-4">Salary Expense</td><td class="text-right p-1">(18,000)</td></tr>
+                                    <tr><td class="p-1 pl-4">Insurance Expense</td><td class="text-right p-1">(2,000)</td></tr>
+                                    <tr><td class="p-1 pl-4">Depreciation Expense</td><td class="text-right p-1">(600)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td class="p-1">Net Income</td><td class="text-right p-1 text-emerald-400">$52,400</td></tr>
+                                </table>
+                                <p class="text-xs text-slate-500 mt-2">Revenue: 70,000 + 3,000 (adj D) = 73,000. Salary: 15,000 + 3,000 (adj C) = 18,000.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-purple-400 font-bold text-sm mb-2">Balance Sheet (Oct 31)</h4>
+                                <table class="w-full text-sm text-slate-300">
+                                    <tr><td class="p-1 font-bold text-emerald-400" colspan="2">Assets</td></tr>
+                                    <tr><td class="p-1 pl-4">Cash</td><td class="text-right p-1">$141,000</td></tr>
+                                    <tr><td class="p-1 pl-4">Accounts Receivable</td><td class="text-right p-1">10,000</td></tr>
+                                    <tr><td class="p-1 pl-4">Prepaid Insurance</td><td class="text-right p-1">22,000</td></tr>
+                                    <tr><td class="p-1 pl-4">Supplies</td><td class="text-right p-1">3,000</td></tr>
+                                    <tr><td class="p-1 pl-4">Equipment (net)</td><td class="text-right p-1">35,400</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total Assets</td><td class="text-right p-1">$211,400</td></tr>
+                                    <tr><td class="p-1 font-bold text-sky-400 pt-3" colspan="2">Liabilities &amp; SE</td></tr>
+                                    <tr><td class="p-1 pl-4">Salary Payable</td><td class="text-right p-1">3,000</td></tr>
+                                    <tr><td class="p-1 pl-4">Unearned Revenue</td><td class="text-right p-1">6,000</td></tr>
+                                    <tr><td class="p-1 pl-4">Common Stock</td><td class="text-right p-1">150,000</td></tr>
+                                    <tr><td class="p-1 pl-4">Retained Earnings (NI)</td><td class="text-right p-1">52,400</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total L + SE</td><td class="text-right p-1">$211,400</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Closing -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-purple-400 font-bold">Step 5:</span> <span class="text-slate-300">Closing Entries</span></div>
+                        <button onclick="revealStep(5)" id="step-btn-5" class="bg-purple-600 hover:bg-purple-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="step-5" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <div class="space-y-3">
+                            <div class="bg-slate-800 rounded p-3 font-mono text-slate-400">
+                                <p class="text-emerald-400 mb-1">// Close Revenue</p>
+                                Dr Service Revenue 73,000<br>
+                                &nbsp;&nbsp;&nbsp; Cr Retained Earnings 73,000
+                            </div>
+                            <div class="bg-slate-800 rounded p-3 font-mono text-slate-400">
+                                <p class="text-rose-400 mb-1">// Close Expenses</p>
+                                Dr Retained Earnings 20,600<br>
+                                &nbsp;&nbsp;&nbsp; Cr Salary Expense 18,000<br>
+                                &nbsp;&nbsp;&nbsp; Cr Insurance Expense 2,000<br>
+                                &nbsp;&nbsp;&nbsp; Cr Depreciation Expense 600
+                            </div>
+                            <div class="bg-purple-500/10 rounded p-3 border border-purple-500/30">
+                                <p class="text-purple-300 text-sm"><strong>Net effect:</strong> RE increases by 73,000 &minus; 20,600 = <strong class="text-white">$52,400</strong> = Net Income. After closing, all revenue and expense accounts have a <strong class="text-white">$0 balance</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="walkthrough-summary" class="hidden mt-4 bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/30">
+                    <p class="text-emerald-400 font-bold mb-2">Full Cycle Complete!</p>
+                    <p class="text-sm text-slate-300">You&rsquo;ve walked through the entire accounting cycle: transaction recording &rarr; T-accounts &rarr; unadjusted TB &rarr; adjusting entries &rarr; adjusted TB &rarr; financial statements &rarr; closing entries. This process repeats every period.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 5: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-purple-400">Practice Questions</h2>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right">
+                            <p class="text-xs text-slate-500">Score</p>
+                            <p class="text-lg font-bold text-emerald-400"><span id="score-correct">0</span>/<span id="score-total">0</span></p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-slate-500">Streak</p>
+                            <p class="text-lg font-bold text-amber-400" id="streak">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="question-area" class="mb-4">
+                    <p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p>
+                </div>
+
+                <div id="answer-area" class="mb-4 hidden"></div>
+                <div id="feedback-area" class="mb-4 hidden"></div>
+
+                <div class="flex gap-3">
+                    <button onclick="newQuestion()" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="checkAnswer()" id="check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Journal Entry Practice -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-xl font-bold text-purple-400 mb-4">Journal Entry Practice</h2>
+                <p class="text-slate-400 text-sm mb-4">Select accounts from the dropdowns, enter debit/credit amounts, and check your entry.</p>
+
+                <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4">
+                    <p class="text-slate-400">Click &ldquo;New Journal Entry&rdquo; to start.</p>
+                </div>
+
+                <div id="je-lines" class="space-y-2 mb-4"></div>
+
+                <div class="flex gap-3 mb-4">
+                    <button onclick="addJELine()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">+ Add Line</button>
+                    <button onclick="checkJE()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Check Entry</button>
+                    <button onclick="newJE()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">New Journal Entry</button>
+                </div>
+                <div id="je-feedback" class="hidden"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Tab switching
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    };
+
+    // Step reveals
+    let stepsRevealed = [false, false, false, false, false];
+    window.revealStep = function(n) {
+        const div = document.getElementById('step-' + n);
+        const btn = document.getElementById('step-btn-' + n);
+        if (stepsRevealed[n-1]) {
+            div.classList.add('hidden');
+            btn.textContent = 'Show';
+            stepsRevealed[n-1] = false;
+        } else {
+            div.classList.remove('hidden');
+            btn.textContent = 'Hide';
+            stepsRevealed[n-1] = true;
+        }
+        if (stepsRevealed.every(r => r)) {
+            document.getElementById('walkthrough-summary').classList.remove('hidden');
+        }
+    };
+
+    // Practice Questions
+    let correct = 0, total = 0, streak = 0, currentQ = null;
+
+    const accounts = ['Cash','Accounts Receivable','Supplies','Prepaid Insurance','Prepaid Rent','Office Equipment',
+        'Accumulated Depreciation','Accounts Payable','Salary Payable','Unearned Revenue','Interest Payable',
+        'Common Stock','Retained Earnings','Service Revenue','Rent Revenue','Salary Expense','Rent Expense',
+        'Insurance Expense','Depreciation Expense','Interest Expense','Supplies Expense','Utilities Expense'];
+
+    const normalBalances = {
+        'Cash':'Dr','Accounts Receivable':'Dr','Supplies':'Dr','Prepaid Insurance':'Dr','Prepaid Rent':'Dr',
+        'Office Equipment':'Dr','Accumulated Depreciation':'Cr','Accounts Payable':'Cr','Salary Payable':'Cr',
+        'Unearned Revenue':'Cr','Interest Payable':'Cr','Common Stock':'Cr','Retained Earnings':'Cr',
+        'Service Revenue':'Cr','Rent Revenue':'Cr','Salary Expense':'Dr','Rent Expense':'Dr',
+        'Insurance Expense':'Dr','Depreciation Expense':'Dr','Interest Expense':'Dr','Supplies Expense':'Dr','Utilities Expense':'Dr'
+    };
+
+    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+    function genNormalBalance() {
+        const acct = pick(accounts);
+        const ans = normalBalances[acct];
+        return {
+            question: 'What is the normal balance of <strong class="text-white">' + acct + '</strong>?',
+            type: 'mc',
+            options: ['Debit (Dr)', 'Credit (Cr)'],
+            answer: ans === 'Dr' ? 0 : 1,
+            explanation: acct + ' has a normal ' + (ans === 'Dr' ? 'debit' : 'credit') + ' balance because it is ' +
+                (ans === 'Dr' ? 'an asset or expense account (left side of T-account increases).' : 'a liability, equity, or revenue account (right side of T-account increases).')
+        };
+    }
+
+    function genAdjustingType() {
+        const scenarios = [
+            { text: 'A company received $12,000 for a 6-month service contract two months ago. It\'s now time to recognize revenue for this month.', answer: 0, explain: 'Cash was received first (creating a liability), now we recognize the earned portion as revenue.' },
+            { text: 'Insurance paid in advance 3 months ago needs to be expensed for the current month.', answer: 1, explain: 'Cash was paid first (creating an asset), now we recognize the used portion as expense.' },
+            { text: 'Employees earned $5,000 in wages during the last week of the period but won\'t be paid until next period.', answer: 3, explain: 'The expense has been incurred but cash hasn\'t been paid yet. We need to record both the expense and the liability.' },
+            { text: 'Interest of $300 has been earned on a note receivable but hasn\'t been received yet.', answer: 2, explain: 'Revenue has been earned but cash hasn\'t been received. We record the receivable and the revenue.' },
+            { text: 'A tenant owes us $2,000 for December rent but hasn\'t paid yet.', answer: 2, explain: 'Rent revenue has been earned but not yet received in cash — this is accrued revenue.' },
+            { text: 'We paid $6,000 for supplies at the start of the year. $2,000 of supplies remain at year end.', answer: 1, explain: 'We paid in advance for supplies (asset). Now we expense the used portion ($4,000) — this is a deferred/prepaid expense adjustment.' }
+        ];
+        const s = pick(scenarios);
+        return {
+            question: s.text + '<br><br>What type of adjusting entry is this?',
+            type: 'mc',
+            options: ['Deferred Revenue', 'Prepaid Expense', 'Accrued Revenue', 'Accrued Expense'],
+            answer: s.answer,
+            explanation: s.explain
+        };
+    }
+
+    function genTAccountBalance() {
+        const startBal = rand(5, 50) * 1000;
+        const debits = rand(2, 20) * 1000;
+        const credits = rand(2, 20) * 1000;
+        const isDebitNormal = Math.random() > 0.5;
+        const acctName = isDebitNormal ? pick(['Cash','Accounts Receivable','Equipment']) : pick(['Accounts Payable','Unearned Revenue','Common Stock']);
+        let endBal;
+        if (isDebitNormal) {
+            endBal = startBal + debits - credits;
+        } else {
+            endBal = startBal - debits + credits;
+        }
+        return {
+            question: '<strong class="text-white">' + acctName + '</strong> has a beginning balance of $' + startBal.toLocaleString() +
+                '. During the period, total debits posted = $' + debits.toLocaleString() + ' and total credits posted = $' + credits.toLocaleString() +
+                '.<br><br>What is the ending balance?',
+            type: 'number',
+            answer: endBal,
+            explanation: acctName + ' has a normal ' + (isDebitNormal ? 'debit' : 'credit') + ' balance. Ending = ' + startBal.toLocaleString() +
+                (isDebitNormal ? ' + ' + debits.toLocaleString() + ' - ' + credits.toLocaleString() : ' - ' + debits.toLocaleString() + ' + ' + credits.toLocaleString()) +
+                ' = $' + endBal.toLocaleString()
+        };
+    }
+
+    function genClosingEntry() {
+        const rev = rand(40, 200) * 1000;
+        const exp = rand(20, rev/1000 - 5) * 1000;
+        const ni = rev - exp;
+        return {
+            question: 'At year end, total revenues = $' + rev.toLocaleString() + ' and total expenses = $' + exp.toLocaleString() +
+                '.<br><br>What is the net change to Retained Earnings after closing?',
+            type: 'number',
+            answer: ni,
+            explanation: 'Close revenues: RE increases by $' + rev.toLocaleString() + '. Close expenses: RE decreases by $' + exp.toLocaleString() +
+                '. Net change = $' + rev.toLocaleString() + ' - $' + exp.toLocaleString() + ' = $' + ni.toLocaleString() + ' (= Net Income).'
+        };
+    }
+
+    function genTrueFalse() {
+        const statements = [
+            { text: 'After closing entries, revenue and expense accounts have zero balances.', answer: true, explain: 'Correct — closing transfers their balances to Retained Earnings, resetting them to zero.' },
+            { text: 'Accumulated Depreciation has a normal debit balance.', answer: false, explain: 'Accumulated Depreciation is a contra-asset with a normal credit balance.' },
+            { text: 'An accrued expense is recorded when cash is paid before the expense is incurred.', answer: false, explain: 'That describes a prepaid expense (deferred expense). An accrued expense is incurred BEFORE cash is paid.' },
+            { text: 'A trial balance proves that all transactions have been recorded correctly.', answer: false, explain: 'A trial balance only proves debits = credits. Errors like posting to the wrong account or omitting a transaction entirely won\'t be caught.' },
+            { text: 'Unearned revenue is a liability because the company owes goods or services to the customer.', answer: true, explain: 'Correct — cash was received but the performance obligation hasn\'t been fulfilled yet.' },
+            { text: 'Closing entries are made before adjusting entries.', answer: false, explain: 'Adjusting entries come first (to get correct balances), then closing entries transfer those balances to Retained Earnings.' },
+            { text: 'Retained Earnings is a temporary account.', answer: false, explain: 'Retained Earnings is a permanent (real) account that carries forward from period to period.' }
+        ];
+        const s = pick(statements);
+        return {
+            question: 'True or False: ' + s.text,
+            type: 'mc',
+            options: ['True', 'False'],
+            answer: s.answer ? 0 : 1,
+            explanation: s.explain
+        };
+    }
+
+    const questionGenerators = [genNormalBalance, genAdjustingType, genTAccountBalance, genClosingEntry, genTrueFalse];
+
+    window.newQuestion = function() {
+        currentQ = pick(questionGenerators)();
+        document.getElementById('question-area').innerHTML = '<p class="text-slate-300 text-sm">' + currentQ.question + '</p>';
+        document.getElementById('feedback-area').classList.add('hidden');
+
+        const ansArea = document.getElementById('answer-area');
+        ansArea.classList.remove('hidden');
+
+        if (currentQ.type === 'mc') {
+            ansArea.innerHTML = currentQ.options.map((opt, i) =>
+                '<label class="block mb-2 cursor-pointer"><input type="radio" name="mc" value="' + i + '" class="mr-2 accent-purple-500">' +
+                '<span class="text-slate-300 text-sm">' + opt + '</span></label>'
+            ).join('');
+        } else {
+            ansArea.innerHTML = '<input type="number" id="num-answer" class="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white w-48" placeholder="Enter amount">';
+        }
+        document.getElementById('check-btn').classList.remove('hidden');
+    };
+
+    window.checkAnswer = function() {
+        if (!currentQ) return;
+        let userAns, isCorrect;
+        if (currentQ.type === 'mc') {
+            const sel = document.querySelector('input[name="mc"]:checked');
+            if (!sel) return;
+            userAns = parseInt(sel.value);
+            isCorrect = userAns === currentQ.answer;
+        } else {
+            const inp = document.getElementById('num-answer');
+            if (!inp || !inp.value) return;
+            userAns = parseFloat(inp.value);
+            isCorrect = Math.abs(userAns - currentQ.answer) < 1;
+        }
+
+        total++;
+        if (isCorrect) { correct++; streak++; } else { streak = 0; }
+
+        document.getElementById('score-correct').textContent = correct;
+        document.getElementById('score-total').textContent = total;
+        document.getElementById('streak').textContent = streak;
+
+        const fb = document.getElementById('feedback-area');
+        fb.classList.remove('hidden');
+        const color = isCorrect ? 'emerald' : 'rose';
+        fb.innerHTML = '<div class="bg-' + color + '-500/10 border border-' + color + '-500/30 rounded-lg p-4"><p class="font-bold text-' + color + '-400 mb-1">' +
+            (isCorrect ? 'Correct!' : 'Not quite.') + '</p><p class="text-sm text-slate-300">' + currentQ.explanation + '</p></div>';
+
+        document.getElementById('check-btn').classList.add('hidden');
+    };
+
+    // Journal Entry Practice
+    const jeAccounts = accounts;
+    const jeScenarios = [
+        { prompt: 'Record: Owners invest $80,000 cash for common stock.', answer: [{acct:'Cash',dr:80000,cr:0},{acct:'Common Stock',dr:0,cr:80000}] },
+        { prompt: 'Record: Purchase office equipment for $25,000 cash.', answer: [{acct:'Office Equipment',dr:25000,cr:0},{acct:'Cash',dr:0,cr:25000}] },
+        { prompt: 'Record: Provide services for $15,000 on credit.', answer: [{acct:'Accounts Receivable',dr:15000,cr:0},{acct:'Service Revenue',dr:0,cr:15000}] },
+        { prompt: 'Adjusting entry: Recognize $1,500 of insurance expense from prepaid insurance.', answer: [{acct:'Insurance Expense',dr:1500,cr:0},{acct:'Prepaid Insurance',dr:0,cr:1500}] },
+        { prompt: 'Adjusting entry: Accrue $2,000 of salaries owed but not yet paid.', answer: [{acct:'Salary Expense',dr:2000,cr:0},{acct:'Salary Payable',dr:0,cr:2000}] },
+        { prompt: 'Adjusting entry: Recognize $4,000 of unearned revenue that has now been earned.', answer: [{acct:'Unearned Revenue',dr:4000,cr:0},{acct:'Service Revenue',dr:0,cr:4000}] },
+        { prompt: 'Adjusting entry: Record $500 of depreciation on equipment.', answer: [{acct:'Depreciation Expense',dr:500,cr:0},{acct:'Accumulated Depreciation',dr:0,cr:500}] },
+        { prompt: 'Adjusting entry: Accrue $150 of interest expense on a note payable.', answer: [{acct:'Interest Expense',dr:150,cr:0},{acct:'Interest Payable',dr:0,cr:150}] },
+        { prompt: 'Closing entry: Close Service Revenue of $90,000 to Retained Earnings.', answer: [{acct:'Service Revenue',dr:90000,cr:0},{acct:'Retained Earnings',dr:0,cr:90000}] },
+        { prompt: 'Closing entry: Close Salary Expense of $35,000 and Rent Expense of $10,000 to Retained Earnings.', answer: [{acct:'Retained Earnings',dr:45000,cr:0},{acct:'Salary Expense',dr:0,cr:35000},{acct:'Rent Expense',dr:0,cr:10000}] }
+    ];
+
+    let currentJE = null;
+
+    function makeJELine() {
+        const div = document.createElement('div');
+        div.className = 'flex gap-2 items-center';
+        div.innerHTML = '<select class="je-acct bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm flex-1"><option value="">-- Account --</option>' +
+            jeAccounts.map(a => '<option value="' + a + '">' + a + '</option>').join('') +
+            '</select>' +
+            '<input type="number" class="je-dr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Debit">' +
+            '<input type="number" class="je-cr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Credit">' +
+            '<button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-rose-400 text-sm">✕</button>';
+        return div;
+    }
+
+    window.addJELine = function() {
+        document.getElementById('je-lines').appendChild(makeJELine());
+    };
+
+    window.newJE = function() {
+        currentJE = pick(jeScenarios);
+        document.getElementById('je-prompt').innerHTML = '<p class="text-slate-300 text-sm">' + currentJE.prompt + '</p>';
+        document.getElementById('je-lines').innerHTML = '';
+        document.getElementById('je-feedback').classList.add('hidden');
+        for (let i = 0; i < 2; i++) addJELine();
+    };
+
+    window.checkJE = function() {
+        if (!currentJE) return;
+        const lines = document.getElementById('je-lines').children;
+        let totalDr = 0, totalCr = 0, userEntries = [];
+        for (let line of lines) {
+            const acct = line.querySelector('.je-acct').value;
+            const dr = parseFloat(line.querySelector('.je-dr').value) || 0;
+            const cr = parseFloat(line.querySelector('.je-cr').value) || 0;
+            if (acct && (dr || cr)) {
+                userEntries.push({acct, dr, cr});
+                totalDr += dr;
+                totalCr += cr;
+            }
+        }
+
+        const fb = document.getElementById('je-feedback');
+        fb.classList.remove('hidden');
+
+        if (totalDr === 0 && totalCr === 0) {
+            fb.innerHTML = '<div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4"><p class="text-rose-400 font-bold">Enter at least one debit and one credit amount.</p></div>';
+            return;
+        }
+
+        if (Math.abs(totalDr - totalCr) > 0.01) {
+            fb.innerHTML = '<div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4"><p class="text-rose-400 font-bold">Debits ($' + totalDr.toLocaleString() + ') ≠ Credits ($' + totalCr.toLocaleString() + ')</p><p class="text-sm text-slate-300 mt-1">Remember: every journal entry must have equal debits and credits.</p></div>';
+            return;
+        }
+
+        // Check against answer
+        const ansStr = currentJE.answer.map(a => a.acct + ':' + a.dr + ':' + a.cr).sort().join('|');
+        const userStr = userEntries.map(a => a.acct + ':' + a.dr + ':' + a.cr).sort().join('|');
+
+        if (ansStr === userStr) {
+            fb.innerHTML = '<div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-bold">Correct!</p><p class="text-sm text-slate-300 mt-1">Debits = Credits = $' + totalDr.toLocaleString() + '. Well done!</p></div>';
+        } else {
+            const correctHTML = currentJE.answer.map(a => {
+                const parts = [];
+                if (a.dr) parts.push('Dr ' + a.acct + ' ' + a.dr.toLocaleString());
+                if (a.cr) parts.push('Cr ' + a.acct + ' ' + a.cr.toLocaleString());
+                return parts.join(' / ');
+            }).join('<br>');
+            fb.innerHTML = '<div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-400 font-bold">Not quite — debits do equal credits, but check your accounts.</p><p class="text-sm text-slate-300 mt-2">Expected:<br><span class="font-mono text-xs">' + correctHTML + '</span></p></div>';
+        }
+    };
+</script>
+</body>
+</html>

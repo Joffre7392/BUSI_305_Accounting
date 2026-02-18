@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Assets &amp; Depreciation | BUSI 305</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(20,184,166,0.15); }
+        .tab-btn.active { border-color: #14b8a6; color: #14b8a6; background: rgba(20,184,166,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-teal-400 transition-colors mb-6 group">
+            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+
+        <div class="flex items-center gap-4 mb-8">
+            <div class="text-4xl">&#x1F3ED;</div>
+            <div>
+                <h1 class="text-3xl font-bold text-teal-400">Fixed Assets &amp; Depreciation</h1>
+                <p class="text-slate-400">Lectures 10&ndash;11 &mdash; PP&amp;E, depreciation methods, impairments &amp; disposals</p>
+            </div>
+            <span class="ml-auto text-xs bg-teal-500/20 text-teal-400 px-3 py-1 rounded-full font-semibold">Lectures 10-11</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('basics')" id="tab-basics" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Fixed Assets &amp; Capitalization</button>
+            <button onclick="switchTab('methods')" id="tab-methods" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Depreciation Methods</button>
+            <button onclick="switchTab('calc')" id="tab-calc" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Interactive Calculator</button>
+            <button onclick="switchTab('advanced')" id="tab-advanced" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Impairments &amp; Disposals</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: BASICS ======================== -->
+        <div id="panel-basics" class="tab-panel active">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-teal-400 mb-4">What Are Fixed Assets?</h2>
+                <p class="text-slate-300 mb-4"><strong class="text-white">Fixed assets</strong> (Property, Plant &amp; Equipment or PP&amp;E) are long-lived <em>tangible</em> assets expected to provide economic benefits for more than one year. Examples include buildings, equipment, vehicles, and machinery.</p>
+
+                <div class="bg-teal-500/10 rounded-lg p-4 border border-teal-500/30 mb-4">
+                    <p class="text-teal-300 font-bold text-lg text-center font-mono">Net Book Value = Historical Cost &minus; Accumulated Depreciation</p>
+                </div>
+
+                <h3 class="text-lg font-bold text-teal-400 mb-3">Balance Sheet Presentation</h3>
+                <div class="max-w-md bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                    <table class="w-full text-sm text-slate-300">
+                        <tr><td class="p-1">Gross PP&amp;E (Historical Cost)</td><td class="text-right p-1 font-mono">$80,000</td></tr>
+                        <tr><td class="p-1">Less: Accumulated Depreciation</td><td class="text-right p-1 font-mono">(14,000)</td></tr>
+                        <tr class="border-t border-slate-600 font-bold"><td class="p-1">Net PP&amp;E</td><td class="text-right p-1 font-mono">$66,000</td></tr>
+                        <tr><td class="p-1 text-slate-500">% Depreciated</td><td class="text-right p-1 text-slate-500">17.5%</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Capitalize vs Expense -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-teal-400 mb-4">Capitalize vs. Expense</h2>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-emerald-500/10 rounded-lg p-5 border border-emerald-500/20">
+                        <h3 class="font-bold text-emerald-400 mb-2">Capitalize (CapEx)</h3>
+                        <p class="text-sm text-slate-300 mb-2">Improvements that extend useful life, increase capacity, or add new capabilities.</p>
+                        <ul class="text-sm text-slate-400 space-y-1 list-disc ml-4">
+                            <li>Added to Gross PP&amp;E on the balance sheet</li>
+                            <li>Depreciated over the asset&rsquo;s useful life</li>
+                            <li>Reported in Cash Flow from <strong class="text-white">Investing</strong></li>
+                        </ul>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-5 border border-rose-500/20">
+                        <h3 class="font-bold text-rose-400 mb-2">Expense</h3>
+                        <p class="text-sm text-slate-300 mb-2">Routine maintenance and repairs that maintain (but don&rsquo;t enhance) the asset.</p>
+                        <ul class="text-sm text-slate-400 space-y-1 list-disc ml-4">
+                            <li>Expensed immediately on the income statement</li>
+                            <li>Does NOT increase asset value</li>
+                            <li>Reported in Cash Flow from <strong class="text-white">Operations</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-3 mt-4 border border-slate-600">
+                    <p class="text-sm text-slate-300"><strong class="text-teal-400">Example:</strong> Company buys a truck for $70,000. Modifications cost $10,000. Total capitalized cost = <strong class="text-white">$80,000</strong>. The modifications are capitalized because they prepare the asset for its intended use.</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-teal-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Fixed assets sit on the <strong class="text-white">left side</strong> of A = L + SE. Buying equipment exchanges one asset (Cash) for another (PP&amp;E) &mdash; total assets are unchanged. Depreciation then gradually moves the cost to the income statement as an expense, reducing both Assets (via Accumulated Depreciation, a contra-asset) and SE (via lower Net Income &rarr; lower Retained Earnings).</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 2: DEPRECIATION METHODS ======================== -->
+        <div id="panel-methods" class="tab-panel">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-teal-400 mb-2">Depreciation Methods</h2>
+                <p class="text-slate-300 mb-4"><strong class="text-white">Depreciation</strong> is the systematic allocation of an asset&rsquo;s cost to the periods in which it provides benefits. It is a <strong class="text-amber-400">non-cash expense</strong> &mdash; it reduces reported income but has no direct effect on cash flows.</p>
+
+                <div class="bg-teal-500/10 rounded-lg p-3 border border-teal-500/30 mb-6">
+                    <p class="text-teal-300 font-mono text-center"><strong>Depreciation Base</strong> = Cost &minus; Salvage Value = $80,000 &minus; $8,000 = <strong>$72,000</strong></p>
+                </div>
+
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-6">
+                    <p class="text-sm text-slate-400"><strong class="text-white">Running example:</strong> Company X purchases a delivery truck for $80,000. Useful life: 5 years. Salvage value: $8,000.</p>
+                </div>
+
+                <!-- Method 1: Straight-Line -->
+                <div class="bg-slate-800/80 rounded-xl p-5 border border-teal-500/30 mb-5">
+                    <h3 class="text-lg font-bold text-teal-300 mb-3">1. Straight-Line (SL)</h3>
+                    <p class="text-sm text-slate-300 mb-3 font-mono">Annual Depreciation = (Cost &minus; Salvage) &divide; Useful Life = $72,000 &divide; 5 = <strong class="text-white">$14,400/year</strong></p>
+                    <p class="text-sm text-slate-400 mb-3">Rate = 1/5 = 20% per year. Equal expense every year.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead><tr class="border-b border-slate-600 text-slate-400"><th class="p-2 text-left">Year</th><th class="p-2 text-right">Beg. BV</th><th class="p-2 text-right">Depr. Exp.</th><th class="p-2 text-right">Accum. Depr.</th><th class="p-2 text-right">End BV</th></tr></thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700"><td class="p-2">1</td><td class="text-right p-2">$80,000</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$65,600</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">2</td><td class="text-right p-2">$65,600</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$28,800</td><td class="text-right p-2">$51,200</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">3</td><td class="text-right p-2">$51,200</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$43,200</td><td class="text-right p-2">$36,800</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">4</td><td class="text-right p-2">$36,800</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$57,600</td><td class="text-right p-2">$22,400</td></tr>
+                                <tr><td class="p-2">5</td><td class="text-right p-2">$22,400</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$72,000</td><td class="text-right p-2 font-bold text-teal-400">$8,000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Method 2: DDB -->
+                <div class="bg-slate-800/80 rounded-xl p-5 border border-teal-500/30 mb-5">
+                    <h3 class="text-lg font-bold text-teal-300 mb-3">2. Double-Declining Balance (DDB)</h3>
+                    <p class="text-sm text-slate-300 mb-2 font-mono">Rate = 2 &times; (1/Useful Life) = 2 &times; 20% = <strong class="text-white">40%</strong></p>
+                    <p class="text-sm text-slate-300 mb-3 font-mono">Depr. Expense = Rate &times; <em>Beginning Book Value</em></p>
+                    <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30 mb-3">
+                        <p class="text-sm text-amber-300"><strong>Important:</strong> DDB applies the rate to the Beginning Book Value (not the depreciation base). And you can <strong>never depreciate below salvage value</strong> &mdash; the final year is capped.</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead><tr class="border-b border-slate-600 text-slate-400"><th class="p-2 text-left">Year</th><th class="p-2 text-right">Beg. BV</th><th class="p-2 text-right">Depr. Exp.</th><th class="p-2 text-right">Accum. Depr.</th><th class="p-2 text-right">End BV</th></tr></thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700"><td class="p-2">1</td><td class="text-right p-2">$80,000</td><td class="text-right p-2">$32,000</td><td class="text-right p-2">$32,000</td><td class="text-right p-2">$48,000</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">2</td><td class="text-right p-2">$48,000</td><td class="text-right p-2">$19,200</td><td class="text-right p-2">$51,200</td><td class="text-right p-2">$28,800</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">3</td><td class="text-right p-2">$28,800</td><td class="text-right p-2">$11,520</td><td class="text-right p-2">$62,720</td><td class="text-right p-2">$17,280</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">4</td><td class="text-right p-2">$17,280</td><td class="text-right p-2">$6,912</td><td class="text-right p-2">$69,632</td><td class="text-right p-2">$10,368</td></tr>
+                                <tr><td class="p-2">5</td><td class="text-right p-2">$10,368</td><td class="text-right p-2 text-amber-400">$2,368*</td><td class="text-right p-2">$72,000</td><td class="text-right p-2 font-bold text-teal-400">$8,000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">*Year 5: Normal calc would be $4,147, but capped at $2,368 to reach salvage ($10,368 &minus; $8,000).</p>
+                </div>
+
+                <!-- Method 3: Units of Production -->
+                <div class="bg-slate-800/80 rounded-xl p-5 border border-teal-500/30 mb-5">
+                    <h3 class="text-lg font-bold text-teal-300 mb-3">3. Units-of-Production</h3>
+                    <p class="text-sm text-slate-300 mb-3">Same truck: 80,000 total expected miles.</p>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm text-slate-300">
+                        <div class="bg-slate-900/60 rounded p-3 border border-slate-600 text-center">
+                            <p class="text-xs text-slate-500 mb-1">Depr. Base</p>
+                            <p class="font-bold">$72,000</p>
+                        </div>
+                        <div class="bg-slate-900/60 rounded p-3 border border-slate-600 text-center">
+                            <p class="text-xs text-slate-500 mb-1">Rate per Mile</p>
+                            <p class="font-bold">$0.90</p>
+                            <p class="text-xs text-slate-500">$72,000 &divide; 80,000</p>
+                        </div>
+                        <div class="bg-slate-900/60 rounded p-3 border border-slate-600 text-center">
+                            <p class="text-xs text-slate-500 mb-1">Year 1 (18,000 mi)</p>
+                            <p class="font-bold text-teal-400">$16,200</p>
+                            <p class="text-xs text-slate-500">18,000 &times; $0.90</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side-by-Side Comparison -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <h3 class="text-lg font-bold text-teal-400 mb-3">Side-by-Side: SL vs. DDB</h3>
+                    <div class="overflow-x-auto mb-4">
+                        <table class="w-full text-sm">
+                            <thead><tr class="border-b border-slate-600 text-slate-400"><th class="p-2 text-left">Year</th><th class="p-2 text-right">Straight-Line</th><th class="p-2 text-right">DDB</th><th class="p-2 text-right">Difference</th></tr></thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700"><td class="p-2">1</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$32,000</td><td class="text-right p-2 text-rose-400">+$17,600</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">2</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$19,200</td><td class="text-right p-2 text-rose-400">+$4,800</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">3</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$11,520</td><td class="text-right p-2 text-emerald-400">&minus;$2,880</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">4</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$6,912</td><td class="text-right p-2 text-emerald-400">&minus;$7,488</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">5</td><td class="text-right p-2">$14,400</td><td class="text-right p-2">$2,368</td><td class="text-right p-2 text-emerald-400">&minus;$12,032</td></tr>
+                                <tr class="font-bold"><td class="p-2">Total</td><td class="text-right p-2">$72,000</td><td class="text-right p-2">$72,000</td><td class="text-right p-2 text-slate-500">$0</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-teal-500/10 rounded-lg p-3 border border-teal-500/30">
+                        <p class="text-sm text-teal-300"><strong>Key insight:</strong> Total depreciation is <strong class="text-white">always $72,000</strong> regardless of method. Only the <em>timing</em> differs. DDB is &ldquo;accelerated&rdquo; &mdash; more expense in early years, less in later years.</p>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
+                        <h3 class="text-sm font-bold text-teal-400 mb-3">Annual Depreciation Expense</h3>
+                        <canvas id="deprExpenseChart"></canvas>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
+                        <h3 class="text-sm font-bold text-teal-400 mb-3">Net Book Value Over Time</h3>
+                        <canvas id="nbvChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-teal-500/10 rounded-lg p-4 border border-emerald-500/30">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                        <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                    </div>
+                    <p class="text-sm text-slate-300">Each year&rsquo;s depreciation expense reduces <strong class="text-white">Net Income &rarr; Retained Earnings (SE)</strong>. Meanwhile, Accumulated Depreciation (a contra-asset) reduces total <strong class="text-white">Assets</strong>. Both sides decrease equally: <strong class="text-white">A&darr; = L + SE&darr;</strong>. Remember: depreciation is non-cash &mdash; it reduces reported income but has no direct effect on cash flows.</p>
+                </div>
+            </div>
+
+            <!-- ======================== TAB 3: CALCULATOR ======================== -->
+            <div id="panel-calc" class="tab-panel">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <h2 class="text-2xl font-bold text-teal-400 mb-4">Interactive Depreciation Calculator</h2>
+                    <div class="grid md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm text-slate-400 mb-1">Cost ($)</label>
+                            <input type="number" id="calc-cost" value="80000" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" onchange="runCalc()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-slate-400 mb-1">Salvage Value ($)</label>
+                            <input type="number" id="calc-salvage" value="8000" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" onchange="runCalc()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-slate-400 mb-1">Useful Life (years)</label>
+                            <input type="number" id="calc-life" value="5" min="1" max="40" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" onchange="runCalc()">
+                        </div>
+                    </div>
+
+                    <div id="calc-summary" class="bg-teal-500/10 rounded-lg p-3 border border-teal-500/30 mb-4 text-center text-teal-300 font-mono"></div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 class="text-sm font-bold text-teal-400 mb-2">Straight-Line Schedule</h3>
+                            <div id="calc-sl-table" class="overflow-x-auto"></div>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-teal-400 mb-2">Double-Declining Balance Schedule</h3>
+                            <div id="calc-ddb-table" class="overflow-x-auto"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
+                            <canvas id="calcExpenseChart"></canvas>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
+                            <canvas id="calcNBVChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================== TAB 4: IMPAIRMENTS & DISPOSALS ======================== -->
+            <div id="panel-advanced" class="tab-panel">
+                <!-- Impairments -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <h2 class="text-2xl font-bold text-teal-400 mb-4">Impairments</h2>
+                    <p class="text-slate-300 mb-4">An impairment occurs when an asset&rsquo;s value is <strong class="text-white">permanently</strong> below its book value. Unlike depreciation (which is systematic), impairments are event-driven.</p>
+
+                    <div class="grid md:grid-cols-3 gap-4 mb-5">
+                        <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                            <p class="text-xs text-slate-500 uppercase mb-1">Step 1: Compare</p>
+                            <p class="text-sm text-slate-300">Book Value vs. Expected Future Cash Flows</p>
+                            <p class="text-xs text-teal-400 mt-1">If BV &gt; Cash Flows &rarr; Impaired</p>
+                        </div>
+                        <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                            <p class="text-xs text-slate-500 uppercase mb-1">Step 2: Calculate</p>
+                            <p class="text-sm text-slate-300">Impairment Charge = Book Value &minus; Fair Value</p>
+                        </div>
+                        <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                            <p class="text-xs text-slate-500 uppercase mb-1">Step 3: Write Down</p>
+                            <p class="text-sm text-slate-300">New BV = Fair Value. Recalculate future depreciation.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                        <h3 class="text-teal-300 font-bold mb-2">Example</h3>
+                        <p class="text-sm text-slate-300 mb-2">Truck: $80,000 cost, 5-year life, $0 salvage, SL depreciation ($16,000/yr). After 3 years:</p>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="text-slate-400">Book Value = $80,000 &minus; 3&times;$16,000 = <strong class="text-white">$32,000</strong></p>
+                                <p class="text-slate-400">Future Cash Flows = <strong class="text-white">$28,000</strong></p>
+                                <p class="text-slate-400">Fair Value = <strong class="text-white">$20,000</strong></p>
+                                <p class="text-amber-400 mt-1">BV ($32K) &gt; Cash Flows ($28K) &rarr; <strong>Impaired!</strong></p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400">Impairment = $32,000 &minus; $20,000 = <strong class="text-white">$12,000</strong></p>
+                                <p class="font-mono text-slate-400 mt-2">Dr Impairment Loss 12,000</p>
+                                <p class="font-mono text-slate-400">&nbsp;&nbsp; Cr Accum. Depr. 12,000</p>
+                                <p class="text-slate-500 mt-2">New annual depr: $20,000 &divide; 2 yrs = $10,000/yr</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estimate Changes -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <h2 class="text-xl font-bold text-teal-400 mb-4">Changes in Accounting Estimates</h2>
+                    <p class="text-slate-300 mb-3">When useful life or salvage value estimates change, the change is applied <strong class="text-white">prospectively</strong> (future periods only, not retroactively).</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-teal-300 font-bold mb-2">Example: Extending Useful Life</p>
+                        <p class="text-sm text-slate-400 mb-2">After 4 years of SL depreciation ($14,400/yr), Company X extends the truck&rsquo;s useful life from 5 to 7 years. Salvage unchanged at $8,000.</p>
+                        <p class="text-sm text-slate-400">BV after 4 years = $80,000 &minus; $57,600 = <strong class="text-white">$22,400</strong></p>
+                        <p class="text-sm text-slate-400">New depreciation = ($22,400 &minus; $8,000) &divide; 3 remaining years = <strong class="text-white">$4,800/yr</strong></p>
+                    </div>
+                </div>
+
+                <!-- Disposals -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <h2 class="text-xl font-bold text-teal-400 mb-4">Sale or Disposal of Fixed Assets</h2>
+                    <div class="bg-teal-500/10 rounded-lg p-3 border border-teal-500/30 mb-4">
+                        <p class="text-teal-300 text-center font-mono">Gain or Loss = Proceeds &minus; Book Value</p>
+                        <p class="text-center text-sm text-slate-400 mt-1">BV &gt; Proceeds = <span class="text-rose-400">Loss</span> &nbsp;|&nbsp; BV &lt; Proceeds = <span class="text-emerald-400">Gain</span></p>
+                    </div>
+
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-4">
+                        <p class="text-sm text-teal-300 font-bold mb-2">Example: Selling at a Gain</p>
+                        <p class="text-sm text-slate-400 mb-2">Sell truck for $67,000 on 1/1/2027 (after 1 year, accum depr = $14,000).</p>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="text-slate-400">Proceeds: $67,000</p>
+                                <p class="text-slate-400">Book Value: $80,000 &minus; $14,000 = $66,000</p>
+                                <p class="text-emerald-400 font-bold mt-1">Gain = $67,000 &minus; $66,000 = $1,000</p>
+                            </div>
+                            <div class="font-mono text-slate-400">
+                                Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 67,000<br>
+                                Dr Accum. Depr. &nbsp;&nbsp;&nbsp;&nbsp; 14,000<br>
+                                &nbsp;&nbsp; Cr PP&amp;E &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 80,000<br>
+                                &nbsp;&nbsp; Cr Gain on Sale &nbsp;&nbsp;&nbsp;&nbsp; 1,000
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-3"><strong>Cash flow impact:</strong> Proceeds ($67K) in CFI. Gain ($1K) removed from Net Income in CFO.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-teal-500/10 rounded-lg p-4 border border-emerald-500/30">
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                        <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                    </div>
+                    <p class="text-sm text-slate-300">When we sell an asset, we remove its cost and accumulated depreciation from Assets, and add Cash. Any <strong class="text-emerald-400">gain</strong> increases SE; any <strong class="text-rose-400">loss</strong> decreases SE. The equation <strong class="text-white">A = L + SE</strong> always holds.</p>
+                </div>
+            </div>
+
+            <!-- ======================== TAB 5: WORKED EXAMPLES ======================== -->
+            <div id="panel-worked" class="tab-panel">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <h2 class="text-2xl font-bold text-teal-400 mb-2">Practice Problem: Summit Transport &mdash; Fleet Management</h2>
+                    <p class="text-slate-400 text-sm mb-4">Walk through the full lifecycle of a fixed asset: acquisition, depreciation, impairment, and disposal.</p>
+
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                        <p class="text-sm text-teal-300 font-bold mb-2">Setup</p>
+                        <p class="text-sm text-slate-300">Summit Transport purchases a delivery van on January 1, 2026:</p>
+                        <ul class="text-sm text-slate-300 list-disc ml-5 mt-2 space-y-1">
+                            <li>Purchase price: $60,000</li>
+                            <li>Logo wrapping &amp; modifications: $5,000</li>
+                            <li>Total capitalized cost: <strong class="text-white">$65,000</strong></li>
+                            <li>Useful life: 5 years &nbsp;|&nbsp; Salvage value: $5,000 &nbsp;|&nbsp; Depreciation base: $60,000</li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 1 -->
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                            <div><span class="text-teal-400 font-bold">Step 1:</span> <span class="text-slate-300">Record the Acquisition</span></div>
+                            <button onclick="revealWalkStep(1)" id="walk-btn-1" class="bg-teal-600 hover:bg-teal-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                        </div>
+                        <div id="walk-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                            <p class="font-mono text-slate-400">Dr PP&amp;E (Vehicle) &nbsp;&nbsp;&nbsp;&nbsp; 65,000<br>&nbsp;&nbsp; Cr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 65,000</p>
+                            <p class="text-slate-500 mt-2">Both the purchase price and modifications are capitalized because they prepare the asset for its intended use.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                            <div><span class="text-teal-400 font-bold">Step 2:</span> <span class="text-slate-300">Year 1 Depreciation (SL vs. DDB)</span></div>
+                            <button onclick="revealWalkStep(2)" id="walk-btn-2" class="bg-teal-600 hover:bg-teal-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                        </div>
+                        <div id="walk-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-teal-300 font-bold mb-1">Straight-Line</p>
+                                    <p class="text-slate-400">$60,000 &divide; 5 = <strong class="text-white">$12,000/yr</strong></p>
+                                    <p class="text-slate-400">End BV = $65,000 &minus; $12,000 = $53,000</p>
+                                </div>
+                                <div>
+                                    <p class="text-teal-300 font-bold mb-1">DDB</p>
+                                    <p class="text-slate-400">Rate = 40%. Yr 1: 40% &times; $65,000 = <strong class="text-white">$26,000</strong></p>
+                                    <p class="text-slate-400">End BV = $65,000 &minus; $26,000 = $39,000</p>
+                                </div>
+                            </div>
+                            <p class="font-mono text-slate-400 mt-3">Dr Depreciation Expense &nbsp;&nbsp; [12,000 or 26,000]<br>&nbsp;&nbsp; Cr Accum. Depreciation &nbsp;&nbsp; [12,000 or 26,000]</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                            <div><span class="text-teal-400 font-bold">Step 3:</span> <span class="text-slate-300">Year 2 Depreciation</span></div>
+                            <button onclick="revealWalkStep(3)" id="walk-btn-3" class="bg-teal-600 hover:bg-teal-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                        </div>
+                        <div id="walk-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-teal-300 font-bold mb-1">Straight-Line: $12,000</p>
+                                    <p class="text-slate-400">Accum Depr = $24,000. BV = $41,000</p>
+                                </div>
+                                <div>
+                                    <p class="text-teal-300 font-bold mb-1">DDB: 40% &times; $39,000 = $15,600</p>
+                                    <p class="text-slate-400">Accum Depr = $41,600. BV = $23,400</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                            <div><span class="text-teal-400 font-bold">Step 4:</span> <span class="text-slate-300">Mid-Year 3 &mdash; Impairment Test (using SL)</span></div>
+                            <button onclick="revealWalkStep(4)" id="walk-btn-4" class="bg-teal-600 hover:bg-teal-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                        </div>
+                        <div id="walk-4" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                            <p class="text-slate-400 mb-2">After the Year 2 SL depreciation, BV = $41,000. The van is in an accident mid-Year 3.</p>
+                            <p class="text-slate-400">Future cash flows = $18,000 &nbsp;|&nbsp; Fair value = $15,000</p>
+                            <p class="text-amber-400 mt-1">BV ($41,000) &gt; Future CFs ($18,000) &rarr; <strong>Impaired!</strong></p>
+                            <p class="text-slate-400 mt-2">Impairment charge = $41,000 &minus; $15,000 = <strong class="text-white">$26,000</strong></p>
+                            <p class="font-mono text-slate-400 mt-2">Dr Impairment Loss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 26,000<br>&nbsp;&nbsp; Cr Accum. Depreciation &nbsp; 26,000</p>
+                            <p class="text-slate-500 mt-2">New BV = $15,000. New annual depr = ($15,000 &minus; $5,000) &divide; 3 remaining years = <strong class="text-white">$3,333/yr</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                            <div><span class="text-teal-400 font-bold">Step 5:</span> <span class="text-slate-300">Sell the Van at End of Year 4</span></div>
+                            <button onclick="revealWalkStep(5)" id="walk-btn-5" class="bg-teal-600 hover:bg-teal-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                        </div>
+                        <div id="walk-5" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                            <p class="text-slate-400 mb-2">After Year 3 and Year 4 depreciation ($3,333 each), additional accum depr = $6,667 (approx).</p>
+                            <p class="text-slate-400">BV at sale = $15,000 &minus; $3,333 &minus; $3,333 = <strong class="text-white">$8,334</strong> (approx)</p>
+                            <p class="text-slate-400">Sale proceeds = <strong class="text-white">$10,000</strong></p>
+                            <p class="text-emerald-400 mt-1"><strong>Gain = $10,000 &minus; $8,334 = $1,666</strong></p>
+                            <p class="text-slate-400 mt-2">Total Accum Depr at sale = $24,000 + $26,000 + $6,666 = $56,666</p>
+                            <div class="font-mono text-slate-400 mt-2">
+                                Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10,000<br>
+                                Dr Accum. Depreciation &nbsp; 56,666<br>
+                                &nbsp;&nbsp; Cr PP&amp;E (Vehicle) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 65,000<br>
+                                &nbsp;&nbsp; Cr Gain on Sale &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,666
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="walk-summary" class="hidden mt-4 bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/30">
+                        <p class="text-emerald-400 font-bold mb-2">Full Asset Lifecycle Complete!</p>
+                        <p class="text-sm text-slate-300">You traced a fixed asset from purchase through depreciation, impairment, and sale. At every step, journal entries kept A = L + SE in balance.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================== TAB 6: PRACTICE QUESTIONS ======================== -->
+            <div id="panel-practice" class="tab-panel">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-teal-400">Practice Questions</h2>
+                        <div class="flex items-center gap-4">
+                            <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
+                            <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
+                        </div>
+                    </div>
+                    <div id="p-question" class="mb-4"><p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p></div>
+                    <div id="p-answer" class="mb-4 hidden"></div>
+                    <div id="p-feedback" class="mb-4 hidden"></div>
+                    <div class="flex gap-3">
+                        <button onclick="pNew()" class="bg-teal-600 hover:bg-teal-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                        <button onclick="pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                    </div>
+                </div>
+
+                <!-- Journal Entry Practice -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-teal-400 mb-4">Journal Entry Practice</h2>
+                    <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
+                    <div id="je-lines" class="space-y-2 mb-4"></div>
+                    <div class="flex gap-3 mb-4">
+                        <button onclick="jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                        <button onclick="jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                        <button onclick="jeNew()" class="bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                    </div>
+                    <div id="je-feedback" class="hidden"></div>
+                </div>
+            </div>
+    </div>
+
+<script>
+    // Tab switching
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    };
+
+    // Walkthrough reveals
+    let walkRevealed = [false,false,false,false,false];
+    window.revealWalkStep = function(n) {
+        const div = document.getElementById('walk-' + n);
+        const btn = document.getElementById('walk-btn-' + n);
+        if (walkRevealed[n-1]) {
+            div.classList.add('hidden'); btn.textContent = 'Show'; walkRevealed[n-1] = false;
+        } else {
+            div.classList.remove('hidden'); btn.textContent = 'Hide'; walkRevealed[n-1] = true;
+        }
+        if (walkRevealed.every(r => r)) document.getElementById('walk-summary').classList.remove('hidden');
+    };
+
+    // ========== CHARTS ==========
+    const chartOpts = { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } } } };
+
+    // Static charts for methods tab
+    new Chart(document.getElementById('deprExpenseChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Year 1','Year 2','Year 3','Year 4','Year 5'],
+            datasets: [
+                { label: 'Straight-Line', data: [14400,14400,14400,14400,14400], backgroundColor: 'rgba(20,184,166,0.6)' },
+                { label: 'DDB', data: [32000,19200,11520,6912,2368], backgroundColor: 'rgba(245,158,11,0.6)' }
+            ]
+        },
+        options: chartOpts
+    });
+
+    new Chart(document.getElementById('nbvChart'), {
+        type: 'line',
+        data: {
+            labels: ['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'],
+            datasets: [
+                { label: 'Straight-Line', data: [80000,65600,51200,36800,22400,8000], borderColor: '#14b8a6', backgroundColor: 'rgba(20,184,166,0.1)', fill: true, tension: 0.1 },
+                { label: 'DDB', data: [80000,48000,28800,17280,10368,8000], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.1 }
+            ]
+        },
+        options: chartOpts
+    });
+
+    // ========== CALCULATOR ==========
+    let calcExpChart, calcNBVChart;
+
+    function computeSL(cost, salvage, life) {
+        const annual = (cost - salvage) / life;
+        const schedule = [];
+        let bv = cost, accum = 0;
+        for (let y = 1; y <= life; y++) {
+            const exp = annual;
+            accum += exp;
+            bv -= exp;
+            schedule.push({ year: y, begBV: bv + exp, exp: Math.round(exp), accum: Math.round(accum), endBV: Math.round(bv) });
+        }
+        return schedule;
+    }
+
+    function computeDDB(cost, salvage, life) {
+        const rate = 2 / life;
+        const schedule = [];
+        let bv = cost, accum = 0;
+        for (let y = 1; y <= life; y++) {
+            let exp = Math.round(rate * bv);
+            if (bv - exp < salvage) exp = Math.max(0, Math.round(bv - salvage));
+            accum += exp;
+            const begBV = bv;
+            bv -= exp;
+            schedule.push({ year: y, begBV: Math.round(begBV), exp, accum, endBV: Math.round(bv) });
+        }
+        return schedule;
+    }
+
+    function makeTable(schedule) {
+        let html = '<table class="w-full text-xs"><thead><tr class="border-b border-slate-600 text-slate-400"><th class="p-1 text-left">Yr</th><th class="p-1 text-right">Beg BV</th><th class="p-1 text-right">Exp</th><th class="p-1 text-right">Accum</th><th class="p-1 text-right">End BV</th></tr></thead><tbody class="text-slate-300">';
+        schedule.forEach(r => {
+            html += '<tr class="border-b border-slate-700"><td class="p-1">' + r.year + '</td><td class="text-right p-1">$' + r.begBV.toLocaleString() + '</td><td class="text-right p-1">$' + r.exp.toLocaleString() + '</td><td class="text-right p-1">$' + r.accum.toLocaleString() + '</td><td class="text-right p-1">$' + r.endBV.toLocaleString() + '</td></tr>';
+        });
+        html += '</tbody></table>';
+        return html;
+    }
+
+    window.runCalc = function() {
+        const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
+        const salvage = parseFloat(document.getElementById('calc-salvage').value) || 0;
+        const life = parseInt(document.getElementById('calc-life').value) || 1;
+
+        const base = cost - salvage;
+        document.getElementById('calc-summary').textContent = 'Depreciation Base = $' + cost.toLocaleString() + ' − $' + salvage.toLocaleString() + ' = $' + base.toLocaleString();
+
+        const sl = computeSL(cost, salvage, life);
+        const ddb = computeDDB(cost, salvage, life);
+
+        document.getElementById('calc-sl-table').innerHTML = makeTable(sl);
+        document.getElementById('calc-ddb-table').innerHTML = makeTable(ddb);
+
+        const labels = sl.map(r => 'Year ' + r.year);
+        const slData = sl.map(r => r.exp);
+        const ddbData = ddb.map(r => r.exp);
+        const slNBV = [cost, ...sl.map(r => r.endBV)];
+        const ddbNBV = [cost, ...ddb.map(r => r.endBV)];
+        const nbvLabels = ['Year 0', ...labels];
+
+        if (calcExpChart) calcExpChart.destroy();
+        if (calcNBVChart) calcNBVChart.destroy();
+
+        calcExpChart = new Chart(document.getElementById('calcExpenseChart'), {
+            type: 'bar', data: { labels, datasets: [
+                { label: 'SL', data: slData, backgroundColor: 'rgba(20,184,166,0.6)' },
+                { label: 'DDB', data: ddbData, backgroundColor: 'rgba(245,158,11,0.6)' }
+            ]}, options: chartOpts
+        });
+
+        calcNBVChart = new Chart(document.getElementById('calcNBVChart'), {
+            type: 'line', data: { labels: nbvLabels, datasets: [
+                { label: 'SL', data: slNBV, borderColor: '#14b8a6', fill: false, tension: 0.1 },
+                { label: 'DDB', data: ddbNBV, borderColor: '#f59e0b', fill: false, tension: 0.1 }
+            ]}, options: chartOpts
+        });
+    };
+
+    // Initialize calculator
+    runCalc();
+
+    // ========== PRACTICE QUESTIONS ==========
+    let pCorrect = 0, pTotal = 0, pStreak = 0, curQ = null;
+    function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+    function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+    function genSL() {
+        const cost = rand(20, 200) * 1000;
+        const salvage = rand(1, Math.floor(cost/10000)) * 1000;
+        const life = rand(3, 10);
+        const ans = Math.round((cost - salvage) / life);
+        return { question: 'Straight-line depreciation: Cost = $' + cost.toLocaleString() + ', Salvage = $' + salvage.toLocaleString() + ', Useful life = ' + life + ' years.<br><br>What is the annual depreciation expense?', type: 'number', answer: ans, explanation: '($' + cost.toLocaleString() + ' − $' + salvage.toLocaleString() + ') ÷ ' + life + ' = $' + ans.toLocaleString() };
+    }
+
+    function genDDB() {
+        const cost = rand(30, 150) * 1000;
+        const life = rand(4, 8);
+        const rate = 2 / life;
+        const yr1 = Math.round(rate * cost);
+        return { question: 'DDB depreciation: Cost = $' + cost.toLocaleString() + ', Useful life = ' + life + ' years.<br><br>What is Year 1 depreciation expense?', type: 'number', answer: yr1, explanation: 'Rate = 2/' + life + ' = ' + (rate * 100).toFixed(1) + '%. Year 1 = ' + (rate * 100).toFixed(1) + '% × $' + cost.toLocaleString() + ' = $' + yr1.toLocaleString() };
+    }
+
+    function genNBV() {
+        const cost = rand(50, 200) * 1000;
+        const accumDepr = rand(10, Math.floor(cost/1000) - 5) * 1000;
+        const nbv = cost - accumDepr;
+        return { question: 'An asset has historical cost of $' + cost.toLocaleString() + ' and accumulated depreciation of $' + accumDepr.toLocaleString() + '.<br><br>What is the Net Book Value?', type: 'number', answer: nbv, explanation: 'NBV = $' + cost.toLocaleString() + ' − $' + accumDepr.toLocaleString() + ' = $' + nbv.toLocaleString() };
+    }
+
+    function genImpairment() {
+        const bv = rand(20, 80) * 1000;
+        const cfs = rand(10, bv/1000 - 5) * 1000;
+        const fv = rand(5, Math.floor(cfs/1000)) * 1000;
+        const charge = bv - fv;
+        const impaired = bv > cfs;
+        return { question: 'Asset BV = $' + bv.toLocaleString() + ', Expected future cash flows = $' + cfs.toLocaleString() + ', Fair value = $' + fv.toLocaleString() + '.<br><br>What is the impairment charge (enter 0 if not impaired)?', type: 'number', answer: impaired ? charge : 0, explanation: impaired ? 'BV ($' + bv.toLocaleString() + ') > Cash Flows ($' + cfs.toLocaleString() + ') → Impaired. Charge = BV − FV = $' + bv.toLocaleString() + ' − $' + fv.toLocaleString() + ' = $' + charge.toLocaleString() : 'BV ≤ Cash Flows → Not impaired. Charge = $0.' };
+    }
+
+    function genDisposal() {
+        const cost = rand(40, 120) * 1000;
+        const accumDepr = rand(10, Math.floor(cost/1000) - 5) * 1000;
+        const bv = cost - accumDepr;
+        const proceeds = rand(Math.floor(bv/1000) - 10, Math.floor(bv/1000) + 10) * 1000;
+        const gainLoss = proceeds - bv;
+        return { question: 'A company sells equipment (cost $' + cost.toLocaleString() + ', accumulated depreciation $' + accumDepr.toLocaleString() + ') for $' + proceeds.toLocaleString() + '.<br><br>What is the gain or loss? (Enter negative for loss)', type: 'number', answer: gainLoss, explanation: 'BV = $' + cost.toLocaleString() + ' − $' + accumDepr.toLocaleString() + ' = $' + bv.toLocaleString() + '. ' + (gainLoss >= 0 ? 'Gain' : 'Loss') + ' = $' + proceeds.toLocaleString() + ' − $' + bv.toLocaleString() + ' = $' + gainLoss.toLocaleString() };
+    }
+
+    function genCapVsExp() {
+        const scenarios = [
+            { text: 'Adding a new wing to a building', answer: 0, explain: 'This extends the useful life and adds new capabilities — capitalize as CapEx.' },
+            { text: 'Replacing a broken window in the office', answer: 1, explain: 'Routine repair that maintains (but does not enhance) the asset — expense immediately.' },
+            { text: 'Installing a new engine in a delivery truck that extends its life by 3 years', answer: 0, explain: 'This extends the useful life — capitalize.' },
+            { text: 'Painting the office walls', answer: 1, explain: 'Routine maintenance — expense immediately.' },
+            { text: 'Adding a security system to a warehouse', answer: 0, explain: 'This adds new capability — capitalize.' },
+            { text: 'Annual HVAC maintenance and filter replacement', answer: 1, explain: 'Routine maintenance — expense.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text + '<br><br>Should this be capitalized or expensed?', type: 'mc', options: ['Capitalize (CapEx)', 'Expense immediately'], answer: s.answer, explanation: s.explain };
+    }
+
+    function genEstimateChange() {
+        const cost = rand(50, 150) * 1000;
+        const salvage = rand(2, 10) * 1000;
+        const origLife = rand(5, 10);
+        const yearsUsed = rand(2, origLife - 2);
+        const origAnnual = Math.round((cost - salvage) / origLife);
+        const accumDepr = origAnnual * yearsUsed;
+        const bv = cost - accumDepr;
+        const newLife = origLife + rand(1, 4);
+        const remaining = newLife - yearsUsed;
+        const newAnnual = Math.round((bv - salvage) / remaining);
+        return { question: 'Asset cost $' + cost.toLocaleString() + ', salvage $' + salvage.toLocaleString() + ', original life ' + origLife + ' years (SL). After ' + yearsUsed + ' years, useful life is extended to ' + newLife + ' years total.<br><br>What is the new annual depreciation?', type: 'number', answer: newAnnual, explanation: 'BV after ' + yearsUsed + ' yrs = $' + cost.toLocaleString() + ' − $' + accumDepr.toLocaleString() + ' = $' + bv.toLocaleString() + '. Remaining life = ' + remaining + ' yrs. New depr = ($' + bv.toLocaleString() + ' − $' + salvage.toLocaleString() + ') ÷ ' + remaining + ' = $' + newAnnual.toLocaleString() };
+    }
+
+    const qGens = [genSL, genDDB, genNBV, genImpairment, genDisposal, genCapVsExp, genEstimateChange];
+
+    window.pNew = function() {
+        curQ = pick(qGens)();
+        document.getElementById('p-question').innerHTML = '<p class="text-slate-300 text-sm">' + curQ.question + '</p>';
+        document.getElementById('p-feedback').classList.add('hidden');
+        const ans = document.getElementById('p-answer');
+        ans.classList.remove('hidden');
+        if (curQ.type === 'mc') {
+            ans.innerHTML = curQ.options.map((o,i) => '<label class="block mb-2 cursor-pointer"><input type="radio" name="pmc" value="' + i + '" class="mr-2 accent-teal-500"><span class="text-slate-300 text-sm">' + o + '</span></label>').join('');
+        } else {
+            ans.innerHTML = '<input type="number" id="p-num" class="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white w-48" placeholder="Enter amount">';
+        }
+        document.getElementById('p-check-btn').classList.remove('hidden');
+    };
+
+    window.pCheck = function() {
+        if (!curQ) return;
+        let userAns, ok;
+        if (curQ.type === 'mc') {
+            const sel = document.querySelector('input[name="pmc"]:checked');
+            if (!sel) return;
+            userAns = parseInt(sel.value); ok = userAns === curQ.answer;
+        } else {
+            const inp = document.getElementById('p-num');
+            if (!inp || !inp.value) return;
+            userAns = parseFloat(inp.value); ok = Math.abs(userAns - curQ.answer) < 2;
+        }
+        pTotal++; if (ok) { pCorrect++; pStreak++; } else { pStreak = 0; }
+        document.getElementById('p-correct').textContent = pCorrect;
+        document.getElementById('p-total').textContent = pTotal;
+        document.getElementById('p-streak').textContent = pStreak;
+        const fb = document.getElementById('p-feedback'); fb.classList.remove('hidden');
+        const c = ok ? 'emerald' : 'rose';
+        fb.innerHTML = '<div class="bg-' + c + '-500/10 border border-' + c + '-500/30 rounded-lg p-4"><p class="font-bold text-' + c + '-400 mb-1">' + (ok ? 'Correct!' : 'Not quite.') + '</p><p class="text-sm text-slate-300">' + curQ.explanation + '</p></div>';
+        document.getElementById('p-check-btn').classList.add('hidden');
+    };
+
+    // ========== JOURNAL ENTRY PRACTICE ==========
+    const jeAccts = ['Cash','PP&E (Equipment)','PP&E (Vehicle)','PP&E (Building)','Accumulated Depreciation','Accounts Payable','Notes Payable','Depreciation Expense','Impairment Loss','Gain on Sale of Assets','Loss on Sale of Assets','Maintenance Expense','Common Stock','Retained Earnings'];
+    let curJE = null;
+
+    const jeScenarios = [
+        { prompt: 'Purchase equipment for $45,000 cash.', answer: [{acct:'PP&E (Equipment)',dr:45000,cr:0},{acct:'Cash',dr:0,cr:45000}] },
+        { prompt: 'Record annual straight-line depreciation of $8,000 on a vehicle.', answer: [{acct:'Depreciation Expense',dr:8000,cr:0},{acct:'Accumulated Depreciation',dr:0,cr:8000}] },
+        { prompt: 'Record an impairment loss of $15,000 on equipment.', answer: [{acct:'Impairment Loss',dr:15000,cr:0},{acct:'Accumulated Depreciation',dr:0,cr:15000}] },
+        { prompt: 'Sell a vehicle (cost $50,000, accum depr $35,000) for $18,000 cash — a gain.', answer: [{acct:'Cash',dr:18000,cr:0},{acct:'Accumulated Depreciation',dr:35000,cr:0},{acct:'PP&E (Vehicle)',dr:0,cr:50000},{acct:'Gain on Sale of Assets',dr:0,cr:3000}] },
+        { prompt: 'Sell equipment (cost $30,000, accum depr $22,000) for $5,000 cash — a loss.', answer: [{acct:'Cash',dr:5000,cr:0},{acct:'Accumulated Depreciation',dr:22000,cr:0},{acct:'Loss on Sale of Assets',dr:3000,cr:0},{acct:'PP&E (Equipment)',dr:0,cr:30000}] },
+        { prompt: 'Pay $2,500 for routine maintenance on a building.', answer: [{acct:'Maintenance Expense',dr:2500,cr:0},{acct:'Cash',dr:0,cr:2500}] }
+    ];
+
+    function makeJELine() {
+        const div = document.createElement('div');
+        div.className = 'flex gap-2 items-center';
+        div.innerHTML = '<select class="je-acct bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm flex-1"><option value="">-- Account --</option>' + jeAccts.map(a => '<option value="' + a + '">' + a + '</option>').join('') + '</select><input type="number" class="je-dr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Debit"><input type="number" class="je-cr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Credit"><button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-rose-400 text-sm">✕</button>';
+        return div;
+    }
+
+    window.jeAdd = function() { document.getElementById('je-lines').appendChild(makeJELine()); };
+
+    window.jeNew = function() {
+        curJE = pick(jeScenarios);
+        document.getElementById('je-prompt').innerHTML = '<p class="text-slate-300 text-sm">' + curJE.prompt + '</p>';
+        document.getElementById('je-lines').innerHTML = '';
+        document.getElementById('je-feedback').classList.add('hidden');
+        jeAdd(); jeAdd();
+    };
+
+    window.jeCheck = function() {
+        if (!curJE) return;
+        const lines = document.getElementById('je-lines').children;
+        let tDr = 0, tCr = 0, entries = [];
+        for (let l of lines) {
+            const a = l.querySelector('.je-acct').value;
+            const d = parseFloat(l.querySelector('.je-dr').value) || 0;
+            const c = parseFloat(l.querySelector('.je-cr').value) || 0;
+            if (a && (d || c)) { entries.push({acct:a,dr:d,cr:c}); tDr += d; tCr += c; }
+        }
+        const fb = document.getElementById('je-feedback'); fb.classList.remove('hidden');
+        if (Math.abs(tDr - tCr) > 0.01) {
+            fb.innerHTML = '<div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4"><p class="text-rose-400 font-bold">Debits ($' + tDr.toLocaleString() + ') ≠ Credits ($' + tCr.toLocaleString() + ')</p></div>';
+            return;
+        }
+        const ansStr = curJE.answer.map(a => a.acct+':'+a.dr+':'+a.cr).sort().join('|');
+        const userStr = entries.map(a => a.acct+':'+a.dr+':'+a.cr).sort().join('|');
+        if (ansStr === userStr) {
+            fb.innerHTML = '<div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-bold">Correct!</p></div>';
+        } else {
+            const correctHTML = curJE.answer.map(a => (a.dr ? 'Dr ' + a.acct + ' ' + a.dr.toLocaleString() : 'Cr ' + a.acct + ' ' + a.cr.toLocaleString())).join('<br>');
+            fb.innerHTML = '<div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-400 font-bold">Not quite.</p><p class="text-sm text-slate-300 mt-2">Expected:<br><span class="font-mono text-xs">' + correctHTML + '</span></p></div>';
+        }
+    };
+</script>
+</body>
+</html>

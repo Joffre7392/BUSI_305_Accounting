@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue &amp; Accounts Receivable | BUSI 305 Study Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(245,158,11,0.15); }
+        .tab-btn.active { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,0.1); }
+        .card { transition: transform 0.15s ease; }
+        .card:hover { transform: translateY(-1px); }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+
+    <!-- Header -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-amber-400 transition-colors mb-6 group">
+            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Home
+        </a>
+
+        <div class="flex items-center gap-4 mb-8">
+            <div class="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center">
+                <svg class="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold">Revenue &amp; Accounts Receivable</h1>
+                <p class="text-slate-400">Lectures 6&ndash;7 &mdash; Recognition, Bad Debts &amp; Ratios</p>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(0)">Revenue Recognition</button>
+            <button class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(1)">Receivables &amp; Bad Debts</button>
+            <button class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(2)">Ratios &amp; Calculator</button>
+            <button class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(3)">Worked Examples</button>
+            <button class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium" onclick="switchTab(4)">Practice Questions</button>
+        </div>
+
+        <!-- ==================== TAB 0: REVENUE RECOGNITION ==================== -->
+        <div id="tab-0" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- What is Revenue -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-amber-400 mb-4">What Is Revenue?</h2>
+                    <p class="text-slate-300 mb-4">Revenue is the total amount earned from selling products or providing services to customers during a period. It is the <span class="text-amber-400 font-semibold">top line</span> of the income statement and drives the entire financial picture of a company.</p>
+                    <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-slate-400 mb-2 font-semibold uppercase tracking-wider">Why It Matters</p>
+                        <p class="text-slate-300">Revenue recognition determines <span class="text-amber-400 font-semibold">when</span> and <span class="text-amber-400 font-semibold">how much</span> revenue appears on the income statement. Recognizing revenue too early overstates performance; too late understates it. Getting the timing right is one of the most important judgments in accounting.</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30 mt-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                            <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                        </div>
+                        <p class="text-sm text-slate-300">Revenue increases <span class="text-purple-400 font-semibold">Retained Earnings (SE)</span> on the right side of <span class="text-white font-semibold">A = L + SE</span>. When recognized, either an asset increases (Cash or A/R) or a liability decreases (Unearned Revenue). Either way, both sides stay balanced.</p>
+                    </div>
+                </div>
+
+                <!-- 5-Step Revenue Recognition -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-amber-500 mb-4">The 5-Step Revenue Recognition Process (ASC 606)</h2>
+                    <p class="text-slate-300 text-sm mb-4">The standard framework for determining when and how much revenue to recognize:</p>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-amber-500/20 rounded-lg flex-shrink-0 flex items-center justify-center">
+                                <span class="text-amber-400 font-bold text-sm">1</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-amber-400">Identify the contract with the customer</p>
+                                <p class="text-slate-400 text-sm">An agreement creating enforceable rights and obligations.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-amber-500/20 rounded-lg flex-shrink-0 flex items-center justify-center">
+                                <span class="text-amber-400 font-bold text-sm">2</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-amber-400">Identify all performance obligations</p>
+                                <p class="text-slate-400 text-sm">Each distinct promise to deliver a good or service.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-amber-500/20 rounded-lg flex-shrink-0 flex items-center justify-center">
+                                <span class="text-amber-400 font-bold text-sm">3</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-amber-400">Determine the transaction price</p>
+                                <p class="text-slate-400 text-sm">The total amount the company expects to receive.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-amber-500/20 rounded-lg flex-shrink-0 flex items-center justify-center">
+                                <span class="text-amber-400 font-bold text-sm">4</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-amber-400">Allocate the price to each performance obligation</p>
+                                <p class="text-slate-400 text-sm">Based on each obligation's relative standalone selling price.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 bg-amber-500/20 rounded-lg flex-shrink-0 flex items-center justify-center">
+                                <span class="text-amber-400 font-bold text-sm">5</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-amber-400">Recognize revenue when obligation is fulfilled</p>
+                                <p class="text-slate-400 text-sm">At the point in time (or over time) control transfers to customer.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Timing Issues -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-sky-400 mb-4">Revenue Timing Issues</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <!-- Simple -->
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-emerald-500/30">
+                            <p class="font-semibold text-emerald-400 mb-2">Simple: Cash Sale at Delivery</p>
+                            <p class="text-slate-300 text-sm">Customer pays at the point of delivery. Revenue is recognized immediately because the performance obligation is satisfied and cash is received.</p>
+                            <div class="bg-slate-800/80 rounded p-3 mt-2 text-sm font-mono text-slate-300">
+                                <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
+                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;XXX</p>
+                            </div>
+                        </div>
+                        <!-- Deferred/Unearned -->
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-amber-500/30">
+                            <p class="font-semibold text-amber-400 mb-2">Deferred / Unearned Revenue</p>
+                            <p class="text-slate-300 text-sm mb-2">Customer pays <span class="text-amber-400 font-semibold">before</span> delivery (subscriptions, season tickets, gift cards). Record as a <span class="text-rose-400 font-semibold">liability</span> first, then recognize revenue as performance obligations are fulfilled.</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm font-mono text-slate-300">
+                                <p class="text-slate-500 mb-1">When cash is received:</p>
+                                <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
+                                <p>&nbsp;&nbsp;Cr Unearned Revenue &nbsp;XXX</p>
+                                <p class="text-slate-500 mt-2 mb-1">When earned:</p>
+                                <p>Dr Unearned Revenue &nbsp;XXX</p>
+                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;&nbsp;XXX</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bundled Sales -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-purple-400 mb-4">Bundled Sales</h2>
+                    <p class="text-slate-300 text-sm mb-4">When multiple products or services are sold for a single price, the transaction price must be <span class="text-amber-400 font-semibold">allocated</span> to each performance obligation based on each item's proportion of total fair value.</p>
+
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-4">
+                        <p class="text-white font-semibold mb-3">Example: Software Package Sold for $125,000</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-slate-600">
+                                        <th class="text-left py-2 px-3 text-slate-400">Component</th>
+                                        <th class="text-right py-2 px-3 text-slate-400">Fair Value</th>
+                                        <th class="text-right py-2 px-3 text-slate-400">% of Total FV</th>
+                                        <th class="text-right py-2 px-3 text-slate-400">Allocation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-slate-700/50">
+                                        <td class="py-2 px-3 text-sky-400">Software</td>
+                                        <td class="text-right py-2 px-3">$115,000</td>
+                                        <td class="text-right py-2 px-3">80%</td>
+                                        <td class="text-right py-2 px-3 font-semibold">$100,000</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-700/50">
+                                        <td class="py-2 px-3 text-amber-400">Training</td>
+                                        <td class="text-right py-2 px-3">$11,500</td>
+                                        <td class="text-right py-2 px-3">8%</td>
+                                        <td class="text-right py-2 px-3 font-semibold">$10,000</td>
+                                    </tr>
+                                    <tr class="border-b border-slate-700/50">
+                                        <td class="py-2 px-3 text-emerald-400">Support</td>
+                                        <td class="text-right py-2 px-3">$17,250</td>
+                                        <td class="text-right py-2 px-3">12%</td>
+                                        <td class="text-right py-2 px-3 font-semibold">$15,000</td>
+                                    </tr>
+                                    <tr class="border-t-2 border-slate-500 font-bold">
+                                        <td class="py-2 px-3">Total</td>
+                                        <td class="text-right py-2 px-3">$143,750</td>
+                                        <td class="text-right py-2 px-3">100%</td>
+                                        <td class="text-right py-2 px-3 text-amber-400">$125,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-4 mt-3 text-sm font-mono text-slate-300">
+                            <p class="text-slate-400 mb-1 font-sans text-xs uppercase tracking-wider font-semibold">Journal Entry at Sale:</p>
+                            <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;125,000</p>
+                            <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100,000</p>
+                            <p>&nbsp;&nbsp;Cr Unearned Training Rev. &nbsp;&nbsp;&nbsp;10,000</p>
+                            <p>&nbsp;&nbsp;Cr Unearned Support Rev. &nbsp;&nbsp;&nbsp;15,000</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-sm">Software revenue recognized immediately (delivered at sale); training and support revenue recognized as those services are provided over time.</p>
+                </div>
+
+                <!-- Long-Term Contracts -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-emerald-400 mb-4">Long-Term Contracts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-emerald-500/30">
+                            <p class="font-semibold text-emerald-400 mb-2">PO Satisfied Over Time (Cost-to-Cost Method)</p>
+                            <p class="text-slate-300 text-sm mb-3">Revenue is recognized proportionally as work progresses. Percentage complete is based on costs incurred relative to total estimated costs.</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm font-mono text-slate-300 mb-2">
+                                <p class="text-slate-400 font-sans text-xs mb-1">% Complete = Costs Incurred / Total Estimated Costs</p>
+                                <p class="text-slate-400 font-sans text-xs mb-1">Revenue = % Complete &times; Total Contract Price</p>
+                            </div>
+                            <div class="bg-amber-500/10 border border-amber-500/30 rounded p-3 mt-2">
+                                <p class="text-amber-300 text-sm font-semibold mb-1">Example: $8M Library Construction</p>
+                                <p class="text-slate-300 text-xs">Year 1 costs: $1.8M of $6M total estimated &rarr; 30% complete</p>
+                                <p class="text-slate-300 text-xs">Year 1 revenue: 30% &times; $8M = <span class="text-amber-400 font-bold">$2.4M</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
+                            <p class="font-semibold text-sky-400 mb-2">PO Satisfied at a Point in Time</p>
+                            <p class="text-slate-300 text-sm mb-3">When the customer does not receive benefits until the project is complete, <span class="text-sky-400 font-semibold">all revenue</span> is recognized upon delivery.</p>
+                            <p class="text-slate-400 text-sm">This applies when control does not transfer gradually &mdash; for example, building a custom piece of equipment that has no alternative use and where the seller does not have the right to payment for work completed to date.</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30 mt-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                            <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                        </div>
+                        <p class="text-sm text-slate-300">Over-time recognition creates an asset (<span class="text-sky-400">Accounts Receivable or Contract Asset</span>) on the left and increases <span class="text-purple-400">Revenue &rarr; NI &rarr; RE (SE)</span> on the right, period by period. Point-in-time recognition hits A = L + SE all at once upon delivery. Either way, the equation stays balanced.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 1: RECEIVABLES & BAD DEBTS ==================== -->
+        <div id="tab-1" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- A/R Basics -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-amber-400 mb-4">Accounts Receivable &amp; Uncollectible Accounts</h2>
+                    <p class="text-slate-300 mb-4">Accounts Receivable (A/R) are created when a company sells goods or services <span class="text-amber-400 font-semibold">on credit</span> &mdash; the customer promises to pay later. The key challenge: not all customers will pay. Companies must estimate and account for these <span class="text-rose-400 font-semibold">bad debts</span>.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
+                            <p class="font-semibold text-sky-400 mb-2">When a Credit Sale Occurs</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm font-mono text-slate-300">
+                                <p>Dr Accounts Receivable &nbsp;XXX</p>
+                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
+                            </div>
+                            <p class="text-slate-400 text-xs mt-2">A/R (asset) increases; Revenue increases RE (SE).</p>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
+                            <p class="font-semibold text-emerald-400 mb-2">When Customer Pays</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm font-mono text-slate-300">
+                                <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
+                                <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;XXX</p>
+                            </div>
+                            <p class="text-slate-400 text-xs mt-2">Cash (asset) increases; A/R (asset) decreases. No income statement effect.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Method 1: Specific Write-Off -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-rose-500/30">
+                    <h3 class="text-lg font-bold text-rose-400 mb-3">Method 1: Specific Write-Off</h3>
+                    <p class="text-slate-300 text-sm mb-3">Write off individual A/R accounts when they are deemed uncollectible.</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 font-mono text-sm text-slate-300">
+                        <p class="text-slate-400 font-sans text-xs mb-1 uppercase tracking-wider font-semibold">Journal Entry:</p>
+                        <p>Dr Bad Debt Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
+                        <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;XXX</p>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-start gap-2">
+                            <span class="text-emerald-400 mt-0.5">+</span>
+                            <span class="text-slate-300"><span class="text-emerald-400 font-semibold">Pros:</span> Simple, no estimation needed</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-rose-400 mt-0.5">&minus;</span>
+                            <span class="text-slate-300"><span class="text-rose-400 font-semibold">Cons:</span> Overstates A/R on the balance sheet; bad matching (expense may be recorded in wrong period)</span>
+                        </div>
+                    </div>
+                    <div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-3 mt-3">
+                        <p class="text-rose-300 text-sm">Only allowed if bad debts are <span class="font-semibold">immaterial</span>.</p>
+                    </div>
+                </div>
+
+                <!-- Method 2: Allowance Method -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-amber-500/30">
+                    <h3 class="text-lg font-bold text-amber-400 mb-3">Method 2: Allowance Method</h3>
+                    <p class="text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">Required if Bad Debts Are Material</p>
+                    <p class="text-slate-300 text-sm mb-3">Estimate bad debts at year end. The <span class="text-amber-400 font-semibold">Allowance for Bad Debt</span> is a contra-asset account that reduces Gross A/R to Net A/R.</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 font-mono text-sm text-slate-300">
+                        <p class="text-slate-400 font-sans text-xs mb-1 uppercase tracking-wider font-semibold">Year-End Adjusting Entry:</p>
+                        <p>Dr Bad Debt Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
+                        <p>&nbsp;&nbsp;Cr Allowance for Bad Debt &nbsp;XXX</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 font-mono text-sm text-slate-300">
+                        <p class="text-slate-400 font-sans text-xs mb-1 uppercase tracking-wider font-semibold">When a Specific Account is Written Off:</p>
+                        <p>Dr Allowance for Bad Debt &nbsp;XXX</p>
+                        <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;&nbsp;XXX</p>
+                    </div>
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
+                        <p class="text-amber-300 text-sm font-semibold">Key insight: The write-off has NO income statement effect!</p>
+                        <p class="text-slate-400 text-xs mt-1">Both Gross A/R and the Allowance decrease by the same amount, so Net A/R is unchanged.</p>
+                    </div>
+                </div>
+
+                <!-- Estimation Methods -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-sky-400 mb-4">Estimation Methods for the Allowance</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-sky-500/20 rounded-lg flex items-center justify-center">
+                                    <span class="text-sky-400 font-bold text-xs">%S</span>
+                                </div>
+                                <p class="font-bold text-sky-400">Percentage of Sales</p>
+                            </div>
+                            <p class="text-slate-300 text-sm mb-2">Bad Debt Expense = <span class="font-mono text-amber-400">% &times; Sales</span></p>
+                            <p class="text-slate-400 text-sm mb-2">This is an <span class="text-white font-semibold">income statement approach</span>. We calculate the expense directly, then the allowance adjusts accordingly:</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-xs text-slate-300 font-mono">
+                                <p>New Allowance Balance =</p>
+                                <p>&nbsp;Old Balance + New Expense &minus; Write-offs</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                                    <span class="text-purple-400 font-bold text-xs">AGE</span>
+                                </div>
+                                <p class="font-bold text-purple-400">Aging Method</p>
+                            </div>
+                            <p class="text-slate-300 text-sm mb-2">Estimate the desired <span class="font-mono text-amber-400">ending Allowance balance</span> based on the age of outstanding receivables.</p>
+                            <p class="text-slate-400 text-sm mb-2">This is a <span class="text-white font-semibold">balance sheet approach</span>. We figure out where the Allowance needs to end up, then calculate the expense needed to get there:</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-xs text-slate-300 font-mono">
+                                <p>Bad Debt Expense =</p>
+                                <p>&nbsp;Desired Ending Allowance &minus; Current Balance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- T-Account Visual -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-amber-400 mb-4">T-Account: Allowance for Bad Debt (2-Year Example)</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Year 1 -->
+                        <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                            <p class="font-semibold text-amber-400 mb-3 text-center">Year 1</p>
+                            <div class="border border-slate-500 rounded">
+                                <div class="text-center bg-slate-700/50 py-1 text-sm font-semibold text-amber-400 border-b border-slate-500">Allowance for Bad Debt</div>
+                                <div class="grid grid-cols-2 divide-x divide-slate-500 text-xs">
+                                    <div class="p-3">
+                                        <p class="text-slate-500 mb-2 font-semibold">Debits (&minus;)</p>
+                                        <p class="text-slate-300">Write-offs: $2,000</p>
+                                    </div>
+                                    <div class="p-3">
+                                        <p class="text-slate-500 mb-2 font-semibold">Credits (+)</p>
+                                        <p class="text-slate-300">Beg. Bal: $0</p>
+                                        <p class="text-slate-300">Adj. Entry: $5,000</p>
+                                    </div>
+                                </div>
+                                <div class="border-t border-slate-500 text-center py-2 text-sm font-bold text-amber-400">
+                                    End. Bal: $3,000 (cr)
+                                </div>
+                            </div>
+                            <p class="text-slate-500 text-xs mt-2">$0 + $5,000 &minus; $2,000 = $3,000</p>
+                        </div>
+                        <!-- Year 2 -->
+                        <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                            <p class="font-semibold text-amber-400 mb-3 text-center">Year 2</p>
+                            <div class="border border-slate-500 rounded">
+                                <div class="text-center bg-slate-700/50 py-1 text-sm font-semibold text-amber-400 border-b border-slate-500">Allowance for Bad Debt</div>
+                                <div class="grid grid-cols-2 divide-x divide-slate-500 text-xs">
+                                    <div class="p-3">
+                                        <p class="text-slate-500 mb-2 font-semibold">Debits (&minus;)</p>
+                                        <p class="text-slate-300">Write-offs: $3,500</p>
+                                    </div>
+                                    <div class="p-3">
+                                        <p class="text-slate-500 mb-2 font-semibold">Credits (+)</p>
+                                        <p class="text-slate-300">Beg. Bal: $3,000</p>
+                                        <p class="text-slate-300">Adj. Entry: $6,000</p>
+                                    </div>
+                                </div>
+                                <div class="border-t border-slate-500 text-center py-2 text-sm font-bold text-amber-400">
+                                    End. Bal: $5,500 (cr)
+                                </div>
+                            </div>
+                            <p class="text-slate-500 text-xs mt-2">$3,000 + $6,000 &minus; $3,500 = $5,500</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Balance Sheet Presentation -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-emerald-400 mb-4">Balance Sheet Presentation</h2>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between border-b border-slate-700 pb-1">
+                                <span class="text-slate-300">Accounts Receivable (Gross)</span>
+                                <span class="font-mono">$200,000</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-700 pb-1 text-rose-400">
+                                <span>Less: Allowance for Bad Debt</span>
+                                <span class="font-mono">(5,500)</span>
+                            </div>
+                            <div class="flex justify-between font-bold text-amber-400 pt-1">
+                                <span>Accounts Receivable, Net</span>
+                                <span class="font-mono">$194,500</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-3">Net A/R represents the amount the company actually expects to collect.</p>
+                </div>
+
+                <!-- Equation Callback -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                            <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-2">Bad Debt Expense reduces <span class="text-purple-400 font-semibold">SE</span> (via NI &rarr; RE). The Allowance is a contra-asset that reduces <span class="text-sky-400 font-semibold">A</span>. Both sides decrease equally.</p>
+                        <p class="text-sm text-slate-300 mb-2"><span class="text-white font-semibold">Write-offs under the allowance method</span> do not hit the income statement. They reduce both Gross A/R and the Allowance by the same amount, so Net A/R is unchanged. <span class="text-sky-400">A</span> stays the same, <span class="text-rose-400">L</span> stays the same, <span class="text-purple-400">SE</span> stays the same.</p>
+                        <div class="flex flex-wrap items-center gap-2 text-sm mt-3">
+                            <span class="bg-sky-500/15 text-sky-300 px-2 py-1 rounded">A (Net A/R unchanged)</span>
+                            <span class="text-slate-400 font-bold">=</span>
+                            <span class="bg-rose-500/15 text-rose-300 px-2 py-1 rounded">L (unchanged)</span>
+                            <span class="text-slate-400 font-bold">+</span>
+                            <span class="bg-purple-500/15 text-purple-300 px-2 py-1 rounded">SE (unchanged)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 2: RATIOS & CALCULATOR ==================== -->
+        <div id="tab-2" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- A/R Turnover -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-amber-400 mb-4">A/R Turnover Ratio</h2>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center mb-4">
+                        <p class="text-lg font-mono">
+                            <span class="text-amber-400">A/R Turnover</span> = <span class="text-sky-400">Sales Revenue</span> &divide; <span class="text-emerald-400">Average A/R</span>
+                        </p>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-3">Measures how many times per period a company collects its average receivables. A higher ratio indicates faster collection of credit sales.</p>
+                    <div class="bg-slate-900/50 rounded-lg p-3 text-sm">
+                        <p class="font-mono text-slate-300"><span class="text-emerald-400">Average A/R</span> = (Beginning A/R + Ending A/R) &divide; 2</p>
+                    </div>
+                </div>
+
+                <!-- Average Collection Period -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-sky-400 mb-4">Average Collection Period</h2>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center mb-4">
+                        <p class="text-lg font-mono">
+                            <span class="text-sky-400">Avg Collection Period</span> = <span class="text-slate-300">365</span> &divide; <span class="text-amber-400">A/R Turnover</span>
+                        </p>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-3">Tells you the average number of days it takes to collect a receivable. Also called <span class="text-sky-400 font-semibold">Days Sales Outstanding (DSO)</span>.</p>
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
+                        <p class="text-amber-300 text-sm font-semibold mb-1">What Slowing Turnover Signals</p>
+                        <p class="text-slate-300 text-xs">A declining A/R Turnover (or rising collection period) may signal: customers are taking longer to pay, potential credit quality issues, loosening of credit policies, or upcoming bad debt problems.</p>
+                    </div>
+                </div>
+
+                <!-- Equation Callback -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                            <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                        </div>
+                        <p class="text-sm text-slate-300">These ratios help analysts evaluate how efficiently a company converts <span class="text-sky-400 font-semibold">receivables (assets)</span> to <span class="text-emerald-400 font-semibold">cash (assets)</span>. Both sit on the left side of <span class="text-white font-semibold">A = L + SE</span>. Faster turnover means the company is more effective at turning promises to pay into actual cash.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Calculator -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                    <h2 class="text-xl font-bold text-amber-400 mb-4">Interactive A/R Ratio Calculator</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Inputs -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-sm text-slate-400 font-semibold mb-1 block">Sales Revenue ($)</label>
+                                <input type="number" id="calc-revenue" value="2000000" min="0" step="1000" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm" oninput="computeRatios()">
+                            </div>
+                            <div>
+                                <label class="text-sm text-slate-400 font-semibold mb-1 block">Beginning A/R ($)</label>
+                                <input type="number" id="calc-beg-ar" value="180000" min="0" step="1000" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm" oninput="computeRatios()">
+                            </div>
+                            <div>
+                                <label class="text-sm text-slate-400 font-semibold mb-1 block">Ending A/R ($)</label>
+                                <input type="number" id="calc-end-ar" value="220000" min="0" step="1000" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm" oninput="computeRatios()">
+                            </div>
+                        </div>
+                        <!-- Outputs -->
+                        <div class="space-y-4">
+                            <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                                <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-1">Average A/R</p>
+                                <p class="text-2xl font-bold text-emerald-400" id="out-avg-ar">$200,000</p>
+                            </div>
+                            <div class="bg-slate-900/60 rounded-lg p-4 border border-amber-500/30">
+                                <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-1">A/R Turnover</p>
+                                <p class="text-2xl font-bold text-amber-400" id="out-art">10.00x</p>
+                            </div>
+                            <div class="bg-slate-900/60 rounded-lg p-4 border border-sky-500/30">
+                                <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold mb-1">Average Collection Period</p>
+                                <p class="text-2xl font-bold text-sky-400" id="out-acp">36.5 days</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 3: WORKED EXAMPLES ==================== -->
+        <div id="tab-3" class="tab-content hidden">
+            <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-amber-400">Practice Problem: DataStream Analytics &mdash; Revenue and Receivables</h2>
+                        <p class="text-slate-400 text-sm">A tech company in its second year of operations</p>
+                    </div>
+                </div>
+
+                <!-- Scenario Setup -->
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-white font-semibold mb-3">Background:</p>
+                    <p class="text-slate-300 text-sm mb-3">DataStream Analytics is a tech company in its second year of operations. They sell data analytics software and related services. The company uses the <span class="text-amber-400 font-semibold">allowance method</span> for bad debts and the <span class="text-amber-400 font-semibold">percentage of sales</span> estimation approach.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-800/80 rounded-lg p-4">
+                            <p class="font-semibold text-amber-400 mb-2 text-sm">Beginning Balances (Year 2)</p>
+                            <div class="text-sm text-slate-300 space-y-1">
+                                <div class="flex justify-between"><span>Cash:</span><span class="font-mono">$500,000</span></div>
+                                <div class="flex justify-between"><span>Accounts Receivable (Gross):</span><span class="font-mono">$150,000</span></div>
+                                <div class="flex justify-between"><span>Allowance for Bad Debt:</span><span class="font-mono">($8,000)</span></div>
+                                <div class="flex justify-between"><span>A/R, Net:</span><span class="font-mono text-amber-400">$142,000</span></div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/80 rounded-lg p-4">
+                            <p class="font-semibold text-amber-400 mb-2 text-sm">Year 2 Transactions</p>
+                            <div class="text-sm text-slate-300 space-y-1">
+                                <p>1. Cash sales: $800,000</p>
+                                <p>2. Credit sales: $1,200,000</p>
+                                <p>3. Bundled sale: $200,000</p>
+                                <p>4. Collections from customers: $950,000</p>
+                                <p>5. Write-off uncollectible: $25,000</p>
+                                <p>6. Bad debt estimate: 2% of credit sales</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 1 -->
+                <div class="mb-4">
+                    <button onclick="revealStep(1)" id="step-btn-1" class="w-full text-left bg-slate-700/50 hover:bg-slate-700/80 border border-slate-600 rounded-lg px-4 py-3 transition-colors">
+                        <span class="text-amber-400 font-semibold text-sm">Step 1:</span>
+                        <span class="text-slate-300 text-sm ml-2">Record Product Sales ($800K cash + $1.2M credit)</span>
+                        <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
+                    </button>
+                    <div id="step-1" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                            <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm">
+                                <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">Cash Sales:</p>
+                                <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;800,000</p>
+                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;800,000</p>
+                            </div>
+                            <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm">
+                                <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">Credit Sales:</p>
+                                <p>Dr Accts Receivable &nbsp;1,200,000</p>
+                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;1,200,000</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-sm">Total sales revenue recognized: <span class="text-amber-400 font-bold">$2,000,000</span>. Cash increases by $800K; A/R increases by $1.2M.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="mb-4">
+                    <button onclick="revealStep(2)" id="step-btn-2" class="w-full text-left bg-slate-700/50 hover:bg-slate-700/80 border border-slate-600 rounded-lg px-4 py-3 transition-colors">
+                        <span class="text-amber-400 font-semibold text-sm">Step 2:</span>
+                        <span class="text-slate-300 text-sm ml-2">Record the Bundled Sale ($200K: product + 2-year support)</span>
+                        <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
+                    </button>
+                    <div id="step-2" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                        <p class="text-slate-300 text-sm mb-3">The $200,000 bundled sale includes a product ($160,000 allocation) and 2-year support ($40,000 allocation). The product is delivered immediately; the support is provided over 2 years.</p>
+                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3">
+                            <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">Journal Entry:</p>
+                            <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;200,000</p>
+                            <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;160,000</p>
+                            <p>&nbsp;&nbsp;Cr Unearned Support Rev. &nbsp;&nbsp;&nbsp;40,000</p>
+                        </div>
+                        <p class="text-slate-300 text-sm">The $160,000 is recognized immediately. The $40,000 is a <span class="text-rose-400 font-semibold">liability</span> that will be recognized as revenue over 2 years ($20,000/year).</p>
+                        <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
+                            <p class="text-xs text-emerald-400 font-semibold mb-1">= Equation Trace</p>
+                            <p class="text-xs text-slate-300"><span class="text-sky-300">A (Cash +200K)</span> = <span class="text-rose-300">L (Unearned Rev +40K)</span> + <span class="text-purple-300">SE (Revenue +160K &rarr; RE)</span>. Both sides increase by $200K.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="mb-4">
+                    <button onclick="revealStep(3)" id="step-btn-3" class="w-full text-left bg-slate-700/50 hover:bg-slate-700/80 border border-slate-600 rounded-lg px-4 py-3 transition-colors">
+                        <span class="text-amber-400 font-semibold text-sm">Step 3:</span>
+                        <span class="text-slate-300 text-sm ml-2">Collect $950,000 from Credit Customers</span>
+                        <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
+                    </button>
+                    <div id="step-3" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3">
+                            <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;950,000</p>
+                            <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;950,000</p>
+                        </div>
+                        <p class="text-slate-300 text-sm">Cash goes up, A/R goes down. <span class="text-amber-400 font-semibold">No income statement effect</span> &mdash; revenue was already recognized at the time of sale.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="mb-4">
+                    <button onclick="revealStep(4)" id="step-btn-4" class="w-full text-left bg-slate-700/50 hover:bg-slate-700/80 border border-slate-600 rounded-lg px-4 py-3 transition-colors">
+                        <span class="text-amber-400 font-semibold text-sm">Step 4:</span>
+                        <span class="text-slate-300 text-sm ml-2">Write Off $25,000 Uncollectible Account (Allowance Method)</span>
+                        <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
+                    </button>
+                    <div id="step-4" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3">
+                            <p>Dr Allowance for Bad Debt &nbsp;25,000</p>
+                            <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;&nbsp;25,000</p>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-2"><span class="text-amber-400 font-semibold">No income statement impact!</span> Under the allowance method, the expense was already estimated. This just removes the specific uncollectible account.</p>
+                        <p class="text-slate-400 text-sm">Gross A/R decreases by $25K. Allowance decreases by $25K. Net A/R is unchanged.</p>
+                        <p class="text-slate-400 text-sm mt-1">Allowance balance after write-off: $8,000 &minus; $25,000 = <span class="text-rose-400 font-bold">&minus;$17,000</span> (debit balance &mdash; the allowance has been "used up" and then some).</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="mb-4">
+                    <button onclick="revealStep(5)" id="step-btn-5" class="w-full text-left bg-slate-700/50 hover:bg-slate-700/80 border border-slate-600 rounded-lg px-4 py-3 transition-colors">
+                        <span class="text-amber-400 font-semibold text-sm">Step 5:</span>
+                        <span class="text-slate-300 text-sm ml-2">Year-End Bad Debt Estimate (2% of Credit Sales)</span>
+                        <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
+                    </button>
+                    <div id="step-5" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3">
+                            <p class="text-slate-400 font-sans text-xs mb-1">Bad Debt Expense = 2% &times; $1,200,000 = $24,000</p>
+                            <p class="mt-2">Dr Bad Debt Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;24,000</p>
+                            <p>&nbsp;&nbsp;Cr Allowance for Bad Debt &nbsp;24,000</p>
+                        </div>
+                        <p class="text-slate-300 text-sm">The Allowance balance after this adjustment: &minus;$17,000 + $24,000 = <span class="text-amber-400 font-bold">$7,000</span> (credit balance).</p>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="mb-4">
+                    <button onclick="revealStep(6)" id="step-btn-6" class="w-full text-left bg-slate-700/50 hover:bg-slate-700/80 border border-slate-600 rounded-lg px-4 py-3 transition-colors">
+                        <span class="text-amber-400 font-semibold text-sm">Step 6:</span>
+                        <span class="text-slate-300 text-sm ml-2">Compute Ending Net A/R</span>
+                        <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
+                    </button>
+                    <div id="step-6" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                        <div class="bg-slate-800/80 rounded-lg p-4 text-sm mb-3">
+                            <p class="text-slate-400 mb-2 font-semibold">Gross A/R Rollforward:</p>
+                            <div class="font-mono text-slate-300 space-y-1">
+                                <p>Beginning A/R &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$150,000</p>
+                                <p>+ Credit sales &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$1,200,000</p>
+                                <p>&minus; Collections &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;($950,000)</p>
+                                <p>&minus; Write-offs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;($25,000)</p>
+                                <p class="border-t border-slate-600 pt-1 font-bold text-amber-400">Ending Gross A/R &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$375,000</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/80 rounded-lg p-4 text-sm">
+                            <div class="font-mono text-slate-300 space-y-1">
+                                <p>Gross A/R &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$375,000</p>
+                                <p class="text-rose-400">Less: Allowance &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;($7,000)</p>
+                                <p class="border-t border-slate-600 pt-1 font-bold text-amber-400">Net A/R &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$368,000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="mb-4">
+                    <button onclick="revealStep(7)" id="step-btn-7" class="w-full text-left bg-slate-700/50 hover:bg-slate-700/80 border border-slate-600 rounded-lg px-4 py-3 transition-colors">
+                        <span class="text-amber-400 font-semibold text-sm">Step 7:</span>
+                        <span class="text-slate-300 text-sm ml-2">Compute A/R Turnover and Average Collection Period</span>
+                        <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
+                    </button>
+                    <div id="step-7" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3 space-y-2">
+                            <p class="text-slate-400 font-sans text-xs">Total Sales Revenue = $800K + $1,200K + $160K = $2,160,000</p>
+                            <p class="text-slate-400 font-sans text-xs">Average A/R = ($150,000 + $375,000) / 2 = $262,500</p>
+                            <hr class="border-slate-600">
+                            <p class="text-white">A/R Turnover = $2,160,000 / $262,500 = <span class="text-amber-400 font-bold">8.23x</span></p>
+                            <p class="text-white">Avg Collection Period = 365 / 8.23 = <span class="text-sky-400 font-bold">44.3 days</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div class="mb-2">
+                    <button onclick="revealStep(8)" id="step-btn-8" class="w-full text-left bg-slate-700/50 hover:bg-slate-700/80 border border-slate-600 rounded-lg px-4 py-3 transition-colors">
+                        <span class="text-amber-400 font-semibold text-sm">Step 8:</span>
+                        <span class="text-slate-300 text-sm ml-2">Analysis &mdash; What Do the Ratios Tell an Analyst?</span>
+                        <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
+                    </button>
+                    <div id="step-8" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
+                        <div class="space-y-3 text-sm text-slate-300">
+                            <div class="flex gap-3">
+                                <span class="text-amber-400 font-bold mt-0.5">1.</span>
+                                <p>DataStream collects its average receivables about <span class="text-amber-400 font-semibold">8.2 times per year</span>, meaning it takes roughly <span class="text-sky-400 font-semibold">44 days</span> on average to collect from customers.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-amber-400 font-bold mt-0.5">2.</span>
+                                <p>The write-off of $25,000 exceeded the beginning allowance of $8,000, creating a temporary debit balance. This suggests the company may have <span class="text-rose-400 font-semibold">underestimated</span> bad debts in Year 1.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-amber-400 font-bold mt-0.5">3.</span>
+                                <p>An analyst should compare these ratios to <span class="text-white font-semibold">industry benchmarks</span> and prior periods. If the collection period is rising, it could signal deteriorating credit quality or overly generous credit terms.</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <span class="text-amber-400 font-bold mt-0.5">4.</span>
+                                <p>The bundled sale properly separates earned and unearned revenue, ensuring the balance sheet reflects the <span class="text-amber-400 font-semibold">remaining obligation</span> to provide support services.</p>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-4">
+                            <p class="text-xs text-emerald-400 font-semibold mb-1">= Equation Trace (Full Picture)</p>
+                            <p class="text-xs text-slate-300">Throughout all transactions, <span class="text-white font-semibold">A = L + SE</span> held. Revenue increased both A (Cash or A/R) and SE (via RE). Collections just swapped one asset for another. The write-off reduced both Gross A/R and the Allowance equally, leaving Net A/R (and therefore total A) unchanged. The bad debt adjusting entry reduced both A (via Allowance) and SE (via expense).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 4: PRACTICE QUESTIONS ==================== -->
+        <div id="tab-4" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Score Panel -->
+                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:sticky lg:top-6 self-start">
+                    <h2 class="text-xl font-bold text-amber-400 mb-4">Your Score</h2>
+                    <div class="text-center mb-4">
+                        <p class="text-5xl font-bold text-white" id="score-display">0/0</p>
+                        <p class="text-slate-400 text-sm mt-1" id="score-pct"></p>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-3 mb-3">
+                        <div class="bg-amber-500 h-3 rounded-full transition-all duration-500" id="score-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="text-center mb-6">
+                        <p class="text-slate-500 text-xs">Streak: <span id="streak-display" class="text-amber-400 font-bold">0</span></p>
+                    </div>
+                    <button onclick="generateQuestion()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 rounded-lg transition-colors mb-3">
+                        Next Question
+                    </button>
+                    <button onclick="resetScore()" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">
+                        Reset Score
+                    </button>
+                </div>
+
+                <!-- Question Panel -->
+                <div class="lg:col-span-2">
+                    <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div id="question-area">
+                            <p class="text-slate-400 text-center py-8">Click "Next Question" to begin practicing.</p>
+                        </div>
+                        <div id="feedback-area" class="hidden mt-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Revenue &amp; Accounts Receivable Study Tool</p>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+    // ===== TAB SWITCHING =====
+    let currentTab = 0;
+
+    window.switchTab = function(idx) {
+        document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.add('hidden'); });
+        document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+        document.getElementById('tab-' + idx).classList.remove('hidden');
+        document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+        currentTab = idx;
+        if (idx === 2) { computeRatios(); }
+    };
+
+    // ===== WALKTHROUGH STEP REVEAL =====
+    window.revealStep = function(step) {
+        var content = document.getElementById('step-' + step);
+        var btn = document.getElementById('step-btn-' + step);
+        if (content && btn) {
+            content.classList.toggle('hidden');
+            var hint = btn.querySelector('.text-slate-500');
+            if (hint) {
+                hint.textContent = content.classList.contains('hidden') ? 'Click to reveal' : 'Click to hide';
+            }
+        }
+    };
+
+    // ===== RATIO CALCULATOR =====
+    window.computeRatios = function() {
+        var revenue = parseFloat(document.getElementById('calc-revenue').value) || 0;
+        var begAR = parseFloat(document.getElementById('calc-beg-ar').value) || 0;
+        var endAR = parseFloat(document.getElementById('calc-end-ar').value) || 0;
+
+        var avgAR = (begAR + endAR) / 2;
+        var art = avgAR > 0 ? revenue / avgAR : 0;
+        var acp = art > 0 ? 365 / art : 0;
+
+        document.getElementById('out-avg-ar').textContent = '$' + Math.round(avgAR).toLocaleString();
+        document.getElementById('out-art').textContent = art.toFixed(2) + 'x';
+        document.getElementById('out-acp').textContent = acp.toFixed(1) + ' days';
+    };
+
+    // ===== PRACTICE QUESTIONS =====
+    var score = { correct: 0, total: 0 };
+    var streak = 0;
+    var currentQuestion = null;
+
+    var JE_ACCOUNTS = [
+        'Cash', 'Accounts Receivable', 'Allowance for Bad Debt', 'Inventory',
+        'Unearned Revenue', 'Unearned Support Revenue', 'Unearned Training Revenue',
+        'Sales Revenue', 'Service Revenue', 'Bad Debt Expense', 'Cost of Goods Sold',
+        'Interest Revenue', 'Notes Receivable', 'Accounts Payable'
+    ];
+
+    window.resetScore = function() {
+        score = { correct: 0, total: 0 };
+        streak = 0;
+        updateScoreDisplay();
+        document.getElementById('question-area').innerHTML = '<p class="text-slate-400 text-center py-8">Click "Next Question" to begin practicing.</p>';
+        document.getElementById('feedback-area').classList.add('hidden');
+    };
+
+    function updateScoreDisplay() {
+        document.getElementById('score-display').textContent = score.correct + '/' + score.total;
+        var pct = score.total > 0 ? Math.round(score.correct / score.total * 100) : 0;
+        document.getElementById('score-pct').textContent = score.total > 0 ? pct + '% correct' : '';
+        document.getElementById('score-bar').style.width = pct + '%';
+        document.getElementById('streak-display').textContent = streak;
+    }
+
+    function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function randChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function shuffle(arr) {
+        var a = arr.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+        }
+        return a;
+    }
+    function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+    window.generateQuestion = function() {
+        document.getElementById('feedback-area').classList.add('hidden');
+        var type = randInt(0, 6);
+        switch (type) {
+            case 0: genRevRecognition(); break;
+            case 1: genBundledAllocation(); break;
+            case 2: genBadDebtJE(); break;
+            case 3: genNetARCalc(); break;
+            case 4: genARTurnover(); break;
+            case 5: genWriteOffImpact(); break;
+            case 6: genJournalEntry(); break;
+        }
+    };
+
+    // --- Type 0: Revenue Recognition Timing ---
+    function genRevRecognition() {
+        var questions = [
+            {
+                q: 'A gym sells an annual membership for $1,200 on January 1, collecting the full amount upfront. How much revenue should be recognized on January 31?',
+                choices: ['$1,200', '$100', '$0', '$600'],
+                answer: 1,
+                explain: '$100. The gym has a 12-month performance obligation. After one month, 1/12 of the obligation is fulfilled, so $1,200 / 12 = $100 is recognized as revenue. The remaining $1,100 is Unearned Revenue (a liability).'
+            },
+            {
+                q: 'A contractor signs a $500,000 contract to build a warehouse. By year-end, 40% of estimated total costs have been incurred. How much revenue should be recognized if the performance obligation is satisfied over time?',
+                choices: ['$500,000', '$200,000', '$0', '$300,000'],
+                answer: 1,
+                explain: '$200,000. Using the cost-to-cost method: 40% complete x $500,000 = $200,000. Revenue is recognized proportionally as the performance obligation is satisfied over time.'
+            },
+            {
+                q: 'A retailer sells goods at a cash register. When should revenue be recognized?',
+                choices: ['When the order is placed', 'At the point of sale (delivery)', 'When the customer leaves the store', 'At year end'],
+                answer: 1,
+                explain: 'At the point of sale. For a simple cash transaction, the performance obligation is satisfied when control of the goods transfers to the customer at delivery.'
+            },
+            {
+                q: 'A software company receives $50,000 in advance for a 2-year license. What is the journal entry at the date cash is received?',
+                choices: ['Dr Cash / Cr Sales Revenue $50,000', 'Dr Cash / Cr Unearned Revenue $50,000', 'Dr Unearned Revenue / Cr Sales Revenue $50,000', 'Dr Accounts Receivable / Cr Sales Revenue $50,000'],
+                answer: 1,
+                explain: 'Dr Cash / Cr Unearned Revenue $50,000. The performance obligation has not yet been fulfilled, so the cash received is recorded as a liability (Unearned Revenue), not as revenue.'
+            },
+            {
+                q: 'A company delivers goods on December 28 but does not receive payment until January 15. When should revenue be recognized?',
+                choices: ['January 15 (when cash is received)', 'December 28 (when goods are delivered)', 'December 31 (year end)', 'January 1 (start of new year)'],
+                answer: 1,
+                explain: 'December 28. Revenue is recognized when the performance obligation is satisfied (delivery), not when cash is collected. The company records A/R on December 28 and cash on January 15.'
+            }
+        ];
+        var qObj = randChoice(questions);
+        var shuffledIndices = shuffle([0, 1, 2, 3]);
+        var shuffledChoices = shuffledIndices.map(function(i) { return qObj.choices[i]; });
+        var correctIdx = shuffledIndices.indexOf(qObj.answer);
+
+        var html = '<p class="text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">Revenue Recognition</p>' +
+            '<h3 class="text-lg font-bold mb-4">' + qObj.q + '</h3>' +
+            '<div class="space-y-2">' +
+            shuffledChoices.map(function(c, i) {
+                return '<button onclick="checkMC(' + i + ', ' + correctIdx + ')" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">' +
+                    '<span class="font-semibold text-slate-400 mr-2">' + String.fromCharCode(65 + i) + '.</span> ' + c +
+                    '</button>';
+            }).join('') +
+            '</div>';
+
+        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 1: Bundled Sale Allocation ---
+    function genBundledAllocation() {
+        var totalPrice = randInt(5, 20) * 10000;
+        var fv1 = randInt(3, 12) * 10000;
+        var fv2 = randInt(1, 5) * 10000;
+        var fv3 = randInt(1, 4) * 10000;
+        var totalFV = fv1 + fv2 + fv3;
+        var names = ['Product', 'Training', 'Support'];
+        var askIdx = randInt(0, 2);
+        var fvs = [fv1, fv2, fv3];
+        var pct = fvs[askIdx] / totalFV;
+        var allocation = Math.round(pct * totalPrice);
+
+        var html = '<p class="text-xs text-purple-400 uppercase tracking-wider mb-2 font-semibold">Bundled Sale Allocation</p>' +
+            '<h3 class="text-lg font-bold mb-4">Compute the revenue allocation for ' + names[askIdx] + '</h3>' +
+            '<div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm">' +
+            '<p class="text-slate-300 mb-2">A company sells a bundle for <span class="text-white font-semibold">' + fmt(totalPrice) + '</span>. The standalone fair values are:</p>' +
+            '<table class="w-full mt-2"><tr class="border-b border-slate-700"><td class="py-1 text-sky-400">' + names[0] + '</td><td class="text-right">' + fmt(fv1) + '</td></tr>' +
+            '<tr class="border-b border-slate-700"><td class="py-1 text-amber-400">' + names[1] + '</td><td class="text-right">' + fmt(fv2) + '</td></tr>' +
+            '<tr class="border-b border-slate-700"><td class="py-1 text-emerald-400">' + names[2] + '</td><td class="text-right">' + fmt(fv3) + '</td></tr>' +
+            '<tr class="border-t-2 border-slate-500 font-bold"><td class="py-1">Total FV</td><td class="text-right">' + fmt(totalFV) + '</td></tr></table>' +
+            '</div>' +
+            '<div class="flex items-center gap-3">' +
+            '<span class="text-slate-400">Allocation for ' + names[askIdx] + ': $</span>' +
+            '<input type="number" id="calc-answer" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="Enter amount">' +
+            '<button onclick="checkCalcAnswer()" class="bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>' +
+            '</div>';
+
+        var explanation = names[askIdx] + ' % of total FV = ' + fmt(fvs[askIdx]) + ' / ' + fmt(totalFV) + ' = ' + (pct * 100).toFixed(1) + '%\n' +
+            'Allocation = ' + (pct * 100).toFixed(1) + '% x ' + fmt(totalPrice) + ' = ' + fmt(allocation);
+
+        currentQuestion = { type: 'calc', answer: allocation, explanation: explanation };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 2: Bad Debt Journal Entry ---
+    function genBadDebtJE() {
+        var questions = [
+            {
+                q: 'A company estimates bad debt expense at year end to be $15,000 using the allowance method. What is the adjusting journal entry?',
+                choices: [
+                    'Dr Bad Debt Expense 15,000 / Cr Allowance for Bad Debt 15,000',
+                    'Dr Bad Debt Expense 15,000 / Cr Accounts Receivable 15,000',
+                    'Dr Allowance for Bad Debt 15,000 / Cr Bad Debt Expense 15,000',
+                    'Dr Accounts Receivable 15,000 / Cr Bad Debt Expense 15,000'
+                ],
+                answer: 0,
+                explain: 'Dr Bad Debt Expense / Cr Allowance for Bad Debt. The expense hits the income statement, and the allowance (contra-asset) increases, reducing Net A/R on the balance sheet.'
+            },
+            {
+                q: 'Under the allowance method, a specific $8,000 account is deemed uncollectible and written off. What is the journal entry?',
+                choices: [
+                    'Dr Bad Debt Expense 8,000 / Cr Accounts Receivable 8,000',
+                    'Dr Allowance for Bad Debt 8,000 / Cr Accounts Receivable 8,000',
+                    'Dr Accounts Receivable 8,000 / Cr Allowance for Bad Debt 8,000',
+                    'Dr Bad Debt Expense 8,000 / Cr Allowance for Bad Debt 8,000'
+                ],
+                answer: 1,
+                explain: 'Dr Allowance for Bad Debt / Cr Accounts Receivable. Under the allowance method, the write-off does NOT affect the income statement. It reduces both the allowance and gross A/R by the same amount, leaving Net A/R unchanged.'
+            },
+            {
+                q: 'Under the specific write-off method, a $5,000 account is deemed uncollectible. What is the journal entry?',
+                choices: [
+                    'Dr Bad Debt Expense 5,000 / Cr Accounts Receivable 5,000',
+                    'Dr Allowance for Bad Debt 5,000 / Cr Accounts Receivable 5,000',
+                    'Dr Accounts Receivable 5,000 / Cr Bad Debt Expense 5,000',
+                    'Dr Bad Debt Expense 5,000 / Cr Cash 5,000'
+                ],
+                answer: 0,
+                explain: 'Dr Bad Debt Expense / Cr Accounts Receivable. Under the specific write-off method, there is no allowance account. The expense is recorded directly when the account is deemed uncollectible.'
+            },
+            {
+                q: 'Using the aging method, a company determines the Allowance for Bad Debt should have an ending balance of $12,000. The current balance before adjustment is $4,000 (credit). What is the adjusting entry?',
+                choices: [
+                    'Dr Bad Debt Expense 12,000 / Cr Allowance for Bad Debt 12,000',
+                    'Dr Bad Debt Expense 8,000 / Cr Allowance for Bad Debt 8,000',
+                    'Dr Bad Debt Expense 4,000 / Cr Allowance for Bad Debt 4,000',
+                    'Dr Bad Debt Expense 16,000 / Cr Allowance for Bad Debt 16,000'
+                ],
+                answer: 1,
+                explain: 'Dr Bad Debt Expense 8,000 / Cr Allowance 8,000. Under the aging method, the expense = desired ending balance minus current balance = $12,000 - $4,000 = $8,000.'
+            }
+        ];
+        var qObj = randChoice(questions);
+        var shuffledIndices = shuffle([0, 1, 2, 3]);
+        var shuffledChoices = shuffledIndices.map(function(i) { return qObj.choices[i]; });
+        var correctIdx = shuffledIndices.indexOf(qObj.answer);
+
+        var html = '<p class="text-xs text-rose-400 uppercase tracking-wider mb-2 font-semibold">Bad Debt Journal Entry</p>' +
+            '<h3 class="text-lg font-bold mb-4">' + qObj.q + '</h3>' +
+            '<div class="space-y-2">' +
+            shuffledChoices.map(function(c, i) {
+                return '<button onclick="checkMC(' + i + ', ' + correctIdx + ')" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">' +
+                    '<span class="font-semibold text-slate-400 mr-2">' + String.fromCharCode(65 + i) + '.</span> ' + c +
+                    '</button>';
+            }).join('') +
+            '</div>';
+
+        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 3: Net A/R Calculation ---
+    function genNetARCalc() {
+        var grossAR = randInt(100, 800) * 1000;
+        var allowance = randInt(5, 50) * 1000;
+        if (allowance >= grossAR) allowance = Math.round(grossAR * 0.05);
+        var netAR = grossAR - allowance;
+
+        var askFor = randChoice(['Net A/R', 'Allowance', 'Gross A/R']);
+        var given, answer, explain;
+
+        if (askFor === 'Net A/R') {
+            given = 'Gross Accounts Receivable = ' + fmt(grossAR) + ', Allowance for Bad Debt = ' + fmt(allowance);
+            answer = netAR;
+            explain = 'Net A/R = Gross A/R - Allowance = ' + fmt(grossAR) + ' - ' + fmt(allowance) + ' = ' + fmt(netAR);
+        } else if (askFor === 'Allowance') {
+            given = 'Gross Accounts Receivable = ' + fmt(grossAR) + ', Net A/R = ' + fmt(netAR);
+            answer = allowance;
+            explain = 'Allowance = Gross A/R - Net A/R = ' + fmt(grossAR) + ' - ' + fmt(netAR) + ' = ' + fmt(allowance);
+        } else {
+            given = 'Net A/R = ' + fmt(netAR) + ', Allowance for Bad Debt = ' + fmt(allowance);
+            answer = grossAR;
+            explain = 'Gross A/R = Net A/R + Allowance = ' + fmt(netAR) + ' + ' + fmt(allowance) + ' = ' + fmt(grossAR);
+        }
+
+        var html = '<p class="text-xs text-sky-400 uppercase tracking-wider mb-2 font-semibold">Net A/R Calculation</p>' +
+            '<h3 class="text-lg font-bold mb-4">Calculate the ' + askFor + '</h3>' +
+            '<div class="bg-slate-900/60 rounded-lg p-4 mb-4">' +
+            '<p class="text-slate-300 mb-2">Given: ' + given + '</p>' +
+            '<p class="text-slate-400 text-sm">Recall: Net A/R = Gross A/R &minus; Allowance for Bad Debt</p>' +
+            '</div>' +
+            '<div class="flex items-center gap-3">' +
+            '<span class="text-slate-400">Your answer: $</span>' +
+            '<input type="number" id="calc-answer" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="Enter amount">' +
+            '<button onclick="checkCalcAnswer()" class="bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>' +
+            '</div>';
+
+        currentQuestion = { type: 'calc', answer: answer, explanation: explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 4: A/R Turnover & Collection Period ---
+    function genARTurnover() {
+        var salesRev = randInt(500, 5000) * 1000;
+        var begAR = randInt(50, 500) * 1000;
+        var endAR = randInt(50, 500) * 1000;
+        var avgAR = (begAR + endAR) / 2;
+        var art = salesRev / avgAR;
+        var acp = 365 / art;
+
+        var askFor = randChoice(['A/R Turnover', 'Average Collection Period']);
+        var answer, explain;
+
+        if (askFor === 'A/R Turnover') {
+            answer = Math.round(art * 100) / 100;
+            explain = 'Average A/R = (' + fmt(begAR) + ' + ' + fmt(endAR) + ') / 2 = ' + fmt(avgAR) + '\n' +
+                'A/R Turnover = ' + fmt(salesRev) + ' / ' + fmt(avgAR) + ' = ' + answer.toFixed(2) + 'x';
+        } else {
+            answer = Math.round(acp * 10) / 10;
+            explain = 'Average A/R = (' + fmt(begAR) + ' + ' + fmt(endAR) + ') / 2 = ' + fmt(avgAR) + '\n' +
+                'A/R Turnover = ' + fmt(salesRev) + ' / ' + fmt(avgAR) + ' = ' + art.toFixed(2) + 'x\n' +
+                'Avg Collection Period = 365 / ' + art.toFixed(2) + ' = ' + answer.toFixed(1) + ' days';
+        }
+
+        var html = '<p class="text-xs text-emerald-400 uppercase tracking-wider mb-2 font-semibold">A/R Ratio Computation</p>' +
+            '<h3 class="text-lg font-bold mb-4">Compute the ' + askFor + '</h3>' +
+            '<div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm">' +
+            '<p class="text-slate-300">Sales Revenue: <span class="text-white font-semibold">' + fmt(salesRev) + '</span></p>' +
+            '<p class="text-slate-300">Beginning A/R: <span class="text-white font-semibold">' + fmt(begAR) + '</span></p>' +
+            '<p class="text-slate-300">Ending A/R: <span class="text-white font-semibold">' + fmt(endAR) + '</span></p>' +
+            '</div>' +
+            '<div class="flex items-center gap-3">' +
+            '<span class="text-slate-400">Your answer: </span>' +
+            '<input type="number" id="calc-answer" step="0.01" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="' + (askFor === 'A/R Turnover' ? 'e.g. 8.50' : 'e.g. 42.9') + '">' +
+            '<span class="text-slate-500 text-sm">' + (askFor === 'A/R Turnover' ? 'times' : 'days') + '</span>' +
+            '<button onclick="checkCalcAnswer()" class="bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>' +
+            '</div>';
+
+        currentQuestion = { type: 'calc', answer: answer, explanation: explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 5: Write-Off Impact ---
+    function genWriteOffImpact() {
+        var questions = [
+            {
+                q: 'Under the allowance method, when a specific account is written off, what happens to Net Accounts Receivable?',
+                choices: ['Net A/R decreases', 'Net A/R increases', 'Net A/R stays the same', 'It depends on the amount written off'],
+                answer: 2,
+                explain: 'Net A/R stays the same. The write-off reduces Gross A/R and the Allowance by equal amounts. Since Net A/R = Gross A/R - Allowance, the net amount is unchanged.'
+            },
+            {
+                q: 'Under the allowance method, when a specific account is written off, what happens to total assets?',
+                choices: ['Total assets decrease', 'Total assets increase', 'Total assets stay the same', 'Total assets decrease by half the write-off amount'],
+                answer: 2,
+                explain: 'Total assets stay the same. Gross A/R decreases but so does the contra-asset (Allowance), so Net A/R (the net asset) is unchanged. No other assets are affected.'
+            },
+            {
+                q: 'Under the allowance method, when a specific account is written off, what is the impact on the income statement?',
+                choices: ['Bad Debt Expense increases', 'Sales Revenue decreases', 'No income statement impact', 'Net Income decreases'],
+                answer: 2,
+                explain: 'No income statement impact. The expense was already recorded when the allowance was estimated. The write-off is a balance sheet event only: Dr Allowance / Cr A/R.'
+            },
+            {
+                q: 'Under the SPECIFIC WRITE-OFF method, when an account is written off, what happens to Net A/R?',
+                choices: ['Net A/R decreases', 'Net A/R stays the same', 'Net A/R increases', 'There is no Net A/R concept under this method'],
+                answer: 0,
+                explain: 'Net A/R decreases. Under the specific write-off method, there is no allowance account. The full A/R balance is removed, directly reducing the asset.'
+            },
+            {
+                q: 'A company has Gross A/R of $500,000 and an Allowance of $20,000. It writes off a $5,000 account under the allowance method. What is Net A/R after the write-off?',
+                choices: ['$480,000', '$475,000', '$495,000', '$485,000'],
+                answer: 0,
+                explain: 'Net A/R before = $500,000 - $20,000 = $480,000. After write-off: Gross A/R = $495,000, Allowance = $15,000. Net A/R = $495,000 - $15,000 = $480,000. Unchanged!'
+            },
+            {
+                q: 'Recording the year-end bad debt estimate (adjusting entry) under the allowance method has what effect?',
+                choices: ['Increases assets and increases expenses', 'Decreases net assets and increases expenses', 'No effect on total assets', 'Decreases liabilities and increases expenses'],
+                answer: 1,
+                explain: 'The adjusting entry (Dr Bad Debt Expense / Cr Allowance) increases the contra-asset (reducing net assets) and records an expense (reducing SE via net income). Both sides of A = L + SE decrease.'
+            }
+        ];
+        var qObj = randChoice(questions);
+        var shuffledIndices = shuffle([0, 1, 2, 3]);
+        var shuffledChoices = shuffledIndices.map(function(i) { return qObj.choices[i]; });
+        var correctIdx = shuffledIndices.indexOf(qObj.answer);
+
+        var html = '<p class="text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">Write-Off Impact</p>' +
+            '<h3 class="text-lg font-bold mb-4">' + qObj.q + '</h3>' +
+            '<div class="space-y-2">' +
+            shuffledChoices.map(function(c, i) {
+                return '<button onclick="checkMC(' + i + ', ' + correctIdx + ')" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">' +
+                    '<span class="font-semibold text-slate-400 mr-2">' + String.fromCharCode(65 + i) + '.</span> ' + c +
+                    '</button>';
+            }).join('') +
+            '</div>';
+
+        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    // --- Type 6: Journal Entry Practice ---
+    function genJournalEntry() {
+        var scenario = randInt(0, 5);
+        var prompt, correctEntries, explanation;
+
+        if (scenario === 0) {
+            // Credit sale
+            var amt = randInt(10, 100) * 1000;
+            prompt = 'A company sells goods on credit for <span class="text-white font-semibold">' + fmt(amt) + '</span>.';
+            correctEntries = [
+                { account: 'Accounts Receivable', debit: amt, credit: 0 },
+                { account: 'Sales Revenue', debit: 0, credit: amt }
+            ];
+            explanation = 'Dr Accounts Receivable ' + fmt(amt) + ' (asset increases), Cr Sales Revenue ' + fmt(amt) + ' (revenue increases SE via RE).';
+        } else if (scenario === 1) {
+            // Collect from customer
+            var amt = randInt(10, 100) * 1000;
+            prompt = 'A company collects <span class="text-white font-semibold">' + fmt(amt) + '</span> from a customer who previously bought goods on credit.';
+            correctEntries = [
+                { account: 'Cash', debit: amt, credit: 0 },
+                { account: 'Accounts Receivable', debit: 0, credit: amt }
+            ];
+            explanation = 'Dr Cash ' + fmt(amt) + ' (asset increases), Cr Accounts Receivable ' + fmt(amt) + ' (asset decreases). No income statement effect.';
+        } else if (scenario === 2) {
+            // Year-end bad debt adjusting entry (allowance method)
+            var salesAmt = randInt(500, 3000) * 1000;
+            var pct = randChoice([1, 2, 3, 4, 5]);
+            var bde = Math.round(salesAmt * pct / 100);
+            prompt = 'At year end, a company using the allowance method estimates bad debts at <span class="text-white font-semibold">' + pct + '%</span> of credit sales of <span class="text-white font-semibold">' + fmt(salesAmt) + '</span>. Record the adjusting entry.';
+            correctEntries = [
+                { account: 'Bad Debt Expense', debit: bde, credit: 0 },
+                { account: 'Allowance for Bad Debt', debit: 0, credit: bde }
+            ];
+            explanation = 'Bad Debt Expense = ' + pct + '% x ' + fmt(salesAmt) + ' = ' + fmt(bde) + '.\nDr Bad Debt Expense ' + fmt(bde) + ', Cr Allowance for Bad Debt ' + fmt(bde) + '.';
+        } else if (scenario === 3) {
+            // Write-off under allowance method
+            var amt = randInt(2, 30) * 1000;
+            prompt = 'Under the allowance method, a specific customer account of <span class="text-white font-semibold">' + fmt(amt) + '</span> is deemed uncollectible. Record the write-off.';
+            correctEntries = [
+                { account: 'Allowance for Bad Debt', debit: amt, credit: 0 },
+                { account: 'Accounts Receivable', debit: 0, credit: amt }
+            ];
+            explanation = 'Dr Allowance for Bad Debt ' + fmt(amt) + ', Cr Accounts Receivable ' + fmt(amt) + '. No income statement effect under the allowance method.';
+        } else if (scenario === 4) {
+            // Receive advance payment (unearned revenue)
+            var amt = randInt(10, 80) * 1000;
+            prompt = 'A company receives <span class="text-white font-semibold">' + fmt(amt) + '</span> in advance for services to be performed over the next 12 months. Record the receipt.';
+            correctEntries = [
+                { account: 'Cash', debit: amt, credit: 0 },
+                { account: 'Unearned Revenue', debit: 0, credit: amt }
+            ];
+            explanation = 'Dr Cash ' + fmt(amt) + ' (asset increases), Cr Unearned Revenue ' + fmt(amt) + ' (liability increases). Revenue is NOT recognized yet because the service has not been provided.';
+        } else {
+            // Recognize previously unearned revenue
+            var totalAmt = randInt(10, 60) * 1000;
+            var months = randChoice([3, 4, 6]);
+            var totalMonths = 12;
+            var earned = Math.round(totalAmt * months / totalMonths);
+            prompt = 'A company received <span class="text-white font-semibold">' + fmt(totalAmt) + '</span> in advance for a 12-month service contract. After <span class="text-white font-semibold">' + months + ' months</span>, record the revenue earned.';
+            correctEntries = [
+                { account: 'Unearned Revenue', debit: earned, credit: 0 },
+                { account: 'Service Revenue', debit: 0, credit: earned }
+            ];
+            explanation = 'Revenue earned = ' + fmt(totalAmt) + ' x ' + months + '/12 = ' + fmt(earned) + '.\nDr Unearned Revenue ' + fmt(earned) + ' (liability decreases), Cr Service Revenue ' + fmt(earned) + ' (revenue increases SE).';
+        }
+
+        var numLines = Math.max(correctEntries.length, 2);
+        var acctOptions = JE_ACCOUNTS.map(function(a) { return '<option value="' + a + '">' + a + '</option>'; }).join('');
+
+        var linesHtml = '';
+        for (var i = 0; i < numLines; i++) {
+            linesHtml += '<div class="je-line flex items-center gap-2 mb-2" data-line="' + i + '">' +
+                '<select class="je-account bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm flex-1 min-w-0" style="max-width: 260px;">' +
+                '<option value="">-- Select Account --</option>' +
+                acctOptions +
+                '</select>' +
+                '<input type="number" class="je-debit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Debit $" min="0">' +
+                '<input type="number" class="je-credit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Credit $" min="0">' +
+                '</div>';
+        }
+
+        var html = '<p class="text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">Journal Entry</p>' +
+            '<h3 class="text-lg font-bold mb-3">Record the journal entry</h3>' +
+            '<div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm text-slate-300">' + prompt + '</div>' +
+            '<div class="mb-3">' +
+            '<div class="flex items-center gap-2 mb-2 text-xs text-slate-400 font-semibold uppercase tracking-wider">' +
+            '<div class="flex-1" style="max-width: 260px;">Account</div>' +
+            '<div class="w-28 text-center">Debit ($)</div>' +
+            '<div class="w-28 text-center">Credit ($)</div>' +
+            '</div>' +
+            '<div id="je-lines">' + linesHtml + '</div>' +
+            '<button onclick="addJELine()" class="text-sm text-amber-400 hover:text-amber-300 transition-colors mt-1">+ Add Line</button>' +
+            '</div>' +
+            '<button onclick="checkJournalEntry()" class="bg-amber-600 hover:bg-amber-700 px-6 py-2 rounded-lg font-semibold transition-colors">Check Answer</button>';
+
+        currentQuestion = { type: 'je', correctEntries: correctEntries, explanation: explanation };
+        document.getElementById('question-area').innerHTML = html;
+    }
+
+    window.addJELine = function() {
+        var container = document.getElementById('je-lines');
+        var idx = container.querySelectorAll('.je-line').length;
+        var acctOptions = JE_ACCOUNTS.map(function(a) { return '<option value="' + a + '">' + a + '</option>'; }).join('');
+        var lineHtml = '<div class="je-line flex items-center gap-2 mb-2" data-line="' + idx + '">' +
+            '<select class="je-account bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm flex-1 min-w-0" style="max-width: 260px;">' +
+            '<option value="">-- Select Account --</option>' +
+            acctOptions +
+            '</select>' +
+            '<input type="number" class="je-debit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Debit $" min="0">' +
+            '<input type="number" class="je-credit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Credit $" min="0">' +
+            '</div>';
+        container.insertAdjacentHTML('beforeend', lineHtml);
+    };
+
+    window.checkJournalEntry = function() {
+        if (!currentQuestion || currentQuestion.type !== 'je') return;
+        var lines = document.querySelectorAll('.je-line');
+        var userEntries = [];
+        lines.forEach(function(line) {
+            var account = line.querySelector('.je-account').value;
+            var debit = parseFloat(line.querySelector('.je-debit').value) || 0;
+            var credit = parseFloat(line.querySelector('.je-credit').value) || 0;
+            if (account && (debit > 0 || credit > 0)) {
+                userEntries.push({ account: account, debit: debit, credit: credit });
+            }
+        });
+
+        var correct = currentQuestion.correctEntries;
+        var totalDebits = userEntries.reduce(function(s, e) { return s + e.debit; }, 0);
+        var totalCredits = userEntries.reduce(function(s, e) { return s + e.credit; }, 0);
+
+        var allMatched = true;
+        var matchedIndices = {};
+
+        for (var ci = 0; ci < correct.length; ci++) {
+            var ce = correct[ci];
+            var found = false;
+            for (var ui = 0; ui < userEntries.length; ui++) {
+                if (matchedIndices[ui]) continue;
+                var ue = userEntries[ui];
+                var accountMatch = ue.account === ce.account || (ce.altAccount && ue.account === ce.altAccount);
+                var debitMatch = Math.abs(ue.debit - ce.debit) <= Math.max(5, ce.debit * 0.01);
+                var creditMatch = Math.abs(ue.credit - ce.credit) <= Math.max(5, ce.credit * 0.01);
+                if (accountMatch && debitMatch && creditMatch) {
+                    matchedIndices[ui] = true;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) { allMatched = false; break; }
+        }
+
+        var matchedCount = Object.keys(matchedIndices).length;
+        var isCorrect = allMatched && userEntries.length === correct.length && Math.abs(totalDebits - totalCredits) < 1;
+
+        // Highlight lines
+        var lineIdx = 0;
+        lines.forEach(function(line) {
+            var account = line.querySelector('.je-account').value;
+            var debit = parseFloat(line.querySelector('.je-debit').value) || 0;
+            var credit = parseFloat(line.querySelector('.je-credit').value) || 0;
+            if (!account && debit === 0 && credit === 0) return;
+
+            if (matchedIndices[lineIdx]) {
+                line.classList.add('border', 'border-emerald-500', 'rounded-lg', 'bg-emerald-500/10', 'p-1');
+            } else {
+                line.classList.add('border', 'border-rose-500', 'rounded-lg', 'bg-rose-500/10', 'p-1');
+            }
+            lineIdx++;
+        });
+
+        // Build correct answer display
+        var correctDisplay = '<div class="mt-2 font-mono text-sm">';
+        for (var k = 0; k < correct.length; k++) {
+            var entry = correct[k];
+            var acctName = entry.altAccount ? entry.account + ' (or ' + entry.altAccount + ')' : entry.account;
+            if (entry.debit > 0) {
+                correctDisplay += '<p>Dr. ' + acctName + ' <span class="text-white">' + fmt(entry.debit) + '</span></p>';
+            } else {
+                correctDisplay += '<p class="pl-6">Cr. ' + acctName + ' <span class="text-white">' + fmt(entry.credit) + '</span></p>';
+            }
+        }
+        correctDisplay += '</div>';
+
+        score.total++;
+        if (isCorrect) { score.correct++; streak++; } else { streak = 0; }
+        updateScoreDisplay();
+        showFeedback(isCorrect, currentQuestion.explanation + '\n\nCorrect entry:' + correctDisplay);
+        currentQuestion = null;
+    };
+
+    // --- Calc Answer Checker ---
+    window.checkCalcAnswer = function() {
+        if (!currentQuestion) return;
+        var userAns = parseFloat(document.getElementById('calc-answer').value);
+        var tolerance = Math.max(5, Math.abs(currentQuestion.answer) * 0.02);
+        var correct = Math.abs(userAns - currentQuestion.answer) <= tolerance;
+        score.total++;
+        if (correct) { score.correct++; streak++; } else { streak = 0; }
+        updateScoreDisplay();
+        showFeedback(correct, currentQuestion.explanation);
+        currentQuestion = null;
+    };
+
+    // --- MC Checker ---
+    window.checkMC = function(selected, correct) {
+        if (!currentQuestion) return;
+        var btns = document.querySelectorAll('.mc-btn');
+        btns.forEach(function(btn, i) {
+            btn.disabled = true;
+            btn.classList.remove('hover:bg-slate-700/60');
+            if (i === correct) {
+                btn.classList.add('border-emerald-500', 'bg-emerald-500/20');
+                btn.classList.remove('border-slate-600');
+            }
+            if (i === selected && selected !== correct) {
+                btn.classList.add('border-rose-500', 'bg-rose-500/20');
+                btn.classList.remove('border-slate-600');
+            }
+        });
+        var isCorrect = selected === correct;
+        score.total++;
+        if (isCorrect) { score.correct++; streak++; } else { streak = 0; }
+        updateScoreDisplay();
+        showFeedback(isCorrect, currentQuestion.explain);
+        currentQuestion = null;
+    };
+
+    // --- Feedback ---
+    function showFeedback(correct, explanation) {
+        var el = document.getElementById('feedback-area');
+        el.classList.remove('hidden');
+        var colorClass = correct ? 'emerald' : 'rose';
+        el.innerHTML = '<div class="bg-' + colorClass + '-500/10 border border-' + colorClass + '-500/30 rounded-lg p-4">' +
+            '<p class="font-bold text-' + colorClass + '-400 mb-2">' + (correct ? 'Correct!' : 'Incorrect') + '</p>' +
+            '<p class="text-slate-300 text-sm whitespace-pre-line">' + explanation + '</p>' +
+            '</div>';
+    }
+    </script>
+</body>
+</html>
