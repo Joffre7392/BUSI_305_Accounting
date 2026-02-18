@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Accounting Equation &amp; Financial Statements | BUSI 305</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        .tab-btn { transition: all 0.2s ease; cursor: pointer; }
+        .tab-btn:hover { background-color: #334155; }
+        .tab-btn.active { background-color: #10b981; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .equation-box { transition: all 0.3s ease; }
+        .equation-box:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        .timeline-line { height: 4px; background: linear-gradient(90deg, #10b981, #0ea5e9, #10b981); }
+        .flow-arrow { animation: pulse-arrow 2s infinite; }
+        @keyframes pulse-arrow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+        .score-bar { transition: width 0.5s ease; }
+        .flash-correct { animation: flash-green 0.5s ease; }
+        .flash-wrong { animation: flash-red 0.5s ease; }
+        @keyframes flash-green { 0% { background-color: rgba(16,185,129,0.3); } 100% { background-color: transparent; } }
+        @keyframes flash-red { 0% { background-color: rgba(244,63,94,0.3); } 100% { background-color: transparent; } }
+        .stmt-connector { border-left: 3px dashed #10b981; }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+
+    <!-- Header -->
+    <div class="max-w-6xl mx-auto px-4 py-6">
+        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-emerald-400 transition-colors mb-6 text-sm">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">
+            <span class="text-emerald-400">The Accounting Equation</span> &amp; Financial Statements
+        </h1>
+        <p class="text-slate-400">Lecture 1 &mdash; Foundations of Financial Accounting</p>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="max-w-6xl mx-auto px-4 mb-8">
+        <div class="flex flex-wrap gap-2 bg-slate-800/50 rounded-xl p-2 border border-slate-700">
+            <button class="tab-btn active rounded-lg px-4 py-2.5 text-sm font-medium" onclick="switchTab('big-picture')">The Big Picture</button>
+            <button class="tab-btn rounded-lg px-4 py-2.5 text-sm font-medium" onclick="switchTab('equation')">The Accounting Equation</button>
+            <button class="tab-btn rounded-lg px-4 py-2.5 text-sm font-medium" onclick="switchTab('deep-dive')">Financial Statements Deep Dive</button>
+            <button class="tab-btn rounded-lg px-4 py-2.5 text-sm font-medium" onclick="switchTab('practice')">Practice Questions</button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 1: THE BIG PICTURE -->
+    <!-- ============================================================ -->
+    <div id="tab-big-picture" class="tab-content active max-w-6xl mx-auto px-4 pb-16">
+
+        <!-- What is Accounting -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-2xl font-bold text-emerald-400 mb-4">What is Accounting?</h2>
+            <p class="text-slate-300 mb-4">Accounting is the <span class="text-white font-semibold">language of business</span> &mdash; a system for recording, summarizing, and reporting economic transactions to help decision-makers allocate resources.</p>
+            <div class="grid md:grid-cols-2 gap-4 mt-4">
+                <div class="bg-slate-700/50 rounded-lg p-4 border border-sky-500/30">
+                    <h3 class="text-sky-400 font-semibold mb-2 flex items-center">
+                        <span class="w-8 h-8 rounded-full bg-sky-500/20 flex items-center justify-center mr-2 text-sm">F</span>
+                        Financial Accounting
+                    </h3>
+                    <p class="text-slate-300 text-sm">Reports to <strong class="text-white">external users</strong> (investors, creditors, regulators). Governed by GAAP/IFRS. Focuses on historical, verifiable data in standardized financial statements.</p>
+                </div>
+                <div class="bg-slate-700/50 rounded-lg p-4 border border-purple-500/30">
+                    <h3 class="text-purple-400 font-semibold mb-2 flex items-center">
+                        <span class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center mr-2 text-sm">M</span>
+                        Managerial Accounting
+                    </h3>
+                    <p class="text-slate-300 text-sm">Reports to <strong class="text-white">internal users</strong> (managers, executives). Not regulated. Focuses on forward-looking budgets, cost analysis, and performance metrics.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Statements Overview -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-2xl font-bold text-emerald-400 mb-4">The Four Financial Statements</h2>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-slate-700/40 rounded-lg p-4 border-l-4 border-emerald-500">
+                    <h3 class="font-bold text-emerald-400 mb-1">Balance Sheet (BS)</h3>
+                    <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full">Point in Time</span>
+                    <p class="text-slate-300 text-sm mt-2">A snapshot of what the company owns (Assets), owes (Liabilities), and the residual claim of owners (Shareholders' Equity) on a specific date.</p>
+                </div>
+                <div class="bg-slate-700/40 rounded-lg p-4 border-l-4 border-sky-500">
+                    <h3 class="font-bold text-sky-400 mb-1">Income Statement (IS)</h3>
+                    <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full">Period of Time</span>
+                    <p class="text-slate-300 text-sm mt-2">Measures profitability over a period: revenues earned minus expenses incurred, resulting in net income (or net loss).</p>
+                </div>
+                <div class="bg-slate-700/40 rounded-lg p-4 border-l-4 border-amber-500">
+                    <h3 class="font-bold text-amber-400 mb-1">Statement of Cash Flows (SCF)</h3>
+                    <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">Period of Time</span>
+                    <p class="text-slate-300 text-sm mt-2">Tracks actual cash inflows and outflows during the period, categorized into Operating, Investing, and Financing activities.</p>
+                </div>
+                <div class="bg-slate-700/40 rounded-lg p-4 border-l-4 border-purple-500">
+                    <h3 class="font-bold text-purple-400 mb-1">Statement of Shareholders' Equity (SSE)</h3>
+                    <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">Period of Time</span>
+                    <p class="text-slate-300 text-sm mt-2">Reconciles the beginning and ending equity balances, showing stock issuances, net income, dividends, and other changes.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Timeline Diagram -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-2xl font-bold text-emerald-400 mb-6">How the Statements Connect Over Time</h2>
+            <div class="relative px-4 py-8">
+                <!-- Timeline container -->
+                <div class="flex items-center justify-between relative">
+                    <!-- Left BS -->
+                    <div class="flex-shrink-0 w-40 text-center z-10">
+                        <div class="bg-emerald-500/20 border-2 border-emerald-500 rounded-xl p-3 mb-2">
+                            <div class="text-emerald-400 font-bold text-sm">Balance Sheet</div>
+                            <div class="text-xs text-slate-400 mt-1">Jan 1, 2025</div>
+                        </div>
+                        <div class="text-xs text-emerald-300 font-medium">A = L + SE</div>
+                        <div class="text-xs text-slate-400">Snapshot (start)</div>
+                    </div>
+
+                    <!-- Middle: Period Statements -->
+                    <div class="flex-1 mx-4 relative">
+                        <!-- Connecting line -->
+                        <div class="timeline-line absolute top-1/2 left-0 right-0 transform -translate-y-1/2 rounded-full z-0"></div>
+                        <!-- Arrow indicators -->
+                        <div class="flow-arrow absolute top-1/2 left-1/4 transform -translate-y-1/2 text-emerald-400 text-xl z-10">&rarr;</div>
+                        <div class="flow-arrow absolute top-1/2 right-1/4 transform -translate-y-1/2 text-emerald-400 text-xl z-10">&rarr;</div>
+                        <!-- Period statements stacked -->
+                        <div class="relative z-10 flex flex-col items-center gap-2 py-2">
+                            <div class="bg-sky-500/20 border border-sky-500 rounded-lg px-4 py-1.5 text-xs font-semibold text-sky-300 w-48 text-center">Income Statement</div>
+                            <div class="bg-amber-500/20 border border-amber-500 rounded-lg px-4 py-1.5 text-xs font-semibold text-amber-300 w-48 text-center">Statement of Cash Flows</div>
+                            <div class="bg-purple-500/20 border border-purple-500 rounded-lg px-4 py-1.5 text-xs font-semibold text-purple-300 w-48 text-center">Statement of SE</div>
+                            <div class="text-xs text-slate-400 mt-1">During the period (Jan 1 &ndash; Dec 31)</div>
+                        </div>
+                    </div>
+
+                    <!-- Right BS -->
+                    <div class="flex-shrink-0 w-40 text-center z-10">
+                        <div class="bg-emerald-500/20 border-2 border-emerald-500 rounded-xl p-3 mb-2">
+                            <div class="text-emerald-400 font-bold text-sm">Balance Sheet</div>
+                            <div class="text-xs text-slate-400 mt-1">Dec 31, 2025</div>
+                        </div>
+                        <div class="text-xs text-emerald-300 font-medium">A = L + SE</div>
+                        <div class="text-xs text-slate-400">Snapshot (end)</div>
+                    </div>
+                </div>
+                <!-- Explanation -->
+                <div class="mt-6 text-center text-sm text-slate-400">
+                    The period statements <span class="text-white">(IS, SCF, SSE)</span> explain how the firm moved from one Balance Sheet to the next.
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Users & Standards -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-xl font-bold text-amber-400 mb-4">Key Users of Financial Information</h2>
+                <ul class="space-y-2 text-sm text-slate-300">
+                    <li class="flex items-start"><span class="text-amber-400 mr-2 mt-0.5">&#9679;</span><div><strong class="text-white">Shareholders &amp; Investors</strong> &mdash; evaluate returns, make buy/sell decisions</div></li>
+                    <li class="flex items-start"><span class="text-amber-400 mr-2 mt-0.5">&#9679;</span><div><strong class="text-white">Creditors &amp; Lenders</strong> &mdash; assess creditworthiness and repayment ability</div></li>
+                    <li class="flex items-start"><span class="text-amber-400 mr-2 mt-0.5">&#9679;</span><div><strong class="text-white">Financial Analysts</strong> &mdash; build forecasts and valuations</div></li>
+                    <li class="flex items-start"><span class="text-amber-400 mr-2 mt-0.5">&#9679;</span><div><strong class="text-white">Regulators (SEC, etc.)</strong> &mdash; enforce disclosure and protect investors</div></li>
+                    <li class="flex items-start"><span class="text-amber-400 mr-2 mt-0.5">&#9679;</span><div><strong class="text-white">Management</strong> &mdash; internal planning, compensation, and performance</div></li>
+                    <li class="flex items-start"><span class="text-amber-400 mr-2 mt-0.5">&#9679;</span><div><strong class="text-white">Employees &amp; Unions</strong> &mdash; job security, wage negotiations</div></li>
+                </ul>
+            </div>
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-xl font-bold text-sky-400 mb-4">Accounting Standards &amp; Regulation</h2>
+                <div class="space-y-4">
+                    <div class="bg-slate-700/40 rounded-lg p-3">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-sky-300">GAAP</span>
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full">U.S.</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Generally Accepted Accounting Principles, set by the <strong class="text-white">FASB</strong> (Financial Accounting Standards Board). Required for U.S. public companies.</p>
+                    </div>
+                    <div class="bg-slate-700/40 rounded-lg p-3">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-purple-300">IFRS</span>
+                            <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">International</span>
+                        </div>
+                        <p class="text-xs text-slate-400">International Financial Reporting Standards, set by the <strong class="text-white">IASB</strong> (International Accounting Standards Board). Used in 140+ countries.</p>
+                    </div>
+                    <div class="bg-slate-700/40 rounded-lg p-3">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-amber-300">SEC Filings</span>
+                            <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">Regulatory</span>
+                        </div>
+                        <p class="text-xs text-slate-400"><strong class="text-white">10-K</strong> (annual report), <strong class="text-white">10-Q</strong> (quarterly report), <strong class="text-white">8-K</strong> (material events). Filed with the Securities and Exchange Commission.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 2: THE ACCOUNTING EQUATION -->
+    <!-- ============================================================ -->
+    <div id="tab-equation" class="tab-content max-w-6xl mx-auto px-4 pb-16">
+
+        <!-- Core Equation -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-2xl font-bold text-emerald-400 mb-4">The Fundamental Accounting Equation</h2>
+            <div class="flex flex-wrap items-center justify-center gap-4 py-6">
+                <div class="equation-box bg-sky-500/15 border-2 border-sky-500 rounded-xl px-6 py-4 text-center">
+                    <div class="text-3xl font-bold text-sky-400">A</div>
+                    <div class="text-sm text-sky-300 mt-1">Assets</div>
+                </div>
+                <div class="text-3xl font-bold text-slate-400">=</div>
+                <div class="equation-box bg-rose-500/15 border-2 border-rose-500 rounded-xl px-6 py-4 text-center">
+                    <div class="text-3xl font-bold text-rose-400">L</div>
+                    <div class="text-sm text-rose-300 mt-1">Liabilities</div>
+                </div>
+                <div class="text-3xl font-bold text-slate-400">+</div>
+                <div class="equation-box bg-emerald-500/15 border-2 border-emerald-500 rounded-xl px-6 py-4 text-center">
+                    <div class="text-3xl font-bold text-emerald-400">SE</div>
+                    <div class="text-sm text-emerald-300 mt-1">Shareholders' Equity</div>
+                </div>
+            </div>
+            <p class="text-center text-slate-400 text-sm mt-2">This equation <strong class="text-white">must always balance</strong>. Every transaction affects at least two accounts and preserves the equality.</p>
+        </div>
+
+        <!-- Components Breakdown -->
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
+            <!-- Assets -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h3 class="text-xl font-bold text-sky-400 mb-3">Assets</h3>
+                <p class="text-sm text-slate-300 mb-4">Resources with <strong class="text-white">probable future economic benefits</strong> obtained from past transactions, owned or controlled by the entity.</p>
+                <div class="space-y-3">
+                    <div class="bg-slate-700/50 rounded-lg p-3">
+                        <h4 class="text-sky-300 font-semibold text-sm mb-1">Current Assets</h4>
+                        <p class="text-xs text-slate-400">Expected to be converted to cash or used within <strong class="text-white">one year</strong>.</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">Cash</span>
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">AR</span>
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">Inventory</span>
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">Prepaids</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-700/50 rounded-lg p-3">
+                        <h4 class="text-sky-300 font-semibold text-sm mb-1">Non-Current Assets</h4>
+                        <p class="text-xs text-slate-400">Benefits extend <strong class="text-white">beyond one year</strong>.</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">PP&amp;E</span>
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">Goodwill</span>
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">Investments</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Liabilities -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h3 class="text-xl font-bold text-rose-400 mb-3">Liabilities</h3>
+                <p class="text-sm text-slate-300 mb-4"><strong class="text-white">Probable future sacrifices</strong> of economic benefits arising from present obligations due to past transactions.</p>
+                <div class="space-y-3">
+                    <div class="bg-slate-700/50 rounded-lg p-3">
+                        <h4 class="text-rose-300 font-semibold text-sm mb-1">Current Liabilities</h4>
+                        <p class="text-xs text-slate-400">Due within <strong class="text-white">one year</strong>.</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">AP</span>
+                            <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Accrued Exp.</span>
+                            <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Unearned Rev.</span>
+                            <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Current Debt</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-700/50 rounded-lg p-3">
+                        <h4 class="text-rose-300 font-semibold text-sm mb-1">Non-Current Liabilities</h4>
+                        <p class="text-xs text-slate-400">Due <strong class="text-white">beyond one year</strong>.</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Bonds Payable</span>
+                            <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">LT Notes</span>
+                            <span class="text-xs bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Lease Liab.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- SE -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h3 class="text-xl font-bold text-emerald-400 mb-3">Shareholders' Equity</h3>
+                <p class="text-sm text-slate-300 mb-4">The <strong class="text-white">residual claim</strong> on assets after all liabilities are satisfied. SE = A &minus; L.</p>
+                <div class="space-y-3">
+                    <div class="bg-slate-700/50 rounded-lg p-3">
+                        <h4 class="text-emerald-300 font-semibold text-sm mb-1">Paid-in Capital</h4>
+                        <p class="text-xs text-slate-400">Amounts <strong class="text-white">invested by shareholders</strong>.</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Common Stock</span>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">APIC</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-700/50 rounded-lg p-3">
+                        <h4 class="text-emerald-300 font-semibold text-sm mb-1">Retained Earnings</h4>
+                        <p class="text-xs text-slate-400">Cumulative net income <strong class="text-white">not distributed</strong> as dividends.</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">+ Net Income</span>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">&minus; Dividends</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-700/50 rounded-lg p-3">
+                        <h4 class="text-emerald-300 font-semibold text-sm mb-1">Treasury Stock</h4>
+                        <p class="text-xs text-slate-400">Shares <strong class="text-white">repurchased</strong> by the company (contra-equity, reduces SE).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expanded Equation -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-xl font-bold text-amber-400 mb-4">The Expanded Accounting Equation</h2>
+            <div class="overflow-x-auto">
+                <div class="flex items-center justify-center gap-2 py-4 text-sm md:text-base min-w-max px-4">
+                    <span class="bg-sky-500/20 text-sky-300 px-3 py-2 rounded-lg font-bold">Assets</span>
+                    <span class="text-slate-400 font-bold">=</span>
+                    <span class="bg-rose-500/20 text-rose-300 px-3 py-2 rounded-lg font-bold">Liabilities</span>
+                    <span class="text-slate-400 font-bold">+</span>
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-2 rounded-lg font-bold">Contributed Capital</span>
+                    <span class="text-slate-400 font-bold">+</span>
+                    <span class="bg-emerald-500/20 text-emerald-300 px-3 py-2 rounded-lg font-bold">Retained Earnings</span>
+                </div>
+            </div>
+            <div class="mt-4 bg-slate-700/40 rounded-lg p-4">
+                <p class="text-sm text-slate-300 mb-3">Where <strong class="text-emerald-300">Retained Earnings</strong> is further broken down:</p>
+                <div class="flex flex-wrap items-center gap-2 text-sm mb-3">
+                    <span class="bg-emerald-500/20 text-emerald-300 px-3 py-1.5 rounded font-semibold">RE</span>
+                    <span class="text-slate-400">=</span>
+                    <span class="text-slate-300">Beginning RE</span>
+                    <span class="text-slate-400">+</span>
+                    <span class="text-sky-300 font-semibold">Net Income</span>
+                    <span class="text-slate-400">&minus;</span>
+                    <span class="text-rose-300 font-semibold">Dividends</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-sm">
+                    <span class="bg-sky-500/20 text-sky-300 px-3 py-1.5 rounded font-semibold">Net Income</span>
+                    <span class="text-slate-400">=</span>
+                    <span class="text-emerald-300 font-semibold">Revenue</span>
+                    <span class="text-slate-400">&minus;</span>
+                    <span class="text-rose-300 font-semibold">Expenses</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Equation Balancer -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+            <h2 class="text-xl font-bold text-emerald-400 mb-2">Interactive Equation Balancer</h2>
+            <p class="text-sm text-slate-400 mb-4">Enter values for any <strong class="text-white">two</strong> of the three components, and the tool will calculate the third. Leave one field blank.</p>
+            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm text-sky-400 font-semibold mb-1">Assets ($)</label>
+                    <input type="number" id="bal-assets" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:border-sky-500 focus:outline-none" placeholder="Leave blank to solve">
+                </div>
+                <div>
+                    <label class="block text-sm text-rose-400 font-semibold mb-1">Liabilities ($)</label>
+                    <input type="number" id="bal-liabilities" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:border-rose-500 focus:outline-none" placeholder="Leave blank to solve">
+                </div>
+                <div>
+                    <label class="block text-sm text-emerald-400 font-semibold mb-1">Shareholders' Equity ($)</label>
+                    <input type="number" id="bal-equity" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white focus:border-emerald-500 focus:outline-none" placeholder="Leave blank to solve">
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="solveEquation()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-lg font-medium transition-colors">Calculate</button>
+                <button onclick="clearBalancer()" class="bg-slate-700 hover:bg-slate-600 text-white px-6 py-2 rounded-lg font-medium transition-colors">Clear</button>
+            </div>
+            <div id="balancer-result" class="mt-4 hidden">
+                <div id="balancer-message" class="p-4 rounded-lg text-sm"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 3: FINANCIAL STATEMENTS DEEP DIVE -->
+    <!-- ============================================================ -->
+    <div id="tab-deep-dive" class="tab-content max-w-6xl mx-auto px-4 pb-16">
+
+        <!-- Balance Sheet -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-2xl font-bold text-emerald-400 mb-2">Balance Sheet Structure</h2>
+            <p class="text-sm text-slate-400 mb-4">Presents the accounting equation at a <strong class="text-white">single point in time</strong>. Listed in order of liquidity.</p>
+            <div class="grid md:grid-cols-3 gap-4">
+                <!-- Assets Column -->
+                <div>
+                    <h3 class="text-sky-400 font-bold text-lg mb-3 text-center bg-sky-500/10 rounded-lg py-2">ASSETS</h3>
+                    <div class="space-y-2">
+                        <div class="bg-sky-500/10 rounded-lg p-3 border border-sky-500/20">
+                            <h4 class="text-sky-300 font-semibold text-sm mb-2">Current Assets</h4>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li class="flex justify-between"><span>Cash &amp; Cash Equivalents</span></li>
+                                <li class="flex justify-between"><span>Short-term Investments</span></li>
+                                <li class="flex justify-between"><span>Accounts Receivable (net)</span></li>
+                                <li class="flex justify-between"><span>Inventory</span></li>
+                                <li class="flex justify-between"><span>Prepaid Expenses</span></li>
+                            </ul>
+                        </div>
+                        <div class="bg-sky-500/10 rounded-lg p-3 border border-sky-500/20">
+                            <h4 class="text-sky-300 font-semibold text-sm mb-2">Non-Current Assets</h4>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>Property, Plant &amp; Equipment (net)</li>
+                                <li>Long-term Investments</li>
+                                <li>Intangible Assets</li>
+                                <li>Goodwill</li>
+                            </ul>
+                        </div>
+                        <div class="text-center text-sm font-bold text-sky-400 bg-sky-500/20 rounded-lg py-2">Total Assets</div>
+                    </div>
+                </div>
+                <!-- Liabilities Column -->
+                <div>
+                    <h3 class="text-rose-400 font-bold text-lg mb-3 text-center bg-rose-500/10 rounded-lg py-2">LIABILITIES</h3>
+                    <div class="space-y-2">
+                        <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                            <h4 class="text-rose-300 font-semibold text-sm mb-2">Current Liabilities</h4>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>Accounts Payable</li>
+                                <li>Accrued Expenses</li>
+                                <li>Unearned Revenue</li>
+                                <li>Current Portion of LT Debt</li>
+                                <li>Short-term Notes Payable</li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                            <h4 class="text-rose-300 font-semibold text-sm mb-2">Non-Current Liabilities</h4>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>Long-term Debt / Bonds Payable</li>
+                                <li>Long-term Lease Liabilities</li>
+                                <li>Deferred Tax Liabilities</li>
+                                <li>Pension Obligations</li>
+                            </ul>
+                        </div>
+                        <div class="text-center text-sm font-bold text-rose-400 bg-rose-500/20 rounded-lg py-2">Total Liabilities</div>
+                    </div>
+                </div>
+                <!-- SE Column -->
+                <div>
+                    <h3 class="text-emerald-400 font-bold text-lg mb-3 text-center bg-emerald-500/10 rounded-lg py-2">SHAREHOLDERS' EQUITY</h3>
+                    <div class="space-y-2">
+                        <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/20">
+                            <h4 class="text-emerald-300 font-semibold text-sm mb-2">Paid-in Capital</h4>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>Common Stock (par value)</li>
+                                <li>Additional Paid-in Capital (APIC)</li>
+                                <li>Preferred Stock (if any)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/20">
+                            <h4 class="text-emerald-300 font-semibold text-sm mb-2">Retained Earnings &amp; Other</h4>
+                            <ul class="text-xs text-slate-300 space-y-1">
+                                <li>Retained Earnings</li>
+                                <li>Treasury Stock <span class="text-rose-300">(contra, reduces SE)</span></li>
+                                <li>Accumulated OCI</li>
+                            </ul>
+                        </div>
+                        <div class="text-center text-sm font-bold text-emerald-400 bg-emerald-500/20 rounded-lg py-2">Total SE</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 text-center text-sm text-slate-400 bg-slate-700/40 rounded-lg py-3">
+                <strong class="text-white">Total Assets</strong> = <strong class="text-white">Total Liabilities</strong> + <strong class="text-white">Total Shareholders' Equity</strong>
+            </div>
+        </div>
+
+        <!-- Income Statement -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-2xl font-bold text-sky-400 mb-2">Income Statement Structure</h2>
+            <p class="text-sm text-slate-400 mb-4">Measures <strong class="text-white">profitability over a period</strong>. Multi-step format shown below.</p>
+            <div class="max-w-lg mx-auto">
+                <div class="space-y-1 text-sm">
+                    <div class="flex justify-between items-center bg-emerald-500/10 rounded-lg px-4 py-2.5 border border-emerald-500/20">
+                        <span class="text-emerald-300 font-semibold">Revenue (Net Sales)</span>
+                        <span class="text-emerald-400 font-bold">$XXX</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-rose-500/10 rounded-lg px-4 py-2 border border-rose-500/20">
+                        <span class="text-rose-300">&minus; Cost of Goods Sold (COGS)</span>
+                        <span class="text-rose-400">(XXX)</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-sky-500/15 rounded-lg px-4 py-2.5 border border-sky-500/30 font-semibold">
+                        <span class="text-sky-300">= Gross Profit</span>
+                        <span class="text-sky-400">$XXX</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-rose-500/10 rounded-lg px-4 py-2 border border-rose-500/20">
+                        <span class="text-rose-300">&minus; Selling, General &amp; Administrative (SGA)</span>
+                        <span class="text-rose-400">(XXX)</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-rose-500/10 rounded-lg px-4 py-2 border border-rose-500/20">
+                        <span class="text-rose-300">&minus; Depreciation &amp; Amortization (D&amp;A)</span>
+                        <span class="text-rose-400">(XXX)</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-amber-500/15 rounded-lg px-4 py-2.5 border border-amber-500/30 font-semibold">
+                        <span class="text-amber-300">= Operating Income (EBIT)</span>
+                        <span class="text-amber-400">$XXX</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-rose-500/10 rounded-lg px-4 py-2 border border-rose-500/20">
+                        <span class="text-rose-300">&minus; Interest Expense</span>
+                        <span class="text-rose-400">(XXX)</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-purple-500/15 rounded-lg px-4 py-2.5 border border-purple-500/30 font-semibold">
+                        <span class="text-purple-300">= Pre-tax Income (EBT)</span>
+                        <span class="text-purple-400">$XXX</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-rose-500/10 rounded-lg px-4 py-2 border border-rose-500/20">
+                        <span class="text-rose-300">&minus; Income Tax Expense</span>
+                        <span class="text-rose-400">(XXX)</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-emerald-500/20 rounded-lg px-4 py-3 border-2 border-emerald-500 font-bold">
+                        <span class="text-emerald-300">= Net Income</span>
+                        <span class="text-emerald-400 text-lg">$XXX</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IS to BS Connection -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-xl font-bold text-purple-400 mb-4">How the Income Statement Connects to the Balance Sheet</h2>
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <div class="flex-1 text-center">
+                    <div class="bg-sky-500/10 border border-sky-500/30 rounded-xl p-4 inline-block">
+                        <div class="text-sky-400 font-bold">Income Statement</div>
+                        <div class="text-sm text-slate-400 mt-1">Revenue &minus; Expenses</div>
+                        <div class="text-lg font-bold text-emerald-400 mt-2">= Net Income</div>
+                    </div>
+                </div>
+                <div class="text-3xl text-emerald-400 flow-arrow">&rarr;</div>
+                <div class="flex-1 text-center">
+                    <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 inline-block">
+                        <div class="text-emerald-400 font-bold">Retained Earnings (BS)</div>
+                        <div class="text-sm text-slate-400 mt-1">Beg. RE + NI &minus; Dividends</div>
+                        <div class="text-lg font-bold text-emerald-400 mt-2">= Ending RE</div>
+                    </div>
+                </div>
+                <div class="text-3xl text-emerald-400 flow-arrow">&rarr;</div>
+                <div class="flex-1 text-center">
+                    <div class="bg-emerald-500/10 border-2 border-emerald-500 rounded-xl p-4 inline-block">
+                        <div class="text-emerald-400 font-bold">Balance Sheet</div>
+                        <div class="text-sm text-slate-400 mt-1">Within Shareholders' Equity</div>
+                        <div class="text-lg font-bold text-sky-400 mt-2">A = L + SE</div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-sm text-slate-400 mt-4">Net Income from the Income Statement flows into Retained Earnings, which is a component of Shareholders' Equity on the Balance Sheet. This is the primary link between the two statements.</p>
+        </div>
+
+        <!-- SCF -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <h2 class="text-2xl font-bold text-amber-400 mb-2">Statement of Cash Flows</h2>
+            <p class="text-sm text-slate-400 mb-4">Categorizes all cash inflows and outflows during the period into three activities.</p>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
+                    <h3 class="text-amber-300 font-bold mb-2 text-center">Operating</h3>
+                    <p class="text-xs text-slate-400 mb-2">Cash from <strong class="text-white">core business activities</strong>.</p>
+                    <ul class="text-xs text-slate-300 space-y-1">
+                        <li>+ Cash collected from customers</li>
+                        <li>&minus; Cash paid to suppliers</li>
+                        <li>&minus; Cash paid to employees</li>
+                        <li>&minus; Cash paid for interest &amp; taxes</li>
+                    </ul>
+                </div>
+                <div class="bg-sky-500/10 rounded-xl p-4 border border-sky-500/20">
+                    <h3 class="text-sky-300 font-bold mb-2 text-center">Investing</h3>
+                    <p class="text-xs text-slate-400 mb-2">Cash from <strong class="text-white">long-term asset transactions</strong>.</p>
+                    <ul class="text-xs text-slate-300 space-y-1">
+                        <li>&minus; Purchase of PP&amp;E</li>
+                        <li>+ Sale of PP&amp;E</li>
+                        <li>&minus; Purchase of investments</li>
+                        <li>+ Proceeds from investments</li>
+                    </ul>
+                </div>
+                <div class="bg-purple-500/10 rounded-xl p-4 border border-purple-500/20">
+                    <h3 class="text-purple-300 font-bold mb-2 text-center">Financing</h3>
+                    <p class="text-xs text-slate-400 mb-2">Cash from <strong class="text-white">capital structure changes</strong>.</p>
+                    <ul class="text-xs text-slate-300 space-y-1">
+                        <li>+ Issuing stock</li>
+                        <li>&minus; Repurchasing stock</li>
+                        <li>+ Borrowing (new debt)</li>
+                        <li>&minus; Repaying debt</li>
+                        <li>&minus; Paying dividends</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-4 text-center text-sm text-slate-400 bg-slate-700/40 rounded-lg py-3">
+                <strong class="text-white">Net Change in Cash</strong> = Operating + Investing + Financing &rarr; reconciles to Cash on the Balance Sheet
+            </div>
+        </div>
+
+        <!-- Footnotes -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+            <h2 class="text-xl font-bold text-slate-300 mb-4">Financial Statement Footnotes</h2>
+            <p class="text-sm text-slate-400 mb-4">The notes to financial statements are an <strong class="text-white">integral part</strong> of the financial statements. They provide:</p>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-slate-700/40 rounded-lg p-4">
+                    <h4 class="text-emerald-300 font-semibold text-sm mb-2">Accounting Policies</h4>
+                    <p class="text-xs text-slate-400">Revenue recognition methods, depreciation methods, inventory valuation (FIFO vs LIFO), consolidation policies.</p>
+                </div>
+                <div class="bg-slate-700/40 rounded-lg p-4">
+                    <h4 class="text-sky-300 font-semibold text-sm mb-2">Expanded Detail</h4>
+                    <p class="text-xs text-slate-400">Breakdowns of aggregated line items, debt maturity schedules, segment information, pension assumptions.</p>
+                </div>
+                <div class="bg-slate-700/40 rounded-lg p-4">
+                    <h4 class="text-amber-300 font-semibold text-sm mb-2">Off-Balance-Sheet Info</h4>
+                    <p class="text-xs text-slate-400">Contingent liabilities, operating lease commitments (pre-ASC 842), guarantees, and other commitments not on the BS.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- TAB 4: PRACTICE QUESTIONS -->
+    <!-- ============================================================ -->
+    <div id="tab-practice" class="tab-content max-w-6xl mx-auto px-4 pb-16">
+
+        <!-- Score Card -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-emerald-400 mb-1">Practice Questions</h2>
+                    <p class="text-sm text-slate-400">Test your knowledge of the Accounting Equation and Financial Statements.</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-bold">
+                        <span id="score-correct" class="text-emerald-400">0</span>
+                        <span class="text-slate-500">/</span>
+                        <span id="score-total" class="text-slate-400">0</span>
+                    </div>
+                    <div class="text-xs text-slate-500 mt-1">Score</div>
+                    <div class="w-40 h-2 bg-slate-700 rounded-full mt-2 overflow-hidden">
+                        <div id="score-bar" class="score-bar h-full bg-emerald-500 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Area -->
+        <div id="question-area" class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+            <div id="question-label" class="text-xs text-slate-500 uppercase tracking-wider mb-2">Question Type</div>
+            <h3 id="question-text" class="text-xl font-semibold mb-6">Click "Next Question" to begin!</h3>
+
+            <!-- Answer options container -->
+            <div id="answer-area" class="mb-4"></div>
+
+            <!-- Feedback area -->
+            <div id="feedback-area" class="hidden mt-4 p-4 rounded-lg text-sm"></div>
+        </div>
+
+        <!-- Next button -->
+        <div class="text-center">
+            <button id="next-btn" onclick="generateQuestion()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-xl font-semibold text-lg transition-colors shadow-lg shadow-emerald-500/20">
+                Next Question
+            </button>
+            <button onclick="resetScore()" class="ml-3 bg-slate-700 hover:bg-slate-600 text-white px-6 py-3 rounded-xl font-medium transition-colors">
+                Reset Score
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+    // ---- TAB SWITCHING ----
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('tab-' + tabId).classList.add('active');
+        const tabNames = ['big-picture', 'equation', 'deep-dive', 'practice'];
+        const idx = tabNames.indexOf(tabId);
+        if (idx >= 0) {
+            document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+        }
+    }
+
+    // ---- EQUATION BALANCER ----
+    function solveEquation() {
+        const a = document.getElementById('bal-assets').value;
+        const l = document.getElementById('bal-liabilities').value;
+        const se = document.getElementById('bal-equity').value;
+        const resultDiv = document.getElementById('balancer-result');
+        const msgDiv = document.getElementById('balancer-message');
+        resultDiv.classList.remove('hidden');
+
+        const filled = [a !== '', l !== '', se !== ''].filter(Boolean).length;
+        if (filled < 2) {
+            msgDiv.className = 'p-4 rounded-lg text-sm bg-amber-500/20 border border-amber-500/30 text-amber-300';
+            msgDiv.innerHTML = 'Please fill in exactly <strong>two</strong> of the three fields, leaving one blank to solve.';
+            return;
+        }
+        if (filled === 3) {
+            const aVal = parseFloat(a), lVal = parseFloat(l), seVal = parseFloat(se);
+            const balanced = Math.abs(aVal - (lVal + seVal)) < 0.01;
+            if (balanced) {
+                msgDiv.className = 'p-4 rounded-lg text-sm bg-emerald-500/20 border border-emerald-500/30 text-emerald-300';
+                msgDiv.innerHTML = 'The equation <strong>balances</strong>! Assets ($' + aVal.toLocaleString() + ') = Liabilities ($' + lVal.toLocaleString() + ') + SE ($' + seVal.toLocaleString() + ')';
+            } else {
+                msgDiv.className = 'p-4 rounded-lg text-sm bg-rose-500/20 border border-rose-500/30 text-rose-300';
+                msgDiv.innerHTML = 'The equation does <strong>NOT</strong> balance. A ($' + aVal.toLocaleString() + ') &#8800; L ($' + lVal.toLocaleString() + ') + SE ($' + seVal.toLocaleString() + '). Difference: $' + Math.abs(aVal - lVal - seVal).toLocaleString();
+            }
+            return;
+        }
+
+        let solved, label, value;
+        if (a === '') {
+            value = parseFloat(l) + parseFloat(se);
+            label = 'Assets';
+            document.getElementById('bal-assets').value = value;
+        } else if (l === '') {
+            value = parseFloat(a) - parseFloat(se);
+            label = 'Liabilities';
+            document.getElementById('bal-liabilities').value = value;
+        } else {
+            value = parseFloat(a) - parseFloat(l);
+            label = "Shareholders' Equity";
+            document.getElementById('bal-equity').value = value;
+        }
+        msgDiv.className = 'p-4 rounded-lg text-sm bg-emerald-500/20 border border-emerald-500/30 text-emerald-300';
+        msgDiv.innerHTML = '<strong>' + label + ' = $' + value.toLocaleString() + '</strong><br>The equation balances: A ($' +
+            parseFloat(document.getElementById('bal-assets').value).toLocaleString() + ') = L ($' +
+            parseFloat(document.getElementById('bal-liabilities').value).toLocaleString() + ') + SE ($' +
+            parseFloat(document.getElementById('bal-equity').value).toLocaleString() + ')';
+    }
+
+    function clearBalancer() {
+        document.getElementById('bal-assets').value = '';
+        document.getElementById('bal-liabilities').value = '';
+        document.getElementById('bal-equity').value = '';
+        document.getElementById('balancer-result').classList.add('hidden');
+    }
+
+    // ---- PRACTICE QUESTIONS ----
+    let score = { correct: 0, total: 0 };
+    let currentAnswer = null;
+    let answered = false;
+
+    const accounts = [
+        { name: 'Cash', type: 'Asset', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Accounts Receivable', type: 'Asset', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Inventory', type: 'Asset', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Prepaid Insurance', type: 'Asset', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Prepaid Rent', type: 'Asset', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Short-term Investments', type: 'Asset', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Supplies', type: 'Asset', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Property, Plant & Equipment (PP&E)', type: 'Asset', statement: 'Balance Sheet', current: 'Non-current' },
+        { name: 'Goodwill', type: 'Asset', statement: 'Balance Sheet', current: 'Non-current' },
+        { name: 'Long-term Investments', type: 'Asset', statement: 'Balance Sheet', current: 'Non-current' },
+        { name: 'Intangible Assets', type: 'Asset', statement: 'Balance Sheet', current: 'Non-current' },
+        { name: 'Land', type: 'Asset', statement: 'Balance Sheet', current: 'Non-current' },
+        { name: 'Accumulated Depreciation', type: 'Asset', statement: 'Balance Sheet', current: 'Non-current', note: 'It is a contra-asset that reduces the carrying value of PP&E.' },
+        { name: 'Accounts Payable', type: 'Liability', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Accrued Expenses', type: 'Liability', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Unearned Revenue', type: 'Liability', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Salaries Payable', type: 'Liability', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Interest Payable', type: 'Liability', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Income Taxes Payable', type: 'Liability', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Notes Payable (due in 6 months)', type: 'Liability', statement: 'Balance Sheet', current: 'Current' },
+        { name: 'Bonds Payable', type: 'Liability', statement: 'Balance Sheet', current: 'Non-current' },
+        { name: 'Long-term Notes Payable', type: 'Liability', statement: 'Balance Sheet', current: 'Non-current' },
+        { name: 'Mortgage Payable', type: 'Liability', statement: 'Balance Sheet', current: 'Non-current' },
+        { name: 'Common Stock', type: 'Equity', statement: 'Balance Sheet', current: null },
+        { name: 'Additional Paid-in Capital (APIC)', type: 'Equity', statement: 'Balance Sheet', current: null },
+        { name: 'Retained Earnings', type: 'Equity', statement: 'Balance Sheet', current: null },
+        { name: 'Treasury Stock', type: 'Equity', statement: 'Balance Sheet', current: null, note: 'It is a contra-equity account that reduces total SE.' },
+        { name: 'Preferred Stock', type: 'Equity', statement: 'Balance Sheet', current: null },
+        { name: 'Dividends Payable', type: 'Liability', statement: 'Balance Sheet', current: 'Current' },
+    ];
+
+    const isItems = [
+        { name: 'Revenue', statement: 'Income Statement' },
+        { name: 'Cost of Goods Sold', statement: 'Income Statement' },
+        { name: 'Gross Profit', statement: 'Income Statement' },
+        { name: 'Selling, General & Administrative Expenses', statement: 'Income Statement' },
+        { name: 'Depreciation Expense', statement: 'Income Statement' },
+        { name: 'Operating Income', statement: 'Income Statement' },
+        { name: 'Interest Expense', statement: 'Income Statement' },
+        { name: 'Income Tax Expense', statement: 'Income Statement' },
+        { name: 'Net Income', statement: 'Income Statement' },
+    ];
+
+    const scfItems = [
+        { name: 'Cash paid to suppliers', statement: 'Statement of Cash Flows (Operating)' },
+        { name: 'Cash received from customers', statement: 'Statement of Cash Flows (Operating)' },
+        { name: 'Purchase of equipment', statement: 'Statement of Cash Flows (Investing)' },
+        { name: 'Proceeds from sale of land', statement: 'Statement of Cash Flows (Investing)' },
+        { name: 'Issuance of common stock', statement: 'Statement of Cash Flows (Financing)' },
+        { name: 'Payment of dividends', statement: 'Statement of Cash Flows (Financing)' },
+        { name: 'Repayment of long-term debt', statement: 'Statement of Cash Flows (Financing)' },
+    ];
+
+    const tfQuestions = [
+        { q: 'The accounting equation states that Assets = Liabilities + Shareholders\' Equity.', a: true, explain: 'This is the fundamental accounting equation: A = L + SE.' },
+        { q: 'The Balance Sheet reports financial performance over a period of time.', a: false, explain: 'The Balance Sheet is a snapshot at a single point in time. The Income Statement reports performance over a period.' },
+        { q: 'Retained Earnings is increased by net income and decreased by dividends.', a: true, explain: 'RE = Beginning RE + Net Income - Dividends.' },
+        { q: 'Revenue increases Shareholders\' Equity.', a: true, explain: 'Revenue increases Net Income, which flows into Retained Earnings, a component of SE.' },
+        { q: 'Liabilities represent what the company owns.', a: false, explain: 'Liabilities represent what the company owes. Assets represent what the company owns or controls.' },
+        { q: 'Treasury Stock increases total Shareholders\' Equity.', a: false, explain: 'Treasury Stock is a contra-equity account that reduces total SE.' },
+        { q: 'GAAP is set by the FASB and is required for U.S. public companies.', a: true, explain: 'The Financial Accounting Standards Board sets GAAP, which the SEC requires for public companies.' },
+        { q: 'An expense decreases Shareholders\' Equity.', a: true, explain: 'Expenses reduce Net Income, which reduces Retained Earnings, a component of SE.' },
+        { q: 'The Income Statement and Balance Sheet are completely independent of each other.', a: false, explain: 'They are linked: Net Income from the IS flows into Retained Earnings on the BS.' },
+        { q: 'Dividends are reported as an expense on the Income Statement.', a: false, explain: 'Dividends are a distribution to shareholders, not an expense. They reduce Retained Earnings directly and appear on the Statement of Shareholders\' Equity.' },
+        { q: 'Unearned Revenue is a liability because the company has received cash but not yet delivered goods or services.', a: true, explain: 'Until the performance obligation is satisfied, unearned revenue remains a liability.' },
+        { q: 'A company can have negative Retained Earnings.', a: true, explain: 'If cumulative losses and dividends exceed cumulative income, RE becomes negative (called an accumulated deficit).' },
+        { q: 'Paying off a liability with cash leaves the accounting equation in balance.', a: true, explain: 'Both Assets (cash) and Liabilities decrease by the same amount, so A = L + SE still holds.' },
+        { q: 'The Statement of Cash Flows has four sections: Operating, Investing, Financing, and Equity.', a: false, explain: 'The SCF has three sections: Operating, Investing, and Financing. There is no Equity section on the SCF.' },
+        { q: 'Accounts Receivable is a liability because it represents money owed.', a: false, explain: 'AR is an asset. It represents money owed TO the company by its customers.' },
+        { q: 'IFRS is set by the International Accounting Standards Board (IASB).', a: true, explain: 'The IASB develops and maintains International Financial Reporting Standards.' },
+    ];
+
+    function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function pick(arr) { return arr[rand(0, arr.length - 1)]; }
+
+    function updateScore() {
+        document.getElementById('score-correct').textContent = score.correct;
+        document.getElementById('score-total').textContent = score.total;
+        const pct = score.total > 0 ? (score.correct / score.total * 100) : 0;
+        document.getElementById('score-bar').style.width = pct + '%';
+    }
+
+    function resetScore() {
+        score = { correct: 0, total: 0 };
+        updateScore();
+        document.getElementById('question-text').textContent = 'Click "Next Question" to begin!';
+        document.getElementById('question-label').textContent = 'Question Type';
+        document.getElementById('answer-area').innerHTML = '';
+        document.getElementById('feedback-area').classList.add('hidden');
+        answered = false;
+    }
+
+    function showFeedback(isCorrect, explanation) {
+        const fb = document.getElementById('feedback-area');
+        fb.classList.remove('hidden');
+        if (isCorrect) {
+            fb.className = 'mt-4 p-4 rounded-lg text-sm bg-emerald-500/20 border border-emerald-500/30 text-emerald-300';
+            fb.innerHTML = '<strong>Correct!</strong>' + (explanation ? ' ' + explanation : '');
+        } else {
+            fb.className = 'mt-4 p-4 rounded-lg text-sm bg-rose-500/20 border border-rose-500/30 text-rose-300';
+            fb.innerHTML = '<strong>Incorrect.</strong> ' + explanation;
+        }
+    }
+
+    function handleAnswer(selected, correct, explanation) {
+        if (answered) return;
+        answered = true;
+        score.total++;
+        const isCorrect = selected === correct;
+        if (isCorrect) score.correct++;
+        updateScore();
+
+        // Highlight buttons
+        document.querySelectorAll('#answer-area button').forEach(btn => {
+            const val = btn.dataset.value;
+            if (val === correct) {
+                btn.classList.add('ring-2', 'ring-emerald-400', 'bg-emerald-500/20');
+            } else if (val === selected && !isCorrect) {
+                btn.classList.add('ring-2', 'ring-rose-400', 'bg-rose-500/20');
+            }
+            btn.style.cursor = 'default';
+        });
+
+        const qArea = document.getElementById('question-area');
+        qArea.classList.add(isCorrect ? 'flash-correct' : 'flash-wrong');
+        setTimeout(() => qArea.classList.remove('flash-correct', 'flash-wrong'), 500);
+
+        showFeedback(isCorrect, explanation);
+    }
+
+    function handleInputAnswer(correct, explanation, inputId) {
+        if (answered) return;
+        answered = true;
+        score.total++;
+        const userVal = parseFloat(document.getElementById(inputId).value);
+        const isCorrect = !isNaN(userVal) && Math.abs(userVal - correct) < 0.5;
+        if (isCorrect) score.correct++;
+        updateScore();
+
+        const qArea = document.getElementById('question-area');
+        qArea.classList.add(isCorrect ? 'flash-correct' : 'flash-wrong');
+        setTimeout(() => qArea.classList.remove('flash-correct', 'flash-wrong'), 500);
+
+        showFeedback(isCorrect, explanation);
+    }
+
+    function makeButtons(options, correctValue, explanation) {
+        const area = document.getElementById('answer-area');
+        area.innerHTML = '';
+        const grid = document.createElement('div');
+        grid.className = 'grid grid-cols-2 md:grid-cols-' + Math.min(options.length, 4) + ' gap-3';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.dataset.value = opt;
+            btn.className = 'bg-slate-700/70 hover:bg-slate-600 border border-slate-600 rounded-lg px-4 py-3 text-sm font-medium transition-all text-center';
+            btn.textContent = opt;
+            btn.onclick = () => handleAnswer(opt, correctValue, explanation);
+            grid.appendChild(btn);
+        });
+        area.appendChild(grid);
+    }
+
+    function generateQuestion() {
+        answered = false;
+        document.getElementById('feedback-area').classList.add('hidden');
+
+        const type = rand(1, 6);
+
+        if (type === 1) {
+            // Account classification
+            const acct = pick(accounts);
+            document.getElementById('question-label').textContent = 'Account Classification';
+            document.getElementById('question-text').textContent = 'Is "' + acct.name + '" an Asset, Liability, or Equity?';
+            const explain = '"' + acct.name + '" is classified as ' + (acct.type === 'Asset' ? 'an' : 'a') + ' ' + acct.type + '.' + (acct.note ? ' ' + acct.note : '');
+            makeButtons(['Asset', 'Liability', 'Equity'], acct.type, explain);
+        }
+        else if (type === 2) {
+            // Financial statement identification
+            const pool = [...accounts.map(a => ({ name: a.name, statement: a.statement })), ...isItems, ...scfItems];
+            const item = pick(pool);
+            document.getElementById('question-label').textContent = 'Financial Statement Identification';
+            document.getElementById('question-text').textContent = 'Which financial statement primarily reports "' + item.name + '"?';
+            const options = ['Balance Sheet', 'Income Statement', 'Statement of Cash Flows', 'Statement of Shareholders\' Equity'];
+            // Simplify SCF sub-categories for matching
+            let correctStmt = item.statement;
+            if (correctStmt.startsWith('Statement of Cash Flows')) correctStmt = 'Statement of Cash Flows';
+            const explain = '"' + item.name + '" is reported on the ' + item.statement + '.';
+            makeButtons(options, correctStmt, explain);
+        }
+        else if (type === 3) {
+            // Current vs non-current
+            const eligible = accounts.filter(a => a.current !== null);
+            const acct = pick(eligible);
+            document.getElementById('question-label').textContent = 'Current vs Non-Current Classification';
+            document.getElementById('question-text').textContent = 'Is "' + acct.name + '" classified as Current or Non-current?';
+            const explain = '"' + acct.name + '" is a ' + acct.current.toLowerCase() + ' ' + acct.type.toLowerCase() + '. Current items are expected to be settled or realized within one year.';
+            makeButtons(['Current', 'Non-current'], acct.current, explain);
+        }
+        else if (type === 4) {
+            // Accounting equation: solve for missing
+            const a = rand(50, 500) * 1000;
+            const l = rand(20, Math.floor(a / 1000) - 5) * 1000;
+            const se = a - l;
+            const missing = rand(0, 2); // 0=A, 1=L, 2=SE
+            const labels = ['Assets', 'Liabilities', "Shareholders' Equity"];
+            const values = [a, l, se];
+            const given = [0, 1, 2].filter(i => i !== missing);
+            document.getElementById('question-label').textContent = 'Accounting Equation';
+            document.getElementById('question-text').textContent =
+                'If ' + labels[given[0]] + ' = $' + values[given[0]].toLocaleString() +
+                ' and ' + labels[given[1]] + ' = $' + values[given[1]].toLocaleString() +
+                ', what are ' + labels[missing] + '?';
+
+            const area = document.getElementById('answer-area');
+            const inputId = 'eq-answer';
+            area.innerHTML =
+                '<div class="flex items-center gap-3">' +
+                '<span class="text-slate-400 font-medium">' + labels[missing] + ' = $</span>' +
+                '<input type="number" id="' + inputId + '" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-48 focus:border-emerald-500 focus:outline-none" placeholder="Enter amount">' +
+                '<button onclick="handleInputAnswer(' + values[missing] + ', \'The answer is $' + values[missing].toLocaleString() + '. ' +
+                'A ($' + a.toLocaleString() + ') = L ($' + l.toLocaleString() + ') + SE ($' + se.toLocaleString() + ')\', \'' + inputId + '\')" ' +
+                'class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check</button>' +
+                '</div>';
+            document.getElementById(inputId).addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleInputAnswer(values[missing], 'The answer is $' + values[missing].toLocaleString() + '. A ($' + a.toLocaleString() + ') = L ($' + l.toLocaleString() + ') + SE ($' + se.toLocaleString() + ')', inputId);
+                }
+            });
+        }
+        else if (type === 5) {
+            // Retained earnings
+            const begRE = rand(10, 200) * 1000;
+            const ni = rand(5, 80) * 1000;
+            const div = rand(1, Math.min(30, Math.floor(ni / 1000))) * 1000;
+            const endRE = begRE + ni - div;
+            document.getElementById('question-label').textContent = 'Retained Earnings';
+            document.getElementById('question-text').textContent =
+                'Beginning Retained Earnings = $' + begRE.toLocaleString() +
+                ', Net Income = $' + ni.toLocaleString() +
+                ', Dividends = $' + div.toLocaleString() +
+                '. What is Ending Retained Earnings?';
+
+            const area = document.getElementById('answer-area');
+            const inputId = 're-answer';
+            area.innerHTML =
+                '<div class="flex items-center gap-3">' +
+                '<span class="text-slate-400 font-medium">Ending RE = $</span>' +
+                '<input type="number" id="' + inputId + '" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-48 focus:border-emerald-500 focus:outline-none" placeholder="Enter amount">' +
+                '<button onclick="handleInputAnswer(' + endRE + ', \'Ending RE = Beginning RE + Net Income - Dividends = $' + begRE.toLocaleString() + ' + $' + ni.toLocaleString() + ' - $' + div.toLocaleString() + ' = $' + endRE.toLocaleString() + '\', \'' + inputId + '\')" ' +
+                'class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check</button>' +
+                '</div>';
+            document.getElementById(inputId).addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleInputAnswer(endRE, 'Ending RE = Beginning RE + Net Income - Dividends = $' + begRE.toLocaleString() + ' + $' + ni.toLocaleString() + ' - $' + div.toLocaleString() + ' = $' + endRE.toLocaleString(), inputId);
+                }
+            });
+        }
+        else if (type === 6) {
+            // True or false
+            const tf = pick(tfQuestions);
+            document.getElementById('question-label').textContent = 'True or False';
+            document.getElementById('question-text').textContent = tf.q;
+            const correctStr = tf.a ? 'True' : 'False';
+            makeButtons(['True', 'False'], correctStr, tf.explain);
+        }
+    }
+    </script>
+</body>
+</html>
