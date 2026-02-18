@@ -466,7 +466,7 @@
                     <h2 class="text-xl font-bold text-amber-400 mb-4">A/R Turnover Ratio</h2>
                     <div class="bg-slate-900/60 rounded-lg p-4 text-center mb-4">
                         <p class="text-lg font-mono">
-                            <span class="text-amber-400">A/R Turnover</span> = <span class="text-sky-400">Sales Revenue</span> &divide; <span class="text-emerald-400">Average A/R</span>
+                            <span class="text-amber-400">A/R Turnover</span> = <span class="text-sky-400">Net Credit Sales</span> &divide; <span class="text-emerald-400">Average A/R</span>
                         </p>
                     </div>
                     <p class="text-slate-300 text-sm mb-3">Measures how many times per period a company collects its average receivables. A higher ratio indicates faster collection of credit sales.</p>
@@ -508,7 +508,7 @@
                         <!-- Inputs -->
                         <div class="space-y-4">
                             <div>
-                                <label class="text-sm text-slate-400 font-semibold mb-1 block">Sales Revenue ($)</label>
+                                <label class="text-sm text-slate-400 font-semibold mb-1 block">Net Credit Sales ($)</label>
                                 <input type="number" id="calc-revenue" value="2000000" min="0" step="1000" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm" oninput="computeRatios()">
                             </div>
                             <div>
@@ -730,11 +730,11 @@
                     </button>
                     <div id="step-7" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
                         <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3 space-y-2">
-                            <p class="text-slate-400 font-sans text-xs">Total Sales Revenue = $800K + $1,200K + $160K = $2,160,000</p>
+                            <p class="text-slate-400 font-sans text-xs">Net Credit Sales = $1,200,000 (cash sales of $800K and the $200K bundled cash sale do not generate receivables)</p>
                             <p class="text-slate-400 font-sans text-xs">Average A/R = ($150,000 + $375,000) / 2 = $262,500</p>
                             <hr class="border-slate-600">
-                            <p class="text-white">A/R Turnover = $2,160,000 / $262,500 = <span class="text-amber-400 font-bold">8.23x</span></p>
-                            <p class="text-white">Avg Collection Period = 365 / 8.23 = <span class="text-sky-400 font-bold">44.3 days</span></p>
+                            <p class="text-white">A/R Turnover = $1,200,000 / $262,500 = <span class="text-amber-400 font-bold">4.57x</span></p>
+                            <p class="text-white">Avg Collection Period = 365 / 4.57 = <span class="text-sky-400 font-bold">79.9 days</span></p>
                         </div>
                     </div>
                 </div>
@@ -750,7 +750,7 @@
                         <div class="space-y-3 text-sm text-slate-300">
                             <div class="flex gap-3">
                                 <span class="text-amber-400 font-bold mt-0.5">1.</span>
-                                <p>DataStream collects its average receivables about <span class="text-amber-400 font-semibold">8.2 times per year</span>, meaning it takes roughly <span class="text-sky-400 font-semibold">44 days</span> on average to collect from customers.</p>
+                                <p>DataStream collects its average receivables about <span class="text-amber-400 font-semibold">4.6 times per year</span>, meaning it takes roughly <span class="text-sky-400 font-semibold">80 days</span> on average to collect from customers. Note: we use <span class="text-white font-semibold">net credit sales</span> (not total sales) because cash sales never create receivables.</p>
                             </div>
                             <div class="flex gap-3">
                                 <span class="text-amber-400 font-bold mt-0.5">2.</span>
@@ -1109,11 +1109,11 @@
 
     // --- Type 4: A/R Turnover & Collection Period ---
     function genARTurnover() {
-        var salesRev = randInt(500, 5000) * 1000;
+        var creditSales = randInt(500, 5000) * 1000;
         var begAR = randInt(50, 500) * 1000;
         var endAR = randInt(50, 500) * 1000;
         var avgAR = (begAR + endAR) / 2;
-        var art = salesRev / avgAR;
+        var art = creditSales / avgAR;
         var acp = 365 / art;
 
         var askFor = randChoice(['A/R Turnover', 'Average Collection Period']);
@@ -1122,18 +1122,18 @@
         if (askFor === 'A/R Turnover') {
             answer = Math.round(art * 100) / 100;
             explain = 'Average A/R = (' + fmt(begAR) + ' + ' + fmt(endAR) + ') / 2 = ' + fmt(avgAR) + '\n' +
-                'A/R Turnover = ' + fmt(salesRev) + ' / ' + fmt(avgAR) + ' = ' + answer.toFixed(2) + 'x';
+                'A/R Turnover = ' + fmt(creditSales) + ' / ' + fmt(avgAR) + ' = ' + answer.toFixed(2) + 'x';
         } else {
             answer = Math.round(acp * 10) / 10;
             explain = 'Average A/R = (' + fmt(begAR) + ' + ' + fmt(endAR) + ') / 2 = ' + fmt(avgAR) + '\n' +
-                'A/R Turnover = ' + fmt(salesRev) + ' / ' + fmt(avgAR) + ' = ' + art.toFixed(2) + 'x\n' +
+                'A/R Turnover = ' + fmt(creditSales) + ' / ' + fmt(avgAR) + ' = ' + art.toFixed(2) + 'x\n' +
                 'Avg Collection Period = 365 / ' + art.toFixed(2) + ' = ' + answer.toFixed(1) + ' days';
         }
 
         var html = '<p class="text-xs text-emerald-400 uppercase tracking-wider mb-2 font-semibold">A/R Ratio Computation</p>' +
             '<h3 class="text-lg font-bold mb-4">Compute the ' + askFor + '</h3>' +
             '<div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm">' +
-            '<p class="text-slate-300">Sales Revenue: <span class="text-white font-semibold">' + fmt(salesRev) + '</span></p>' +
+            '<p class="text-slate-300">Net Credit Sales: <span class="text-white font-semibold">' + fmt(creditSales) + '</span></p>' +
             '<p class="text-slate-300">Beginning A/R: <span class="text-white font-semibold">' + fmt(begAR) + '</span></p>' +
             '<p class="text-slate-300">Ending A/R: <span class="text-white font-semibold">' + fmt(endAR) + '</span></p>' +
             '</div>' +
