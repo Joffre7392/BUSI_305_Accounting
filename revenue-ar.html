@@ -128,22 +128,28 @@
                         <div class="bg-slate-900/50 rounded-lg p-4 border border-emerald-500/30">
                             <p class="font-semibold text-emerald-400 mb-2">Simple: Cash Sale at Delivery</p>
                             <p class="text-slate-300 text-sm">Customer pays at the point of delivery. Revenue is recognized immediately because the performance obligation is satisfied and cash is received.</p>
-                            <div class="bg-slate-800/80 rounded p-3 mt-2 text-sm font-mono text-slate-300">
-                                <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
-                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;XXX</p>
+                            <div class="bg-slate-800/80 rounded p-3 mt-2 text-sm">
+                                <table class="font-mono text-slate-300">
+                                    <tr><td class="pr-4">Cash</td><td class="text-right pl-4">XXX</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Sales Revenue</td><td></td><td class="text-right pl-4">XXX</td></tr>
+                                </table>
                             </div>
                         </div>
                         <!-- Deferred/Unearned -->
                         <div class="bg-slate-900/50 rounded-lg p-4 border border-amber-500/30">
                             <p class="font-semibold text-amber-400 mb-2">Deferred / Unearned Revenue</p>
                             <p class="text-slate-300 text-sm mb-2">Customer pays <span class="text-amber-400 font-semibold">before</span> delivery (subscriptions, season tickets, gift cards). Record as a <span class="text-rose-400 font-semibold">liability</span> first, then recognize revenue as performance obligations are fulfilled.</p>
-                            <div class="bg-slate-800/80 rounded p-3 text-sm font-mono text-slate-300">
-                                <p class="text-slate-500 mb-1">When cash is received:</p>
-                                <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
-                                <p>&nbsp;&nbsp;Cr Unearned Revenue &nbsp;XXX</p>
-                                <p class="text-slate-500 mt-2 mb-1">When earned:</p>
-                                <p>Dr Unearned Revenue &nbsp;XXX</p>
-                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;&nbsp;XXX</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm">
+                                <p class="text-slate-500 text-xs mb-1">When cash is received:</p>
+                                <table class="font-mono text-slate-300 mb-2">
+                                    <tr><td class="pr-4">Cash</td><td class="text-right pl-4">XXX</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Unearned Revenue</td><td></td><td class="text-right pl-4">XXX</td></tr>
+                                </table>
+                                <p class="text-slate-500 text-xs mb-1">When earned:</p>
+                                <table class="font-mono text-slate-300">
+                                    <tr><td class="pr-4">Unearned Revenue</td><td class="text-right pl-4">XXX</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Sales Revenue</td><td></td><td class="text-right pl-4">XXX</td></tr>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -194,12 +200,14 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="bg-slate-800/80 rounded p-4 mt-3 text-sm font-mono text-slate-300">
-                            <p class="text-slate-400 mb-1 font-sans text-xs uppercase tracking-wider font-semibold">Journal Entry at Sale:</p>
-                            <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;125,000</p>
-                            <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;100,000</p>
-                            <p>&nbsp;&nbsp;Cr Unearned Training Rev. &nbsp;&nbsp;&nbsp;10,000</p>
-                            <p>&nbsp;&nbsp;Cr Unearned Support Rev. &nbsp;&nbsp;&nbsp;15,000</p>
+                        <div class="bg-slate-800/80 rounded p-4 mt-3 text-sm">
+                            <p class="text-slate-400 mb-2 font-sans text-xs uppercase tracking-wider font-semibold">Journal Entry at Sale:</p>
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Cash</td><td class="text-right pl-4">125,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Sales Revenue</td><td></td><td class="text-right pl-4">100,000</td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Unearned Training Rev.</td><td></td><td class="text-right pl-4">10,000</td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Unearned Support Rev.</td><td></td><td class="text-right pl-4">15,000</td></tr>
+                            </table>
                         </div>
                     </div>
                     <p class="text-slate-400 text-sm">Software revenue recognized immediately (delivered at sale); training and support revenue recognized as those services are provided over time.</p>
@@ -249,17 +257,21 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
                             <p class="font-semibold text-sky-400 mb-2">When a Credit Sale Occurs</p>
-                            <div class="bg-slate-800/80 rounded p-3 text-sm font-mono text-slate-300">
-                                <p>Dr Accounts Receivable &nbsp;XXX</p>
-                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm">
+                                <table class="font-mono text-slate-300">
+                                    <tr><td class="pr-4">Accounts Receivable</td><td class="text-right pl-4">XXX</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Sales Revenue</td><td></td><td class="text-right pl-4">XXX</td></tr>
+                                </table>
                             </div>
                             <p class="text-slate-400 text-xs mt-2">A/R (asset) increases; Revenue increases RE (SE).</p>
                         </div>
                         <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-600">
                             <p class="font-semibold text-emerald-400 mb-2">When Customer Pays</p>
-                            <div class="bg-slate-800/80 rounded p-3 text-sm font-mono text-slate-300">
-                                <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
-                                <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;XXX</p>
+                            <div class="bg-slate-800/80 rounded p-3 text-sm">
+                                <table class="font-mono text-slate-300">
+                                    <tr><td class="pr-4">Cash</td><td class="text-right pl-4">XXX</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Accounts Receivable</td><td></td><td class="text-right pl-4">XXX</td></tr>
+                                </table>
                             </div>
                             <p class="text-slate-400 text-xs mt-2">Cash (asset) increases; A/R (asset) decreases. No income statement effect.</p>
                         </div>
@@ -270,10 +282,12 @@
                 <div class="card bg-slate-800/50 rounded-xl p-6 border border-rose-500/30">
                     <h3 class="text-lg font-bold text-rose-400 mb-3">Method 1: Specific Write-Off</h3>
                     <p class="text-slate-300 text-sm mb-3">Write off individual A/R accounts when they are deemed uncollectible.</p>
-                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 font-mono text-sm text-slate-300">
-                        <p class="text-slate-400 font-sans text-xs mb-1 uppercase tracking-wider font-semibold">Journal Entry:</p>
-                        <p>Dr Bad Debt Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
-                        <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;XXX</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 text-sm">
+                        <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">Journal Entry:</p>
+                        <table class="font-mono text-slate-300">
+                            <tr><td class="pr-4">Bad Debt Expense</td><td class="text-right pl-4">XXX</td><td></td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Accounts Receivable</td><td></td><td class="text-right pl-4">XXX</td></tr>
+                        </table>
                     </div>
                     <div class="space-y-2 text-sm">
                         <div class="flex items-start gap-2">
@@ -295,15 +309,19 @@
                     <h3 class="text-lg font-bold text-amber-400 mb-3">Method 2: Allowance Method</h3>
                     <p class="text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">Required if Bad Debts Are Material</p>
                     <p class="text-slate-300 text-sm mb-3">Estimate bad debts at year end. The <span class="text-amber-400 font-semibold">Allowance for Bad Debt</span> is a contra-asset account that reduces Gross A/R to Net A/R.</p>
-                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 font-mono text-sm text-slate-300">
-                        <p class="text-slate-400 font-sans text-xs mb-1 uppercase tracking-wider font-semibold">Year-End Adjusting Entry:</p>
-                        <p>Dr Bad Debt Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXX</p>
-                        <p>&nbsp;&nbsp;Cr Allowance for Bad Debt &nbsp;XXX</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 text-sm">
+                        <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">Year-End Adjusting Entry:</p>
+                        <table class="font-mono text-slate-300">
+                            <tr><td class="pr-4">Bad Debt Expense</td><td class="text-right pl-4">XXX</td><td></td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Allowance for Bad Debt</td><td></td><td class="text-right pl-4">XXX</td></tr>
+                        </table>
                     </div>
-                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 font-mono text-sm text-slate-300">
-                        <p class="text-slate-400 font-sans text-xs mb-1 uppercase tracking-wider font-semibold">When a Specific Account is Written Off:</p>
-                        <p>Dr Allowance for Bad Debt &nbsp;XXX</p>
-                        <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;&nbsp;XXX</p>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-3 text-sm">
+                        <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">When a Specific Account is Written Off:</p>
+                        <table class="font-mono text-slate-300">
+                            <tr><td class="pr-4">Allowance for Bad Debt</td><td class="text-right pl-4">XXX</td><td></td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Accounts Receivable</td><td></td><td class="text-right pl-4">XXX</td></tr>
+                        </table>
                     </div>
                     <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
                         <p class="text-amber-300 text-sm font-semibold">Key insight: The write-off has NO income statement effect!</p>
@@ -574,15 +592,19 @@
                     </button>
                     <div id="step-1" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                            <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm">
+                            <div class="bg-slate-800/80 rounded-lg p-4 text-sm">
                                 <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">Cash Sales:</p>
-                                <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;800,000</p>
-                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;800,000</p>
+                                <table class="font-mono text-slate-300">
+                                    <tr><td class="pr-4">Cash</td><td class="text-right pl-4">800,000</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Sales Revenue</td><td></td><td class="text-right pl-4">800,000</td></tr>
+                                </table>
                             </div>
-                            <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm">
+                            <div class="bg-slate-800/80 rounded-lg p-4 text-sm">
                                 <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">Credit Sales:</p>
-                                <p>Dr Accts Receivable &nbsp;1,200,000</p>
-                                <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;1,200,000</p>
+                                <table class="font-mono text-slate-300">
+                                    <tr><td class="pr-4">Accounts Receivable</td><td class="text-right pl-4">1,200,000</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Sales Revenue</td><td></td><td class="text-right pl-4">1,200,000</td></tr>
+                                </table>
                             </div>
                         </div>
                         <p class="text-slate-300 text-sm">Total sales revenue recognized: <span class="text-amber-400 font-bold">$2,000,000</span>. Cash increases by $800K; A/R increases by $1.2M.</p>
@@ -598,11 +620,13 @@
                     </button>
                     <div id="step-2" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
                         <p class="text-slate-300 text-sm mb-3">The $200,000 bundled sale includes a product ($160,000 allocation) and 2-year support ($40,000 allocation). The product is delivered immediately; the support is provided over 2 years.</p>
-                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3">
+                        <div class="bg-slate-800/80 rounded-lg p-4 text-sm mb-3">
                             <p class="text-slate-400 font-sans text-xs mb-2 uppercase tracking-wider font-semibold">Journal Entry:</p>
-                            <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;200,000</p>
-                            <p>&nbsp;&nbsp;Cr Sales Revenue &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;160,000</p>
-                            <p>&nbsp;&nbsp;Cr Unearned Support Rev. &nbsp;&nbsp;&nbsp;40,000</p>
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Cash</td><td class="text-right pl-4">200,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Sales Revenue</td><td></td><td class="text-right pl-4">160,000</td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Unearned Support Rev.</td><td></td><td class="text-right pl-4">40,000</td></tr>
+                            </table>
                         </div>
                         <p class="text-slate-300 text-sm">The $160,000 is recognized immediately. The $40,000 is a <span class="text-rose-400 font-semibold">liability</span> that will be recognized as revenue over 2 years ($20,000/year).</p>
                         <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
@@ -620,9 +644,11 @@
                         <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
                     </button>
                     <div id="step-3" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
-                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3">
-                            <p>Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;950,000</p>
-                            <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;950,000</p>
+                        <div class="bg-slate-800/80 rounded-lg p-4 text-sm mb-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Cash</td><td class="text-right pl-4">950,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Accounts Receivable</td><td></td><td class="text-right pl-4">950,000</td></tr>
+                            </table>
                         </div>
                         <p class="text-slate-300 text-sm">Cash goes up, A/R goes down. <span class="text-amber-400 font-semibold">No income statement effect</span> &mdash; revenue was already recognized at the time of sale.</p>
                     </div>
@@ -636,9 +662,11 @@
                         <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
                     </button>
                     <div id="step-4" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
-                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3">
-                            <p>Dr Allowance for Bad Debt &nbsp;25,000</p>
-                            <p>&nbsp;&nbsp;Cr Accounts Receivable &nbsp;&nbsp;25,000</p>
+                        <div class="bg-slate-800/80 rounded-lg p-4 text-sm mb-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Allowance for Bad Debt</td><td class="text-right pl-4">25,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Accounts Receivable</td><td></td><td class="text-right pl-4">25,000</td></tr>
+                            </table>
                         </div>
                         <p class="text-slate-300 text-sm mb-2"><span class="text-amber-400 font-semibold">No income statement impact!</span> Under the allowance method, the expense was already estimated. This just removes the specific uncollectible account.</p>
                         <p class="text-slate-400 text-sm">Gross A/R decreases by $25K. Allowance decreases by $25K. Net A/R is unchanged.</p>
@@ -654,10 +682,12 @@
                         <span class="text-slate-500 text-xs float-right mt-1">Click to reveal</span>
                     </button>
                     <div id="step-5" class="hidden mt-2 bg-slate-900/50 rounded-lg p-5 border border-slate-600">
-                        <div class="bg-slate-800/80 rounded-lg p-4 font-mono text-sm mb-3">
-                            <p class="text-slate-400 font-sans text-xs mb-1">Bad Debt Expense = 2% &times; $1,200,000 = $24,000</p>
-                            <p class="mt-2">Dr Bad Debt Expense &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;24,000</p>
-                            <p>&nbsp;&nbsp;Cr Allowance for Bad Debt &nbsp;24,000</p>
+                        <div class="bg-slate-800/80 rounded-lg p-4 text-sm mb-3">
+                            <p class="text-slate-400 font-sans text-xs mb-2">Bad Debt Expense = 2% &times; $1,200,000 = $24,000</p>
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Bad Debt Expense</td><td class="text-right pl-4">24,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Allowance for Bad Debt</td><td></td><td class="text-right pl-4">24,000</td></tr>
+                            </table>
                         </div>
                         <p class="text-slate-300 text-sm">The Allowance balance after this adjustment: &minus;$17,000 + $24,000 = <span class="text-amber-400 font-bold">$7,000</span> (credit balance).</p>
                     </div>

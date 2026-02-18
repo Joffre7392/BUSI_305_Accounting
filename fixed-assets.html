@@ -219,9 +219,10 @@
                     <p class="text-sm text-slate-300">Each year&rsquo;s depreciation expense reduces <strong class="text-white">Net Income &rarr; Retained Earnings (SE)</strong>. Meanwhile, Accumulated Depreciation (a contra-asset) reduces total <strong class="text-white">Assets</strong>. Both sides decrease equally: <strong class="text-white">A&darr; = L + SE&darr;</strong>. Remember: depreciation is non-cash &mdash; it reduces reported income but has no direct effect on cash flows.</p>
                 </div>
             </div>
+        </div>
 
-            <!-- ======================== TAB 3: CALCULATOR ======================== -->
-            <div id="panel-calc" class="tab-panel">
+        <!-- ======================== TAB 3: CALCULATOR ======================== -->
+        <div id="panel-calc" class="tab-panel">
                 <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
                     <h2 class="text-2xl font-bold text-teal-400 mb-4">Interactive Depreciation Calculator</h2>
                     <div class="grid md:grid-cols-3 gap-4 mb-6">
@@ -261,10 +262,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+        </div>
 
-            <!-- ======================== TAB 4: IMPAIRMENTS & DISPOSALS ======================== -->
-            <div id="panel-advanced" class="tab-panel">
+        <!-- ======================== TAB 4: IMPAIRMENTS & DISPOSALS ======================== -->
+        <div id="panel-advanced" class="tab-panel">
                 <!-- Impairments -->
                 <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
                     <h2 class="text-2xl font-bold text-teal-400 mb-4">Impairments</h2>
@@ -297,9 +298,11 @@
                                 <p class="text-amber-400 mt-1">BV ($32K) &gt; Cash Flows ($28K) &rarr; <strong>Impaired!</strong></p>
                             </div>
                             <div>
-                                <p class="text-slate-400">Impairment = $32,000 &minus; $20,000 = <strong class="text-white">$12,000</strong></p>
-                                <p class="font-mono text-slate-400 mt-2">Dr Impairment Loss 12,000</p>
-                                <p class="font-mono text-slate-400">&nbsp;&nbsp; Cr Accum. Depr. 12,000</p>
+                                <p class="text-slate-400 mb-2">Impairment = $32,000 &minus; $20,000 = <strong class="text-white">$12,000</strong></p>
+                                <table class="font-mono text-slate-400 text-sm">
+                                    <tr><td class="pr-4">Impairment Loss</td><td class="text-right pl-4">12,000</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Accum. Depreciation</td><td></td><td class="text-right pl-4">12,000</td></tr>
+                                </table>
                                 <p class="text-slate-500 mt-2">New annual depr: $20,000 &divide; 2 yrs = $10,000/yr</p>
                             </div>
                         </div>
@@ -335,12 +338,12 @@
                                 <p class="text-slate-400">Book Value: $80,000 &minus; $14,000 = $66,000</p>
                                 <p class="text-emerald-400 font-bold mt-1">Gain = $67,000 &minus; $66,000 = $1,000</p>
                             </div>
-                            <div class="font-mono text-slate-400">
-                                Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 67,000<br>
-                                Dr Accum. Depr. &nbsp;&nbsp;&nbsp;&nbsp; 14,000<br>
-                                &nbsp;&nbsp; Cr PP&amp;E &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 80,000<br>
-                                &nbsp;&nbsp; Cr Gain on Sale &nbsp;&nbsp;&nbsp;&nbsp; 1,000
-                            </div>
+                            <table class="font-mono text-slate-400 text-sm">
+                                <tr><td class="pr-4">Cash</td><td class="text-right pl-4">67,000</td><td></td></tr>
+                                <tr><td class="pr-4">Accum. Depreciation</td><td class="text-right pl-4">14,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">PP&amp;E</td><td></td><td class="text-right pl-4">80,000</td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Gain on Sale</td><td></td><td class="text-right pl-4">1,000</td></tr>
+                            </table>
                         </div>
                         <p class="text-xs text-slate-500 mt-3"><strong>Cash flow impact:</strong> Proceeds ($67K) in CFI. Gain ($1K) removed from Net Income in CFO.</p>
                     </div>
@@ -353,10 +356,10 @@
                     </div>
                     <p class="text-sm text-slate-300">When we sell an asset, we remove its cost and accumulated depreciation from Assets, and add Cash. Any <strong class="text-emerald-400">gain</strong> increases SE; any <strong class="text-rose-400">loss</strong> decreases SE. The equation <strong class="text-white">A = L + SE</strong> always holds.</p>
                 </div>
-            </div>
+        </div>
 
-            <!-- ======================== TAB 5: WORKED EXAMPLES ======================== -->
-            <div id="panel-worked" class="tab-panel">
+        <!-- ======================== TAB 5: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
                 <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
                     <h2 class="text-2xl font-bold text-teal-400 mb-2">Practice Problem: Summit Transport &mdash; Fleet Management</h2>
                     <p class="text-slate-400 text-sm mb-4">Walk through the full lifecycle of a fixed asset: acquisition, depreciation, impairment, and disposal.</p>
@@ -379,7 +382,10 @@
                             <button onclick="revealWalkStep(1)" id="walk-btn-1" class="bg-teal-600 hover:bg-teal-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
                         </div>
                         <div id="walk-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
-                            <p class="font-mono text-slate-400">Dr PP&amp;E (Vehicle) &nbsp;&nbsp;&nbsp;&nbsp; 65,000<br>&nbsp;&nbsp; Cr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 65,000</p>
+                            <table class="font-mono text-slate-400 text-sm">
+                                <tr><td class="pr-4">PP&amp;E (Vehicle)</td><td class="text-right pl-4">65,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">65,000</td></tr>
+                            </table>
                             <p class="text-slate-500 mt-2">Both the purchase price and modifications are capitalized because they prepare the asset for its intended use.</p>
                         </div>
                     </div>
@@ -403,7 +409,10 @@
                                     <p class="text-slate-400">End BV = $65,000 &minus; $26,000 = $39,000</p>
                                 </div>
                             </div>
-                            <p class="font-mono text-slate-400 mt-3">Dr Depreciation Expense &nbsp;&nbsp; [12,000 or 26,000]<br>&nbsp;&nbsp; Cr Accum. Depreciation &nbsp;&nbsp; [12,000 or 26,000]</p>
+                            <table class="font-mono text-slate-400 text-sm mt-3">
+                                <tr><td class="pr-4">Depreciation Expense</td><td class="text-right pl-4">[12,000 or 26,000]</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Accum. Depreciation</td><td></td><td class="text-right pl-4">[12,000 or 26,000]</td></tr>
+                            </table>
                         </div>
                     </div>
 
@@ -438,7 +447,10 @@
                             <p class="text-slate-400">Future cash flows = $18,000 &nbsp;|&nbsp; Fair value = $15,000</p>
                             <p class="text-amber-400 mt-1">BV ($41,000) &gt; Future CFs ($18,000) &rarr; <strong>Impaired!</strong></p>
                             <p class="text-slate-400 mt-2">Impairment charge = $41,000 &minus; $15,000 = <strong class="text-white">$26,000</strong></p>
-                            <p class="font-mono text-slate-400 mt-2">Dr Impairment Loss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 26,000<br>&nbsp;&nbsp; Cr Accum. Depreciation &nbsp; 26,000</p>
+                            <table class="font-mono text-slate-400 text-sm mt-2">
+                                <tr><td class="pr-4">Impairment Loss</td><td class="text-right pl-4">26,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Accum. Depreciation</td><td></td><td class="text-right pl-4">26,000</td></tr>
+                            </table>
                             <p class="text-slate-500 mt-2">New BV = $15,000. New annual depr = ($15,000 &minus; $5,000) &divide; 3 remaining years = <strong class="text-white">$3,333/yr</strong></p>
                         </div>
                     </div>
@@ -455,12 +467,12 @@
                             <p class="text-slate-400">Sale proceeds = <strong class="text-white">$10,000</strong></p>
                             <p class="text-emerald-400 mt-1"><strong>Gain = $10,000 &minus; $8,334 = $1,666</strong></p>
                             <p class="text-slate-400 mt-2">Total Accum Depr at sale = $24,000 + $26,000 + $6,666 = $56,666</p>
-                            <div class="font-mono text-slate-400 mt-2">
-                                Dr Cash &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10,000<br>
-                                Dr Accum. Depreciation &nbsp; 56,666<br>
-                                &nbsp;&nbsp; Cr PP&amp;E (Vehicle) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 65,000<br>
-                                &nbsp;&nbsp; Cr Gain on Sale &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1,666
-                            </div>
+                            <table class="font-mono text-slate-400 text-sm mt-2">
+                                <tr><td class="pr-4">Cash</td><td class="text-right pl-4">10,000</td><td></td></tr>
+                                <tr><td class="pr-4">Accum. Depreciation</td><td class="text-right pl-4">56,666</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">PP&amp;E (Vehicle)</td><td></td><td class="text-right pl-4">65,000</td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Gain on Sale</td><td></td><td class="text-right pl-4">1,666</td></tr>
+                            </table>
                         </div>
                     </div>
 
@@ -469,10 +481,10 @@
                         <p class="text-sm text-slate-300">You traced a fixed asset from purchase through depreciation, impairment, and sale. At every step, journal entries kept A = L + SE in balance.</p>
                     </div>
                 </div>
-            </div>
+        </div>
 
-            <!-- ======================== TAB 6: PRACTICE QUESTIONS ======================== -->
-            <div id="panel-practice" class="tab-panel">
+        <!-- ======================== TAB 6: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
                 <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-teal-400">Practice Questions</h2>
@@ -502,7 +514,7 @@
                     </div>
                     <div id="je-feedback" class="hidden"></div>
                 </div>
-            </div>
+        </div>
     </div>
 
 <script>
