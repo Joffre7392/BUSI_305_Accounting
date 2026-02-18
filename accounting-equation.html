@@ -195,6 +195,50 @@
                 </div>
             </div>
         </div>
+
+        <!-- This Equation Is the Foundation -->
+        <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-xl p-6 border border-emerald-500/30 mt-6">
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-7 h-7 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-sm font-bold">=</div>
+                <span class="text-emerald-400 font-bold text-lg">This Equation Powers Everything</span>
+            </div>
+            <div class="bg-slate-900/60 rounded-lg p-4 text-center mb-4 border border-slate-700">
+                <p class="text-2xl font-bold">
+                    <span class="text-sky-400">Assets</span>
+                    <span class="text-slate-500 mx-2">=</span>
+                    <span class="text-amber-400">Liabilities</span>
+                    <span class="text-slate-500 mx-2">+</span>
+                    <span class="text-emerald-400">Stockholders' Equity</span>
+                </p>
+            </div>
+            <p class="text-slate-300 text-sm mb-4">Every topic in this course is a specific application of the same equation. Whenever you encounter a new concept, map it back to this framework:</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+                <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                    <p class="text-sky-400 font-semibold mb-1">Transactions &amp; Journal Entries</p>
+                    <p class="text-slate-400 text-xs">Every entry keeps A = L + SE in balance. Debits = Credits is just another way of saying the same thing.</p>
+                </div>
+                <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                    <p class="text-rose-400 font-semibold mb-1">Inventory &amp; COGS</p>
+                    <p class="text-slate-400 text-xs">Splits costs between Assets (left) and Expenses&rarr;RE (right). FIFO/LIFO just change <em>how much</em> goes to each side.</p>
+                </div>
+                <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                    <p class="text-purple-400 font-semibold mb-1">Revenue Recognition</p>
+                    <p class="text-slate-400 text-xs">Revenue &uarr; NI &rarr; RE &uarr; (right side). An asset increases or a liability decreases on the left/right.</p>
+                </div>
+                <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                    <p class="text-teal-400 font-semibold mb-1">Depreciation</p>
+                    <p class="text-slate-400 text-xs">Moves value from PP&amp;E (Asset) to Expense &rarr; lower NI &rarr; lower RE. Asset shrinks, SE shrinks equally.</p>
+                </div>
+                <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                    <p class="text-orange-400 font-semibold mb-1">Bonds &amp; Leases</p>
+                    <p class="text-slate-400 text-xs">Issuing a bond: Cash (A) &uarr; and Liability &uarr;. Interest expense: Cash &darr; and RE &darr;. The equation tracks it all.</p>
+                </div>
+                <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
+                    <p class="text-sky-400 font-semibold mb-1">Financial Analysis</p>
+                    <p class="text-slate-400 text-xs">Every ratio (ROA, ROE, D/E, current ratio) is built from equation components. Understanding the equation means understanding what drives the ratios.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ============================================================ -->
@@ -366,6 +410,240 @@
             </div>
             <div id="balancer-result" class="mt-4 hidden">
                 <div id="balancer-message" class="p-4 rounded-lg text-sm"></div>
+            </div>
+        </div>
+
+        <!-- Walkthrough: Bright Ideas LLC -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mt-6">
+            <h2 class="text-xl font-bold text-emerald-400 mb-2">Walkthrough: Bright Ideas LLC &mdash; First Five Transactions</h2>
+            <p class="text-sm text-slate-400 mb-6">Let's trace five transactions for a brand-new startup and watch the accounting equation stay in balance at every step. Click <strong class="text-white">Show Effect</strong> to reveal each transaction's impact.</p>
+
+            <!-- Transaction 1 -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Transaction 1</span>
+                        <p class="text-white font-semibold mt-1">Owners invest $100,000 cash into the business</p>
+                    </div>
+                    <button onclick="revealBrightIdeas(1)" id="bright-btn-1" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Effect</button>
+                </div>
+                <div id="bright-effect-1" class="hidden px-4 pb-4">
+                    <div class="grid md:grid-cols-3 gap-3 mb-3">
+                        <div class="bg-sky-500/10 border border-sky-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-sky-300 font-semibold mb-1">ASSETS</div>
+                            <div class="text-sm"><span class="text-emerald-400 font-bold">Cash +$100,000</span></div>
+                        </div>
+                        <div class="bg-rose-500/10 border border-rose-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-rose-300 font-semibold mb-1">LIABILITIES</div>
+                            <div class="text-sm text-slate-500">No change</div>
+                        </div>
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-emerald-300 font-semibold mb-1">SHAREHOLDERS' EQUITY</div>
+                            <div class="text-sm"><span class="text-emerald-400 font-bold">Common Stock +$100,000</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-lg p-3 text-sm">
+                        <div class="flex flex-wrap items-center justify-center gap-2 mb-2 font-mono">
+                            <span class="text-sky-400 font-bold">$100,000</span>
+                            <span class="text-slate-400">=</span>
+                            <span class="text-rose-400 font-bold">$0</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="text-emerald-400 font-bold">$100,000</span>
+                        </div>
+                        <p class="text-slate-400 text-xs text-center">The owners' investment increases both Cash (an asset) and Common Stock (equity). The equation balances.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction 2 -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Transaction 2</span>
+                        <p class="text-white font-semibold mt-1">Borrow $40,000 from the bank</p>
+                    </div>
+                    <button onclick="revealBrightIdeas(2)" id="bright-btn-2" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Effect</button>
+                </div>
+                <div id="bright-effect-2" class="hidden px-4 pb-4">
+                    <div class="grid md:grid-cols-3 gap-3 mb-3">
+                        <div class="bg-sky-500/10 border border-sky-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-sky-300 font-semibold mb-1">ASSETS</div>
+                            <div class="text-sm"><span class="text-emerald-400 font-bold">Cash +$40,000</span></div>
+                        </div>
+                        <div class="bg-rose-500/10 border border-rose-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-rose-300 font-semibold mb-1">LIABILITIES</div>
+                            <div class="text-sm"><span class="text-emerald-400 font-bold">Notes Payable +$40,000</span></div>
+                        </div>
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-emerald-300 font-semibold mb-1">SHAREHOLDERS' EQUITY</div>
+                            <div class="text-sm text-slate-500">No change</div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-lg p-3 text-sm">
+                        <div class="flex flex-wrap items-center justify-center gap-2 mb-2 font-mono">
+                            <span class="text-sky-400 font-bold">$140,000</span>
+                            <span class="text-slate-400">=</span>
+                            <span class="text-rose-400 font-bold">$40,000</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="text-emerald-400 font-bold">$100,000</span>
+                        </div>
+                        <p class="text-slate-400 text-xs text-center">Borrowing increases Cash (asset) and creates a Notes Payable (liability). Equity is unchanged.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction 3 -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Transaction 3</span>
+                        <p class="text-white font-semibold mt-1">Purchase office equipment for $25,000 cash</p>
+                    </div>
+                    <button onclick="revealBrightIdeas(3)" id="bright-btn-3" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Effect</button>
+                </div>
+                <div id="bright-effect-3" class="hidden px-4 pb-4">
+                    <div class="grid md:grid-cols-3 gap-3 mb-3">
+                        <div class="bg-sky-500/10 border border-sky-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-sky-300 font-semibold mb-1">ASSETS</div>
+                            <div class="text-sm">
+                                <span class="text-rose-400 font-bold">Cash -$25,000</span><br>
+                                <span class="text-emerald-400 font-bold">Equipment +$25,000</span>
+                            </div>
+                        </div>
+                        <div class="bg-rose-500/10 border border-rose-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-rose-300 font-semibold mb-1">LIABILITIES</div>
+                            <div class="text-sm text-slate-500">No change</div>
+                        </div>
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-emerald-300 font-semibold mb-1">SHAREHOLDERS' EQUITY</div>
+                            <div class="text-sm text-slate-500">No change</div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-lg p-3 text-sm">
+                        <div class="flex flex-wrap items-center justify-center gap-2 mb-2 font-mono">
+                            <span class="text-sky-400 font-bold">$140,000</span>
+                            <span class="text-slate-400">=</span>
+                            <span class="text-rose-400 font-bold">$40,000</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="text-emerald-400 font-bold">$100,000</span>
+                        </div>
+                        <p class="text-slate-400 text-xs text-center">This is an <strong class="text-white">asset swap</strong> &mdash; Cash decreases while Equipment increases by the same amount. Total assets are unchanged.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction 4 -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Transaction 4</span>
+                        <p class="text-white font-semibold mt-1">Provide consulting services for $15,000 cash</p>
+                    </div>
+                    <button onclick="revealBrightIdeas(4)" id="bright-btn-4" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Effect</button>
+                </div>
+                <div id="bright-effect-4" class="hidden px-4 pb-4">
+                    <div class="grid md:grid-cols-3 gap-3 mb-3">
+                        <div class="bg-sky-500/10 border border-sky-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-sky-300 font-semibold mb-1">ASSETS</div>
+                            <div class="text-sm"><span class="text-emerald-400 font-bold">Cash +$15,000</span></div>
+                        </div>
+                        <div class="bg-rose-500/10 border border-rose-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-rose-300 font-semibold mb-1">LIABILITIES</div>
+                            <div class="text-sm text-slate-500">No change</div>
+                        </div>
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-emerald-300 font-semibold mb-1">SHAREHOLDERS' EQUITY</div>
+                            <div class="text-sm"><span class="text-emerald-400 font-bold">RE +$15,000</span><br><span class="text-xs text-slate-400">(from Revenue)</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-lg p-3 text-sm">
+                        <div class="flex flex-wrap items-center justify-center gap-2 mb-2 font-mono">
+                            <span class="text-sky-400 font-bold">$155,000</span>
+                            <span class="text-slate-400">=</span>
+                            <span class="text-rose-400 font-bold">$40,000</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="text-emerald-400 font-bold">$115,000</span>
+                        </div>
+                        <p class="text-slate-400 text-xs text-center">Revenue increases Retained Earnings (a component of SE). Cash increases on the asset side. Both sides grow by $15,000.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction 5 -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Transaction 5</span>
+                        <p class="text-white font-semibold mt-1">Pay $3,000 rent expense</p>
+                    </div>
+                    <button onclick="revealBrightIdeas(5)" id="bright-btn-5" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Effect</button>
+                </div>
+                <div id="bright-effect-5" class="hidden px-4 pb-4">
+                    <div class="grid md:grid-cols-3 gap-3 mb-3">
+                        <div class="bg-sky-500/10 border border-sky-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-sky-300 font-semibold mb-1">ASSETS</div>
+                            <div class="text-sm"><span class="text-rose-400 font-bold">Cash -$3,000</span></div>
+                        </div>
+                        <div class="bg-rose-500/10 border border-rose-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-rose-300 font-semibold mb-1">LIABILITIES</div>
+                            <div class="text-sm text-slate-500">No change</div>
+                        </div>
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 text-center">
+                            <div class="text-xs text-emerald-300 font-semibold mb-1">SHAREHOLDERS' EQUITY</div>
+                            <div class="text-sm"><span class="text-rose-400 font-bold">RE -$3,000</span><br><span class="text-xs text-slate-400">(from Rent Expense)</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800/60 rounded-lg p-3 text-sm">
+                        <div class="flex flex-wrap items-center justify-center gap-2 mb-2 font-mono">
+                            <span class="text-sky-400 font-bold">$152,000</span>
+                            <span class="text-slate-400">=</span>
+                            <span class="text-rose-400 font-bold">$40,000</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="text-emerald-400 font-bold">$112,000</span>
+                        </div>
+                        <p class="text-slate-400 text-xs text-center">Expenses decrease Retained Earnings (reducing SE). Cash decreases on the asset side. Both sides shrink by $3,000.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Balance Sheet Summary -->
+            <div id="bright-final-summary" class="hidden mt-6">
+                <div class="bg-emerald-500/10 border-2 border-emerald-500/40 rounded-xl p-5">
+                    <h3 class="text-lg font-bold text-emerald-400 mb-4 text-center">Final Balance Sheet &mdash; Bright Ideas LLC</h3>
+                    <div class="grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-sky-500/10 border border-sky-500/20 rounded-lg p-4">
+                            <h4 class="text-sky-300 font-bold mb-2 text-center">ASSETS</h4>
+                            <div class="space-y-1 text-slate-300">
+                                <div class="flex justify-between"><span>Cash</span><span class="text-white font-semibold">$127,000</span></div>
+                                <div class="flex justify-between"><span>Equipment</span><span class="text-white font-semibold">$25,000</span></div>
+                                <div class="flex justify-between border-t border-slate-600 pt-1 mt-1"><span class="font-bold text-sky-400">Total Assets</span><span class="font-bold text-sky-400">$152,000</span></div>
+                            </div>
+                        </div>
+                        <div class="bg-rose-500/10 border border-rose-500/20 rounded-lg p-4">
+                            <h4 class="text-rose-300 font-bold mb-2 text-center">LIABILITIES</h4>
+                            <div class="space-y-1 text-slate-300">
+                                <div class="flex justify-between"><span>Notes Payable</span><span class="text-white font-semibold">$40,000</span></div>
+                                <div class="flex justify-between border-t border-slate-600 pt-1 mt-1"><span class="font-bold text-rose-400">Total Liabilities</span><span class="font-bold text-rose-400">$40,000</span></div>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4">
+                            <h4 class="text-emerald-300 font-bold mb-2 text-center">SHAREHOLDERS' EQUITY</h4>
+                            <div class="space-y-1 text-slate-300">
+                                <div class="flex justify-between"><span>Common Stock</span><span class="text-white font-semibold">$100,000</span></div>
+                                <div class="flex justify-between"><span>Retained Earnings</span><span class="text-white font-semibold">$12,000</span></div>
+                                <div class="flex justify-between border-t border-slate-600 pt-1 mt-1"><span class="font-bold text-emerald-400">Total SE</span><span class="font-bold text-emerald-400">$112,000</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center bg-slate-800/60 rounded-lg py-3 text-sm">
+                        <span class="text-sky-400 font-bold">Total Assets $152,000</span>
+                        <span class="text-slate-400 mx-2">=</span>
+                        <span class="text-rose-400 font-bold">Total L $40,000</span>
+                        <span class="text-slate-400 mx-2">+</span>
+                        <span class="text-emerald-400 font-bold">Total SE $112,000</span>
+                        <span class="text-emerald-400 ml-2 font-bold">&#10003;</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -600,6 +878,337 @@
                 <div class="bg-slate-700/40 rounded-lg p-4">
                     <h4 class="text-amber-300 font-semibold text-sm mb-2">Off-Balance-Sheet Info</h4>
                     <p class="text-xs text-slate-400">Contingent liabilities, operating lease commitments (pre-ASC 842), guarantees, and other commitments not on the BS.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Problem: Reading and Connecting the Financial Statements -->
+        <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mt-6">
+            <h2 class="text-2xl font-bold text-emerald-400 mb-2">Practice Problem: Reading and Connecting the Financial Statements</h2>
+            <p class="text-sm text-slate-400 mb-6">Walk through a complete set of condensed financial statements step by step. Trace the numbers, verify the connections, and see how everything ties back to <strong class="text-white">A = L + SE</strong>.</p>
+
+            <!-- The Setup: Always Visible -->
+            <div class="mb-6">
+                <p class="text-slate-300 text-sm mb-4">GreenTech Solutions reports the following for the year ended December 31, 2025:</p>
+
+                <!-- Condensed Income Statement -->
+                <div class="mb-5">
+                    <h3 class="text-sky-400 font-bold text-lg mb-3">Condensed Income Statement</h3>
+                    <div class="max-w-md">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="text-left text-slate-400 font-medium py-2"></th>
+                                    <th class="text-right text-slate-400 font-medium py-2">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-300">
+                                <tr><td class="py-1.5">Revenue</td><td class="text-right text-emerald-300">$850,000</td></tr>
+                                <tr><td class="py-1.5">Cost of Goods Sold</td><td class="text-right text-rose-300">(340,000)</td></tr>
+                                <tr class="border-t border-slate-700"><td class="py-1.5 font-semibold text-sky-300">Gross Profit</td><td class="text-right font-semibold text-sky-300">510,000</td></tr>
+                                <tr><td class="py-1.5">Operating Expenses</td><td class="text-right text-rose-300">(290,000)</td></tr>
+                                <tr class="border-t border-slate-700"><td class="py-1.5 font-semibold text-amber-300">Operating Income</td><td class="text-right font-semibold text-amber-300">220,000</td></tr>
+                                <tr><td class="py-1.5">Interest Expense</td><td class="text-right text-rose-300">(20,000)</td></tr>
+                                <tr class="border-t border-slate-700"><td class="py-1.5 font-semibold text-purple-300">Pre-tax Income</td><td class="text-right font-semibold text-purple-300">200,000</td></tr>
+                                <tr><td class="py-1.5">Income Tax Expense (25%)</td><td class="text-right text-rose-300">(50,000)</td></tr>
+                                <tr class="border-t-2 border-emerald-500/50"><td class="py-2 font-bold text-emerald-400">Net Income</td><td class="text-right font-bold text-emerald-400">$150,000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Condensed Balance Sheet -->
+                <div class="mb-5">
+                    <h3 class="text-emerald-400 font-bold text-lg mb-3">Condensed Balance Sheet (Dec 31, 2025)</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <!-- Assets side -->
+                        <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/20">
+                            <h4 class="text-sky-300 font-bold mb-2 text-center">ASSETS</h4>
+                            <table class="w-full text-sm text-slate-300">
+                                <tbody>
+                                    <tr><td class="py-1">Cash</td><td class="text-right">$180,000</td></tr>
+                                    <tr><td class="py-1">Accounts Receivable</td><td class="text-right">120,000</td></tr>
+                                    <tr><td class="py-1">Inventory</td><td class="text-right">95,000</td></tr>
+                                    <tr><td class="py-1">Prepaid Expenses</td><td class="text-right">15,000</td></tr>
+                                    <tr><td class="py-1">Equipment (net)</td><td class="text-right">350,000</td></tr>
+                                    <tr class="border-t-2 border-sky-500/50"><td class="py-2 font-bold text-sky-400">Total Assets</td><td class="text-right font-bold text-sky-400">$760,000</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Liabilities & SE side -->
+                        <div>
+                            <div class="bg-rose-500/10 rounded-lg p-4 border border-rose-500/20 mb-3">
+                                <h4 class="text-rose-300 font-bold mb-2 text-center">LIABILITIES</h4>
+                                <table class="w-full text-sm text-slate-300">
+                                    <tbody>
+                                        <tr><td class="py-1">Accounts Payable</td><td class="text-right">$65,000</td></tr>
+                                        <tr><td class="py-1">Unearned Revenue</td><td class="text-right">30,000</td></tr>
+                                        <tr><td class="py-1">Notes Payable</td><td class="text-right">200,000</td></tr>
+                                        <tr class="border-t-2 border-rose-500/50"><td class="py-2 font-bold text-rose-400">Total Liabilities</td><td class="text-right font-bold text-rose-400">$295,000</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                                <h4 class="text-emerald-300 font-bold mb-2 text-center">SHAREHOLDERS' EQUITY</h4>
+                                <table class="w-full text-sm text-slate-300">
+                                    <tbody>
+                                        <tr><td class="py-1">Common Stock</td><td class="text-right">$300,000</td></tr>
+                                        <tr><td class="py-1">Retained Earnings</td><td class="text-right">165,000</td></tr>
+                                        <tr class="border-t border-emerald-500/30"><td class="py-1.5 font-bold text-emerald-400">Total SE</td><td class="text-right font-bold text-emerald-400">$465,000</td></tr>
+                                        <tr class="border-t-2 border-emerald-500/50"><td class="py-2 font-bold text-white">Total L + SE</td><td class="text-right font-bold text-white">$760,000</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="bg-slate-700/40 rounded-lg p-4 border border-slate-600">
+                    <p class="text-sm text-slate-300"><strong class="text-amber-300">Additional Info:</strong> Beginning Retained Earnings was $55,000. Dividends paid during the year: $40,000.</p>
+                </div>
+            </div>
+
+            <!-- Step-by-Step Walkthrough -->
+            <h3 class="text-lg font-bold text-slate-300 mb-4">Step-by-Step Walkthrough</h3>
+
+            <!-- Step 1: Verify the Accounting Equation -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Step 1</span>
+                        <p class="text-white font-semibold mt-1">Verify the Accounting Equation</p>
+                    </div>
+                    <button onclick="revealPracticeStep(1)" id="practice-btn-1" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Analysis</button>
+                </div>
+                <div id="practice-step-1" class="hidden px-4 pb-4">
+                    <div class="bg-slate-800/60 rounded-lg p-4 mb-3">
+                        <div class="flex flex-wrap items-center justify-center gap-3 mb-3 text-lg font-mono">
+                            <span class="text-sky-400 font-bold">$760,000</span>
+                            <span class="text-slate-400">=</span>
+                            <span class="text-rose-400 font-bold">$295,000</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="text-emerald-400 font-bold">$465,000</span>
+                            <span class="text-emerald-400 font-bold ml-2">&#10003;</span>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-center gap-2 text-xs text-slate-400">
+                            <span class="bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">Total Assets</span>
+                            <span>=</span>
+                            <span class="bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded">Total Liabilities</span>
+                            <span>+</span>
+                            <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Total SE</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-300">This <strong class="text-white">must</strong> be true. If it doesn't balance, there's an error somewhere. Always check this first.</p>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
+                        <p class="text-xs text-emerald-400 font-semibold mb-1">&#61; Back to the Equation</p>
+                        <p class="text-xs text-slate-300">The Balance Sheet <em>is</em> the accounting equation. Every line item on the BS lives inside A = L + SE.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Trace Net Income from IS to BS -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Step 2</span>
+                        <p class="text-white font-semibold mt-1">Trace Net Income from the Income Statement to the Balance Sheet</p>
+                    </div>
+                    <button onclick="revealPracticeStep(2)" id="practice-btn-2" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Analysis</button>
+                </div>
+                <div id="practice-step-2" class="hidden px-4 pb-4">
+                    <div class="bg-slate-800/60 rounded-lg p-4 mb-3">
+                        <p class="text-sm text-slate-300 mb-2">Net Income from the Income Statement: <strong class="text-emerald-400">$150,000</strong></p>
+                        <p class="text-sm text-slate-300 mb-3">Check via the Retained Earnings rollforward:</p>
+                        <div class="flex flex-wrap items-center gap-2 text-sm font-mono mb-2">
+                            <span class="text-slate-400">Beginning RE</span>
+                            <span class="text-slate-300 font-bold">$55,000</span>
+                            <span class="text-slate-400">+</span>
+                            <span class="text-slate-400">NI</span>
+                            <span class="text-emerald-400 font-bold">$150,000</span>
+                            <span class="text-slate-400">&minus;</span>
+                            <span class="text-slate-400">Dividends</span>
+                            <span class="text-rose-400 font-bold">$40,000</span>
+                            <span class="text-slate-400">=</span>
+                            <span class="text-slate-400">Ending RE</span>
+                            <span class="text-emerald-400 font-bold">$165,000</span>
+                            <span class="text-emerald-400 font-bold ml-1">&#10003;</span>
+                        </div>
+                        <p class="text-xs text-slate-400">$55,000 + $150,000 &minus; $40,000 = $165,000 &mdash; matches the Balance Sheet.</p>
+                    </div>
+                    <p class="text-sm text-slate-300"><strong class="text-white">Net Income is the bridge between the two statements.</strong> It flows from the Income Statement into Retained Earnings on the Balance Sheet.</p>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
+                        <p class="text-xs text-emerald-400 font-semibold mb-1">&#61; Back to the Equation</p>
+                        <p class="text-xs text-slate-300">Revenue and Expenses (IS) determine Net Income, which changes Retained Earnings, which is part of SE in <strong>A = L + SE</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Identify Statement Types -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Step 3</span>
+                        <p class="text-white font-semibold mt-1">Identify Statement Types</p>
+                    </div>
+                    <button onclick="revealPracticeStep(3)" id="practice-btn-3" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Analysis</button>
+                </div>
+                <div id="practice-step-3" class="hidden px-4 pb-4">
+                    <div class="grid md:grid-cols-2 gap-4 mb-3">
+                        <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                            <h4 class="text-emerald-300 font-bold text-sm mb-1">Balance Sheet</h4>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full">Point in Time</span>
+                            <p class="text-xs text-slate-400 mt-2">Snapshot as of <strong class="text-white">December 31, 2025</strong>.</p>
+                            <p class="text-xs text-slate-300 mt-1">Shows <em>where</em> the company stands.</p>
+                        </div>
+                        <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/20">
+                            <h4 class="text-sky-300 font-bold text-sm mb-1">Income Statement</h4>
+                            <span class="text-xs bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full">Period of Time</span>
+                            <p class="text-xs text-slate-400 mt-2">Covers <strong class="text-white">January 1 &ndash; December 31, 2025</strong>.</p>
+                            <p class="text-xs text-slate-300 mt-1">Shows <em>how</em> the company got there.</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-300">The BS shows <strong class="text-white">where</strong> the company stands. The IS shows <strong class="text-white">how</strong> it got there.</p>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
+                        <p class="text-xs text-emerald-400 font-semibold mb-1">&#61; Back to the Equation</p>
+                        <p class="text-xs text-slate-300">The BS is A = L + SE at a point in time. The IS explains the change in one component of SE (Retained Earnings) over the period.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Classify Every Account -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">Step 4</span>
+                        <p class="text-white font-semibold mt-1">Classify Every Account</p>
+                    </div>
+                    <button onclick="revealPracticeStep(4)" id="practice-btn-4" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Analysis</button>
+                </div>
+                <div id="practice-step-4" class="hidden px-4 pb-4">
+                    <div class="grid md:grid-cols-3 gap-3 mb-3">
+                        <!-- Assets -->
+                        <div class="bg-sky-500/10 rounded-lg p-3 border border-sky-500/20">
+                            <h4 class="text-sky-300 font-bold text-sm mb-2 text-center">Assets (A)</h4>
+                            <ul class="text-xs text-slate-300 space-y-1.5">
+                                <li class="flex justify-between"><span>Cash</span><span class="bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded text-xs">Current</span></li>
+                                <li class="flex justify-between"><span>Accounts Receivable</span><span class="bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded text-xs">Current</span></li>
+                                <li class="flex justify-between"><span>Inventory</span><span class="bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded text-xs">Current</span></li>
+                                <li class="flex justify-between"><span>Prepaid Expenses</span><span class="bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded text-xs">Current</span></li>
+                                <li class="flex justify-between"><span>Equipment (net)</span><span class="bg-sky-500/30 text-sky-200 px-1.5 py-0.5 rounded text-xs">Non-current</span></li>
+                            </ul>
+                        </div>
+                        <!-- Liabilities -->
+                        <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                            <h4 class="text-rose-300 font-bold text-sm mb-2 text-center">Liabilities (L)</h4>
+                            <ul class="text-xs text-slate-300 space-y-1.5">
+                                <li class="flex justify-between"><span>Accounts Payable</span><span class="bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded text-xs">Current</span></li>
+                                <li>
+                                    <div class="flex justify-between"><span>Unearned Revenue</span><span class="bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded text-xs">Current</span></div>
+                                    <p class="text-slate-500 text-xs mt-0.5 italic">Cash received, service not yet provided</p>
+                                </li>
+                                <li class="flex justify-between"><span>Notes Payable</span><span class="bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded text-xs">Liability</span></li>
+                            </ul>
+                        </div>
+                        <!-- SE -->
+                        <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/20">
+                            <h4 class="text-emerald-300 font-bold text-sm mb-2 text-center">Shareholders' Equity (SE)</h4>
+                            <ul class="text-xs text-slate-300 space-y-1.5">
+                                <li>
+                                    <div class="flex justify-between"><span>Common Stock</span><span class="bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded text-xs">Contributed</span></div>
+                                    <p class="text-slate-500 text-xs mt-0.5 italic">Invested by shareholders</p>
+                                </li>
+                                <li>
+                                    <div class="flex justify-between"><span>Retained Earnings</span><span class="bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded text-xs">Earned</span></div>
+                                    <p class="text-slate-500 text-xs mt-0.5 italic">Accumulated net income minus dividends</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
+                        <p class="text-xs text-emerald-400 font-semibold mb-1">&#61; Back to the Equation</p>
+                        <p class="text-xs text-slate-300">Every account lives in exactly one bucket: <span class="text-sky-300">A</span>, <span class="text-rose-300">L</span>, or <span class="text-emerald-300">SE</span>. Being able to classify accounts is the first step to understanding any transaction.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Compute Key Ratios -->
+            <div class="mb-4 bg-slate-700/40 rounded-lg border border-slate-600 overflow-hidden">
+                <div class="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div>
+                        <span class="text-xs font-bold text-teal-400 uppercase tracking-wider">Step 5</span>
+                        <p class="text-white font-semibold mt-1">Compute Key Ratios (Preview of Financial Analysis)</p>
+                    </div>
+                    <button onclick="revealPracticeStep(5)" id="practice-btn-5" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show Analysis</button>
+                </div>
+                <div id="practice-step-5" class="hidden px-4 pb-4">
+                    <div class="grid md:grid-cols-2 gap-3 mb-3">
+                        <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/20">
+                            <h4 class="text-sky-300 font-semibold text-sm mb-2">Current Ratio</h4>
+                            <p class="text-xs text-slate-400 mb-1">Current Assets / Current Liabilities</p>
+                            <div class="text-sm font-mono text-slate-300">
+                                <p>= ($180K + $120K + $95K + $15K) / ($65K + $30K)</p>
+                                <p>= <strong class="text-sky-400">$410,000</strong> / <strong class="text-rose-400">$95,000</strong></p>
+                                <p class="text-white font-bold mt-1">= 4.3x</p>
+                            </div>
+                        </div>
+                        <div class="bg-rose-500/10 rounded-lg p-4 border border-rose-500/20">
+                            <h4 class="text-rose-300 font-semibold text-sm mb-2">Debt-to-Equity Ratio</h4>
+                            <p class="text-xs text-slate-400 mb-1">Total Liabilities / Total SE</p>
+                            <div class="text-sm font-mono text-slate-300">
+                                <p>= <strong class="text-rose-400">$295,000</strong> / <strong class="text-emerald-400">$465,000</strong></p>
+                                <p class="text-white font-bold mt-1">= 0.63x</p>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                            <h4 class="text-emerald-300 font-semibold text-sm mb-2">Gross Margin</h4>
+                            <p class="text-xs text-slate-400 mb-1">Gross Profit / Revenue</p>
+                            <div class="text-sm font-mono text-slate-300">
+                                <p>= <strong class="text-sky-400">$510,000</strong> / <strong class="text-emerald-400">$850,000</strong></p>
+                                <p class="text-white font-bold mt-1">= 60.0%</p>
+                            </div>
+                        </div>
+                        <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+                            <h4 class="text-amber-300 font-semibold text-sm mb-2">Profit Margin</h4>
+                            <p class="text-xs text-slate-400 mb-1">Net Income / Revenue</p>
+                            <div class="text-sm font-mono text-slate-300">
+                                <p>= <strong class="text-emerald-400">$150,000</strong> / <strong class="text-emerald-400">$850,000</strong></p>
+                                <p class="text-white font-bold mt-1">= 17.6%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-3 border border-emerald-500/30 mt-3">
+                        <p class="text-xs text-emerald-400 font-semibold mb-1">&#61; Back to the Equation</p>
+                        <p class="text-xs text-slate-300">Every ratio is built from components of <strong>A = L + SE</strong>. Current ratio is Current A / Current L. Debt-to-equity is L / SE. Understanding the equation means understanding the building blocks of every ratio.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Callout (revealed after all steps) -->
+            <div id="practice-final-summary" class="hidden mt-6">
+                <div class="bg-emerald-500/10 border-2 border-emerald-500/40 rounded-xl p-5">
+                    <h3 class="text-lg font-bold text-emerald-400 mb-3 text-center">Putting It All Together</h3>
+                    <div class="bg-slate-800/60 rounded-lg p-4 text-center mb-4">
+                        <p class="text-xl font-bold">
+                            <span class="text-sky-400">Assets</span>
+                            <span class="text-slate-500 mx-2">=</span>
+                            <span class="text-rose-400">Liabilities</span>
+                            <span class="text-slate-500 mx-2">+</span>
+                            <span class="text-emerald-400">Shareholders' Equity</span>
+                        </p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-300">
+                        <div class="space-y-2">
+                            <p><strong class="text-white">1. The Balance Sheet is the equation.</strong> Total Assets must equal Total Liabilities plus Total SE.</p>
+                            <p><strong class="text-white">2. Net Income is the bridge.</strong> It flows from the IS into Retained Earnings on the BS, connecting the two statements.</p>
+                            <p><strong class="text-white">3. RE rolls forward:</strong> Beginning RE + NI &minus; Dividends = Ending RE.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <p><strong class="text-white">4. Every account has a home</strong> inside A, L, or SE. Classification is not trivia &mdash; it determines where things appear on the statements.</p>
+                            <p><strong class="text-white">5. Every ratio is built from equation components.</strong> Current ratio, D/E, margins &mdash; they all pull from A, L, SE, or their sub-components.</p>
+                            <p class="text-emerald-400 font-semibold mt-2">Master the equation, and the rest of accounting is applications.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -996,6 +1605,62 @@
             document.getElementById('question-text').textContent = tf.q;
             const correctStr = tf.a ? 'True' : 'False';
             makeButtons(['True', 'False'], correctStr, tf.explain);
+        }
+    }
+
+    // ---- EXAM PROBLEM WALKTHROUGH ----
+    let practiceRevealed = [false, false, false, false, false];
+
+    function revealPracticeStep(step) {
+        const effectDiv = document.getElementById('practice-step-' + step);
+        const btn = document.getElementById('practice-btn-' + step);
+
+        if (practiceRevealed[step - 1]) {
+            effectDiv.classList.add('hidden');
+            btn.textContent = 'Show Analysis';
+            practiceRevealed[step - 1] = false;
+        } else {
+            effectDiv.classList.remove('hidden');
+            btn.textContent = 'Hide Analysis';
+            practiceRevealed[step - 1] = true;
+        }
+
+        // Show final summary if all 5 steps are revealed
+        const allRevealed = practiceRevealed.every(r => r === true);
+        const summaryDiv = document.getElementById('practice-final-summary');
+        if (allRevealed) {
+            summaryDiv.classList.remove('hidden');
+        } else {
+            summaryDiv.classList.add('hidden');
+        }
+    }
+
+    // ---- BRIGHT IDEAS WALKTHROUGH ----
+    let brightRevealed = [false, false, false, false, false];
+
+    function revealBrightIdeas(step) {
+        const effectDiv = document.getElementById('bright-effect-' + step);
+        const btn = document.getElementById('bright-btn-' + step);
+
+        if (brightRevealed[step - 1]) {
+            // Toggle: hide the effect
+            effectDiv.classList.add('hidden');
+            btn.textContent = 'Show Effect';
+            brightRevealed[step - 1] = false;
+        } else {
+            // Reveal the effect
+            effectDiv.classList.remove('hidden');
+            btn.textContent = 'Hide Effect';
+            brightRevealed[step - 1] = true;
+        }
+
+        // Show final summary if all 5 are revealed
+        const allRevealed = brightRevealed.every(r => r === true);
+        const summaryDiv = document.getElementById('bright-final-summary');
+        if (allRevealed) {
+            summaryDiv.classList.remove('hidden');
+        } else {
+            summaryDiv.classList.add('hidden');
         }
     }
     </script>

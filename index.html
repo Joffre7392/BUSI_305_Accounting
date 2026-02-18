@@ -9,7 +9,7 @@
         body { margin: 0; padding: 0; }
         .card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
         .card { transition: all 0.3s ease; }
-        .exam-badge { font-size: 0.65rem; padding: 2px 8px; border-radius: 9999px; font-weight: 600; }
+        .topic-badge { font-size: 0.65rem; padding: 2px 8px; border-radius: 9999px; font-weight: 600; }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-6">
@@ -26,206 +26,184 @@
             </p>
         </div>
 
-        <!-- Exam 1 Topics -->
-        <div class="mb-8">
-            <h2 class="text-lg font-semibold text-slate-400 mb-4 flex items-center gap-2">
-                <span class="w-8 h-0.5 bg-emerald-500"></span>
-                Exam 1 Topics
-            </h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- Accounting Equation -->
-                <a href="accounting-equation.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-emerald-500/50">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x2696;</div>
-                        <span class="exam-badge bg-emerald-500/20 text-emerald-400">Lectures 1-2</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-emerald-400 mb-2">Accounting Equation & Financial Statements</h3>
-                    <p class="text-slate-400 text-sm mb-3">A = L + SE, balance sheet structure, income statement, and how the statements connect.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                        <span class="text-xs bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded">A = L + SE</span>
-                        <span class="text-xs bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded">Balance Sheet</span>
-                        <span class="text-xs bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded">Income Statement</span>
-                    </div>
-                </a>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Accounting Equation -->
+            <a href="accounting-equation.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-emerald-500/50">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x2696;</div>
+                    <span class="topic-badge bg-emerald-500/20 text-emerald-400">Lectures 1-2</span>
+                </div>
+                <h3 class="text-lg font-semibold text-emerald-400 mb-2">Accounting Equation & Financial Statements</h3>
+                <p class="text-slate-400 text-sm mb-3">A = L + SE, balance sheet structure, income statement, and how the statements connect.</p>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="text-xs bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded">A = L + SE</span>
+                    <span class="text-xs bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded">Balance Sheet</span>
+                    <span class="text-xs bg-emerald-500/15 text-emerald-400 px-2 py-0.5 rounded">Income Statement</span>
+                </div>
+            </a>
 
-                <!-- Transaction Analysis -->
-                <a href="transaction-analysis.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-sky-500/50">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#128221;</div>
-                        <span class="exam-badge bg-sky-500/20 text-sky-400">Lectures 2-3</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-sky-400 mb-2">Transaction Analysis</h3>
-                    <p class="text-slate-400 text-sm mb-3">FSET approach, how transactions flow through the accounting equation to financial statements.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                        <span class="text-xs bg-sky-500/15 text-sky-400 px-2 py-0.5 rounded">FSET</span>
-                        <span class="text-xs bg-sky-500/15 text-sky-400 px-2 py-0.5 rounded">Debits & Credits</span>
-                        <span class="text-xs bg-sky-500/15 text-sky-400 px-2 py-0.5 rounded">Journal Entries</span>
-                    </div>
-                </a>
+            <!-- Transaction Analysis -->
+            <a href="transaction-analysis.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-sky-500/50">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#128221;</div>
+                    <span class="topic-badge bg-sky-500/20 text-sky-400">Lectures 2-3</span>
+                </div>
+                <h3 class="text-lg font-semibold text-sky-400 mb-2">Transaction Analysis</h3>
+                <p class="text-slate-400 text-sm mb-3">FSET approach, how transactions flow through the accounting equation to financial statements.</p>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="text-xs bg-sky-500/15 text-sky-400 px-2 py-0.5 rounded">FSET</span>
+                    <span class="text-xs bg-sky-500/15 text-sky-400 px-2 py-0.5 rounded">Debits & Credits</span>
+                    <span class="text-xs bg-sky-500/15 text-sky-400 px-2 py-0.5 rounded">Journal Entries</span>
+                </div>
+            </a>
 
-                <!-- T-Accounts & Accruals -->
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-purple-500/50 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F4CA;</div>
-                        <span class="exam-badge bg-purple-500/20 text-purple-400">Lectures 4-5</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-purple-400 mb-2">T-Accounts, Closing & Accruals</h3>
-                    <p class="text-slate-400 text-sm mb-3">T-account mechanics, the closing process, accrual vs. cash accounting, and adjusting entries.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                        <span class="text-xs bg-purple-500/15 text-purple-400 px-2 py-0.5 rounded">T-Accounts</span>
-                        <span class="text-xs bg-purple-500/15 text-purple-400 px-2 py-0.5 rounded">Closing</span>
-                        <span class="text-xs bg-purple-500/15 text-purple-400 px-2 py-0.5 rounded">Accruals</span>
-                    </div>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
+            <!-- T-Accounts & Accruals -->
+            <a href="t-accounts-accruals.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-purple-500/50">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F4CA;</div>
+                    <span class="topic-badge bg-purple-500/20 text-purple-400">Lectures 4-5</span>
+                </div>
+                <h3 class="text-lg font-semibold text-purple-400 mb-2">T-Accounts, Closing & Accruals</h3>
+                <p class="text-slate-400 text-sm mb-3">T-account mechanics, the closing process, accrual vs. cash accounting, and adjusting entries.</p>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="text-xs bg-purple-500/15 text-purple-400 px-2 py-0.5 rounded">T-Accounts</span>
+                    <span class="text-xs bg-purple-500/15 text-purple-400 px-2 py-0.5 rounded">Closing</span>
+                    <span class="text-xs bg-purple-500/15 text-purple-400 px-2 py-0.5 rounded">Accruals</span>
+                </div>
+            </a>
 
-                <!-- Revenue & AR -->
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-amber-500/50 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F4B5;</div>
-                        <span class="exam-badge bg-amber-500/20 text-amber-400">Lectures 6-7</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-amber-400 mb-2">Revenue & Accounts Receivable</h3>
-                    <p class="text-slate-400 text-sm mb-3">Revenue recognition, bad debt expense, allowance method, and A/R aging.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                        <span class="text-xs bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded">Rev Rec</span>
-                        <span class="text-xs bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded">Bad Debts</span>
-                        <span class="text-xs bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded">Allowance</span>
-                    </div>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
+            <!-- Revenue & AR -->
+            <a href="revenue-ar.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-amber-500/50">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F4B5;</div>
+                    <span class="topic-badge bg-amber-500/20 text-amber-400">Lectures 6-7</span>
+                </div>
+                <h3 class="text-lg font-semibold text-amber-400 mb-2">Revenue & Accounts Receivable</h3>
+                <p class="text-slate-400 text-sm mb-3">Revenue recognition, bad debt expense, allowance method, and A/R aging.</p>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="text-xs bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded">Rev Rec</span>
+                    <span class="text-xs bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded">Bad Debts</span>
+                    <span class="text-xs bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded">Allowance</span>
+                </div>
+            </a>
 
-                <!-- Inventory -->
-                <a href="inventory.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-rose-500/50">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F4E6;</div>
-                        <span class="exam-badge bg-rose-500/20 text-rose-400">Lectures 8-9</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-rose-400 mb-2">Inventory</h3>
-                    <p class="text-slate-400 text-sm mb-3">FIFO, LIFO, and weighted average — side-by-side comparisons and financial statement effects.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                        <span class="text-xs bg-rose-500/15 text-rose-400 px-2 py-0.5 rounded">FIFO</span>
-                        <span class="text-xs bg-rose-500/15 text-rose-400 px-2 py-0.5 rounded">LIFO</span>
-                        <span class="text-xs bg-rose-500/15 text-rose-400 px-2 py-0.5 rounded">COGS</span>
-                    </div>
-                </a>
+            <!-- Inventory -->
+            <a href="inventory.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-rose-500/50">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F4E6;</div>
+                    <span class="topic-badge bg-rose-500/20 text-rose-400">Lectures 8-9</span>
+                </div>
+                <h3 class="text-lg font-semibold text-rose-400 mb-2">Inventory</h3>
+                <p class="text-slate-400 text-sm mb-3">FIFO, LIFO, and weighted average — side-by-side comparisons and financial statement effects.</p>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="text-xs bg-rose-500/15 text-rose-400 px-2 py-0.5 rounded">FIFO</span>
+                    <span class="text-xs bg-rose-500/15 text-rose-400 px-2 py-0.5 rounded">LIFO</span>
+                    <span class="text-xs bg-rose-500/15 text-rose-400 px-2 py-0.5 rounded">COGS</span>
+                </div>
+            </a>
 
-                <!-- Fixed Assets -->
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-teal-500/50 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F3ED;</div>
-                        <span class="exam-badge bg-teal-500/20 text-teal-400">Lectures 10-11</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-teal-400 mb-2">Fixed Assets & Depreciation</h3>
-                    <p class="text-slate-400 text-sm mb-3">Depreciation methods (SL, DDB, units), disposals, and impairments.</p>
-                    <div class="flex flex-wrap gap-1.5">
-                        <span class="text-xs bg-teal-500/15 text-teal-400 px-2 py-0.5 rounded">Depreciation</span>
-                        <span class="text-xs bg-teal-500/15 text-teal-400 px-2 py-0.5 rounded">Disposals</span>
-                        <span class="text-xs bg-teal-500/15 text-teal-400 px-2 py-0.5 rounded">Impairment</span>
-                    </div>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
-            </div>
-        </div>
+            <!-- Fixed Assets -->
+            <a href="fixed-assets.html" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 hover:border-teal-500/50">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F3ED;</div>
+                    <span class="topic-badge bg-teal-500/20 text-teal-400">Lectures 10-11</span>
+                </div>
+                <h3 class="text-lg font-semibold text-teal-400 mb-2">Fixed Assets & Depreciation</h3>
+                <p class="text-slate-400 text-sm mb-3">Depreciation methods (SL, DDB, units), disposals, and impairments.</p>
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="text-xs bg-teal-500/15 text-teal-400 px-2 py-0.5 rounded">Depreciation</span>
+                    <span class="text-xs bg-teal-500/15 text-teal-400 px-2 py-0.5 rounded">Disposals</span>
+                    <span class="text-xs bg-teal-500/15 text-teal-400 px-2 py-0.5 rounded">Impairment</span>
+                </div>
+            </a>
 
-        <!-- Exam 2 Topics -->
-        <div class="mb-8">
-            <h2 class="text-lg font-semibold text-slate-400 mb-4 flex items-center gap-2">
-                <span class="w-8 h-0.5 bg-amber-500"></span>
-                Exam 2 Topics
-            </h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- Intangible Assets -->
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F4A1;</div>
-                        <span class="exam-badge bg-indigo-500/20 text-indigo-400">Lectures 12-13</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-indigo-400 mb-2">Intangible Assets</h3>
-                    <p class="text-slate-400 text-sm mb-3">Goodwill, patents, trademarks — amortization and impairment testing.</p>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
+            <!-- Intangible Assets -->
+            <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F4A1;</div>
+                    <span class="topic-badge bg-indigo-500/20 text-indigo-400">Lectures 12-13</span>
+                </div>
+                <h3 class="text-lg font-semibold text-indigo-400 mb-2">Intangible Assets</h3>
+                <p class="text-slate-400 text-sm mb-3">Goodwill, patents, trademarks — amortization and impairment testing.</p>
+                <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
+            </a>
 
-                <!-- Present Value -->
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x23F3;</div>
-                        <span class="exam-badge bg-cyan-500/20 text-cyan-400">Lectures 14-16</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-cyan-400 mb-2">Present Value</h3>
-                    <p class="text-slate-400 text-sm mb-3">Time value of money applied to accounting — bond pricing, lease valuation.</p>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
-            </div>
-        </div>
+            <!-- Present Value -->
+            <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x23F3;</div>
+                    <span class="topic-badge bg-cyan-500/20 text-cyan-400">Lectures 14-16</span>
+                </div>
+                <h3 class="text-lg font-semibold text-cyan-400 mb-2">Present Value</h3>
+                <p class="text-slate-400 text-sm mb-3">Time value of money applied to accounting — bond pricing, lease valuation.</p>
+                <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
+            </a>
 
-        <!-- Exam 3 Topics -->
-        <div class="mb-8">
-            <h2 class="text-lg font-semibold text-slate-400 mb-4 flex items-center gap-2">
-                <span class="w-8 h-0.5 bg-rose-500"></span>
-                Exam 3 Topics
-            </h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F4DC;</div>
-                        <span class="exam-badge bg-orange-500/20 text-orange-400">Lecture 17</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-orange-400 mb-2">Bonds</h3>
-                    <p class="text-slate-400 text-sm mb-3">Bond pricing, premium/discount, effective interest amortization.</p>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
+            <!-- Bonds -->
+            <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F4DC;</div>
+                    <span class="topic-badge bg-orange-500/20 text-orange-400">Lecture 17</span>
+                </div>
+                <h3 class="text-lg font-semibold text-orange-400 mb-2">Bonds</h3>
+                <p class="text-slate-400 text-sm mb-3">Bond pricing, premium/discount, effective interest amortization.</p>
+                <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
+            </a>
 
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F3E2;</div>
-                        <span class="exam-badge bg-lime-500/20 text-lime-400">Lecture 18</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-lime-400 mb-2">Leases</h3>
-                    <p class="text-slate-400 text-sm mb-3">Operating vs. finance leases and their financial statement effects.</p>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
+            <!-- Leases -->
+            <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F3E2;</div>
+                    <span class="topic-badge bg-lime-500/20 text-lime-400">Lecture 18</span>
+                </div>
+                <h3 class="text-lg font-semibold text-lime-400 mb-2">Leases</h3>
+                <p class="text-slate-400 text-sm mb-3">Operating vs. finance leases and their financial statement effects.</p>
+                <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
+            </a>
 
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F4B0;</div>
-                        <span class="exam-badge bg-fuchsia-500/20 text-fuchsia-400">Lectures 19-20</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-fuchsia-400 mb-2">Stockholders' Equity</h3>
-                    <p class="text-slate-400 text-sm mb-3">Stock issuance, treasury stock, dividends, and stock splits.</p>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
+            <!-- Stockholders' Equity -->
+            <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F4B0;</div>
+                    <span class="topic-badge bg-fuchsia-500/20 text-fuchsia-400">Lectures 19-20</span>
+                </div>
+                <h3 class="text-lg font-semibold text-fuchsia-400 mb-2">Stockholders' Equity</h3>
+                <p class="text-slate-400 text-sm mb-3">Stock issuance, treasury stock, dividends, and stock splits.</p>
+                <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
+            </a>
 
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F91D;</div>
-                        <span class="exam-badge bg-violet-500/20 text-violet-400">Lectures 21-22</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-violet-400 mb-2">Intercompany Investments</h3>
-                    <p class="text-slate-400 text-sm mb-3">Equity method, consolidation, and fair value accounting for investments.</p>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
+            <!-- Intercompany Investments -->
+            <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F91D;</div>
+                    <span class="topic-badge bg-violet-500/20 text-violet-400">Lectures 21-22</span>
+                </div>
+                <h3 class="text-lg font-semibold text-violet-400 mb-2">Intercompany Investments</h3>
+                <p class="text-slate-400 text-sm mb-3">Equity method, consolidation, and fair value accounting for investments.</p>
+                <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
+            </a>
 
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F4B8;</div>
-                        <span class="exam-badge bg-emerald-500/20 text-emerald-400">Lectures 23-24</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-emerald-400 mb-2">Statement of Cash Flows</h3>
-                    <p class="text-slate-400 text-sm mb-3">Indirect method, operating/investing/financing classification.</p>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
+            <!-- Statement of Cash Flows -->
+            <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F4B8;</div>
+                    <span class="topic-badge bg-emerald-500/20 text-emerald-400">Lectures 23-24</span>
+                </div>
+                <h3 class="text-lg font-semibold text-emerald-400 mb-2">Statement of Cash Flows</h3>
+                <p class="text-slate-400 text-sm mb-3">Indirect method, operating/investing/financing classification.</p>
+                <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
+            </a>
 
-                <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
-                    <div class="flex items-start justify-between mb-3">
-                        <div class="text-3xl">&#x1F4C8;</div>
-                        <span class="exam-badge bg-sky-500/20 text-sky-400">Lecture 25</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-sky-400 mb-2">Financial Statement Analysis</h3>
-                    <p class="text-slate-400 text-sm mb-3">Ratio analysis, DuPont decomposition, ROA, ROE, and ROFL.</p>
-                    <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
-                </a>
-            </div>
+            <!-- Financial Statement Analysis -->
+            <a href="#" class="card block bg-slate-800/50 rounded-xl p-5 border border-slate-700 opacity-50 pointer-events-none">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="text-3xl">&#x1F4C8;</div>
+                    <span class="topic-badge bg-sky-500/20 text-sky-400">Lecture 25</span>
+                </div>
+                <h3 class="text-lg font-semibold text-sky-400 mb-2">Financial Statement Analysis</h3>
+                <p class="text-slate-400 text-sm mb-3">Ratio analysis, DuPont decomposition, ROA, ROE, and ROFL.</p>
+                <p class="text-xs text-slate-600 mt-2 italic">Coming soon</p>
+            </a>
         </div>
 
         <p class="text-center text-slate-600 text-sm mt-8 mb-4">
