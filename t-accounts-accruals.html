@@ -198,7 +198,7 @@
                         <h3 class="text-lg font-semibold text-purple-300 mb-2">4. Accrued Expenses</h3>
                         <p class="text-sm text-slate-300 mb-3">Expense <strong class="text-white">incurred</strong> but not yet paid. We record the expense and a liability (payable).</p>
                         <div class="bg-slate-800 rounded p-3 text-sm mb-3">
-                            <p class="text-slate-400 mb-2">Example: Loan with 1% annual interest. $4,000 borrowed, 1 month accrued = $40.</p>
+                            <p class="text-slate-400 mb-2">Example: Loan with 12% annual interest. $4,000 borrowed, 1 month accrued = $40.</p>
                             <table class="font-mono text-slate-400 text-xs">
                                 <tr><td class="pr-3">Interest Expense</td><td class="text-right pl-3">40</td><td></td></tr>
                                 <tr><td class="pr-3 pl-6 text-slate-500">Interest Payable</td><td></td><td class="text-right pl-3">40</td></tr>
@@ -828,7 +828,8 @@
             options: ['Debit (Dr)', 'Credit (Cr)'],
             answer: ans === 'Dr' ? 0 : 1,
             explanation: acct + ' has a normal ' + (ans === 'Dr' ? 'debit' : 'credit') + ' balance because it is ' +
-                (ans === 'Dr' ? 'an asset or expense account (left side of T-account increases).' : 'a liability, equity, or revenue account (right side of T-account increases).')
+                (acct === 'Accumulated Depreciation' ? 'a contra-asset account (it offsets the related asset, so it has the opposite normal balance of an asset).' :
+                ans === 'Dr' ? 'an asset or expense account (left side of T-account increases).' : 'a liability, equity, or revenue account (right side of T-account increases).')
         };
     }
 
