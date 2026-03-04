@@ -1274,7 +1274,7 @@
         const pv = rand(5,20)*1000; const r = pick([5,8,10]); const n = rand(5,15);
         const simple = pv + pv*r/100*n;
         const compound = Math.round(pv * Math.pow(1+r/100,n));
-        return { question: '$' + fmt(pv) + ' invested for ' + n + ' years at ' + r + '%. Which earns more?', type: 'mc', options: ['Compound interest ($' + fmt(compound) + ')', 'Simple interest ($' + fmt(Math.round(simple)) + ')', 'They earn the same'], answer: 0, explanation: 'Compound interest earns interest on interest: $' + fmt(compound) + ' vs $' + fmt(Math.round(simple)) + '. Compound always exceeds simple for n > 1.' };
+        return { question: '$' + fmt(pv) + ' is invested for ' + n + ' years at ' + r + '%. Which method produces a larger ending balance: simple interest or compound interest?', type: 'mc', options: ['Compound interest', 'Simple interest', 'They are equal'], answer: 0, explanation: 'Compound interest earns interest on interest. Compound: $' + fmt(compound) + ' vs Simple: $' + fmt(Math.round(simple)) + '. Compound always exceeds simple for n > 1.' };
     }
     function genPVIncreaseDecrease() {
         const scenarios = [
