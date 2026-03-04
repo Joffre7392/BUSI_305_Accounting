@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revenue &amp; Accounts Receivable | BUSI 305 Study Tool</title>
+    <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html { scroll-behavior: smooth; }
@@ -776,38 +777,39 @@
 
         <!-- ==================== TAB 4: PRACTICE QUESTIONS ==================== -->
         <div id="tab-4" class="tab-content hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Score Panel -->
-                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:sticky lg:top-6 self-start">
-                    <h2 class="text-xl font-bold text-amber-400 mb-4">Your Score</h2>
-                    <div class="text-center mb-4">
-                        <p class="text-5xl font-bold text-white" id="score-display">0/0</p>
-                        <p class="text-slate-400 text-sm mt-1" id="score-pct"></p>
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-amber-400">Practice Questions</h2>
+                        <div class="flex items-center gap-4">
+                            <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
+                            <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
+                            <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
+                        </div>
                     </div>
-                    <div class="w-full bg-slate-700 rounded-full h-3 mb-3">
-                        <div class="bg-amber-500 h-3 rounded-full transition-all duration-500" id="score-bar" style="width: 0%"></div>
+                    <div id="p-question" class="mb-4"><p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p></div>
+                    <div id="p-answer" class="mb-4 hidden"></div>
+                    <div id="p-feedback" class="mb-4 hidden"></div>
+                    <div class="flex gap-3">
+                        <button onclick="QuizEngine.pNew()" class="bg-amber-600 hover:bg-amber-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                        <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
                     </div>
-                    <div class="text-center mb-6">
-                        <p class="text-slate-500 text-xs">Streak: <span id="streak-display" class="text-amber-400 font-bold">0</span></p>
-                    </div>
-                    <button onclick="generateQuestion()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 rounded-lg transition-colors mb-3">
-                        Next Question
-                    </button>
-                    <button onclick="resetScore()" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">
-                        Reset Score
-                    </button>
                 </div>
 
-                <!-- Question Panel -->
-                <div class="lg:col-span-2">
-                    <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                        <div id="question-area">
-                            <p class="text-slate-400 text-center py-8">Click "Next Question" to begin practicing.</p>
-                        </div>
-                        <div id="feedback-area" class="hidden mt-6"></div>
+                <!-- Journal Entry Practice -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-amber-400">Journal Entry Practice</h2>
+                        <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
                     </div>
+                    <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
+                    <div id="je-lines" class="space-y-2 mb-4"></div>
+                    <div class="flex gap-3 mb-4">
+                        <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                        <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                        <button onclick="QuizEngine.jeNew()" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                    </div>
+                    <div id="je-feedback" class="hidden"></div>
                 </div>
-            </div>
         </div>
     </div>
 
@@ -858,593 +860,442 @@
         document.getElementById('out-acp').textContent = acp.toFixed(1) + ' days';
     };
 
-    // ===== PRACTICE QUESTIONS =====
-    var score = { correct: 0, total: 0 };
-    var streak = 0;
-    var currentQuestion = null;
+    // ========== PRACTICE QUESTIONS (via QuizEngine) ==========
+    const { rand, pick, fmt } = QuizEngine;
 
-    var JE_ACCOUNTS = [
-        'Cash', 'Accounts Receivable', 'Allowance for Bad Debt', 'Inventory',
-        'Unearned Revenue', 'Unearned Support Revenue', 'Unearned Training Revenue',
-        'Sales Revenue', 'Service Revenue', 'Bad Debt Expense', 'Cost of Goods Sold',
-        'Interest Revenue', 'Notes Receivable', 'Accounts Payable'
-    ];
-
-    window.resetScore = function() {
-        score = { correct: 0, total: 0 };
-        streak = 0;
-        updateScoreDisplay();
-        document.getElementById('question-area').innerHTML = '<p class="text-slate-400 text-center py-8">Click "Next Question" to begin practicing.</p>';
-        document.getElementById('feedback-area').classList.add('hidden');
-    };
-
-    function updateScoreDisplay() {
-        document.getElementById('score-display').textContent = score.correct + '/' + score.total;
-        var pct = score.total > 0 ? Math.round(score.correct / score.total * 100) : 0;
-        document.getElementById('score-pct').textContent = score.total > 0 ? pct + '% correct' : '';
-        document.getElementById('score-bar').style.width = pct + '%';
-        document.getElementById('streak-display').textContent = streak;
-    }
-
-    function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-    function randChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-    function shuffle(arr) {
-        var a = arr.slice();
-        for (var i = a.length - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
-        }
-        return a;
-    }
-    function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
-
-    window.generateQuestion = function() {
-        document.getElementById('feedback-area').classList.add('hidden');
-        var type = randInt(0, 6);
-        switch (type) {
-            case 0: genRevRecognition(); break;
-            case 1: genBundledAllocation(); break;
-            case 2: genBadDebtJE(); break;
-            case 3: genNetARCalc(); break;
-            case 4: genARTurnover(); break;
-            case 5: genWriteOffImpact(); break;
-            case 6: genJournalEntry(); break;
-        }
-    };
-
-    // --- Type 0: Revenue Recognition Timing ---
+    // --- Q1: Revenue Recognition (MC, 10+ scenarios) ---
     function genRevRecognition() {
-        var questions = [
-            {
-                q: 'A gym sells an annual membership for $1,200 on January 1, collecting the full amount upfront. How much revenue should be recognized on January 31?',
-                choices: ['$1,200', '$100', '$0', '$600'],
-                answer: 1,
-                explain: '$100. The gym has a 12-month performance obligation. After one month, 1/12 of the obligation is fulfilled, so $1,200 / 12 = $100 is recognized as revenue. The remaining $1,100 is Unearned Revenue (a liability).'
-            },
-            {
-                q: 'A contractor signs a $500,000 contract to build a warehouse. By year-end, 40% of estimated total costs have been incurred. How much revenue should be recognized if the performance obligation is satisfied over time?',
-                choices: ['$500,000', '$200,000', '$0', '$300,000'],
-                answer: 1,
-                explain: '$200,000. Using the cost-to-cost method: 40% complete x $500,000 = $200,000. Revenue is recognized proportionally as the performance obligation is satisfied over time.'
-            },
-            {
-                q: 'A retailer sells goods at a cash register. When should revenue be recognized?',
-                choices: ['When the order is placed', 'At the point of sale (delivery)', 'When the customer leaves the store', 'At year end'],
-                answer: 1,
-                explain: 'At the point of sale. For a simple cash transaction, the performance obligation is satisfied when control of the goods transfers to the customer at delivery.'
-            },
-            {
-                q: 'A software company receives $50,000 in advance for a 2-year license. What is the journal entry at the date cash is received?',
-                choices: ['Dr Cash / Cr Sales Revenue $50,000', 'Dr Cash / Cr Unearned Revenue $50,000', 'Dr Unearned Revenue / Cr Sales Revenue $50,000', 'Dr Accounts Receivable / Cr Sales Revenue $50,000'],
-                answer: 1,
-                explain: 'Dr Cash / Cr Unearned Revenue $50,000. The performance obligation has not yet been fulfilled, so the cash received is recorded as a liability (Unearned Revenue), not as revenue.'
-            },
-            {
-                q: 'A company delivers goods on December 28 but does not receive payment until January 15. When should revenue be recognized?',
-                choices: ['January 15 (when cash is received)', 'December 28 (when goods are delivered)', 'December 31 (year end)', 'January 1 (start of new year)'],
-                answer: 1,
-                explain: 'December 28. Revenue is recognized when the performance obligation is satisfied (delivery), not when cash is collected. The company records A/R on December 28 and cash on January 15.'
-            }
+        const scenarios = [
+            { text: 'A gym sells an annual membership for $1,200 on January 1. How much revenue is recognized on January 31?', options: ['$1,200', '$100', '$0', '$600'], answer: 1, explain: '$100. After 1 month, 1/12 of $1,200 = $100 is earned. The rest remains Unearned Revenue.' },
+            { text: 'A retailer sells goods at a cash register. When is revenue recognized?', options: ['When ordered', 'At the point of sale (delivery)', 'When the customer leaves', 'At year end'], answer: 1, explain: 'At delivery. The performance obligation is satisfied when control transfers.' },
+            { text: 'Goods are delivered on Dec 28; payment arrives Jan 15. When is revenue recognized?', options: ['Jan 15', 'Dec 28', 'Dec 31', 'Jan 1'], answer: 1, explain: 'Dec 28 \u2014 when the performance obligation is satisfied, not when cash is received.' },
+            { text: 'A contractor signs a $500,000 contract. By year-end, 40% of estimated costs are incurred (PO satisfied over time). Revenue recognized?', options: ['$500,000', '$200,000', '$0', '$300,000'], answer: 1, explain: '40% \u00d7 $500,000 = $200,000 via cost-to-cost method.' },
+            { text: 'A software company receives $50,000 for a 2-year license before any service begins. Entry at receipt?', options: ['Dr Cash / Cr Sales Revenue $50,000', 'Dr Cash / Cr Unearned Revenue $50,000', 'Dr Unearned Rev / Cr Sales Rev $50,000', 'Dr A/R / Cr Sales Revenue $50,000'], answer: 1, explain: 'Cash in, liability (Unearned Revenue) created. No revenue until PO is satisfied.' },
+            { text: 'A concert venue sells 5,000 tickets at $80 each for a show next month. At the date of sale, revenue recognized is:', options: ['$400,000', '$0', '$200,000', '$80'], answer: 1, explain: '$0. The performance obligation (the concert) has not yet been satisfied. Record Unearned Revenue.' },
+            { text: 'A magazine publisher receives $120 for a 12-month subscription on July 1. Revenue recognized by Dec 31?', options: ['$120', '$60', '$0', '$10'], answer: 1, explain: '6 months earned: 6/12 \u00d7 $120 = $60.' },
+            { text: 'A consulting firm completes a project and invoices $25,000. The client has 30 days to pay. When is revenue recognized?', options: ['When cash is received', 'When the project is completed', 'When the invoice is sent', '30 days after completion'], answer: 1, explain: 'Revenue recognized when the PO is satisfied (project complete), not when cash is collected.' },
+            { text: 'A gift card for $200 is sold. The customer has not yet redeemed it. Revenue recognized?', options: ['$200 at sale', '$0 until redeemed', '$100 at sale', '$200 at year-end'], answer: 1, explain: 'Gift cards create Unearned Revenue. Revenue recognized only when the card is redeemed (PO satisfied).' },
+            { text: 'An airline sells a round-trip ticket for $600. The outbound flight is completed but the return is next month. Revenue recognized so far?', options: ['$600', '$300', '$0', '$150'], answer: 1, explain: '$300 \u2014 one of two performance obligations is satisfied. The other half is still Unearned Revenue.' },
+            { text: 'A law firm bills a client $10,000 for services performed this month. Payment is due in 60 days. Revenue recognized?', options: ['$0 until paid', '$10,000 now', '$5,000 now', '$10,000 in 60 days'], answer: 1, explain: '$10,000. Services are performed \u2192 PO satisfied \u2192 recognize revenue. Dr A/R, Cr Service Revenue.' },
+            { text: 'A construction company has a $2M contract satisfied over time. Total estimated costs are $1.5M. Costs incurred to date: $750,000. Revenue to recognize?', options: ['$2,000,000', '$1,000,000', '$750,000', '$500,000'], answer: 1, explain: '50% complete ($750K/$1.5M). Revenue = 50% \u00d7 $2M = $1,000,000.' }
         ];
-        var qObj = randChoice(questions);
-        var shuffledIndices = shuffle([0, 1, 2, 3]);
-        var shuffledChoices = shuffledIndices.map(function(i) { return qObj.choices[i]; });
-        var correctIdx = shuffledIndices.indexOf(qObj.answer);
-
-        var html = '<p class="text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">Revenue Recognition</p>' +
-            '<h3 class="text-lg font-bold mb-4">' + qObj.q + '</h3>' +
-            '<div class="space-y-2">' +
-            shuffledChoices.map(function(c, i) {
-                return '<button onclick="checkMC(' + i + ', ' + correctIdx + ')" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">' +
-                    '<span class="font-semibold text-slate-400 mr-2">' + String.fromCharCode(65 + i) + '.</span> ' + c +
-                    '</button>';
-            }).join('') +
-            '</div>';
-
-        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
-        document.getElementById('question-area').innerHTML = html;
+        const s = pick(scenarios);
+        return { question: s.text, type: 'mc', options: s.options, answer: s.answer, explanation: s.explain };
     }
 
-    // --- Type 1: Bundled Sale Allocation ---
+    // --- Q2: Bundled Allocation (parametric) ---
     function genBundledAllocation() {
-        var totalPrice = randInt(5, 20) * 10000;
-        var fv1 = randInt(3, 12) * 10000;
-        var fv2 = randInt(1, 5) * 10000;
-        var fv3 = randInt(1, 4) * 10000;
-        var totalFV = fv1 + fv2 + fv3;
-        var names = ['Product', 'Training', 'Support'];
-        var askIdx = randInt(0, 2);
-        var fvs = [fv1, fv2, fv3];
-        var pct = fvs[askIdx] / totalFV;
-        var allocation = Math.round(pct * totalPrice);
-
-        var html = '<p class="text-xs text-purple-400 uppercase tracking-wider mb-2 font-semibold">Bundled Sale Allocation</p>' +
-            '<h3 class="text-lg font-bold mb-4">Compute the revenue allocation for ' + names[askIdx] + '</h3>' +
-            '<div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm">' +
-            '<p class="text-slate-300 mb-2">A company sells a bundle for <span class="text-white font-semibold">' + fmt(totalPrice) + '</span>. The standalone fair values are:</p>' +
-            '<table class="w-full mt-2"><tr class="border-b border-slate-700"><td class="py-1 text-sky-400">' + names[0] + '</td><td class="text-right">' + fmt(fv1) + '</td></tr>' +
-            '<tr class="border-b border-slate-700"><td class="py-1 text-amber-400">' + names[1] + '</td><td class="text-right">' + fmt(fv2) + '</td></tr>' +
-            '<tr class="border-b border-slate-700"><td class="py-1 text-emerald-400">' + names[2] + '</td><td class="text-right">' + fmt(fv3) + '</td></tr>' +
-            '<tr class="border-t-2 border-slate-500 font-bold"><td class="py-1">Total FV</td><td class="text-right">' + fmt(totalFV) + '</td></tr></table>' +
-            '</div>' +
-            '<div class="flex items-center gap-3">' +
-            '<span class="text-slate-400">Allocation for ' + names[askIdx] + ': $</span>' +
-            '<input type="number" id="calc-answer" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="Enter amount">' +
-            '<button onclick="checkCalcAnswer()" class="bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>' +
-            '</div>';
-
-        var explanation = names[askIdx] + ' % of total FV = ' + fmt(fvs[askIdx]) + ' / ' + fmt(totalFV) + ' = ' + (pct * 100).toFixed(1) + '%\n' +
-            'Allocation = ' + (pct * 100).toFixed(1) + '% x ' + fmt(totalPrice) + ' = ' + fmt(allocation);
-
-        currentQuestion = { type: 'calc', answer: allocation, explanation: explanation };
-        document.getElementById('question-area').innerHTML = html;
+        const totalPrice = rand(5, 25) * 10000;
+        const names = pick([
+            ['Software License', 'Training', 'Technical Support'],
+            ['Product', 'Installation', 'Warranty'],
+            ['Hardware', 'Setup Services', 'Maintenance Contract'],
+            ['Subscription', 'Onboarding', 'Premium Support']
+        ]);
+        const fv1 = rand(3, 12) * 10000;
+        const fv2 = rand(1, 5) * 10000;
+        const fv3 = rand(1, 4) * 10000;
+        const totalFV = fv1 + fv2 + fv3;
+        const fvs = [fv1, fv2, fv3];
+        const askIdx = rand(0, 2);
+        const pct = fvs[askIdx] / totalFV;
+        const allocation = Math.round(pct * totalPrice);
+        return {
+            question: 'A company sells a bundle for $' + fmt(totalPrice) + '. Standalone fair values:<br>' +
+                names[0] + ': $' + fmt(fv1) + '<br>' + names[1] + ': $' + fmt(fv2) + '<br>' + names[2] + ': $' + fmt(fv3) +
+                '<br>Total FV: $' + fmt(totalFV) + '<br><br>What is the allocated transaction price for <strong>' + names[askIdx] + '</strong>?',
+            type: 'number', answer: allocation,
+            explanation: names[askIdx] + ' share = $' + fmt(fvs[askIdx]) + ' \u00f7 $' + fmt(totalFV) + ' = ' + (pct * 100).toFixed(1) + '%. Allocation = ' + (pct * 100).toFixed(1) + '% \u00d7 $' + fmt(totalPrice) + ' = $' + fmt(allocation)
+        };
     }
 
-    // --- Type 2: Bad Debt Journal Entry ---
-    function genBadDebtJE() {
-        var questions = [
-            {
-                q: 'A company estimates bad debt expense at year end to be $15,000 using the allowance method. What is the adjusting journal entry?',
-                choices: [
-                    'Dr Bad Debt Expense 15,000 / Cr Allowance for Bad Debt 15,000',
-                    'Dr Bad Debt Expense 15,000 / Cr Accounts Receivable 15,000',
-                    'Dr Allowance for Bad Debt 15,000 / Cr Bad Debt Expense 15,000',
-                    'Dr Accounts Receivable 15,000 / Cr Bad Debt Expense 15,000'
-                ],
-                answer: 0,
-                explain: 'Dr Bad Debt Expense / Cr Allowance for Bad Debt. The expense hits the income statement, and the allowance (contra-asset) increases, reducing Net A/R on the balance sheet.'
-            },
-            {
-                q: 'Under the allowance method, a specific $8,000 account is deemed uncollectible and written off. What is the journal entry?',
-                choices: [
-                    'Dr Bad Debt Expense 8,000 / Cr Accounts Receivable 8,000',
-                    'Dr Allowance for Bad Debt 8,000 / Cr Accounts Receivable 8,000',
-                    'Dr Accounts Receivable 8,000 / Cr Allowance for Bad Debt 8,000',
-                    'Dr Bad Debt Expense 8,000 / Cr Allowance for Bad Debt 8,000'
-                ],
-                answer: 1,
-                explain: 'Dr Allowance for Bad Debt / Cr Accounts Receivable. Under the allowance method, the write-off does NOT affect the income statement. It reduces both the allowance and gross A/R by the same amount, leaving Net A/R unchanged.'
-            },
-            {
-                q: 'Under the specific write-off method, a $5,000 account is deemed uncollectible. What is the journal entry?',
-                choices: [
-                    'Dr Bad Debt Expense 5,000 / Cr Accounts Receivable 5,000',
-                    'Dr Allowance for Bad Debt 5,000 / Cr Accounts Receivable 5,000',
-                    'Dr Accounts Receivable 5,000 / Cr Bad Debt Expense 5,000',
-                    'Dr Bad Debt Expense 5,000 / Cr Cash 5,000'
-                ],
-                answer: 0,
-                explain: 'Dr Bad Debt Expense / Cr Accounts Receivable. Under the specific write-off method, there is no allowance account. The expense is recorded directly when the account is deemed uncollectible.'
-            },
-            {
-                q: 'Using the aging method, a company determines the Allowance for Bad Debt should have an ending balance of $12,000. The current balance before adjustment is $4,000 (credit). What is the adjusting entry?',
-                choices: [
-                    'Dr Bad Debt Expense 12,000 / Cr Allowance for Bad Debt 12,000',
-                    'Dr Bad Debt Expense 8,000 / Cr Allowance for Bad Debt 8,000',
-                    'Dr Bad Debt Expense 4,000 / Cr Allowance for Bad Debt 4,000',
-                    'Dr Bad Debt Expense 16,000 / Cr Allowance for Bad Debt 16,000'
-                ],
-                answer: 1,
-                explain: 'Dr Bad Debt Expense 8,000 / Cr Allowance 8,000. Under the aging method, the expense = desired ending balance minus current balance = $12,000 - $4,000 = $8,000.'
-            }
-        ];
-        var qObj = randChoice(questions);
-        var shuffledIndices = shuffle([0, 1, 2, 3]);
-        var shuffledChoices = shuffledIndices.map(function(i) { return qObj.choices[i]; });
-        var correctIdx = shuffledIndices.indexOf(qObj.answer);
-
-        var html = '<p class="text-xs text-rose-400 uppercase tracking-wider mb-2 font-semibold">Bad Debt Journal Entry</p>' +
-            '<h3 class="text-lg font-bold mb-4">' + qObj.q + '</h3>' +
-            '<div class="space-y-2">' +
-            shuffledChoices.map(function(c, i) {
-                return '<button onclick="checkMC(' + i + ', ' + correctIdx + ')" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">' +
-                    '<span class="font-semibold text-slate-400 mr-2">' + String.fromCharCode(65 + i) + '.</span> ' + c +
-                    '</button>';
-            }).join('') +
-            '</div>';
-
-        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
-        document.getElementById('question-area').innerHTML = html;
+    // --- Q3: Bad Debt Expense (parametric, % of sales or aging) ---
+    function genBadDebtExpense() {
+        const method = pick(['sales', 'aging']);
+        if (method === 'sales') {
+            const creditSales = rand(200, 2000) * 1000;
+            const pctRate = pick([1, 1.5, 2, 2.5, 3, 4, 5]);
+            const bde = Math.round(creditSales * pctRate / 100);
+            return {
+                question: 'A company uses the <strong>percentage-of-sales</strong> method. Credit sales = $' + fmt(creditSales) + '. Estimated bad debt rate = ' + pctRate + '% of credit sales.<br><br>What is Bad Debt Expense?',
+                type: 'number', answer: bde,
+                explanation: 'Bad Debt Expense = ' + pctRate + '% \u00d7 $' + fmt(creditSales) + ' = $' + fmt(bde)
+            };
+        } else {
+            const desiredEnd = rand(5, 60) * 1000;
+            const hasDebit = pick([true, false]);
+            const currentBal = hasDebit ? -rand(1, 10) * 1000 : rand(1, 15) * 1000;
+            const bde = desiredEnd - currentBal;
+            const balLabel = currentBal >= 0 ? '$' + fmt(currentBal) + ' credit' : '$' + fmt(Math.abs(currentBal)) + ' debit';
+            return {
+                question: 'Using the <strong>aging method</strong>, a company determines the Allowance should end at $' + fmt(desiredEnd) + '. Current Allowance balance (before adjustment): ' + balLabel + '.<br><br>What is the required Bad Debt Expense?',
+                type: 'number', answer: bde,
+                explanation: 'Expense = Desired ending ($' + fmt(desiredEnd) + ') \u2212 Current balance (' + (currentBal >= 0 ? '$' + fmt(currentBal) : '\u2212$' + fmt(Math.abs(currentBal))) + ') = $' + fmt(bde)
+            };
+        }
     }
 
-    // --- Type 3: Net A/R Calculation ---
-    function genNetARCalc() {
-        var grossAR = randInt(100, 800) * 1000;
-        var allowance = randInt(5, 50) * 1000;
-        if (allowance >= grossAR) allowance = Math.round(grossAR * 0.05);
-        var netAR = grossAR - allowance;
-
-        var askFor = randChoice(['Net A/R', 'Allowance', 'Gross A/R']);
-        var given, answer, explain;
-
+    // --- Q4: Net A/R (parametric) ---
+    function genNetAR() {
+        const grossAR = rand(100, 800) * 1000;
+        const allowance = rand(5, Math.min(50, Math.floor(grossAR / 1000) - 5)) * 1000;
+        const netAR = grossAR - allowance;
+        const askFor = pick(['Net A/R', 'Allowance', 'Gross A/R']);
+        let answer, explain;
         if (askFor === 'Net A/R') {
-            given = 'Gross Accounts Receivable = ' + fmt(grossAR) + ', Allowance for Bad Debt = ' + fmt(allowance);
             answer = netAR;
-            explain = 'Net A/R = Gross A/R - Allowance = ' + fmt(grossAR) + ' - ' + fmt(allowance) + ' = ' + fmt(netAR);
+            explain = 'Net A/R = $' + fmt(grossAR) + ' \u2212 $' + fmt(allowance) + ' = $' + fmt(netAR);
+            return { question: 'Gross A/R = $' + fmt(grossAR) + ', Allowance = $' + fmt(allowance) + '.<br><br>What is Net A/R?', type: 'number', answer: answer, explanation: explain };
         } else if (askFor === 'Allowance') {
-            given = 'Gross Accounts Receivable = ' + fmt(grossAR) + ', Net A/R = ' + fmt(netAR);
             answer = allowance;
-            explain = 'Allowance = Gross A/R - Net A/R = ' + fmt(grossAR) + ' - ' + fmt(netAR) + ' = ' + fmt(allowance);
+            explain = 'Allowance = Gross A/R \u2212 Net A/R = $' + fmt(grossAR) + ' \u2212 $' + fmt(netAR) + ' = $' + fmt(allowance);
+            return { question: 'Gross A/R = $' + fmt(grossAR) + ', Net A/R = $' + fmt(netAR) + '.<br><br>What is the Allowance for Bad Debt?', type: 'number', answer: answer, explanation: explain };
         } else {
-            given = 'Net A/R = ' + fmt(netAR) + ', Allowance for Bad Debt = ' + fmt(allowance);
             answer = grossAR;
-            explain = 'Gross A/R = Net A/R + Allowance = ' + fmt(netAR) + ' + ' + fmt(allowance) + ' = ' + fmt(grossAR);
+            explain = 'Gross A/R = Net A/R + Allowance = $' + fmt(netAR) + ' + $' + fmt(allowance) + ' = $' + fmt(grossAR);
+            return { question: 'Net A/R = $' + fmt(netAR) + ', Allowance = $' + fmt(allowance) + '.<br><br>What is Gross A/R?', type: 'number', answer: answer, explanation: explain };
         }
-
-        var html = '<p class="text-xs text-sky-400 uppercase tracking-wider mb-2 font-semibold">Net A/R Calculation</p>' +
-            '<h3 class="text-lg font-bold mb-4">Calculate the ' + askFor + '</h3>' +
-            '<div class="bg-slate-900/60 rounded-lg p-4 mb-4">' +
-            '<p class="text-slate-300 mb-2">Given: ' + given + '</p>' +
-            '<p class="text-slate-400 text-sm">Recall: Net A/R = Gross A/R &minus; Allowance for Bad Debt</p>' +
-            '</div>' +
-            '<div class="flex items-center gap-3">' +
-            '<span class="text-slate-400">Your answer: $</span>' +
-            '<input type="number" id="calc-answer" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="Enter amount">' +
-            '<button onclick="checkCalcAnswer()" class="bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>' +
-            '</div>';
-
-        currentQuestion = { type: 'calc', answer: answer, explanation: explain };
-        document.getElementById('question-area').innerHTML = html;
     }
 
-    // --- Type 4: A/R Turnover & Collection Period ---
+    // --- Q5: A/R Turnover & DSO (parametric) ---
     function genARTurnover() {
-        var creditSales = randInt(500, 5000) * 1000;
-        var begAR = randInt(50, 500) * 1000;
-        var endAR = randInt(50, 500) * 1000;
-        var avgAR = (begAR + endAR) / 2;
-        var art = creditSales / avgAR;
-        var acp = 365 / art;
-
-        var askFor = randChoice(['A/R Turnover', 'Average Collection Period']);
-        var answer, explain;
-
+        const creditSales = rand(500, 5000) * 1000;
+        const begAR = rand(50, 500) * 1000;
+        const endAR = rand(50, 500) * 1000;
+        const avgAR = (begAR + endAR) / 2;
+        const art = creditSales / avgAR;
+        const dso = 365 / art;
+        const askFor = pick(['A/R Turnover', 'Days Sales Outstanding']);
         if (askFor === 'A/R Turnover') {
-            answer = Math.round(art * 100) / 100;
-            explain = 'Average A/R = (' + fmt(begAR) + ' + ' + fmt(endAR) + ') / 2 = ' + fmt(avgAR) + '\n' +
-                'A/R Turnover = ' + fmt(creditSales) + ' / ' + fmt(avgAR) + ' = ' + answer.toFixed(2) + 'x';
+            const ans = Math.round(art * 100) / 100;
+            return { question: 'Net Credit Sales = $' + fmt(creditSales) + ', Beginning A/R = $' + fmt(begAR) + ', Ending A/R = $' + fmt(endAR) + '.<br><br>What is the A/R Turnover ratio? (Round to 2 decimals)', type: 'number', answer: ans, explanation: 'Avg A/R = ($' + fmt(begAR) + ' + $' + fmt(endAR) + ') / 2 = $' + fmt(avgAR) + '. Turnover = $' + fmt(creditSales) + ' \u00f7 $' + fmt(avgAR) + ' = ' + ans.toFixed(2) + 'x' };
         } else {
-            answer = Math.round(acp * 10) / 10;
-            explain = 'Average A/R = (' + fmt(begAR) + ' + ' + fmt(endAR) + ') / 2 = ' + fmt(avgAR) + '\n' +
-                'A/R Turnover = ' + fmt(creditSales) + ' / ' + fmt(avgAR) + ' = ' + art.toFixed(2) + 'x\n' +
-                'Avg Collection Period = 365 / ' + art.toFixed(2) + ' = ' + answer.toFixed(1) + ' days';
+            const ans = Math.round(dso * 10) / 10;
+            return { question: 'Net Credit Sales = $' + fmt(creditSales) + ', Beginning A/R = $' + fmt(begAR) + ', Ending A/R = $' + fmt(endAR) + '.<br><br>What is the Days Sales Outstanding (DSO)? (Round to 1 decimal)', type: 'number', answer: ans, explanation: 'Avg A/R = $' + fmt(avgAR) + '. Turnover = ' + art.toFixed(2) + 'x. DSO = 365 \u00f7 ' + art.toFixed(2) + ' = ' + ans.toFixed(1) + ' days' };
         }
-
-        var html = '<p class="text-xs text-emerald-400 uppercase tracking-wider mb-2 font-semibold">A/R Ratio Computation</p>' +
-            '<h3 class="text-lg font-bold mb-4">Compute the ' + askFor + '</h3>' +
-            '<div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm">' +
-            '<p class="text-slate-300">Net Credit Sales: <span class="text-white font-semibold">' + fmt(creditSales) + '</span></p>' +
-            '<p class="text-slate-300">Beginning A/R: <span class="text-white font-semibold">' + fmt(begAR) + '</span></p>' +
-            '<p class="text-slate-300">Ending A/R: <span class="text-white font-semibold">' + fmt(endAR) + '</span></p>' +
-            '</div>' +
-            '<div class="flex items-center gap-3">' +
-            '<span class="text-slate-400">Your answer: </span>' +
-            '<input type="number" id="calc-answer" step="0.01" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="' + (askFor === 'A/R Turnover' ? 'e.g. 8.50' : 'e.g. 42.9') + '">' +
-            '<span class="text-slate-500 text-sm">' + (askFor === 'A/R Turnover' ? 'times' : 'days') + '</span>' +
-            '<button onclick="checkCalcAnswer()" class="bg-amber-600 hover:bg-amber-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>' +
-            '</div>';
-
-        currentQuestion = { type: 'calc', answer: answer, explanation: explain };
-        document.getElementById('question-area').innerHTML = html;
     }
 
-    // --- Type 5: Write-Off Impact ---
-    function genWriteOffImpact() {
-        var questions = [
-            {
-                q: 'Under the allowance method, when a specific account is written off, what happens to Net Accounts Receivable?',
-                choices: ['Net A/R decreases', 'Net A/R increases', 'Net A/R stays the same', 'It depends on the amount written off'],
-                answer: 2,
-                explain: 'Net A/R stays the same. The write-off reduces Gross A/R and the Allowance by equal amounts. Since Net A/R = Gross A/R - Allowance, the net amount is unchanged.'
-            },
-            {
-                q: 'Under the allowance method, when a specific account is written off, what happens to total assets?',
-                choices: ['Total assets decrease', 'Total assets increase', 'Total assets stay the same', 'Total assets decrease by half the write-off amount'],
-                answer: 2,
-                explain: 'Total assets stay the same. Gross A/R decreases but so does the contra-asset (Allowance), so Net A/R (the net asset) is unchanged. No other assets are affected.'
-            },
-            {
-                q: 'Under the allowance method, when a specific account is written off, what is the impact on the income statement?',
-                choices: ['Bad Debt Expense increases', 'Sales Revenue decreases', 'No income statement impact', 'Net Income decreases'],
-                answer: 2,
-                explain: 'No income statement impact. The expense was already recorded when the allowance was estimated. The write-off is a balance sheet event only: Dr Allowance / Cr A/R.'
-            },
-            {
-                q: 'Under the SPECIFIC WRITE-OFF method, when an account is written off, what happens to Net A/R?',
-                choices: ['Net A/R decreases', 'Net A/R stays the same', 'Net A/R increases', 'There is no Net A/R concept under this method'],
-                answer: 0,
-                explain: 'Net A/R decreases. Under the specific write-off method, there is no allowance account. The full A/R balance is removed, directly reducing the asset.'
-            },
-            {
-                q: 'A company has Gross A/R of $500,000 and an Allowance of $20,000. It writes off a $5,000 account under the allowance method. What is Net A/R after the write-off?',
-                choices: ['$480,000', '$475,000', '$495,000', '$485,000'],
-                answer: 0,
-                explain: 'Net A/R before = $500,000 - $20,000 = $480,000. After write-off: Gross A/R = $495,000, Allowance = $15,000. Net A/R = $495,000 - $15,000 = $480,000. Unchanged!'
-            },
-            {
-                q: 'Recording the year-end bad debt estimate (adjusting entry) under the allowance method has what effect?',
-                choices: ['Increases assets and increases expenses', 'Decreases net assets and increases expenses', 'No effect on total assets', 'Decreases liabilities and increases expenses'],
-                answer: 1,
-                explain: 'The adjusting entry (Dr Bad Debt Expense / Cr Allowance) increases the contra-asset (reducing net assets) and records an expense (reducing SE via net income). Both sides of A = L + SE decrease.'
-            }
+    // --- Q6: Write-Off Effect (MC) ---
+    function genWriteOffEffect() {
+        const scenarios = [
+            { text: 'Under the <strong>allowance method</strong>, a $12,000 account is written off. What happens to Net A/R?', options: ['Net A/R decreases by $12,000', 'Net A/R increases by $12,000', 'Net A/R stays the same', 'Net A/R decreases by $6,000'], answer: 2, explain: 'Net A/R is unchanged. Both Gross A/R and the Allowance decrease by $12,000, so the difference is the same.' },
+            { text: 'Under the allowance method, writing off an uncollectible account affects which statement?', options: ['Income statement only', 'Balance sheet only', 'Both statements', 'Neither statement'], answer: 1, explain: 'Balance sheet only. Gross A/R and Allowance both decrease. No expense is recorded \u2014 it was already estimated.' },
+            { text: 'Under the allowance method, a write-off affects total assets by:', options: ['Decreasing total assets', 'Increasing total assets', 'No change to total assets', 'Depends on the amount'], answer: 2, explain: 'No change. Gross A/R (asset) decreases, but so does the contra-asset (Allowance). Net A/R is unchanged, so total assets are unchanged.' },
+            { text: 'Under the <strong>specific write-off method</strong>, writing off a $5,000 account:', options: ['Decreases net income by $5,000', 'Has no income statement effect', 'Increases net income by $5,000', 'Decreases net income by $2,500'], answer: 0, explain: 'Decreases net income. Dr Bad Debt Expense $5,000 / Cr A/R $5,000. The expense directly reduces net income.' },
+            { text: 'Recording the year-end bad debt adjusting entry (Dr BDE / Cr Allowance) does what to total assets?', options: ['Increases total assets', 'Decreases total assets', 'No change', 'Depends on beginning balance'], answer: 1, explain: 'Decreases total assets. The Allowance (contra-asset) increases, reducing Net A/R and therefore total assets.' },
+            { text: 'A company has Gross A/R of $300,000 and Allowance of $10,000. After a $4,000 write-off, Net A/R equals:', options: ['$286,000', '$290,000', '$296,000', '$300,000'], answer: 1, explain: 'Before: Net A/R = $300,000 \u2212 $10,000 = $290,000. After: ($300,000 \u2212 $4,000) \u2212 ($10,000 \u2212 $4,000) = $296,000 \u2212 $6,000 = $290,000. Unchanged!' },
+            { text: 'Under the allowance method, a write-off affects stockholders\u2019 equity by:', options: ['Decreasing SE', 'Increasing SE', 'No change to SE', 'Depends on the method'], answer: 2, explain: 'No change. No expense is recorded, so net income is unaffected, and SE is unchanged.' },
+            { text: 'Which method violates the matching principle by recording bad debt expense only when an account is deemed uncollectible?', options: ['Allowance method', 'Specific write-off method', 'Aging method', 'Percentage-of-sales method'], answer: 1, explain: 'The specific write-off method records expense when the default occurs, which may be in a different period than the sale \u2014 violating the matching principle.' }
         ];
-        var qObj = randChoice(questions);
-        var shuffledIndices = shuffle([0, 1, 2, 3]);
-        var shuffledChoices = shuffledIndices.map(function(i) { return qObj.choices[i]; });
-        var correctIdx = shuffledIndices.indexOf(qObj.answer);
-
-        var html = '<p class="text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">Write-Off Impact</p>' +
-            '<h3 class="text-lg font-bold mb-4">' + qObj.q + '</h3>' +
-            '<div class="space-y-2">' +
-            shuffledChoices.map(function(c, i) {
-                return '<button onclick="checkMC(' + i + ', ' + correctIdx + ')" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">' +
-                    '<span class="font-semibold text-slate-400 mr-2">' + String.fromCharCode(65 + i) + '.</span> ' + c +
-                    '</button>';
-            }).join('') +
-            '</div>';
-
-        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
-        document.getElementById('question-area').innerHTML = html;
+        const s = pick(scenarios);
+        return { question: s.text, type: 'mc', options: s.options, answer: s.answer, explanation: s.explain };
     }
 
-    // --- Type 6: Journal Entry Practice ---
-    function genJournalEntry() {
-        var scenario = randInt(0, 5);
-        var prompt, correctEntries, explanation;
+    // --- Q7: Allowance Balance (parametric) ---
+    function genAllowanceBalance() {
+        const begBal = rand(3, 30) * 1000;
+        const bde = rand(5, 40) * 1000;
+        const writeoffs = rand(2, Math.min(25, Math.floor((begBal + bde) / 1000))) * 1000;
+        const endBal = begBal + bde - writeoffs;
+        return {
+            question: 'Beginning Allowance = $' + fmt(begBal) + '. Bad Debt Expense recorded = $' + fmt(bde) + '. Write-offs during the year = $' + fmt(writeoffs) + '.<br><br>What is the ending Allowance balance?',
+            type: 'number', answer: endBal,
+            explanation: 'Ending Allowance = $' + fmt(begBal) + ' + $' + fmt(bde) + ' \u2212 $' + fmt(writeoffs) + ' = $' + fmt(endBal)
+        };
+    }
 
-        if (scenario === 0) {
-            // Credit sale
-            var amt = randInt(10, 100) * 1000;
-            prompt = 'A company sells goods on credit for <span class="text-white font-semibold">' + fmt(amt) + '</span>.';
-            correctEntries = [
-                { account: 'Accounts Receivable', debit: amt, credit: 0 },
-                { account: 'Sales Revenue', debit: 0, credit: amt }
-            ];
-            explanation = 'Dr Accounts Receivable ' + fmt(amt) + ' (asset increases), Cr Sales Revenue ' + fmt(amt) + ' (revenue increases SE via RE).';
-        } else if (scenario === 1) {
-            // Collect from customer
-            var amt = randInt(10, 100) * 1000;
-            prompt = 'A company collects <span class="text-white font-semibold">' + fmt(amt) + '</span> from a customer who previously bought goods on credit.';
-            correctEntries = [
-                { account: 'Cash', debit: amt, credit: 0 },
-                { account: 'Accounts Receivable', debit: 0, credit: amt }
-            ];
-            explanation = 'Dr Cash ' + fmt(amt) + ' (asset increases), Cr Accounts Receivable ' + fmt(amt) + ' (asset decreases). No income statement effect.';
-        } else if (scenario === 2) {
-            // Year-end bad debt adjusting entry (allowance method)
-            var salesAmt = randInt(500, 3000) * 1000;
-            var pct = randChoice([1, 2, 3, 4, 5]);
-            var bde = Math.round(salesAmt * pct / 100);
-            prompt = 'At year end, a company using the allowance method estimates bad debts at <span class="text-white font-semibold">' + pct + '%</span> of credit sales of <span class="text-white font-semibold">' + fmt(salesAmt) + '</span>. Record the adjusting entry.';
-            correctEntries = [
-                { account: 'Bad Debt Expense', debit: bde, credit: 0 },
-                { account: 'Allowance for Bad Debt', debit: 0, credit: bde }
-            ];
-            explanation = 'Bad Debt Expense = ' + pct + '% x ' + fmt(salesAmt) + ' = ' + fmt(bde) + '.\nDr Bad Debt Expense ' + fmt(bde) + ', Cr Allowance for Bad Debt ' + fmt(bde) + '.';
-        } else if (scenario === 3) {
-            // Write-off under allowance method
-            var amt = randInt(2, 30) * 1000;
-            prompt = 'Under the allowance method, a specific customer account of <span class="text-white font-semibold">' + fmt(amt) + '</span> is deemed uncollectible. Record the write-off.';
-            correctEntries = [
-                { account: 'Allowance for Bad Debt', debit: amt, credit: 0 },
-                { account: 'Accounts Receivable', debit: 0, credit: amt }
-            ];
-            explanation = 'Dr Allowance for Bad Debt ' + fmt(amt) + ', Cr Accounts Receivable ' + fmt(amt) + '. No income statement effect under the allowance method.';
-        } else if (scenario === 4) {
-            // Receive advance payment (unearned revenue)
-            var amt = randInt(10, 80) * 1000;
-            prompt = 'A company receives <span class="text-white font-semibold">' + fmt(amt) + '</span> in advance for services to be performed over the next 12 months. Record the receipt.';
-            correctEntries = [
-                { account: 'Cash', debit: amt, credit: 0 },
-                { account: 'Unearned Revenue', debit: 0, credit: amt }
-            ];
-            explanation = 'Dr Cash ' + fmt(amt) + ' (asset increases), Cr Unearned Revenue ' + fmt(amt) + ' (liability increases). Revenue is NOT recognized yet because the service has not been provided.';
+    // --- Q8: Recovery (MC/numeric) ---
+    function genRecovery() {
+        const amt = rand(1, 15) * 1000;
+        const useNumeric = pick([true, false]);
+        if (useNumeric) {
+            const begAllow = rand(5, 30) * 1000;
+            const endAllow = begAllow + amt;
+            return {
+                question: 'A previously written-off account of $' + fmt(amt) + ' is recovered (both entries recorded). If the Allowance was $' + fmt(begAllow) + ' before the recovery, what is the new Allowance balance?',
+                type: 'number', answer: endAllow,
+                explanation: 'Recovery re-establishes the receivable: Dr A/R / Cr Allowance $' + fmt(amt) + ', then Dr Cash / Cr A/R $' + fmt(amt) + '. Allowance increases by $' + fmt(amt) + ' \u2192 $' + fmt(endAllow)
+            };
         } else {
-            // Recognize previously unearned revenue
-            var totalAmt = randInt(10, 60) * 1000;
-            var months = randChoice([3, 4, 6]);
-            var totalMonths = 12;
-            var earned = Math.round(totalAmt * months / totalMonths);
-            prompt = 'A company received <span class="text-white font-semibold">' + fmt(totalAmt) + '</span> in advance for a 12-month service contract. After <span class="text-white font-semibold">' + months + ' months</span>, record the revenue earned.';
-            correctEntries = [
-                { account: 'Unearned Revenue', debit: earned, credit: 0 },
-                { account: 'Service Revenue', debit: 0, credit: earned }
+            const scenarios = [
+                { text: 'When recovering a previously written-off account under the allowance method, how many journal entries are needed?', options: ['One', 'Two', 'Three', 'None'], answer: 1, explain: 'Two entries: (1) Dr A/R / Cr Allowance to reinstate, (2) Dr Cash / Cr A/R to record collection.' },
+                { text: 'The first entry to record a recovery (reinstating the receivable) is:', options: ['Dr Cash / Cr A/R', 'Dr A/R / Cr Allowance for Bad Debt', 'Dr Bad Debt Expense / Cr A/R', 'Dr Allowance / Cr Cash'], answer: 1, explain: 'Dr A/R / Cr Allowance reinstates the receivable that was previously written off.' },
+                { text: 'After recording both recovery entries, what is the net effect on total assets?', options: ['Increase (Cash goes up)', 'Decrease', 'No change', 'Depends on the amount'], answer: 0, explain: 'Cash increases (asset up). A/R is net zero (reinstated then collected). Allowance increases (reduces net A/R). Net effect: Cash up, Net A/R down by Allowance increase \u2014 but total assets increase because Cash increased.' }
             ];
-            explanation = 'Revenue earned = ' + fmt(totalAmt) + ' x ' + months + '/12 = ' + fmt(earned) + '.\nDr Unearned Revenue ' + fmt(earned) + ' (liability decreases), Cr Service Revenue ' + fmt(earned) + ' (revenue increases SE).';
+            const s = pick(scenarios);
+            return { question: s.text, type: 'mc', options: s.options, answer: s.answer, explanation: s.explain };
         }
-
-        var numLines = Math.max(correctEntries.length, 2);
-        var acctOptions = JE_ACCOUNTS.map(function(a) { return '<option value="' + a + '">' + a + '</option>'; }).join('');
-
-        var linesHtml = '';
-        for (var i = 0; i < numLines; i++) {
-            linesHtml += '<div class="je-line flex items-center gap-2 mb-2" data-line="' + i + '">' +
-                '<select class="je-account bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm flex-1 min-w-0" style="max-width: 260px;">' +
-                '<option value="">-- Select Account --</option>' +
-                acctOptions +
-                '</select>' +
-                '<input type="number" class="je-debit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Debit $" min="0">' +
-                '<input type="number" class="je-credit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Credit $" min="0">' +
-                '</div>';
-        }
-
-        var html = '<p class="text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">Journal Entry</p>' +
-            '<h3 class="text-lg font-bold mb-3">Record the journal entry</h3>' +
-            '<div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm text-slate-300">' + prompt + '</div>' +
-            '<div class="mb-3">' +
-            '<div class="flex items-center gap-2 mb-2 text-xs text-slate-400 font-semibold uppercase tracking-wider">' +
-            '<div class="flex-1" style="max-width: 260px;">Account</div>' +
-            '<div class="w-28 text-center">Debit ($)</div>' +
-            '<div class="w-28 text-center">Credit ($)</div>' +
-            '</div>' +
-            '<div id="je-lines">' + linesHtml + '</div>' +
-            '<button onclick="addJELine()" class="text-sm text-amber-400 hover:text-amber-300 transition-colors mt-1">+ Add Line</button>' +
-            '</div>' +
-            '<button onclick="checkJournalEntry()" class="bg-amber-600 hover:bg-amber-700 px-6 py-2 rounded-lg font-semibold transition-colors">Check Answer</button>';
-
-        currentQuestion = { type: 'je', correctEntries: correctEntries, explanation: explanation };
-        document.getElementById('question-area').innerHTML = html;
     }
 
-    window.addJELine = function() {
-        var container = document.getElementById('je-lines');
-        var idx = container.querySelectorAll('.je-line').length;
-        var acctOptions = JE_ACCOUNTS.map(function(a) { return '<option value="' + a + '">' + a + '</option>'; }).join('');
-        var lineHtml = '<div class="je-line flex items-center gap-2 mb-2" data-line="' + idx + '">' +
-            '<select class="je-account bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm flex-1 min-w-0" style="max-width: 260px;">' +
-            '<option value="">-- Select Account --</option>' +
-            acctOptions +
-            '</select>' +
-            '<input type="number" class="je-debit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Debit $" min="0">' +
-            '<input type="number" class="je-credit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Credit $" min="0">' +
-            '</div>';
-        container.insertAdjacentHTML('beforeend', lineHtml);
-    };
-
-    window.checkJournalEntry = function() {
-        if (!currentQuestion || currentQuestion.type !== 'je') return;
-        var lines = document.querySelectorAll('.je-line');
-        var userEntries = [];
-        lines.forEach(function(line) {
-            var account = line.querySelector('.je-account').value;
-            var debit = parseFloat(line.querySelector('.je-debit').value) || 0;
-            var credit = parseFloat(line.querySelector('.je-credit').value) || 0;
-            if (account && (debit > 0 || credit > 0)) {
-                userEntries.push({ account: account, debit: debit, credit: credit });
-            }
-        });
-
-        var correct = currentQuestion.correctEntries;
-        var totalDebits = userEntries.reduce(function(s, e) { return s + e.debit; }, 0);
-        var totalCredits = userEntries.reduce(function(s, e) { return s + e.credit; }, 0);
-
-        var allMatched = true;
-        var matchedIndices = {};
-
-        for (var ci = 0; ci < correct.length; ci++) {
-            var ce = correct[ci];
-            var found = false;
-            for (var ui = 0; ui < userEntries.length; ui++) {
-                if (matchedIndices[ui]) continue;
-                var ue = userEntries[ui];
-                var accountMatch = ue.account === ce.account || (ce.altAccount && ue.account === ce.altAccount);
-                var debitMatch = Math.abs(ue.debit - ce.debit) <= Math.max(5, ce.debit * 0.01);
-                var creditMatch = Math.abs(ue.credit - ce.credit) <= Math.max(5, ce.credit * 0.01);
-                if (accountMatch && debitMatch && creditMatch) {
-                    matchedIndices[ui] = true;
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) { allMatched = false; break; }
-        }
-
-        var matchedCount = Object.keys(matchedIndices).length;
-        var isCorrect = allMatched && userEntries.length === correct.length && Math.abs(totalDebits - totalCredits) < 1;
-
-        // Highlight lines
-        var lineIdx = 0;
-        lines.forEach(function(line) {
-            var account = line.querySelector('.je-account').value;
-            var debit = parseFloat(line.querySelector('.je-debit').value) || 0;
-            var credit = parseFloat(line.querySelector('.je-credit').value) || 0;
-            if (!account && debit === 0 && credit === 0) return;
-
-            if (matchedIndices[lineIdx]) {
-                line.classList.add('border', 'border-emerald-500', 'rounded-lg', 'bg-emerald-500/10', 'p-1');
-            } else {
-                line.classList.add('border', 'border-rose-500', 'rounded-lg', 'bg-rose-500/10', 'p-1');
-            }
-            lineIdx++;
-        });
-
-        // Build correct answer display
-        var correctDisplay = '<div class="mt-2 font-mono text-sm">';
-        for (var k = 0; k < correct.length; k++) {
-            var entry = correct[k];
-            var acctName = entry.altAccount ? entry.account + ' (or ' + entry.altAccount + ')' : entry.account;
-            if (entry.debit > 0) {
-                correctDisplay += '<p>Dr. ' + acctName + ' <span class="text-white">' + fmt(entry.debit) + '</span></p>';
-            } else {
-                correctDisplay += '<p class="pl-6">Cr. ' + acctName + ' <span class="text-white">' + fmt(entry.credit) + '</span></p>';
-            }
-        }
-        correctDisplay += '</div>';
-
-        score.total++;
-        if (isCorrect) { score.correct++; streak++; } else { streak = 0; }
-        updateScoreDisplay();
-        showFeedback(isCorrect, currentQuestion.explanation + '\n\nCorrect entry:' + correctDisplay);
-        currentQuestion = null;
-    };
-
-    // --- Calc Answer Checker ---
-    window.checkCalcAnswer = function() {
-        if (!currentQuestion) return;
-        var userAns = parseFloat(document.getElementById('calc-answer').value);
-        var tolerance = Math.max(5, Math.abs(currentQuestion.answer) * 0.02);
-        var correct = Math.abs(userAns - currentQuestion.answer) <= tolerance;
-        score.total++;
-        if (correct) { score.correct++; streak++; } else { streak = 0; }
-        updateScoreDisplay();
-        showFeedback(correct, currentQuestion.explanation);
-        currentQuestion = null;
-    };
-
-    // --- MC Checker ---
-    window.checkMC = function(selected, correct) {
-        if (!currentQuestion) return;
-        var btns = document.querySelectorAll('.mc-btn');
-        btns.forEach(function(btn, i) {
-            btn.disabled = true;
-            btn.classList.remove('hover:bg-slate-700/60');
-            if (i === correct) {
-                btn.classList.add('border-emerald-500', 'bg-emerald-500/20');
-                btn.classList.remove('border-slate-600');
-            }
-            if (i === selected && selected !== correct) {
-                btn.classList.add('border-rose-500', 'bg-rose-500/20');
-                btn.classList.remove('border-slate-600');
-            }
-        });
-        var isCorrect = selected === correct;
-        score.total++;
-        if (isCorrect) { score.correct++; streak++; } else { streak = 0; }
-        updateScoreDisplay();
-        showFeedback(isCorrect, currentQuestion.explain);
-        currentQuestion = null;
-    };
-
-    // --- Feedback ---
-    function showFeedback(correct, explanation) {
-        var el = document.getElementById('feedback-area');
-        el.classList.remove('hidden');
-        var colorClass = correct ? 'emerald' : 'rose';
-        el.innerHTML = '<div class="bg-' + colorClass + '-500/10 border border-' + colorClass + '-500/30 rounded-lg p-4">' +
-            '<p class="font-bold text-' + colorClass + '-400 mb-2">' + (correct ? 'Correct!' : 'Incorrect') + '</p>' +
-            '<p class="text-slate-300 text-sm whitespace-pre-line">' + explanation + '</p>' +
-            '</div>';
+    // --- Q9: Five-Step Model (MC, 8+ scenarios) ---
+    function genFiveStepModel() {
+        const scenarios = [
+            { text: 'What is Step 1 of the ASC 606 revenue recognition model?', options: ['Identify the contract with the customer', 'Determine the transaction price', 'Identify performance obligations', 'Recognize revenue'], answer: 0, explain: 'Step 1: Identify the contract \u2014 an agreement creating enforceable rights and obligations.' },
+            { text: 'What is Step 2 of ASC 606?', options: ['Determine the transaction price', 'Identify performance obligations in the contract', 'Allocate the transaction price', 'Identify the contract'], answer: 1, explain: 'Step 2: Identify each distinct promise to deliver a good or service.' },
+            { text: 'Step 3 of ASC 606 involves:', options: ['Recognizing revenue', 'Identifying performance obligations', 'Determining the transaction price', 'Allocating the price'], answer: 2, explain: 'Step 3: Determine the total amount the company expects to receive.' },
+            { text: 'In Step 4, the transaction price is allocated based on:', options: ['Historical cost', 'Relative standalone selling prices', 'Contract order of items', 'Management discretion'], answer: 1, explain: 'Step 4: Allocate based on each obligation\u2019s relative standalone selling price.' },
+            { text: 'Revenue is recognized in Step 5 when:', options: ['Cash is received', 'An invoice is sent', 'A performance obligation is satisfied', 'The contract is signed'], answer: 2, explain: 'Step 5: Revenue recognized when (or as) each performance obligation is satisfied \u2014 i.e., control transfers to the customer.' },
+            { text: 'A gym membership, magazine subscription, and consulting project all share what revenue recognition feature?', options: ['Revenue recognized at a single point in time', 'Revenue recognized over time as POs are satisfied', 'Revenue deferred until project completion', 'All revenue recognized upfront'], answer: 1, explain: 'All three involve performance obligations satisfied over time \u2014 revenue recognized proportionally as benefits are delivered.' },
+            { text: 'A "distinct" performance obligation under ASC 606 means:', options: ['It is the most expensive item', 'The customer can benefit from the good/service on its own or with readily available resources', 'It has a separate invoice', 'It is delivered first'], answer: 1, explain: 'A PO is distinct if the customer can benefit from it independently or with other readily available resources, and it is separately identifiable within the contract.' },
+            { text: 'Variable consideration (e.g., performance bonuses) under ASC 606 is:', options: ['Always excluded from the transaction price', 'Estimated and included to the extent it is probable of not reversing', 'Only included when received', 'Recorded as a separate contract'], answer: 1, explain: 'Variable consideration is estimated and included in the transaction price subject to the constraint \u2014 only to the extent a significant revenue reversal is not probable.' },
+            { text: 'Which of the following is NOT one of the five steps?', options: ['Identify the contract', 'Estimate the allowance for bad debts', 'Allocate the transaction price', 'Recognize revenue when POs are satisfied'], answer: 1, explain: 'Estimating the allowance for bad debts is a separate process related to A/R valuation, not part of the ASC 606 five-step model.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text, type: 'mc', options: s.options, answer: s.answer, explanation: s.explain };
     }
+
+    // --- Q10: Bad Debt Method Comparison (MC, 6+ scenarios) ---
+    function genBadDebtMethod() {
+        const scenarios = [
+            { text: 'The percentage-of-sales method is called an "income statement approach" because:', options: ['It starts by computing the expense directly', 'It only affects the income statement', 'It ignores the balance sheet', 'It uses net income to estimate bad debts'], answer: 0, explain: 'It computes bad debt expense directly as a percentage of sales. The allowance adjusts based on the resulting expense.' },
+            { text: 'The aging method is called a "balance sheet approach" because:', options: ['It ignores the income statement', 'It starts by estimating the desired ending Allowance balance', 'It only affects the balance sheet', 'It uses total assets'], answer: 1, explain: 'It determines the required ending Allowance first, then computes the expense needed to reach that target.' },
+            { text: 'Which method gives a more accurate estimate of net realizable value of A/R?', options: ['Percentage of sales', 'Aging method', 'Both are equally accurate', 'Specific write-off'], answer: 1, explain: 'The aging method evaluates each category of receivable by age, providing a more precise estimate of collectibility.' },
+            { text: 'Under the percentage-of-sales method, the existing Allowance balance:', options: ['Is subtracted from the computed expense', 'Is ignored when computing the expense', 'Determines the expense', 'Is set to zero'], answer: 1, explain: 'The expense = % \u00d7 Sales, regardless of the current Allowance balance. The new balance = Old balance + Expense \u2212 Write-offs.' },
+            { text: 'Under the aging method, if the Allowance has a $3,000 debit balance and the desired ending balance is $15,000, the expense is:', options: ['$15,000', '$12,000', '$18,000', '$3,000'], answer: 2, explain: '$15,000 \u2212 (\u2212$3,000) = $15,000 + $3,000 = $18,000. Must cover the debit balance plus reach the target.' },
+            { text: 'A company switches from specific write-off to the allowance method. This change will likely:', options: ['Increase the A/R balance', 'Create a contra-asset account (Allowance)', 'Eliminate bad debt expense', 'Reduce total liabilities'], answer: 1, explain: 'The allowance method uses a contra-asset (Allowance for Bad Debt) to reduce Gross A/R to Net A/R on the balance sheet.' },
+            { text: 'Which method is required under GAAP when bad debts are material?', options: ['Specific write-off method', 'Allowance method', 'Either method is acceptable', 'Cash basis method'], answer: 1, explain: 'GAAP requires the allowance method when bad debts are material to ensure proper matching and accurate A/R valuation.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text, type: 'mc', options: s.options, answer: s.answer, explanation: s.explain };
+    }
+
+    // --- Q11: True/False (12+ items) ---
+    function genTrueFalse() {
+        const scenarios = [
+            { text: 'Revenue is recognized when cash is received', answer: 1, explain: 'False. Revenue is recognized when the performance obligation is satisfied, which may be before or after cash receipt.' },
+            { text: 'Unearned Revenue is a liability', answer: 0, explain: 'True. It represents an obligation to deliver goods or services in the future.' },
+            { text: 'Under the allowance method, writing off an account increases Bad Debt Expense', answer: 1, explain: 'False. The write-off (Dr Allowance / Cr A/R) has no income statement effect. The expense was already estimated.' },
+            { text: 'The Allowance for Bad Debt is a contra-asset account', answer: 0, explain: 'True. It has a credit balance and reduces Gross A/R to show the expected collectible amount (Net A/R).' },
+            { text: 'Net A/R can be larger than Gross A/R', answer: 1, explain: 'False. Net A/R = Gross A/R \u2212 Allowance. Since the Allowance is positive, Net A/R is always less than or equal to Gross A/R.' },
+            { text: 'A/R Turnover is calculated using total sales (cash + credit)', answer: 1, explain: 'False. A/R Turnover uses Net Credit Sales in the numerator, because cash sales never create receivables.' },
+            { text: 'A higher A/R Turnover ratio generally indicates faster collection of receivables', answer: 0, explain: 'True. Higher turnover means the company collects its receivables more times per year.' },
+            { text: 'Recording a credit sale increases both assets and stockholders\u2019 equity', answer: 0, explain: 'True. A/R (asset) increases and Revenue \u2192 Net Income \u2192 Retained Earnings (SE) increases.' },
+            { text: 'The specific write-off method is preferred under GAAP for material bad debts', answer: 1, explain: 'False. GAAP requires the allowance method when bad debts are material to ensure proper matching.' },
+            { text: 'A recovery of a previously written-off account under the allowance method requires two journal entries', answer: 0, explain: 'True. (1) Reinstate: Dr A/R / Cr Allowance, (2) Collect: Dr Cash / Cr A/R.' },
+            { text: 'Days Sales Outstanding (DSO) measures how many days it takes, on average, to collect receivables', answer: 0, explain: 'True. DSO = 365 \u00f7 A/R Turnover.' },
+            { text: 'When a company collects cash from a credit customer, revenue is recognized at that point', answer: 1, explain: 'False. Revenue was already recognized at the time of sale. Collection is just an asset swap (Cash up, A/R down) with no income statement effect.' },
+            { text: 'Under ASC 606, a contract must create enforceable rights and obligations to be valid', answer: 0, explain: 'True. Step 1 requires an agreement that creates enforceable rights and obligations between parties.' },
+            { text: 'Contract assets and accounts receivable are the same thing', answer: 1, explain: 'False. A contract asset represents a right to consideration conditional on satisfying additional POs. A/R is an unconditional right to payment.' }
+        ];
+        const s = pick(scenarios);
+        return { question: 'True or False: ' + s.text, type: 'mc', options: ['True', 'False'], answer: s.answer, explanation: s.explain };
+    }
+
+    // --- Q12: Aging Schedule (parametric) ---
+    function genAgingSchedule() {
+        const cat1 = rand(100, 500) * 1000;
+        const cat2 = rand(50, 200) * 1000;
+        const cat3 = rand(20, 100) * 1000;
+        const cat4 = rand(5, 40) * 1000;
+        const pct1 = pick([1, 2, 3]);
+        const pct2 = pick([5, 8, 10]);
+        const pct3 = pick([15, 20, 25]);
+        const pct4 = pick([40, 50, 60]);
+        const est1 = Math.round(cat1 * pct1 / 100);
+        const est2 = Math.round(cat2 * pct2 / 100);
+        const est3 = Math.round(cat3 * pct3 / 100);
+        const est4 = Math.round(cat4 * pct4 / 100);
+        const total = est1 + est2 + est3 + est4;
+        return {
+            question: 'Aging schedule:<br>' +
+                '0\u201330 days: $' + fmt(cat1) + ' \u00d7 ' + pct1 + '% = $' + fmt(est1) + '<br>' +
+                '31\u201360 days: $' + fmt(cat2) + ' \u00d7 ' + pct2 + '% = $' + fmt(est2) + '<br>' +
+                '61\u201390 days: $' + fmt(cat3) + ' \u00d7 ' + pct3 + '% = $' + fmt(est3) + '<br>' +
+                'Over 90 days: $' + fmt(cat4) + ' \u00d7 ' + pct4 + '% = ?<br><br>' +
+                'What is the <strong>total</strong> estimated uncollectible amount (desired ending Allowance)?',
+            type: 'number', answer: total,
+            explanation: 'Over-90 estimate = $' + fmt(cat4) + ' \u00d7 ' + pct4 + '% = $' + fmt(est4) + '. Total = $' + fmt(est1) + ' + $' + fmt(est2) + ' + $' + fmt(est3) + ' + $' + fmt(est4) + ' = $' + fmt(total)
+        };
+    }
+
+    // --- Q13: Percent of Sales (parametric) ---
+    function genPercentOfSales() {
+        const creditSales = rand(300, 3000) * 1000;
+        const pctRate = pick([1, 1.5, 2, 2.5, 3, 4]);
+        const begAllow = rand(2, 20) * 1000;
+        const writeoffs = rand(1, Math.min(15, Math.floor(begAllow / 1000))) * 1000;
+        const bde = Math.round(creditSales * pctRate / 100);
+        const endAllow = begAllow + bde - writeoffs;
+        return {
+            question: 'Credit sales = $' + fmt(creditSales) + '. Bad debt rate = ' + pctRate + '% of credit sales.<br>' +
+                'Beginning Allowance = $' + fmt(begAllow) + '. Write-offs during the year = $' + fmt(writeoffs) + '.<br><br>' +
+                'What is the <strong>ending Allowance</strong> balance?',
+            type: 'number', answer: endAllow,
+            explanation: 'BDE = ' + pctRate + '% \u00d7 $' + fmt(creditSales) + ' = $' + fmt(bde) + '. Ending = $' + fmt(begAllow) + ' + $' + fmt(bde) + ' \u2212 $' + fmt(writeoffs) + ' = $' + fmt(endAllow)
+        };
+    }
+
+    // ========== JE GENERATORS (25+ templates, parametric) ==========
+    const jeAccounts = ['Cash','Accounts Receivable','Allowance for Bad Debt','Notes Receivable','Interest Receivable','Inventory','Contract Asset','Contract Liability','Unearned Revenue','Sales Revenue','Service Revenue','Interest Revenue','Bad Debt Expense','Cost of Goods Sold','Sales Returns and Allowances','Sales Discounts','Warranty Expense','Warranty Liability','Refund Liability','Accounts Payable'];
+
+    function jeGenCreditSale() {
+        const amt = rand(5, 200) * 1000;
+        return { prompt: 'Sell goods on credit for $' + fmt(amt) + '.', answer: [{ acct: 'Accounts Receivable', dr: amt, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: amt }] };
+    }
+
+    function jeGenCashSale() {
+        const amt = rand(5, 150) * 1000;
+        return { prompt: 'Sell goods for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: amt }] };
+    }
+
+    function jeGenCollectAR() {
+        const amt = rand(5, 200) * 1000;
+        return { prompt: 'Collect $' + fmt(amt) + ' from a customer who previously purchased on credit.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: amt }] };
+    }
+
+    function jeGenBadDebtExpenseAdjust() {
+        const creditSales = rand(200, 2000) * 1000;
+        const pctRate = pick([1, 2, 3, 4, 5]);
+        const bde = Math.round(creditSales * pctRate / 100);
+        return { prompt: 'Record the year-end bad debt adjusting entry. Bad debts are estimated at ' + pctRate + '% of credit sales of $' + fmt(creditSales) + ' (= $' + fmt(bde) + ').', answer: [{ acct: 'Bad Debt Expense', dr: bde, cr: 0 }, { acct: 'Allowance for Bad Debt', dr: 0, cr: bde }] };
+    }
+
+    function jeGenWriteOff() {
+        const amt = rand(1, 30) * 1000;
+        return { prompt: 'Write off a $' + fmt(amt) + ' uncollectible account under the <strong>allowance method</strong>.', answer: [{ acct: 'Allowance for Bad Debt', dr: amt, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: amt }] };
+    }
+
+    function jeGenRecoveryReinstate() {
+        const amt = rand(1, 15) * 1000;
+        return { prompt: 'A previously written-off $' + fmt(amt) + ' account is recovered. Record entry 1 of 2: <strong>reinstate the receivable</strong>.', answer: [{ acct: 'Accounts Receivable', dr: amt, cr: 0 }, { acct: 'Allowance for Bad Debt', dr: 0, cr: amt }] };
+    }
+
+    function jeGenRecoveryCollect() {
+        const amt = rand(1, 15) * 1000;
+        return { prompt: 'A previously written-off $' + fmt(amt) + ' account is recovered. Record entry 2 of 2: <strong>collect the cash</strong>.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: amt }] };
+    }
+
+    function jeGenAdvancePayment() {
+        const amt = rand(5, 100) * 1000;
+        const desc = pick(['a 12-month service contract', 'a 6-month subscription', 'a 2-year maintenance agreement', 'annual software licensing']);
+        return { prompt: 'Receive $' + fmt(amt) + ' cash in advance for ' + desc + '.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Unearned Revenue', dr: 0, cr: amt }] };
+    }
+
+    function jeGenRecognizeUnearned() {
+        const total = rand(10, 80) * 1000;
+        const months = pick([3, 4, 6]);
+        const earned = Math.round(total * months / 12);
+        return { prompt: '$' + fmt(total) + ' was received in advance for a 12-month service contract. ' + months + ' months have now elapsed. Recognize the revenue earned.', answer: [{ acct: 'Unearned Revenue', dr: earned, cr: 0 }, { acct: 'Service Revenue', dr: 0, cr: earned }] };
+    }
+
+    function jeGenBundledSale() {
+        const total = rand(50, 200) * 1000;
+        const productPct = pick([60, 65, 70, 75, 80]);
+        const productAmt = Math.round(total * productPct / 100);
+        const unearnedAmt = total - productAmt;
+        return { prompt: 'Sell a bundle for $' + fmt(total) + ' cash. Product (delivered now) allocated $' + fmt(productAmt) + '; support services (earned over time) allocated $' + fmt(unearnedAmt) + '.', answer: [{ acct: 'Cash', dr: total, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: productAmt }, { acct: 'Unearned Revenue', dr: 0, cr: unearnedAmt }] };
+    }
+
+    function jeGenSalesReturn() {
+        const amt = rand(1, 20) * 1000;
+        return { prompt: 'A customer returns goods originally sold on credit for $' + fmt(amt) + '. Record the return (no COGS reversal needed).', answer: [{ acct: 'Sales Returns and Allowances', dr: amt, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: amt }] };
+    }
+
+    function jeGenSalesDiscount() {
+        const invAmt = rand(10, 100) * 1000;
+        const discPct = pick([1, 2, 3]);
+        const disc = Math.round(invAmt * discPct / 100);
+        const cash = invAmt - disc;
+        return { prompt: 'A customer pays within the discount period on a $' + fmt(invAmt) + ' invoice. Terms: ' + discPct + '/10, n/30. Record the collection.', answer: [{ acct: 'Cash', dr: cash, cr: 0 }, { acct: 'Sales Discounts', dr: disc, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: invAmt }] };
+    }
+
+    function jeGenInterestRevenue() {
+        const principal = rand(10, 200) * 1000;
+        const rate = pick([3, 4, 5, 6, 8]);
+        const months = pick([1, 3, 6]);
+        const interest = Math.round(principal * rate / 100 * months / 12);
+        return { prompt: 'Accrue $' + fmt(interest) + ' of interest revenue on a $' + fmt(principal) + ' note receivable (' + rate + '% annual rate, ' + months + ' month' + (months > 1 ? 's' : '') + ').', answer: [{ acct: 'Interest Receivable', dr: interest, cr: 0 }, { acct: 'Interest Revenue', dr: 0, cr: interest }] };
+    }
+
+    function jeGenServiceRevCash() {
+        const amt = rand(5, 80) * 1000;
+        return { prompt: 'Perform services and collect $' + fmt(amt) + ' cash immediately.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Service Revenue', dr: 0, cr: amt }] };
+    }
+
+    function jeGenServiceRevOnAccount() {
+        const amt = rand(5, 80) * 1000;
+        return { prompt: 'Perform $' + fmt(amt) + ' of services on account (customer will pay later).', answer: [{ acct: 'Accounts Receivable', dr: amt, cr: 0 }, { acct: 'Service Revenue', dr: 0, cr: amt }] };
+    }
+
+    function jeGenCreditSaleWithCOGS() {
+        const saleAmt = rand(10, 150) * 1000;
+        const cogsPct = pick([40, 50, 60, 65, 70]);
+        const cogsAmt = Math.round(saleAmt * cogsPct / 100);
+        return { prompt: 'Sell goods on credit for $' + fmt(saleAmt) + '. The cost of the inventory sold was $' + fmt(cogsAmt) + '. Record <strong>both</strong> the revenue and COGS entries.', answer: [{ acct: 'Accounts Receivable', dr: saleAmt, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: saleAmt }, { acct: 'Cost of Goods Sold', dr: cogsAmt, cr: 0 }, { acct: 'Inventory', dr: 0, cr: cogsAmt }] };
+    }
+
+    function jeGenAllowanceIncrease() {
+        const desiredEnd = rand(10, 50) * 1000;
+        const currentBal = rand(2, Math.floor(desiredEnd / 1000) - 1) * 1000;
+        const bde = desiredEnd - currentBal;
+        return { prompt: 'Using the aging method, the desired ending Allowance is $' + fmt(desiredEnd) + '. Current Allowance balance is $' + fmt(currentBal) + ' (credit). Record the adjusting entry of $' + fmt(bde) + '.', answer: [{ acct: 'Bad Debt Expense', dr: bde, cr: 0 }, { acct: 'Allowance for Bad Debt', dr: 0, cr: bde }] };
+    }
+
+    function jeGenAllowanceWriteOff() {
+        const amt = rand(2, 25) * 1000;
+        return { prompt: 'A customer\u2019s $' + fmt(amt) + ' balance is deemed uncollectible. Write it off using the allowance method.', answer: [{ acct: 'Allowance for Bad Debt', dr: amt, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: amt }] };
+    }
+
+    function jeGenRefundLiability() {
+        const saleAmt = rand(20, 100) * 1000;
+        const refundPct = pick([5, 8, 10, 15]);
+        const refundAmt = Math.round(saleAmt * refundPct / 100);
+        return { prompt: 'A company estimates that ' + refundPct + '% of sales ($' + fmt(saleAmt) + ') will be returned. Record the estimated refund liability of $' + fmt(refundAmt) + '.', answer: [{ acct: 'Sales Revenue', dr: refundAmt, cr: 0 }, { acct: 'Refund Liability', dr: 0, cr: refundAmt }] };
+    }
+
+    function jeGenWarrantyExpense() {
+        const salesAmt = rand(50, 300) * 1000;
+        const warPct = pick([2, 3, 5]);
+        const warAmt = Math.round(salesAmt * warPct / 100);
+        return { prompt: 'Estimate warranty costs at ' + warPct + '% of sales ($' + fmt(salesAmt) + '). Record the warranty expense of $' + fmt(warAmt) + '.', answer: [{ acct: 'Warranty Expense', dr: warAmt, cr: 0 }, { acct: 'Warranty Liability', dr: 0, cr: warAmt }] };
+    }
+
+    function jeGenNotesReceivable() {
+        const amt = rand(10, 100) * 1000;
+        return { prompt: 'Accept a $' + fmt(amt) + ' note receivable from a customer in settlement of their accounts receivable balance.', answer: [{ acct: 'Notes Receivable', dr: amt, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: amt }] };
+    }
+
+    function jeGenCollectNote() {
+        const principal = rand(10, 100) * 1000;
+        const interest = rand(1, 10) * 500;
+        const total = principal + interest;
+        return { prompt: 'Collect a $' + fmt(principal) + ' note receivable plus $' + fmt(interest) + ' accrued interest (total cash = $' + fmt(total) + ').', answer: [{ acct: 'Cash', dr: total, cr: 0 }, { acct: 'Notes Receivable', dr: 0, cr: principal }, { acct: 'Interest Receivable', dr: 0, cr: interest }] };
+    }
+
+    function jeGenUnearnedToRevenue() {
+        const amt = rand(5, 50) * 1000;
+        return { prompt: 'Recognize $' + fmt(amt) + ' of previously unearned revenue as the service has now been provided.', answer: [{ acct: 'Unearned Revenue', dr: amt, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: amt }] };
+    }
+
+    function jeGenContractAsset() {
+        const amt = rand(10, 80) * 1000;
+        return { prompt: 'A company satisfies a performance obligation worth $' + fmt(amt) + ' but cannot yet bill the customer (conditional on completing another PO). Record the contract asset.', answer: [{ acct: 'Contract Asset', dr: amt, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: amt }] };
+    }
+
+    function jeGenContractLiability() {
+        const amt = rand(10, 80) * 1000;
+        return { prompt: 'A customer pays $' + fmt(amt) + ' before any performance obligations are satisfied. Record using Contract Liability.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Contract Liability', dr: 0, cr: amt }] };
+    }
+
+    // ========== INIT QuizEngine ==========
+    QuizEngine.init({
+        questionGenerators: [genRevRecognition, genBundledAllocation, genBadDebtExpense, genNetAR,
+            genARTurnover, genWriteOffEffect, genAllowanceBalance, genRecovery,
+            genFiveStepModel, genBadDebtMethod, genTrueFalse, genAgingSchedule, genPercentOfSales],
+        jeGenerators: [jeGenCreditSale, jeGenCashSale, jeGenCollectAR,
+            jeGenBadDebtExpenseAdjust, jeGenWriteOff, jeGenRecoveryReinstate, jeGenRecoveryCollect,
+            jeGenAdvancePayment, jeGenRecognizeUnearned, jeGenBundledSale,
+            jeGenSalesReturn, jeGenSalesDiscount, jeGenInterestRevenue,
+            jeGenServiceRevCash, jeGenServiceRevOnAccount,
+            jeGenCreditSaleWithCOGS, jeGenAllowanceIncrease, jeGenAllowanceWriteOff,
+            jeGenRefundLiability, jeGenWarrantyExpense,
+            jeGenNotesReceivable, jeGenCollectNote,
+            jeGenUnearnedToRevenue, jeGenContractAsset, jeGenContractLiability],
+        jeAccounts: jeAccounts,
+        accentColor: 'amber',
+        qCopies: 7,
+        jeCopies: 2
+    });
     </script>
 </body>
 </html>

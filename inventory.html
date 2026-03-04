@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Accounting Methods | BUSI 305 Study Tool</title>
+    <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <style>
@@ -1036,35 +1037,39 @@
 
         <!-- ==================== TAB 4: PRACTICE QUESTIONS ==================== -->
         <div id="tab-4" class="tab-content hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Score Panel -->
-                <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:sticky lg:top-6 self-start">
-                    <h2 class="text-xl font-bold text-rose-400 mb-4">Your Score</h2>
-                    <div class="text-center mb-4">
-                        <p class="text-5xl font-bold text-white" id="score-display">0/0</p>
-                        <p class="text-slate-400 text-sm mt-1" id="score-pct"></p>
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-rose-400">Practice Questions</h2>
+                        <div class="flex items-center gap-4">
+                            <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
+                            <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
+                            <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
+                        </div>
                     </div>
-                    <div class="w-full bg-slate-700 rounded-full h-3 mb-6">
-                        <div class="bg-rose-500 h-3 rounded-full transition-all duration-500" id="score-bar" style="width: 0%"></div>
+                    <div id="p-question" class="mb-4"><p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p></div>
+                    <div id="p-answer" class="mb-4 hidden"></div>
+                    <div id="p-feedback" class="mb-4 hidden"></div>
+                    <div class="flex gap-3">
+                        <button onclick="QuizEngine.pNew()" class="bg-rose-600 hover:bg-rose-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                        <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
                     </div>
-                    <button onclick="generateQuestion()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-3 rounded-lg transition-colors mb-3">
-                        Next Question
-                    </button>
-                    <button onclick="resetScore()" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold py-2 rounded-lg transition-colors text-sm">
-                        Reset Score
-                    </button>
                 </div>
 
-                <!-- Question Panel -->
-                <div class="lg:col-span-2">
-                    <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                        <div id="question-area">
-                            <p class="text-slate-400 text-center py-8">Click "Next Question" to begin practicing.</p>
-                        </div>
-                        <div id="feedback-area" class="hidden mt-6"></div>
+                <!-- Journal Entry Practice -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-rose-400">Journal Entry Practice</h2>
+                        <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
                     </div>
+                    <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
+                    <div id="je-lines" class="space-y-2 mb-4"></div>
+                    <div class="flex gap-3 mb-4">
+                        <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                        <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                        <button onclick="QuizEngine.jeNew()" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                    </div>
+                    <div id="je-feedback" class="hidden"></div>
                 </div>
-            </div>
         </div>
     </div>
 
@@ -1491,664 +1496,6 @@
         `;
     }
 
-    // ===== PRACTICE QUESTIONS (Tab 4) =====
-    let score = { correct: 0, total: 0 };
-    let currentQuestion = null;
-
-    function resetScore() {
-        score = { correct: 0, total: 0 };
-        updateScoreDisplay();
-        document.getElementById('question-area').innerHTML = '<p class="text-slate-400 text-center py-8">Click "Next Question" to begin practicing.</p>';
-        document.getElementById('feedback-area').classList.add('hidden');
-    }
-
-    function updateScoreDisplay() {
-        document.getElementById('score-display').textContent = score.correct + '/' + score.total;
-        const pct = score.total > 0 ? Math.round(score.correct / score.total * 100) : 0;
-        document.getElementById('score-pct').textContent = score.total > 0 ? pct + '% correct' : '';
-        document.getElementById('score-bar').style.width = pct + '%';
-    }
-
-    function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-    function randChoice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-    function shuffle(arr) {
-        const a = [...arr];
-        for (let i = a.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [a[i], a[j]] = [a[j], a[i]];
-        }
-        return a;
-    }
-
-    function generateQuestion() {
-        document.getElementById('feedback-area').classList.add('hidden');
-        const type = randInt(0, 6);
-        switch (type) {
-            case 0: genCalculation(); break;
-            case 1: genComparison(); break;
-            case 2: genFinStmtEffect(); break;
-            case 3: genLIFOReserve(); break;
-            case 4: genConceptual(); break;
-            case 5: genWhichMethod(); break;
-            case 6: genJournalEntry(); break;
-        }
-    }
-
-    // --- Type 0: Calculation ---
-    function genCalculation() {
-        const biUnits = randInt(50, 200);
-        const biCost = randInt(5, 15);
-        const p1Units = randInt(50, 200);
-        const p1Cost = biCost + randInt(1, 5);
-        const p2Units = randInt(50, 200);
-        const p2Cost = p1Cost + randInt(1, 5);
-        const totalUnits = biUnits + p1Units + p2Units;
-        const soldUnits = randInt(Math.floor(totalUnits * 0.4), Math.floor(totalUnits * 0.8));
-        const remainUnits = totalUnits - soldUnits;
-
-        const layers = [
-            { units: biUnits, cost: biCost },
-            { units: p1Units, cost: p1Cost },
-            { units: p2Units, cost: p2Cost }
-        ];
-
-        const method = randChoice(['FIFO', 'LIFO', 'Weighted Average']);
-        const askFor = randChoice(['COGS', 'Ending Inventory']);
-
-        let answer, explanation;
-        if (method === 'FIFO') {
-            const r = calcFIFO(layers.map((l, i) => ({...l, label: i === 0 ? 'BI' : 'P'+i})), soldUnits);
-            answer = askFor === 'COGS' ? r.cogs : r.ei;
-            const detail = askFor === 'COGS' ? r.cogsDetail : r.eiDetail;
-            explanation = method + ' ' + askFor + ':\n' + detail.map(d => d.units + ' x $' + d.cost + ' = $' + (d.units * d.cost).toLocaleString()).join('\n') + '\nTotal = $' + answer.toLocaleString();
-        } else if (method === 'LIFO') {
-            const r = calcLIFO(layers.map((l, i) => ({...l, label: i === 0 ? 'BI' : 'P'+i})), soldUnits);
-            answer = askFor === 'COGS' ? r.cogs : r.ei;
-            const detail = askFor === 'COGS' ? r.cogsDetail : r.eiDetail;
-            explanation = method + ' ' + askFor + ':\n' + detail.map(d => d.units + ' x $' + d.cost + ' = $' + (d.units * d.cost).toLocaleString()).join('\n') + '\nTotal = $' + answer.toLocaleString();
-        } else {
-            const totalCost = layers.reduce((s, l) => s + l.units * l.cost, 0);
-            const avgCost = totalCost / totalUnits;
-            if (askFor === 'COGS') {
-                answer = Math.round(soldUnits * avgCost);
-            } else {
-                answer = Math.round(remainUnits * avgCost);
-            }
-            explanation = 'Weighted Average Cost = $' + totalCost.toLocaleString() + ' / ' + totalUnits + ' = $' + avgCost.toFixed(2) + '\n' +
-                askFor + ' = ' + (askFor === 'COGS' ? soldUnits : remainUnits) + ' x $' + avgCost.toFixed(2) + ' = $' + answer.toLocaleString();
-        }
-
-        const totalCost = layers.reduce((s, l) => s + l.units * l.cost, 0);
-
-        const html = `
-            <p class="text-xs text-rose-400 uppercase tracking-wider mb-2 font-semibold">Calculation Question</p>
-            <h3 class="text-lg font-bold mb-4">Calculate ${askFor} using ${method}</h3>
-            <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm">
-                <table class="w-full">
-                    <tr class="border-b border-slate-700"><td class="py-1">Beginning Inventory</td><td class="text-right">${biUnits} units @ $${biCost}</td><td class="text-right">$${(biUnits*biCost).toLocaleString()}</td></tr>
-                    <tr class="border-b border-slate-700"><td class="py-1">Purchase 1</td><td class="text-right">${p1Units} units @ $${p1Cost}</td><td class="text-right">$${(p1Units*p1Cost).toLocaleString()}</td></tr>
-                    <tr class="border-b border-slate-700"><td class="py-1">Purchase 2</td><td class="text-right">${p2Units} units @ $${p2Cost}</td><td class="text-right">$${(p2Units*p2Cost).toLocaleString()}</td></tr>
-                    <tr class="border-t-2 border-slate-500 font-bold"><td class="py-1">Total Available</td><td class="text-right">${totalUnits} units</td><td class="text-right">$${totalCost.toLocaleString()}</td></tr>
-                    <tr><td class="py-1 text-rose-400">Units Sold</td><td class="text-right text-rose-400">${soldUnits}</td><td></td></tr>
-                </table>
-            </div>
-            <div class="flex items-center gap-3">
-                <span class="text-slate-400">Your answer: $</span>
-                <input type="number" id="calc-answer" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="Enter amount">
-                <button onclick="checkCalcAnswer()" class="bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>
-            </div>
-        `;
-
-        currentQuestion = { type: 'calc', answer, explanation };
-        document.getElementById('question-area').innerHTML = html;
-    }
-
-    function checkCalcAnswer() {
-        if (!currentQuestion) return;
-        const userAns = parseFloat(document.getElementById('calc-answer').value);
-        const correct = Math.abs(userAns - currentQuestion.answer) <= Math.max(5, currentQuestion.answer * 0.01);
-        score.total++;
-        if (correct) score.correct++;
-        updateScoreDisplay();
-        showFeedback(correct, currentQuestion.explanation);
-        currentQuestion = null;
-    }
-
-    // --- Type 1: Comparison ---
-    function genComparison() {
-        const questions = [
-            {
-                q: 'When prices are RISING, which inventory method produces the HIGHEST Cost of Goods Sold?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'All produce the same COGS'],
-                answer: 1,
-                explain: 'LIFO assigns the newest (highest) costs to COGS first. When prices are rising, this means COGS includes the most expensive units, making it the highest among the three methods.'
-            },
-            {
-                q: 'When prices are RISING, which inventory method reports the HIGHEST ending inventory on the balance sheet?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'All report the same'],
-                answer: 0,
-                explain: 'FIFO leaves the newest (highest cost) units in ending inventory. When prices are rising, this means the balance sheet inventory value is highest under FIFO.'
-            },
-            {
-                q: 'When prices are FALLING, which inventory method produces the LOWEST taxable income?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'It depends on the tax rate'],
-                answer: 0,
-                explain: 'When prices are falling, FIFO assigns the oldest (highest) costs to COGS, producing the highest COGS and lowest income. The effects are the reverse of the rising-price scenario.'
-            },
-            {
-                q: 'Which method always falls between FIFO and LIFO for both COGS and ending inventory?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'None of them'],
-                answer: 2,
-                explain: 'Weighted Average cost is a blend of all purchase prices, so it always produces COGS and ending inventory values between the FIFO and LIFO extremes.'
-            },
-            {
-                q: 'Which inventory method best matches current costs with current revenues on the income statement?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'All match equally well'],
-                answer: 1,
-                explain: 'LIFO assigns the most recent purchase costs to COGS, which means current revenues are matched against current costs. This is considered a better matching of costs and revenues.'
-            }
-        ];
-        const qObj = randChoice(questions);
-        const shuffledIndices = shuffle([0, 1, 2, 3]);
-        const shuffledChoices = shuffledIndices.map(i => qObj.choices[i]);
-        const correctIdx = shuffledIndices.indexOf(qObj.answer);
-
-        const html = `
-            <p class="text-xs text-sky-400 uppercase tracking-wider mb-2 font-semibold">Comparison Question</p>
-            <h3 class="text-lg font-bold mb-4">${qObj.q}</h3>
-            <div class="space-y-2">
-                ${shuffledChoices.map((c, i) => `
-                    <button onclick="checkMC(${i}, ${correctIdx})" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">
-                        <span class="font-semibold text-slate-400 mr-2">${String.fromCharCode(65 + i)}.</span> ${c}
-                    </button>
-                `).join('')}
-            </div>
-        `;
-
-        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
-        document.getElementById('question-area').innerHTML = html;
-    }
-
-    // --- Type 2: Financial Statement Effects ---
-    function genFinStmtEffect() {
-        const questions = [
-            {
-                q: 'If a company switches from FIFO to LIFO during a period of rising prices, what happens to reported net income?',
-                choices: ['Net income increases', 'Net income decreases', 'Net income stays the same', 'Cannot be determined'],
-                answer: 1,
-                explain: 'Switching from FIFO to LIFO during inflation increases COGS (newer, higher costs flow to COGS), which decreases gross profit and net income.'
-            },
-            {
-                q: 'A company using LIFO during inflation will report _____ on its balance sheet compared to FIFO.',
-                choices: ['Higher inventory and higher retained earnings', 'Lower inventory and lower retained earnings', 'Higher inventory and lower retained earnings', 'Lower inventory and higher retained earnings'],
-                answer: 1,
-                explain: 'LIFO leaves older, lower costs in inventory (lower balance sheet value) and reports lower net income (which accumulates into lower retained earnings) compared to FIFO during inflation.'
-            },
-            {
-                q: 'How does the choice of inventory method affect a company\'s actual cash flows (assuming it affects the tax return)?',
-                choices: ['No effect on cash flows', 'Only affects operating cash flows through COGS', 'Affects cash flows through different tax payments', 'Affects cash flows through different purchase prices'],
-                answer: 2,
-                explain: 'The inventory method does not change the physical goods bought or sold. However, if LIFO is used for taxes, lower taxable income means lower tax payments, resulting in higher after-tax cash flows.'
-            },
-            {
-                q: 'If a company writes down inventory under the LCNRV rule, what is the effect on the current period income statement?',
-                choices: ['Revenue decreases', 'COGS increases, reducing gross profit', 'An extraordinary gain is recorded', 'No income statement effect; only the balance sheet changes'],
-                answer: 1,
-                explain: 'An inventory write-down under LCNRV increases COGS (or is reported as a separate loss), which reduces gross profit and net income in the current period.'
-            }
-        ];
-        const qObj = randChoice(questions);
-        const shuffledIndices = shuffle([0, 1, 2, 3]);
-        const shuffledChoices = shuffledIndices.map(i => qObj.choices[i]);
-        const correctIdx = shuffledIndices.indexOf(qObj.answer);
-
-        const html = `
-            <p class="text-xs text-emerald-400 uppercase tracking-wider mb-2 font-semibold">Financial Statement Effects</p>
-            <h3 class="text-lg font-bold mb-4">${qObj.q}</h3>
-            <div class="space-y-2">
-                ${shuffledChoices.map((c, i) => `
-                    <button onclick="checkMC(${i}, ${correctIdx})" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">
-                        <span class="font-semibold text-slate-400 mr-2">${String.fromCharCode(65 + i)}.</span> ${c}
-                    </button>
-                `).join('')}
-            </div>
-        `;
-
-        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
-        document.getElementById('question-area').innerHTML = html;
-    }
-
-    // --- Type 3: LIFO Reserve ---
-    function genLIFOReserve() {
-        const fifoInv = randInt(500, 5000) * 10;
-        const lifoReserve = randInt(50, 500) * 10;
-        const lifoInv = fifoInv - lifoReserve;
-
-        const askFor = randChoice(['LIFO Inventory', 'FIFO Inventory', 'LIFO Reserve']);
-        let given, answer, explain;
-
-        if (askFor === 'LIFO Inventory') {
-            given = `FIFO Inventory = $${fifoInv.toLocaleString()}, LIFO Reserve = $${lifoReserve.toLocaleString()}`;
-            answer = lifoInv;
-            explain = `LIFO Inventory = FIFO Inventory - LIFO Reserve = $${fifoInv.toLocaleString()} - $${lifoReserve.toLocaleString()} = $${lifoInv.toLocaleString()}`;
-        } else if (askFor === 'FIFO Inventory') {
-            given = `LIFO Inventory = $${lifoInv.toLocaleString()}, LIFO Reserve = $${lifoReserve.toLocaleString()}`;
-            answer = fifoInv;
-            explain = `FIFO Inventory = LIFO Inventory + LIFO Reserve = $${lifoInv.toLocaleString()} + $${lifoReserve.toLocaleString()} = $${fifoInv.toLocaleString()}`;
-        } else {
-            given = `FIFO Inventory = $${fifoInv.toLocaleString()}, LIFO Inventory = $${lifoInv.toLocaleString()}`;
-            answer = lifoReserve;
-            explain = `LIFO Reserve = FIFO Inventory - LIFO Inventory = $${fifoInv.toLocaleString()} - $${lifoInv.toLocaleString()} = $${lifoReserve.toLocaleString()}`;
-        }
-
-        const html = `
-            <p class="text-xs text-amber-400 uppercase tracking-wider mb-2 font-semibold">LIFO Reserve Calculation</p>
-            <h3 class="text-lg font-bold mb-4">Calculate the ${askFor}</h3>
-            <div class="bg-slate-900/60 rounded-lg p-4 mb-4">
-                <p class="text-slate-300 mb-2">Given: ${given}</p>
-                <p class="text-slate-400 text-sm">Recall: LIFO Reserve = FIFO Inventory &minus; LIFO Inventory</p>
-            </div>
-            <div class="flex items-center gap-3">
-                <span class="text-slate-400">Your answer: $</span>
-                <input type="number" id="calc-answer" class="bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="Enter amount">
-                <button onclick="checkCalcAnswer()" class="bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-lg font-semibold transition-colors">Submit</button>
-            </div>
-        `;
-
-        currentQuestion = { type: 'calc', answer, explanation: explain };
-        document.getElementById('question-area').innerHTML = html;
-    }
-
-    // --- Type 4: Conceptual (True/False) ---
-    function genConceptual() {
-        const questions = [
-            {
-                statement: 'LIFO is permitted under both US GAAP and IFRS.',
-                answer: false,
-                explain: 'False. LIFO is permitted under US GAAP but is prohibited under IFRS. Companies reporting under IFRS must use FIFO or Weighted Average.'
-            },
-            {
-                statement: 'Under FIFO, ending inventory on the balance sheet approximates current replacement cost.',
-                answer: true,
-                explain: 'True. FIFO leaves the most recently purchased units in ending inventory, so the balance sheet value closely reflects current market prices.'
-            },
-            {
-                statement: 'A company can use LIFO for tax purposes and FIFO for financial reporting purposes.',
-                answer: false,
-                explain: 'False. The LIFO Conformity Rule requires that if a company uses LIFO for tax purposes, it must also use LIFO for financial reporting.'
-            },
-            {
-                statement: 'When prices are constant (no inflation or deflation), FIFO, LIFO, and Weighted Average all produce the same COGS.',
-                answer: true,
-                explain: 'True. If all units have the same cost, the order in which costs are assigned to COGS does not matter, and all three methods produce identical results.'
-            },
-            {
-                statement: 'Under the periodic inventory system, COGS is calculated at the end of the period, not with each sale.',
-                answer: true,
-                explain: 'True. The periodic system calculates COGS at period-end using the inventory equation: COGS = Beginning Inventory + Purchases - Ending Inventory.'
-            },
-            {
-                statement: 'Inventory write-downs under the LCNRV rule can be reversed in future periods under US GAAP.',
-                answer: false,
-                explain: 'False. Under US GAAP, once inventory is written down, the write-down cannot be reversed. However, IFRS does allow reversal of inventory write-downs (up to the original cost).'
-            },
-            {
-                statement: 'LIFO liquidation occurs when a company sells more units than it purchases during a period, dipping into old LIFO layers.',
-                answer: true,
-                explain: 'True. LIFO liquidation happens when old, lower-cost layers are matched against current revenues, which can artificially inflate profits and is considered a disadvantage of LIFO.'
-            },
-            {
-                statement: 'The weighted average method produces results between FIFO and LIFO for both COGS and ending inventory.',
-                answer: true,
-                explain: 'True. Since the weighted average cost is a blend of all costs, it will always fall between the oldest costs (used by one method for COGS) and the newest costs (used by the other).'
-            }
-        ];
-        const qObj = randChoice(questions);
-
-        const html = `
-            <p class="text-xs text-purple-400 uppercase tracking-wider mb-2 font-semibold">True or False</p>
-            <h3 class="text-lg font-bold mb-6">"${qObj.statement}"</h3>
-            <div class="flex gap-4">
-                <button onclick="checkTF(true)" class="flex-1 bg-emerald-600/20 hover:bg-emerald-600/40 border border-emerald-500/40 rounded-lg p-3 font-semibold text-emerald-400 transition-colors">True</button>
-                <button onclick="checkTF(false)" class="flex-1 bg-rose-600/20 hover:bg-rose-600/40 border border-rose-500/40 rounded-lg p-3 font-semibold text-rose-400 transition-colors">False</button>
-            </div>
-        `;
-
-        currentQuestion = { type: 'tf', answer: qObj.answer, explain: qObj.explain };
-        document.getElementById('question-area').innerHTML = html;
-    }
-
-    function checkTF(userAnswer) {
-        if (!currentQuestion) return;
-        const correct = userAnswer === currentQuestion.answer;
-        score.total++;
-        if (correct) score.correct++;
-        updateScoreDisplay();
-        showFeedback(correct, currentQuestion.explain);
-        currentQuestion = null;
-    }
-
-    // --- Type 5: Which Method? ---
-    function genWhichMethod() {
-        const questions = [
-            {
-                scenario: 'A company wants to minimize its tax payments. Prices have been steadily increasing. Which inventory method should it choose (under US GAAP)?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'It does not matter'],
-                answer: 1,
-                explain: 'LIFO. When prices are rising, LIFO assigns the newest, highest costs to COGS, resulting in higher COGS, lower taxable income, and lower tax payments. This is only available under US GAAP.'
-            },
-            {
-                scenario: 'A startup wants to report the highest possible net income to attract investors. Prices for its inventory have been rising. Which method would it prefer?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'Specific Identification'],
-                answer: 0,
-                explain: 'FIFO. When prices are rising, FIFO assigns the oldest, lowest costs to COGS, resulting in lower COGS and higher gross profit/net income. This makes the company appear more profitable.'
-            },
-            {
-                scenario: 'A European company reporting under IFRS wants to use a method that smooths out price fluctuations. Which method should it use?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'Any method is acceptable under IFRS'],
-                answer: 2,
-                explain: 'Weighted Average. LIFO is not permitted under IFRS. Between FIFO and Weighted Average, the weighted average method blends all costs together, smoothing out price fluctuations.'
-            },
-            {
-                scenario: 'A company has experienced falling input prices over the past year. It wants to report the highest gross profit. Which method should it choose?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'The method does not affect gross profit when prices fall'],
-                answer: 1,
-                explain: 'LIFO. When prices are falling, LIFO assigns the newest (lower) costs to COGS, producing the lowest COGS and highest gross profit. This is the reverse of the rising-price scenario.'
-            },
-            {
-                scenario: 'A bank is evaluating a company\'s loan application and wants to see the most realistic current value of the company\'s inventory on the balance sheet. Which method provides this?',
-                choices: ['FIFO', 'LIFO', 'Weighted Average', 'All methods show current value'],
-                answer: 0,
-                explain: 'FIFO. Under FIFO, ending inventory consists of the most recently purchased units, so the balance sheet value best approximates the current replacement cost of inventory.'
-            }
-        ];
-        const qObj = randChoice(questions);
-        const shuffledIndices = shuffle([0, 1, 2, 3]);
-        const shuffledChoices = shuffledIndices.map(i => qObj.choices[i]);
-        const correctIdx = shuffledIndices.indexOf(qObj.answer);
-
-        const html = `
-            <p class="text-xs text-rose-400 uppercase tracking-wider mb-2 font-semibold">Which Method?</p>
-            <h3 class="text-lg font-bold mb-4">${qObj.scenario}</h3>
-            <div class="space-y-2">
-                ${shuffledChoices.map((c, i) => `
-                    <button onclick="checkMC(${i}, ${correctIdx})" class="mc-btn w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm">
-                        <span class="font-semibold text-slate-400 mr-2">${String.fromCharCode(65 + i)}.</span> ${c}
-                    </button>
-                `).join('')}
-            </div>
-        `;
-
-        currentQuestion = { type: 'mc', answer: correctIdx, explain: qObj.explain };
-        document.getElementById('question-area').innerHTML = html;
-    }
-
-    // --- Type 6: Journal Entry ---
-    const JE_ACCOUNTS = ['Cash', 'Accounts Receivable', 'Inventory', 'Accounts Payable', 'Sales Revenue', 'Cost of Goods Sold', 'Loss on Inventory Write-down'];
-
-    function genJournalEntry() {
-        const scenario = randInt(0, 4);
-        let prompt, correctEntries, explanation;
-
-        if (scenario === 0) {
-            // Purchase inventory for cash
-            const amt = randInt(5, 50) * 100;
-            prompt = `A company purchases inventory for <span class="text-white font-semibold">$${amt.toLocaleString()}</span> cash.`;
-            correctEntries = [
-                { account: 'Inventory', debit: amt, credit: 0 },
-                { account: 'Cash', debit: 0, credit: amt }
-            ];
-            explanation = `When inventory is purchased for cash, we debit Inventory (asset increases) and credit Cash (asset decreases) for $${amt.toLocaleString()}.`;
-        } else if (scenario === 1) {
-            // Purchase inventory on account
-            const amt = randInt(5, 50) * 100;
-            prompt = `A company purchases inventory on account for <span class="text-white font-semibold">$${amt.toLocaleString()}</span>.`;
-            correctEntries = [
-                { account: 'Inventory', debit: amt, credit: 0 },
-                { account: 'Accounts Payable', debit: 0, credit: amt }
-            ];
-            explanation = `When inventory is purchased on account, we debit Inventory (asset increases) and credit Accounts Payable (liability increases) for $${amt.toLocaleString()}.`;
-        } else if (scenario === 2) {
-            // Record COGS (periodic system) - student must calculate
-            const biUnits = randInt(40, 120);
-            const biCost = randInt(5, 12);
-            const p1Units = randInt(40, 120);
-            const p1Cost = biCost + randInt(1, 4);
-            const p2Units = randInt(40, 120);
-            const p2Cost = p1Cost + randInt(1, 4);
-            const totalUnits = biUnits + p1Units + p2Units;
-            const soldUnits = randInt(Math.floor(totalUnits * 0.4), Math.floor(totalUnits * 0.7));
-
-            const layers = [
-                { units: biUnits, cost: biCost, label: 'BI' },
-                { units: p1Units, cost: p1Cost, label: 'P1' },
-                { units: p2Units, cost: p2Cost, label: 'P2' }
-            ];
-
-            const method = randChoice(['FIFO', 'LIFO', 'Weighted Average']);
-            let cogs;
-            if (method === 'FIFO') {
-                cogs = calcFIFO(layers, soldUnits).cogs;
-            } else if (method === 'LIFO') {
-                cogs = calcLIFO(layers, soldUnits).cogs;
-            } else {
-                cogs = calcWA(layers, soldUnits).cogs;
-            }
-
-            const totalCost = layers.reduce((s, l) => s + l.units * l.cost, 0);
-            prompt = `At period end, a company using the <span class="text-white font-semibold">${method}</span> periodic system records COGS. Inventory data:<br>
-                <table class="w-full text-sm mt-2 mb-2">
-                    <tr class="border-b border-slate-700"><td class="py-1">Beginning Inventory</td><td class="text-right">${biUnits} units @ $${biCost}</td><td class="text-right">$${(biUnits*biCost).toLocaleString()}</td></tr>
-                    <tr class="border-b border-slate-700"><td class="py-1">Purchase 1</td><td class="text-right">${p1Units} units @ $${p1Cost}</td><td class="text-right">$${(p1Units*p1Cost).toLocaleString()}</td></tr>
-                    <tr class="border-b border-slate-700"><td class="py-1">Purchase 2</td><td class="text-right">${p2Units} units @ $${p2Cost}</td><td class="text-right">$${(p2Units*p2Cost).toLocaleString()}</td></tr>
-                    <tr class="border-t-2 border-slate-500 font-bold"><td class="py-1">Total Available</td><td class="text-right">${totalUnits} units</td><td class="text-right">$${totalCost.toLocaleString()}</td></tr>
-                    <tr><td class="py-1 text-rose-400">Units Sold</td><td class="text-right text-rose-400">${soldUnits}</td><td></td></tr>
-                </table>
-                Calculate the correct COGS and record the journal entry.`;
-            correctEntries = [
-                { account: 'Cost of Goods Sold', debit: cogs, credit: 0 },
-                { account: 'Inventory', debit: 0, credit: cogs }
-            ];
-            explanation = `Under ${method}, COGS = $${cogs.toLocaleString()}. The journal entry debits Cost of Goods Sold (expense increases) and credits Inventory (asset decreases).`;
-        } else if (scenario === 3) {
-            // Record a sale of inventory for cash (two entries)
-            const units = randInt(10, 100);
-            const costPerUnit = randInt(5, 20);
-            const markup = randInt(5, 15);
-            const sellPrice = costPerUnit + markup;
-            const revenue = units * sellPrice;
-            const cost = units * costPerUnit;
-            prompt = `A company sells <span class="text-white font-semibold">${units} units</span> of inventory for <span class="text-white font-semibold">$${sellPrice}</span>/unit cash. The cost of the inventory sold is <span class="text-white font-semibold">$${costPerUnit}</span>/unit.<br>
-                <span class="text-slate-400 text-sm">Record both the revenue entry and the COGS entry.</span>`;
-            correctEntries = [
-                { account: 'Cash', debit: revenue, credit: 0 },
-                { account: 'Sales Revenue', debit: 0, credit: revenue },
-                { account: 'Cost of Goods Sold', debit: cost, credit: 0 },
-                { account: 'Inventory', debit: 0, credit: cost }
-            ];
-            explanation = `Two entries are needed:\n(1) Dr. Cash $${revenue.toLocaleString()}, Cr. Sales Revenue $${revenue.toLocaleString()} (${units} x $${sellPrice})\n(2) Dr. Cost of Goods Sold $${cost.toLocaleString()}, Cr. Inventory $${cost.toLocaleString()} (${units} x $${costPerUnit})`;
-        } else {
-            // Inventory write-down (LCNRV)
-            const carrying = randInt(10, 80) * 100;
-            const nrv = carrying - randInt(2, 15) * 100;
-            const writedown = carrying - nrv;
-            prompt = `A company's inventory has a carrying value of <span class="text-white font-semibold">$${carrying.toLocaleString()}</span> and a net realizable value (NRV) of <span class="text-white font-semibold">$${nrv.toLocaleString()}</span>. Record the LCNRV write-down.`;
-            correctEntries = [
-                { account: 'Cost of Goods Sold', debit: writedown, credit: 0, altAccount: 'Loss on Inventory Write-down' },
-                { account: 'Inventory', debit: 0, credit: writedown }
-            ];
-            explanation = `Write-down = Carrying Value - NRV = $${carrying.toLocaleString()} - $${nrv.toLocaleString()} = $${writedown.toLocaleString()}.\nDr. Cost of Goods Sold (or Loss on Inventory Write-down) $${writedown.toLocaleString()}, Cr. Inventory $${writedown.toLocaleString()}.`;
-        }
-
-        const numLines = correctEntries.length;
-        const acctOptions = JE_ACCOUNTS.map(a => `<option value="${a}">${a}</option>`).join('');
-
-        let linesHtml = '';
-        for (let i = 0; i < numLines; i++) {
-            linesHtml += `
-                <div class="je-line flex items-center gap-2 mb-2" data-line="${i}">
-                    <select class="je-account bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm flex-1 min-w-0" style="max-width: 220px;">
-                        <option value="">-- Select Account --</option>
-                        ${acctOptions}
-                    </select>
-                    <input type="number" class="je-debit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Debit $" min="0">
-                    <input type="number" class="je-credit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Credit $" min="0">
-                </div>`;
-        }
-
-        const html = `
-            <p class="text-xs text-rose-400 uppercase tracking-wider mb-2 font-semibold">Journal Entry</p>
-            <h3 class="text-lg font-bold mb-3">Record the journal entry</h3>
-            <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-sm text-slate-300">${prompt}</div>
-            <div class="mb-3">
-                <div class="flex items-center gap-2 mb-2 text-xs text-slate-400 font-semibold uppercase tracking-wider">
-                    <div class="flex-1" style="max-width: 220px;">Account</div>
-                    <div class="w-28 text-center">Debit ($)</div>
-                    <div class="w-28 text-center">Credit ($)</div>
-                </div>
-                <div id="je-lines">
-                    ${linesHtml}
-                </div>
-                <button onclick="addJELine()" class="text-sm text-rose-400 hover:text-rose-300 transition-colors mt-1">+ Add Line</button>
-            </div>
-            <button onclick="checkJournalEntry()" class="bg-rose-600 hover:bg-rose-700 px-6 py-2 rounded-lg font-semibold transition-colors">Check Answer</button>
-        `;
-
-        currentQuestion = { type: 'je', correctEntries, explanation };
-        document.getElementById('question-area').innerHTML = html;
-
-        // Apply indent to credit lines based on correct entries (visual hint removed - student figures it out)
-    }
-
-    function addJELine() {
-        const container = document.getElementById('je-lines');
-        const idx = container.querySelectorAll('.je-line').length;
-        const acctOptions = JE_ACCOUNTS.map(a => `<option value="${a}">${a}</option>`).join('');
-        const lineHtml = `
-            <div class="je-line flex items-center gap-2 mb-2" data-line="${idx}">
-                <select class="je-account bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm flex-1 min-w-0" style="max-width: 220px;">
-                    <option value="">-- Select Account --</option>
-                    ${acctOptions}
-                </select>
-                <input type="number" class="je-debit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Debit $" min="0">
-                <input type="number" class="je-credit bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm w-28" placeholder="Credit $" min="0">
-            </div>`;
-        container.insertAdjacentHTML('beforeend', lineHtml);
-    }
-
-    function checkJournalEntry() {
-        if (!currentQuestion || currentQuestion.type !== 'je') return;
-        const lines = document.querySelectorAll('.je-line');
-        const userEntries = [];
-        lines.forEach(line => {
-            const account = line.querySelector('.je-account').value;
-            const debit = parseFloat(line.querySelector('.je-debit').value) || 0;
-            const credit = parseFloat(line.querySelector('.je-credit').value) || 0;
-            if (account && (debit > 0 || credit > 0)) {
-                userEntries.push({ account, debit, credit });
-            }
-        });
-
-        const correct = currentQuestion.correctEntries;
-
-        // Check: total debits = total credits
-        const totalDebits = userEntries.reduce((s, e) => s + e.debit, 0);
-        const totalCredits = userEntries.reduce((s, e) => s + e.credit, 0);
-
-        // Match each correct entry against user entries
-        let allMatched = true;
-        const matchedIndices = new Set();
-
-        for (const ce of correct) {
-            let found = false;
-            for (let i = 0; i < userEntries.length; i++) {
-                if (matchedIndices.has(i)) continue;
-                const ue = userEntries[i];
-                const accountMatch = ue.account === ce.account || (ce.altAccount && ue.account === ce.altAccount);
-                const debitMatch = Math.abs(ue.debit - ce.debit) <= Math.max(5, ce.debit * 0.01);
-                const creditMatch = Math.abs(ue.credit - ce.credit) <= Math.max(5, ce.credit * 0.01);
-                if (accountMatch && debitMatch && creditMatch) {
-                    matchedIndices.add(i);
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) { allMatched = false; break; }
-        }
-
-        // Also check no extra meaningful entries
-        const isCorrect = allMatched && userEntries.length === correct.length && Math.abs(totalDebits - totalCredits) < 1;
-
-        // Highlight lines
-        lines.forEach((line, i) => {
-            const account = line.querySelector('.je-account').value;
-            const debit = parseFloat(line.querySelector('.je-debit').value) || 0;
-            const credit = parseFloat(line.querySelector('.je-credit').value) || 0;
-            if (!account && debit === 0 && credit === 0) return;
-
-            if (matchedIndices.has(i)) {
-                line.classList.add('border', 'border-emerald-500', 'rounded-lg', 'bg-emerald-500/10', 'p-1');
-            } else {
-                line.classList.add('border', 'border-rose-500', 'rounded-lg', 'bg-rose-500/10', 'p-1');
-            }
-        });
-
-        // Build the correct answer display
-        let correctDisplay = '<div class="mt-2 font-mono text-sm">';
-        for (const ce of correct) {
-            const acctName = ce.altAccount ? `${ce.account} (or ${ce.altAccount})` : ce.account;
-            if (ce.debit > 0) {
-                correctDisplay += `<p>Dr. ${acctName} <span class="text-white">$${ce.debit.toLocaleString()}</span></p>`;
-            } else {
-                correctDisplay += `<p class="pl-6">Cr. ${acctName} <span class="text-white">$${ce.credit.toLocaleString()}</span></p>`;
-            }
-        }
-        correctDisplay += '</div>';
-
-        score.total++;
-        if (isCorrect) score.correct++;
-        updateScoreDisplay();
-        showFeedback(isCorrect, currentQuestion.explanation + '\n\nCorrect entry:' + correctDisplay);
-        currentQuestion = null;
-    }
-
-    // --- MC Checker ---
-    function checkMC(selected, correct) {
-        if (!currentQuestion) return;
-        const btns = document.querySelectorAll('.mc-btn');
-        btns.forEach((btn, i) => {
-            btn.disabled = true;
-            btn.classList.remove('hover:bg-slate-700/60');
-            if (i === correct) {
-                btn.classList.add('border-emerald-500', 'bg-emerald-500/20');
-                btn.classList.remove('border-slate-600');
-            }
-            if (i === selected && selected !== correct) {
-                btn.classList.add('border-rose-500', 'bg-rose-500/20');
-                btn.classList.remove('border-slate-600');
-            }
-        });
-        const isCorrect = selected === correct;
-        score.total++;
-        if (isCorrect) score.correct++;
-        updateScoreDisplay();
-        showFeedback(isCorrect, currentQuestion.explain);
-        currentQuestion = null;
-    }
-
-    // --- Feedback ---
-    function showFeedback(correct, explanation) {
-        const el = document.getElementById('feedback-area');
-        el.classList.remove('hidden');
-        const colorClass = correct ? 'emerald' : 'rose';
-        el.innerHTML = `
-            <div class="bg-${colorClass}-500/10 border border-${colorClass}-500/30 rounded-lg p-4">
-                <p class="font-bold text-${colorClass}-400 mb-2">${correct ? 'Correct!' : 'Incorrect'}</p>
-                <p class="text-slate-300 text-sm whitespace-pre-line">${explanation}</p>
-            </div>
-        `;
-    }
-
     // --- Walkthrough Step Reveal ---
     function revealWalkthroughStep(step) {
         const content = document.getElementById('wt-step-' + step);
@@ -2161,6 +1508,415 @@
             }
         }
     }
+
+    // ===== QUIZ ENGINE GENERATORS =====
+    const { rand, pick, fmt } = QuizEngine;
+
+    // Helper: build inventory layers for parametric questions
+    function makeLayers() {
+        const biU = rand(50, 200), biC = rand(5, 15);
+        const p1U = rand(50, 200), p1C = biC + rand(1, 5);
+        const p2U = rand(50, 200), p2C = p1C + rand(1, 5);
+        const layers = [
+            { units: biU, cost: biC, label: 'Beg. Inv.' },
+            { units: p1U, cost: p1C, label: 'Purchase 1' },
+            { units: p2U, cost: p2C, label: 'Purchase 2' }
+        ];
+        const totalU = biU + p1U + p2U;
+        const totalC = layers.reduce((s, l) => s + l.units * l.cost, 0);
+        const soldU = rand(Math.floor(totalU * 0.4), Math.floor(totalU * 0.8));
+        const remainU = totalU - soldU;
+        return { layers, totalU, totalC, soldU, remainU, biU, biC, p1U, p1C, p2U, p2C };
+    }
+
+    function layerTable(d) {
+        return '<table class="w-full text-sm mt-1 mb-1">' +
+            '<tr class="border-b border-slate-700"><td class="py-1">Beginning Inventory</td><td class="text-right">' + d.biU + ' units @ $' + d.biC + '</td><td class="text-right">$' + fmt(d.biU * d.biC) + '</td></tr>' +
+            '<tr class="border-b border-slate-700"><td class="py-1">Purchase 1</td><td class="text-right">' + d.p1U + ' units @ $' + d.p1C + '</td><td class="text-right">$' + fmt(d.p1U * d.p1C) + '</td></tr>' +
+            '<tr class="border-b border-slate-700"><td class="py-1">Purchase 2</td><td class="text-right">' + d.p2U + ' units @ $' + d.p2C + '</td><td class="text-right">$' + fmt(d.p2U * d.p2C) + '</td></tr>' +
+            '<tr class="border-t-2 border-slate-500 font-bold"><td class="py-1">Total Available</td><td class="text-right">' + d.totalU + ' units</td><td class="text-right">$' + fmt(d.totalC) + '</td></tr>' +
+            '<tr><td class="py-1 text-rose-400">Units Sold</td><td class="text-right text-rose-400">' + d.soldU + '</td><td></td></tr></table>';
+    }
+
+    // ===== QUESTION GENERATORS (13 types) =====
+
+    function genFIFOCalc() {
+        const d = makeLayers();
+        const r = calcFIFO(d.layers, d.soldU);
+        const ask = pick(['COGS', 'Ending Inventory']);
+        const answer = ask === 'COGS' ? r.cogs : r.ei;
+        const detail = ask === 'COGS' ? r.cogsDetail : r.eiDetail;
+        const work = detail.map(x => x.units + ' \u00d7 $' + x.cost + ' = $' + fmt(x.units * x.cost)).join('<br>');
+        return {
+            question: 'Using <strong>FIFO</strong>, calculate <strong>' + ask + '</strong>.' + layerTable(d),
+            type: 'number', answer: answer,
+            explanation: 'FIFO ' + ask + ':<br>' + work + '<br><strong>Total = $' + fmt(answer) + '</strong>'
+        };
+    }
+
+    function genLIFOCalc() {
+        const d = makeLayers();
+        const r = calcLIFO(d.layers, d.soldU);
+        const ask = pick(['COGS', 'Ending Inventory']);
+        const answer = ask === 'COGS' ? r.cogs : r.ei;
+        const detail = ask === 'COGS' ? r.cogsDetail : r.eiDetail;
+        const work = detail.map(x => x.units + ' \u00d7 $' + x.cost + ' = $' + fmt(x.units * x.cost)).join('<br>');
+        return {
+            question: 'Using <strong>LIFO</strong>, calculate <strong>' + ask + '</strong>.' + layerTable(d),
+            type: 'number', answer: answer,
+            explanation: 'LIFO ' + ask + ':<br>' + work + '<br><strong>Total = $' + fmt(answer) + '</strong>'
+        };
+    }
+
+    function genWACalc() {
+        const d = makeLayers();
+        const r = calcWA(d.layers, d.soldU);
+        const ask = pick(['COGS', 'Ending Inventory']);
+        const answer = ask === 'COGS' ? r.cogs : r.ei;
+        const avgStr = (d.totalC / d.totalU).toFixed(2);
+        const units = ask === 'COGS' ? d.soldU : d.remainU;
+        return {
+            question: 'Using <strong>Weighted Average</strong>, calculate <strong>' + ask + '</strong>.' + layerTable(d),
+            type: 'number', answer: answer,
+            explanation: 'Average cost = $' + fmt(d.totalC) + ' \u00f7 ' + d.totalU + ' = $' + avgStr + '/unit<br>' + ask + ' = ' + units + ' \u00d7 $' + avgStr + ' = <strong>$' + fmt(answer) + '</strong>'
+        };
+    }
+
+    function genMethodComparison() {
+        const scenarios = [
+            { q: 'When prices are <strong>rising</strong>, which method produces the <strong>highest COGS</strong>?', opts: ['FIFO','LIFO','Weighted Average','All produce the same COGS'], ans: 1, ex: 'LIFO assigns the newest (highest) costs to COGS first, producing the highest COGS when prices rise.' },
+            { q: 'When prices are <strong>rising</strong>, which method reports the <strong>highest ending inventory</strong> on the balance sheet?', opts: ['FIFO','LIFO','Weighted Average','All report the same'], ans: 0, ex: 'FIFO leaves the newest (most expensive) units in ending inventory, producing the highest balance sheet value.' },
+            { q: 'When prices are <strong>falling</strong>, which method produces the <strong>lowest taxable income</strong>?', opts: ['FIFO','LIFO','Weighted Average','It depends on the tax rate'], ans: 0, ex: 'When prices fall, FIFO assigns the oldest (highest) costs to COGS \u2192 highest COGS \u2192 lowest income.' },
+            { q: 'Which method always falls <strong>between</strong> FIFO and LIFO for both COGS and ending inventory?', opts: ['FIFO','LIFO','Weighted Average','None of them'], ans: 2, ex: 'Weighted Average blends all purchase prices, so it always produces values between the FIFO and LIFO extremes.' },
+            { q: 'Which method best <strong>matches current costs with current revenues</strong>?', opts: ['FIFO','LIFO','Weighted Average','All match equally well'], ans: 1, ex: 'LIFO assigns the most recent costs to COGS, providing the best match of current costs against current revenues.' },
+            { q: 'A company wants to <strong>minimize tax payments</strong> during rising prices (US GAAP). Which method?', opts: ['FIFO','LIFO','Weighted Average','It does not matter'], ans: 1, ex: 'LIFO \u2192 highest COGS \u2192 lowest taxable income \u2192 lowest taxes when prices rise.' },
+            { q: 'A startup wants to report the <strong>highest net income</strong> to attract investors. Prices are rising. Which method?', opts: ['FIFO','LIFO','Weighted Average','Specific Identification'], ans: 0, ex: 'FIFO assigns older, lower costs to COGS \u2192 lowest COGS \u2192 highest gross profit and net income.' },
+            { q: 'A European company (IFRS) wants to <strong>smooth price fluctuations</strong>. Which method should it use?', opts: ['FIFO','LIFO','Weighted Average','Any method under IFRS'], ans: 2, ex: 'LIFO is prohibited under IFRS. Weighted Average blends all costs, smoothing fluctuations better than FIFO.' },
+            { q: 'When prices are <strong>falling</strong>, which method reports the <strong>highest gross profit</strong>?', opts: ['FIFO','LIFO','Weighted Average','Method does not matter when prices fall'], ans: 1, ex: 'When prices fall, LIFO assigns the newest (lower) costs to COGS \u2192 lowest COGS \u2192 highest gross profit.' },
+            { q: 'A bank wants the most <strong>realistic current value</strong> of inventory on the balance sheet. Which method?', opts: ['FIFO','LIFO','Weighted Average','All show current value'], ans: 0, ex: 'FIFO ending inventory consists of the most recently purchased units, so the balance sheet value best approximates current replacement cost.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.q, type: 'mc', options: s.opts, answer: s.ans, explanation: s.ex };
+    }
+
+    function genCOGSFormula() {
+        const bi = rand(5, 40) * 1000;
+        const purch = rand(20, 100) * 1000;
+        const ei = rand(3, 30) * 1000;
+        const cogs = bi + purch - ei;
+        const ask = pick(['COGS', 'Ending Inventory', 'Purchases']);
+        if (ask === 'COGS') {
+            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Purchases = $' + fmt(purch) + ', Ending Inventory = $' + fmt(ei) + '. Calculate <strong>COGS</strong>.', type: 'number', answer: cogs, explanation: 'COGS = Beginning Inventory + Purchases \u2212 Ending Inventory = $' + fmt(bi) + ' + $' + fmt(purch) + ' \u2212 $' + fmt(ei) + ' = <strong>$' + fmt(cogs) + '</strong>' };
+        } else if (ask === 'Ending Inventory') {
+            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Purchases = $' + fmt(purch) + ', COGS = $' + fmt(cogs) + '. Calculate <strong>Ending Inventory</strong>.', type: 'number', answer: ei, explanation: 'Ending Inventory = Beginning Inventory + Purchases \u2212 COGS = $' + fmt(bi) + ' + $' + fmt(purch) + ' \u2212 $' + fmt(cogs) + ' = <strong>$' + fmt(ei) + '</strong>' };
+        } else {
+            return { question: 'Beginning Inventory = $' + fmt(bi) + ', COGS = $' + fmt(cogs) + ', Ending Inventory = $' + fmt(ei) + '. Calculate <strong>Purchases</strong>.', type: 'number', answer: purch, explanation: 'Purchases = COGS + Ending Inventory \u2212 Beginning Inventory = $' + fmt(cogs) + ' + $' + fmt(ei) + ' \u2212 $' + fmt(bi) + ' = <strong>$' + fmt(purch) + '</strong>' };
+        }
+    }
+
+    function genGrossMargin() {
+        const rev = rand(50, 500) * 1000;
+        const cogsPct = rand(40, 80);
+        const cogsAmt = Math.round(rev * cogsPct / 100);
+        const gp = rev - cogsAmt;
+        const gmPct = Math.round((gp / rev) * 10000) / 100;
+        const ask = pick(['gross profit', 'gross margin percentage']);
+        if (ask === 'gross profit') {
+            return { question: 'Revenue = $' + fmt(rev) + ', COGS = $' + fmt(cogsAmt) + '. Calculate <strong>Gross Profit</strong>.', type: 'number', answer: gp, explanation: 'Gross Profit = Revenue \u2212 COGS = $' + fmt(rev) + ' \u2212 $' + fmt(cogsAmt) + ' = <strong>$' + fmt(gp) + '</strong>' };
+        } else {
+            return { question: 'Revenue = $' + fmt(rev) + ', COGS = $' + fmt(cogsAmt) + '. Calculate the <strong>Gross Margin %</strong> (enter as a whole number, e.g. 35 for 35%).', type: 'number', answer: gmPct, explanation: 'Gross Margin = (Revenue \u2212 COGS) \u00f7 Revenue = ($' + fmt(rev) + ' \u2212 $' + fmt(cogsAmt) + ') \u00f7 $' + fmt(rev) + ' = <strong>' + gmPct + '%</strong>' };
+        }
+    }
+
+    function genLCNRV() {
+        const cost = rand(10, 80) * 1000;
+        const nrv = cost - rand(2, 15) * 1000;
+        const writedown = cost - nrv;
+        const ask = pick(['write-down amount', 'reported inventory value']);
+        if (ask === 'write-down amount') {
+            return { question: 'Inventory carrying cost = $' + fmt(cost) + '. Net Realizable Value (NRV) = $' + fmt(nrv) + '. Under <strong>LCNRV</strong>, what is the <strong>write-down amount</strong>?', type: 'number', answer: writedown, explanation: 'Write-down = Cost \u2212 NRV = $' + fmt(cost) + ' \u2212 $' + fmt(nrv) + ' = <strong>$' + fmt(writedown) + '</strong>. Inventory must be written down because NRV < Cost.' };
+        } else {
+            return { question: 'Inventory carrying cost = $' + fmt(cost) + '. Net Realizable Value (NRV) = $' + fmt(nrv) + '. Under <strong>LCNRV</strong>, at what value should inventory be reported?', type: 'number', answer: nrv, explanation: 'Report at the <strong>lower</strong> of cost ($' + fmt(cost) + ') or NRV ($' + fmt(nrv) + ') = <strong>$' + fmt(nrv) + '</strong>.' };
+        }
+    }
+
+    function genInvTurnover() {
+        const cogsAmt = rand(100, 800) * 1000;
+        const avgInv = rand(20, 150) * 1000;
+        const turnover = Math.round((cogsAmt / avgInv) * 100) / 100;
+        const dio = Math.round(365 / turnover);
+        const ask = pick(['inventory turnover', 'days inventory outstanding']);
+        if (ask === 'inventory turnover') {
+            return { question: 'COGS = $' + fmt(cogsAmt) + ', Average Inventory = $' + fmt(avgInv) + '. Calculate <strong>Inventory Turnover</strong> (round to 2 decimal places).', type: 'number', answer: turnover, explanation: 'Inventory Turnover = COGS \u00f7 Average Inventory = $' + fmt(cogsAmt) + ' \u00f7 $' + fmt(avgInv) + ' = <strong>' + turnover.toFixed(2) + '\u00d7</strong>' };
+        } else {
+            return { question: 'COGS = $' + fmt(cogsAmt) + ', Average Inventory = $' + fmt(avgInv) + '. Calculate <strong>Days Inventory Outstanding</strong> (round to nearest day).', type: 'number', answer: dio, explanation: 'Inventory Turnover = $' + fmt(cogsAmt) + ' \u00f7 $' + fmt(avgInv) + ' = ' + turnover.toFixed(2) + '\u00d7<br>DIO = 365 \u00f7 ' + turnover.toFixed(2) + ' = <strong>' + dio + ' days</strong>' };
+        }
+    }
+
+    function genTrueFalse() {
+        const items = [
+            { s: 'LIFO is permitted under both US GAAP and IFRS.', a: false, e: 'False. LIFO is permitted under US GAAP but prohibited under IFRS.' },
+            { s: 'Under FIFO, ending inventory on the balance sheet approximates current replacement cost.', a: true, e: 'True. FIFO leaves the most recently purchased (newest) units in ending inventory.' },
+            { s: 'A company can use LIFO for tax purposes and FIFO for financial reporting.', a: false, e: 'False. The LIFO Conformity Rule requires LIFO for both if used for taxes.' },
+            { s: 'When prices are constant, FIFO, LIFO, and Weighted Average all produce the same COGS.', a: true, e: 'True. With identical unit costs, the allocation order does not matter.' },
+            { s: 'Under the periodic system, COGS is calculated at the end of the period.', a: true, e: 'True. Periodic COGS = Beginning Inventory + Purchases \u2212 Ending Inventory, computed at period end.' },
+            { s: 'Inventory write-downs under LCNRV can be reversed under US GAAP.', a: false, e: 'False. US GAAP prohibits reversal of inventory write-downs. IFRS allows reversal up to original cost.' },
+            { s: 'LIFO liquidation occurs when a company dips into old, lower-cost LIFO layers.', a: true, e: 'True. This happens when units sold exceed current-period purchases, inflating reported profits.' },
+            { s: 'Weighted Average always falls between FIFO and LIFO for COGS and ending inventory.', a: true, e: 'True. The blended average cost is always between the oldest and newest costs.' },
+            { s: 'The LIFO Reserve equals LIFO Inventory minus FIFO Inventory.', a: false, e: 'False. LIFO Reserve = FIFO Inventory \u2212 LIFO Inventory (not the reverse).' },
+            { s: 'Under FIFO, COGS reflects the most recent purchase prices.', a: false, e: 'False. Under FIFO, COGS reflects the oldest purchase prices. Ending inventory reflects the newest.' },
+            { s: 'Net Realizable Value equals estimated selling price minus costs to complete and sell.', a: true, e: 'True. NRV = Selling Price \u2212 Costs to Complete \u2212 Costs to Sell.' },
+            { s: 'Inventory turnover is calculated as Revenue divided by Average Inventory.', a: false, e: 'False. Inventory Turnover = COGS \u00f7 Average Inventory (not Revenue).' },
+            { s: 'Consignment inventory is reported as an asset of the consignor, not the consignee.', a: true, e: 'True. The consignor retains title until the goods are sold to a third party.' },
+            { s: 'Freight-in costs are included in the cost of inventory.', a: true, e: 'True. Freight-in (shipping costs to get inventory to the buyer) is added to inventory cost.' },
+            { s: 'Freight-out costs are part of inventory cost on the balance sheet.', a: false, e: 'False. Freight-out (delivery to customers) is a selling expense, not an inventory cost.' }
+        ];
+        const it = pick(items);
+        return {
+            question: 'True or False: <em>"' + it.s + '"</em>',
+            type: 'mc', options: ['True', 'False'],
+            answer: it.a ? 0 : 1,
+            explanation: it.e
+        };
+    }
+
+    function genPeriodicVsPerpetual() {
+        const scenarios = [
+            { q: 'In this system, a <strong>Purchases</strong> account is used instead of debiting Inventory directly.', opts: ['Periodic system','Perpetual system','Both systems','Neither system'], ans: 0, ex: 'Under the periodic system, purchases are recorded to a separate Purchases account. COGS is computed at period-end.' },
+            { q: 'COGS is recorded <strong>with each sale</strong> transaction in this system.', opts: ['Periodic system','Perpetual system','Both systems','Neither system'], ans: 1, ex: 'The perpetual system updates Inventory and COGS continuously as each sale occurs.' },
+            { q: 'A <strong>physical count</strong> is the primary means of determining ending inventory in this system.', opts: ['Periodic system','Perpetual system','Both systems','Neither system'], ans: 0, ex: 'The periodic system relies on a physical count at period-end. Perpetual tracks inventory continuously but still verifies with counts.' },
+            { q: 'Under FIFO, this system produces the <strong>same results</strong> as the periodic system.', opts: ['Periodic system','Perpetual system','Both systems','Neither system'], ans: 1, ex: 'Under FIFO, periodic and perpetual always produce identical COGS and ending inventory because the oldest costs are used first regardless.' },
+            { q: 'Under LIFO, this system may produce <strong>different</strong> COGS than the periodic system.', opts: ['Periodic system','Perpetual system','Both systems','Neither system'], ans: 1, ex: 'Under LIFO perpetual, COGS is computed at each sale using the newest costs at that point in time, which may differ from period-end LIFO.' },
+            { q: 'Modern point-of-sale and barcode scanning systems make this approach common in practice.', opts: ['Periodic system','Perpetual system','Both systems','Neither system'], ans: 1, ex: 'Technology enables real-time inventory tracking, making the perpetual system the standard for most businesses today.' },
+            { q: 'Closing entries at period-end include debiting Income Summary and crediting Purchases.', opts: ['Periodic system','Perpetual system','Both systems','Neither system'], ans: 0, ex: 'The periodic system uses a Purchases account that must be closed at period-end. The perpetual system does not use a Purchases account.' },
+            { q: 'The inventory account balance is always up-to-date in this system.', opts: ['Periodic system','Perpetual system','Both systems','Neither system'], ans: 1, ex: 'The perpetual system updates the Inventory account with every purchase and sale, keeping it current at all times.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.q, type: 'mc', options: s.opts, answer: s.ans, explanation: s.ex };
+    }
+
+    function genLIFOReserve() {
+        const fifoInv = rand(500, 5000) * 10;
+        const reserve = rand(50, 500) * 10;
+        const lifoInv = fifoInv - reserve;
+        const taxRate = pick([25, 30, 35]);
+        const askType = pick(['LIFO Inventory', 'FIFO Inventory', 'LIFO Reserve', 'tax savings']);
+        if (askType === 'LIFO Inventory') {
+            return { question: 'FIFO Inventory = $' + fmt(fifoInv) + ', LIFO Reserve = $' + fmt(reserve) + '. Calculate <strong>LIFO Inventory</strong>.', type: 'number', answer: lifoInv, explanation: 'LIFO Inventory = FIFO Inventory \u2212 LIFO Reserve = $' + fmt(fifoInv) + ' \u2212 $' + fmt(reserve) + ' = <strong>$' + fmt(lifoInv) + '</strong>' };
+        } else if (askType === 'FIFO Inventory') {
+            return { question: 'LIFO Inventory = $' + fmt(lifoInv) + ', LIFO Reserve = $' + fmt(reserve) + '. Calculate <strong>FIFO Inventory</strong>.', type: 'number', answer: fifoInv, explanation: 'FIFO Inventory = LIFO Inventory + LIFO Reserve = $' + fmt(lifoInv) + ' + $' + fmt(reserve) + ' = <strong>$' + fmt(fifoInv) + '</strong>' };
+        } else if (askType === 'LIFO Reserve') {
+            return { question: 'FIFO Inventory = $' + fmt(fifoInv) + ', LIFO Inventory = $' + fmt(lifoInv) + '. Calculate the <strong>LIFO Reserve</strong>.', type: 'number', answer: reserve, explanation: 'LIFO Reserve = FIFO Inventory \u2212 LIFO Inventory = $' + fmt(fifoInv) + ' \u2212 $' + fmt(lifoInv) + ' = <strong>$' + fmt(reserve) + '</strong>' };
+        } else {
+            const savings = Math.round(reserve * taxRate / 100);
+            return { question: 'LIFO Reserve = $' + fmt(reserve) + ', Tax Rate = ' + taxRate + '%. Calculate the <strong>cumulative tax savings</strong> from using LIFO.', type: 'number', answer: savings, explanation: 'Tax Savings = LIFO Reserve \u00d7 Tax Rate = $' + fmt(reserve) + ' \u00d7 ' + taxRate + '% = <strong>$' + fmt(savings) + '</strong>' };
+        }
+    }
+
+    function genFinStmtEffect() {
+        const scenarios = [
+            { q: 'If a company switches from FIFO to LIFO during <strong>rising prices</strong>, what happens to reported net income?', opts: ['Net income increases','Net income decreases','Net income stays the same','Cannot be determined'], ans: 1, ex: 'Switching to LIFO during inflation \u2192 higher COGS \u2192 lower gross profit \u2192 lower net income.' },
+            { q: 'A company using LIFO during inflation reports _____ on its balance sheet vs. FIFO.', opts: ['Higher inventory and higher RE','Lower inventory and lower RE','Higher inventory and lower RE','Lower inventory and higher RE'], ans: 1, ex: 'LIFO \u2192 older (lower) costs in ending inventory + lower NI accumulates into lower retained earnings.' },
+            { q: 'How does inventory method affect <strong>actual cash flows</strong> (assuming it affects tax return)?', opts: ['No effect on cash flows','Only affects operating CF through COGS','Affects CF through different tax payments','Affects CF through different purchase prices'], ans: 2, ex: 'The method does not change physical transactions, but LIFO can lower tax payments \u2192 higher after-tax cash flow.' },
+            { q: 'An inventory write-down under LCNRV affects the income statement by:', opts: ['Decreasing revenue','Increasing COGS, reducing gross profit','Recording an extraordinary gain','No income statement effect'], ans: 1, ex: 'The write-down increases COGS (or records a separate loss) \u2192 lower gross profit and net income.' },
+            { q: 'LIFO liquidation during rising prices causes:', opts: ['Lower reported profits','Higher reported profits and potential tax increase','No change to profits','Lower inventory turnover'], ans: 1, ex: 'Dipping into old low-cost layers \u2192 artificially low COGS \u2192 inflated profits \u2192 higher taxes.' },
+            { q: 'A company increases its LIFO Reserve by $10,000 this year. This means LIFO COGS was _____ than FIFO COGS.', opts: ['$10,000 higher','$10,000 lower','The same','Cannot determine from reserve change alone'], ans: 0, ex: 'An increase in LIFO Reserve means more cost stayed in COGS under LIFO vs. FIFO: FIFO COGS = LIFO COGS \u2212 \u0394 Reserve.' },
+            { q: 'Which ratio is <strong>overstated</strong> under LIFO (rising prices) compared to FIFO?', opts: ['Current ratio','Gross margin','Inventory turnover','Return on equity'], ans: 2, ex: 'LIFO: higher COGS (numerator \u2191) and lower average inventory (denominator \u2193) both push inventory turnover up.' },
+            { q: 'Converting a LIFO company to FIFO basis increases Total Assets by:', opts: ['The full LIFO Reserve','The LIFO Reserve minus deferred tax','The change in LIFO Reserve','The LIFO Reserve times the tax rate'], ans: 0, ex: 'Adding back the full LIFO Reserve to inventory increases total assets. The tax effect goes to liabilities and equity.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.q, type: 'mc', options: s.opts, answer: s.ans, explanation: s.ex };
+    }
+
+    function genGoodsAvailable() {
+        const bi = rand(5, 40) * 1000;
+        const p1 = rand(10, 50) * 1000;
+        const p2 = rand(10, 50) * 1000;
+        const freight = rand(1, 5) * 1000;
+        const returns = rand(1, 8) * 1000;
+        const ask = pick(['basic', 'with freight', 'with returns']);
+        if (ask === 'basic') {
+            const ga = bi + p1 + p2;
+            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Purchase 1 = $' + fmt(p1) + ', Purchase 2 = $' + fmt(p2) + '. Calculate <strong>Cost of Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Goods Available = BI + Purchases = $' + fmt(bi) + ' + $' + fmt(p1) + ' + $' + fmt(p2) + ' = <strong>$' + fmt(ga) + '</strong>' };
+        } else if (ask === 'with freight') {
+            const ga = bi + p1 + p2 + freight;
+            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Purchases = $' + fmt(p1 + p2) + ', Freight-In = $' + fmt(freight) + '. Calculate <strong>Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Freight-in is part of inventory cost. Goods Available = $' + fmt(bi) + ' + $' + fmt(p1 + p2) + ' + $' + fmt(freight) + ' = <strong>$' + fmt(ga) + '</strong>' };
+        } else {
+            const netPurch = p1 + p2 - returns;
+            const ga = bi + netPurch;
+            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Gross Purchases = $' + fmt(p1 + p2) + ', Purchase Returns = $' + fmt(returns) + '. Calculate <strong>Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Net Purchases = $' + fmt(p1 + p2) + ' \u2212 $' + fmt(returns) + ' = $' + fmt(netPurch) + '<br>Goods Available = $' + fmt(bi) + ' + $' + fmt(netPurch) + ' = <strong>$' + fmt(ga) + '</strong>' };
+        }
+    }
+
+    // ===== JE GENERATORS (25 templates) =====
+
+    function jeGenPurchaseCash() {
+        const a = rand(5, 80) * 100;
+        return { prompt: 'A company purchases inventory for <strong>$' + fmt(a) + '</strong> cash.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+    }
+    function jeGenPurchaseOnAccount() {
+        const a = rand(5, 80) * 100;
+        return { prompt: 'A company purchases inventory on account for <strong>$' + fmt(a) + '</strong>.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
+    }
+    function jeGenPayFreight() {
+        const a = rand(2, 15) * 100;
+        return { prompt: 'A company pays <strong>$' + fmt(a) + '</strong> cash for freight-in on an inventory shipment.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+    }
+    function jeGenPurchaseReturn() {
+        const a = rand(3, 30) * 100;
+        return { prompt: 'A company returns defective inventory costing <strong>$' + fmt(a) + '</strong> to the supplier (purchased on account).', answer: [{ acct: 'Accounts Payable', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
+    }
+    function jeGenPurchaseDiscount() {
+        const inv = rand(20, 80) * 100;
+        const disc = Math.round(inv * pick([1, 2, 3]) / 100);
+        const paid = inv - disc;
+        return { prompt: 'A company pays for a <strong>$' + fmt(inv) + '</strong> inventory purchase within the discount period, earning a <strong>$' + fmt(disc) + '</strong> purchase discount. Record the payment.', answer: [{ acct: 'Accounts Payable', dr: inv, cr: 0 }, { acct: 'Cash', dr: 0, cr: paid }, { acct: 'Inventory', dr: 0, cr: disc }] };
+    }
+    function jeGenSaleRevenue() {
+        const a = rand(10, 100) * 100;
+        const onAcct = pick([true, false]);
+        if (onAcct) {
+            return { prompt: 'A company sells inventory to a customer on account for <strong>$' + fmt(a) + '</strong>. Record the <strong>revenue entry only</strong>.', answer: [{ acct: 'Accounts Receivable', dr: a, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: a }] };
+        }
+        return { prompt: 'A company sells inventory for <strong>$' + fmt(a) + '</strong> cash. Record the <strong>revenue entry only</strong>.', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: a }] };
+    }
+    function jeGenRecordCOGS() {
+        const a = rand(5, 60) * 100;
+        return { prompt: 'The cost of inventory just sold was <strong>$' + fmt(a) + '</strong>. Record the <strong>COGS entry</strong>.', answer: [{ acct: 'Cost of Goods Sold', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
+    }
+    function jeGenSaleWithCOGS() {
+        const units = rand(10, 100);
+        const costPer = rand(5, 20);
+        const sellPer = costPer + rand(5, 15);
+        const rev = units * sellPer;
+        const cost = units * costPer;
+        return { prompt: 'A company sells <strong>' + units + ' units</strong> for <strong>$' + sellPer + '/unit</strong> cash. Cost per unit is <strong>$' + costPer + '</strong>. Record <strong>both</strong> the revenue and COGS entries.', answer: [{ acct: 'Cash', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: rev }, { acct: 'Cost of Goods Sold', dr: cost, cr: 0 }, { acct: 'Inventory', dr: 0, cr: cost }] };
+    }
+    function jeGenSalesReturn() {
+        const rev = rand(5, 30) * 100;
+        const cost = Math.round(rev * rand(40, 70) / 100);
+        return { prompt: 'A customer returns merchandise that was sold for <strong>$' + fmt(rev) + '</strong> (cost was <strong>$' + fmt(cost) + '</strong>). The customer had paid cash. Record <strong>both</strong> the sales return and inventory restoration.', answer: [{ acct: 'Sales Returns and Allowances', dr: rev, cr: 0 }, { acct: 'Cash', dr: 0, cr: rev }, { acct: 'Inventory', dr: cost, cr: 0 }, { acct: 'Cost of Goods Sold', dr: 0, cr: cost }] };
+    }
+    function jeGenLCNRV() {
+        const cost = rand(10, 80) * 1000;
+        const nrv = cost - rand(2, 15) * 1000;
+        const wd = cost - nrv;
+        return { prompt: 'Inventory has a carrying cost of <strong>$' + fmt(cost) + '</strong> and NRV of <strong>$' + fmt(nrv) + '</strong>. Record the <strong>LCNRV write-down</strong>.', answer: [{ acct: 'Loss on Inventory Write-down', dr: wd, cr: 0 }, { acct: 'Inventory', dr: 0, cr: wd }] };
+    }
+    function jeGenEndingInvAdjust() {
+        const oldBal = rand(20, 60) * 1000;
+        const counted = rand(10, 50) * 1000;
+        const diff = oldBal - counted;
+        return { prompt: 'Under the periodic system, the Inventory account shows <strong>$' + fmt(oldBal) + '</strong> (beginning balance). A physical count shows ending inventory of <strong>$' + fmt(counted) + '</strong>. COGS for the period was <strong>$' + fmt(diff) + '</strong>. Record the adjusting entry to update inventory.', answer: [{ acct: 'Cost of Goods Sold', dr: diff, cr: 0 }, { acct: 'Inventory', dr: 0, cr: diff }] };
+    }
+    function jeGenPhysicalCountAdjust() {
+        const book = rand(30, 80) * 1000;
+        const shrinkPct = rand(1, 5);
+        const shrink = Math.round(book * shrinkPct / 100);
+        return { prompt: 'The perpetual inventory system shows a balance of <strong>$' + fmt(book) + '</strong>. A physical count reveals actual inventory of <strong>$' + fmt(book - shrink) + '</strong>. Record the <strong>shrinkage adjustment</strong>.', answer: [{ acct: 'Cost of Goods Sold', dr: shrink, cr: 0 }, { acct: 'Inventory', dr: 0, cr: shrink }] };
+    }
+    function jeGenFreightIn() {
+        const a = rand(2, 20) * 100;
+        return { prompt: 'A company receives an invoice for <strong>$' + fmt(a) + '</strong> freight charges on incoming inventory (FOB shipping point). The company will pay later.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
+    }
+    function jeGenFreightOut() {
+        const a = rand(2, 15) * 100;
+        return { prompt: 'A company pays <strong>$' + fmt(a) + '</strong> cash to ship goods to a customer (freight-out).', answer: [{ acct: 'Freight-Out Expense', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+    }
+    function jeGenPurchasePeriodicSystem() {
+        const a = rand(10, 80) * 100;
+        return { prompt: 'Under the <strong>periodic</strong> system, a company purchases inventory on account for <strong>$' + fmt(a) + '</strong>. (Use the Purchases account.)', answer: [{ acct: 'Purchases', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
+    }
+    function jeGenClosingCOGSPeriodic() {
+        const bi = rand(10, 40) * 1000;
+        const purch = rand(30, 100) * 1000;
+        const ei = rand(8, 35) * 1000;
+        const cogs = bi + purch - ei;
+        return { prompt: 'Under the periodic system at year-end: Beginning Inventory = <strong>$' + fmt(bi) + '</strong>, Purchases = <strong>$' + fmt(purch) + '</strong>, Ending Inventory = <strong>$' + fmt(ei) + '</strong>. Record the closing entry to establish COGS. (Debit COGS, debit Ending Inventory, credit Beginning Inventory, credit Purchases.)', answer: [{ acct: 'Cost of Goods Sold', dr: cogs, cr: 0 }, { acct: 'Inventory', dr: ei, cr: 0 }, { acct: 'Inventory', dr: 0, cr: bi }, { acct: 'Purchases', dr: 0, cr: purch }] };
+    }
+    function jeGenConsignmentSale() {
+        const rev = rand(5, 30) * 1000;
+        const comm = Math.round(rev * rand(8, 15) / 100);
+        const remit = rev - comm;
+        return { prompt: 'A consignee sells consigned goods for <strong>$' + fmt(rev) + '</strong> cash, earning a <strong>$' + fmt(comm) + '</strong> commission. Record the consignee\'s entry to remit proceeds to the consignor.', answer: [{ acct: 'Cash', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: comm }, { acct: 'Accounts Payable', dr: 0, cr: remit }] };
+    }
+    function jeGenWarrantyProvision() {
+        const sales = rand(50, 200) * 1000;
+        const pct = pick([2, 3, 5]);
+        const amt = Math.round(sales * pct / 100);
+        return { prompt: 'A company estimates warranty costs at <strong>' + pct + '%</strong> of sales (<strong>$' + fmt(sales) + '</strong>). Record the <strong>warranty provision</strong>.', answer: [{ acct: 'Warranty Expense', dr: amt, cr: 0 }, { acct: 'Warranty Liability', dr: 0, cr: amt }] };
+    }
+    function jeGenPayAP() {
+        const a = rand(5, 60) * 100;
+        return { prompt: 'A company pays <strong>$' + fmt(a) + '</strong> cash to settle an accounts payable balance from an earlier inventory purchase.', answer: [{ acct: 'Accounts Payable', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+    }
+    function jeGenCollectAR() {
+        const a = rand(5, 60) * 100;
+        return { prompt: 'A company collects <strong>$' + fmt(a) + '</strong> cash from a customer on account (from a prior inventory sale).', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: a }] };
+    }
+    function jeGenCashSale() {
+        const rev = rand(10, 80) * 100;
+        const cost = Math.round(rev * rand(40, 70) / 100);
+        return { prompt: 'A company makes a cash sale of <strong>$' + fmt(rev) + '</strong>. The cost of goods sold is <strong>$' + fmt(cost) + '</strong>. Record <strong>both</strong> entries.', answer: [{ acct: 'Cash', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: rev }, { acct: 'Cost of Goods Sold', dr: cost, cr: 0 }, { acct: 'Inventory', dr: 0, cr: cost }] };
+    }
+    function jeGenCreditSaleReturn() {
+        const rev = rand(5, 25) * 100;
+        const cost = Math.round(rev * rand(40, 65) / 100);
+        return { prompt: 'A customer returns merchandise originally sold on account for <strong>$' + fmt(rev) + '</strong> (cost <strong>$' + fmt(cost) + '</strong>). A credit is issued. Record <strong>both</strong> entries.', answer: [{ acct: 'Sales Returns and Allowances', dr: rev, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: rev }, { acct: 'Inventory', dr: cost, cr: 0 }, { acct: 'Cost of Goods Sold', dr: 0, cr: cost }] };
+    }
+    function jeGenSalesDiscount() {
+        const inv = rand(10, 60) * 100;
+        const disc = Math.round(inv * pick([1, 2, 3]) / 100);
+        const received = inv - disc;
+        return { prompt: 'A customer pays their <strong>$' + fmt(inv) + '</strong> account receivable within the discount period, earning a <strong>$' + fmt(disc) + '</strong> sales discount. Record the collection.', answer: [{ acct: 'Cash', dr: received, cr: 0 }, { acct: 'Sales Discounts', dr: disc, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: inv }] };
+    }
+    function jeGenPurchaseReturnCash() {
+        const a = rand(3, 25) * 100;
+        return { prompt: 'A company returns defective inventory costing <strong>$' + fmt(a) + '</strong> and receives a <strong>cash refund</strong> from the supplier.', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
+    }
+    function jeGenCreditSaleWithCOGS() {
+        const units = rand(10, 80);
+        const costPer = rand(5, 18);
+        const sellPer = costPer + rand(5, 12);
+        const rev = units * sellPer;
+        const cost = units * costPer;
+        return { prompt: 'A company sells <strong>' + units + ' units</strong> on account at <strong>$' + sellPer + '/unit</strong>. Cost per unit is <strong>$' + costPer + '</strong>. Record <strong>both</strong> the revenue and COGS entries.', answer: [{ acct: 'Accounts Receivable', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: rev }, { acct: 'Cost of Goods Sold', dr: cost, cr: 0 }, { acct: 'Inventory', dr: 0, cr: cost }] };
+    }
+    function jeGenFreightInCash() {
+        const a = rand(2, 12) * 100;
+        return { prompt: 'A company pays <strong>$' + fmt(a) + '</strong> cash for freight charges on an incoming inventory shipment (FOB shipping point).', answer: [{ acct: 'Freight-In', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+    }
+
+    // ===== ACCOUNTS & INIT =====
+    const jeAccounts = ['Cash','Accounts Receivable','Inventory','Purchases','Purchase Returns','Purchase Discounts','Freight-In','Accounts Payable','Sales Revenue','Cost of Goods Sold','Sales Returns and Allowances','Sales Discounts','Freight-Out Expense','Loss on Inventory Write-down','Warranty Expense','Warranty Liability','Income Summary'];
+
+    QuizEngine.init({
+        questionGenerators: [
+            genFIFOCalc, genLIFOCalc, genWACalc,
+            genMethodComparison, genCOGSFormula, genGrossMargin,
+            genLCNRV, genInvTurnover, genTrueFalse,
+            genPeriodicVsPerpetual, genLIFOReserve,
+            genFinStmtEffect, genGoodsAvailable
+        ],
+        jeGenerators: [
+            jeGenPurchaseCash, jeGenPurchaseOnAccount, jeGenPayFreight,
+            jeGenPurchaseReturn, jeGenPurchaseDiscount,
+            jeGenSaleRevenue, jeGenRecordCOGS, jeGenSaleWithCOGS,
+            jeGenSalesReturn, jeGenLCNRV,
+            jeGenEndingInvAdjust, jeGenPhysicalCountAdjust,
+            jeGenFreightIn, jeGenFreightOut,
+            jeGenPurchasePeriodicSystem, jeGenClosingCOGSPeriodic,
+            jeGenConsignmentSale, jeGenWarrantyProvision,
+            jeGenPayAP, jeGenCollectAR,
+            jeGenCashSale, jeGenCreditSaleReturn,
+            jeGenSalesDiscount, jeGenPurchaseReturnCash,
+            jeGenCreditSaleWithCOGS, jeGenFreightInCash
+        ],
+        jeAccounts: jeAccounts,
+        accentColor: 'rose',
+        qCopies: 8,
+        jeCopies: 2
+    });
     </script>
 
     <!-- Footer -->

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fixed Assets &amp; Depreciation | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -489,6 +490,7 @@
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-2xl font-bold text-teal-400">Practice Questions</h2>
                         <div class="flex items-center gap-4">
+                            <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
                             <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
                             <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
                         </div>
@@ -497,20 +499,23 @@
                     <div id="p-answer" class="mb-4 hidden"></div>
                     <div id="p-feedback" class="mb-4 hidden"></div>
                     <div class="flex gap-3">
-                        <button onclick="pNew()" class="bg-teal-600 hover:bg-teal-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
-                        <button onclick="pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                        <button onclick="QuizEngine.pNew()" class="bg-teal-600 hover:bg-teal-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                        <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
                     </div>
                 </div>
 
                 <!-- Journal Entry Practice -->
                 <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                    <h2 class="text-xl font-bold text-teal-400 mb-4">Journal Entry Practice</h2>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-teal-400">Journal Entry Practice</h2>
+                        <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
+                    </div>
                     <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
                     <div id="je-lines" class="space-y-2 mb-4"></div>
                     <div class="flex gap-3 mb-4">
-                        <button onclick="jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
-                        <button onclick="jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
-                        <button onclick="jeNew()" class="bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                        <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                        <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                        <button onclick="QuizEngine.jeNew()" class="bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
                     </div>
                     <div id="je-feedback" class="hidden"></div>
                 </div>
@@ -542,28 +547,21 @@
     // ========== CHARTS ==========
     const chartOpts = { responsive: true, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } } } };
 
-    // Static charts for methods tab
     new Chart(document.getElementById('deprExpenseChart'), {
         type: 'bar',
-        data: {
-            labels: ['Year 1','Year 2','Year 3','Year 4','Year 5'],
-            datasets: [
-                { label: 'Straight-Line', data: [14400,14400,14400,14400,14400], backgroundColor: 'rgba(20,184,166,0.6)' },
-                { label: 'DDB', data: [32000,19200,11520,6912,2368], backgroundColor: 'rgba(245,158,11,0.6)' }
-            ]
-        },
+        data: { labels: ['Year 1','Year 2','Year 3','Year 4','Year 5'], datasets: [
+            { label: 'Straight-Line', data: [14400,14400,14400,14400,14400], backgroundColor: 'rgba(20,184,166,0.6)' },
+            { label: 'DDB', data: [32000,19200,11520,6912,2368], backgroundColor: 'rgba(245,158,11,0.6)' }
+        ]},
         options: chartOpts
     });
 
     new Chart(document.getElementById('nbvChart'), {
         type: 'line',
-        data: {
-            labels: ['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'],
-            datasets: [
-                { label: 'Straight-Line', data: [80000,65600,51200,36800,22400,8000], borderColor: '#14b8a6', backgroundColor: 'rgba(20,184,166,0.1)', fill: true, tension: 0.1 },
-                { label: 'DDB', data: [80000,48000,28800,17280,10368,8000], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.1 }
-            ]
-        },
+        data: { labels: ['Year 0','Year 1','Year 2','Year 3','Year 4','Year 5'], datasets: [
+            { label: 'Straight-Line', data: [80000,65600,51200,36800,22400,8000], borderColor: '#14b8a6', backgroundColor: 'rgba(20,184,166,0.1)', fill: true, tension: 0.1 },
+            { label: 'DDB', data: [80000,48000,28800,17280,10368,8000], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.1)', fill: true, tension: 0.1 }
+        ]},
         options: chartOpts
     });
 
@@ -575,10 +573,8 @@
         const schedule = [];
         let bv = cost, accum = 0;
         for (let y = 1; y <= life; y++) {
-            const exp = annual;
-            accum += exp;
-            bv -= exp;
-            schedule.push({ year: y, begBV: bv + exp, exp: Math.round(exp), accum: Math.round(accum), endBV: Math.round(bv) });
+            accum += annual; bv -= annual;
+            schedule.push({ year: y, begBV: bv + annual, exp: Math.round(annual), accum: Math.round(accum), endBV: Math.round(bv) });
         }
         return schedule;
     }
@@ -590,9 +586,7 @@
         for (let y = 1; y <= life; y++) {
             let exp = Math.round(rate * bv);
             if (bv - exp < salvage) exp = Math.max(0, Math.round(bv - salvage));
-            accum += exp;
-            const begBV = bv;
-            bv -= exp;
+            accum += exp; const begBV = bv; bv -= exp;
             schedule.push({ year: y, begBV: Math.round(begBV), exp, accum, endBV: Math.round(bv) });
         }
         return schedule;
@@ -603,217 +597,320 @@
         schedule.forEach(r => {
             html += '<tr class="border-b border-slate-700"><td class="p-1">' + r.year + '</td><td class="text-right p-1">$' + r.begBV.toLocaleString() + '</td><td class="text-right p-1">$' + r.exp.toLocaleString() + '</td><td class="text-right p-1">$' + r.accum.toLocaleString() + '</td><td class="text-right p-1">$' + r.endBV.toLocaleString() + '</td></tr>';
         });
-        html += '</tbody></table>';
-        return html;
+        return html + '</tbody></table>';
     }
 
     window.runCalc = function() {
         const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
         const salvage = parseFloat(document.getElementById('calc-salvage').value) || 0;
         const life = parseInt(document.getElementById('calc-life').value) || 1;
-
         const base = cost - salvage;
-        document.getElementById('calc-summary').textContent = 'Depreciation Base = $' + cost.toLocaleString() + ' − $' + salvage.toLocaleString() + ' = $' + base.toLocaleString();
-
-        const sl = computeSL(cost, salvage, life);
-        const ddb = computeDDB(cost, salvage, life);
-
+        document.getElementById('calc-summary').textContent = 'Depreciation Base = $' + cost.toLocaleString() + ' \u2212 $' + salvage.toLocaleString() + ' = $' + base.toLocaleString();
+        const sl = computeSL(cost, salvage, life), ddb = computeDDB(cost, salvage, life);
         document.getElementById('calc-sl-table').innerHTML = makeTable(sl);
         document.getElementById('calc-ddb-table').innerHTML = makeTable(ddb);
-
         const labels = sl.map(r => 'Year ' + r.year);
-        const slData = sl.map(r => r.exp);
-        const ddbData = ddb.map(r => r.exp);
-        const slNBV = [cost, ...sl.map(r => r.endBV)];
-        const ddbNBV = [cost, ...ddb.map(r => r.endBV)];
-        const nbvLabels = ['Year 0', ...labels];
-
         if (calcExpChart) calcExpChart.destroy();
         if (calcNBVChart) calcNBVChart.destroy();
-
         calcExpChart = new Chart(document.getElementById('calcExpenseChart'), {
             type: 'bar', data: { labels, datasets: [
-                { label: 'SL', data: slData, backgroundColor: 'rgba(20,184,166,0.6)' },
-                { label: 'DDB', data: ddbData, backgroundColor: 'rgba(245,158,11,0.6)' }
+                { label: 'SL', data: sl.map(r => r.exp), backgroundColor: 'rgba(20,184,166,0.6)' },
+                { label: 'DDB', data: ddb.map(r => r.exp), backgroundColor: 'rgba(245,158,11,0.6)' }
             ]}, options: chartOpts
         });
-
         calcNBVChart = new Chart(document.getElementById('calcNBVChart'), {
-            type: 'line', data: { labels: nbvLabels, datasets: [
-                { label: 'SL', data: slNBV, borderColor: '#14b8a6', fill: false, tension: 0.1 },
-                { label: 'DDB', data: ddbNBV, borderColor: '#f59e0b', fill: false, tension: 0.1 }
+            type: 'line', data: { labels: ['Year 0', ...labels], datasets: [
+                { label: 'SL', data: [cost, ...sl.map(r => r.endBV)], borderColor: '#14b8a6', fill: false, tension: 0.1 },
+                { label: 'DDB', data: [cost, ...ddb.map(r => r.endBV)], borderColor: '#f59e0b', fill: false, tension: 0.1 }
             ]}, options: chartOpts
         });
     };
-
-    // Initialize calculator
     runCalc();
 
-    // ========== PRACTICE QUESTIONS ==========
-    let pCorrect = 0, pTotal = 0, pStreak = 0, curQ = null;
-    function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
-    function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    // ========== PRACTICE QUESTIONS (via QuizEngine) ==========
+    const { rand, pick, fmt } = QuizEngine;
 
+    // --- Q1: Straight-line depreciation ---
     function genSL() {
-        const cost = rand(20, 200) * 1000;
-        const salvage = rand(1, Math.floor(cost/10000)) * 1000;
-        const life = rand(3, 10);
+        const cost = rand(20, 200) * 1000, salvage = rand(1, Math.floor(cost / 10000)) * 1000, life = rand(3, 10);
         const ans = Math.round((cost - salvage) / life);
-        return { question: 'Straight-line depreciation: Cost = $' + cost.toLocaleString() + ', Salvage = $' + salvage.toLocaleString() + ', Useful life = ' + life + ' years.<br><br>What is the annual depreciation expense?', type: 'number', answer: ans, explanation: '($' + cost.toLocaleString() + ' − $' + salvage.toLocaleString() + ') ÷ ' + life + ' = $' + ans.toLocaleString() };
+        return { question: 'Straight-line depreciation: Cost = $' + fmt(cost) + ', Salvage = $' + fmt(salvage) + ', Useful life = ' + life + ' years.<br><br>What is the annual depreciation expense?', type: 'number', answer: ans, explanation: '($' + fmt(cost) + ' \u2212 $' + fmt(salvage) + ') \u00f7 ' + life + ' = $' + fmt(ans) };
     }
-
+    // --- Q2: DDB Year 1 ---
     function genDDB() {
-        const cost = rand(30, 150) * 1000;
-        const life = rand(4, 8);
-        const rate = 2 / life;
+        const cost = rand(30, 150) * 1000, life = rand(4, 8), rate = 2 / life;
         const yr1 = Math.round(rate * cost);
-        return { question: 'DDB depreciation: Cost = $' + cost.toLocaleString() + ', Useful life = ' + life + ' years.<br><br>What is Year 1 depreciation expense?', type: 'number', answer: yr1, explanation: 'Rate = 2/' + life + ' = ' + (rate * 100).toFixed(1) + '%. Year 1 = ' + (rate * 100).toFixed(1) + '% × $' + cost.toLocaleString() + ' = $' + yr1.toLocaleString() };
+        return { question: 'DDB depreciation: Cost = $' + fmt(cost) + ', Useful life = ' + life + ' years.<br><br>What is Year 1 depreciation expense?', type: 'number', answer: yr1, explanation: 'Rate = 2/' + life + ' = ' + (rate * 100).toFixed(1) + '%. Year 1 = ' + (rate * 100).toFixed(1) + '% \u00d7 $' + fmt(cost) + ' = $' + fmt(yr1) };
     }
-
+    // --- Q3: Net book value ---
     function genNBV() {
-        const cost = rand(50, 200) * 1000;
-        const accumDepr = rand(10, Math.floor(cost/1000) - 5) * 1000;
-        const nbv = cost - accumDepr;
-        return { question: 'An asset has historical cost of $' + cost.toLocaleString() + ' and accumulated depreciation of $' + accumDepr.toLocaleString() + '.<br><br>What is the Net Book Value?', type: 'number', answer: nbv, explanation: 'NBV = $' + cost.toLocaleString() + ' − $' + accumDepr.toLocaleString() + ' = $' + nbv.toLocaleString() };
+        const cost = rand(50, 200) * 1000, accumDepr = rand(10, Math.floor(cost / 1000) - 5) * 1000, nbv = cost - accumDepr;
+        return { question: 'An asset has historical cost of $' + fmt(cost) + ' and accumulated depreciation of $' + fmt(accumDepr) + '.<br><br>What is the Net Book Value?', type: 'number', answer: nbv, explanation: 'NBV = $' + fmt(cost) + ' \u2212 $' + fmt(accumDepr) + ' = $' + fmt(nbv) };
     }
-
+    // --- Q4: Impairment charge ---
     function genImpairment() {
-        const bv = rand(20, 80) * 1000;
-        const cfs = rand(10, bv/1000 - 5) * 1000;
-        const fv = rand(5, Math.floor(cfs/1000)) * 1000;
-        const charge = bv - fv;
-        const impaired = bv > cfs;
-        return { question: 'Asset BV = $' + bv.toLocaleString() + ', Expected future cash flows = $' + cfs.toLocaleString() + ', Fair value = $' + fv.toLocaleString() + '.<br><br>What is the impairment charge (enter 0 if not impaired)?', type: 'number', answer: impaired ? charge : 0, explanation: impaired ? 'BV ($' + bv.toLocaleString() + ') > Cash Flows ($' + cfs.toLocaleString() + ') → Impaired. Charge = BV − FV = $' + bv.toLocaleString() + ' − $' + fv.toLocaleString() + ' = $' + charge.toLocaleString() : 'BV ≤ Cash Flows → Not impaired. Charge = $0.' };
+        const bv = rand(20, 80) * 1000, cfs = rand(10, bv / 1000 - 5) * 1000, fv = rand(5, Math.floor(cfs / 1000)) * 1000;
+        const charge = bv - fv, impaired = bv > cfs;
+        return { question: 'Asset BV = $' + fmt(bv) + ', Expected future cash flows = $' + fmt(cfs) + ', Fair value = $' + fmt(fv) + '.<br><br>What is the impairment charge (enter 0 if not impaired)?', type: 'number', answer: impaired ? charge : 0, explanation: impaired ? 'BV ($' + fmt(bv) + ') > Cash Flows ($' + fmt(cfs) + ') \u2192 Impaired. Charge = $' + fmt(bv) + ' \u2212 $' + fmt(fv) + ' = $' + fmt(charge) : 'BV \u2264 Cash Flows \u2192 Not impaired.' };
     }
-
+    // --- Q5: Disposal gain/loss ---
     function genDisposal() {
-        const cost = rand(40, 120) * 1000;
-        const accumDepr = rand(10, Math.floor(cost/1000) - 5) * 1000;
-        const bv = cost - accumDepr;
-        const proceeds = rand(Math.floor(bv/1000) - 10, Math.floor(bv/1000) + 10) * 1000;
-        const gainLoss = proceeds - bv;
-        return { question: 'A company sells equipment (cost $' + cost.toLocaleString() + ', accumulated depreciation $' + accumDepr.toLocaleString() + ') for $' + proceeds.toLocaleString() + '.<br><br>What is the gain or loss? (Enter negative for loss)', type: 'number', answer: gainLoss, explanation: 'BV = $' + cost.toLocaleString() + ' − $' + accumDepr.toLocaleString() + ' = $' + bv.toLocaleString() + '. ' + (gainLoss >= 0 ? 'Gain' : 'Loss') + ' = $' + proceeds.toLocaleString() + ' − $' + bv.toLocaleString() + ' = $' + gainLoss.toLocaleString() };
+        const cost = rand(40, 120) * 1000, accumDepr = rand(10, Math.floor(cost / 1000) - 5) * 1000, bv = cost - accumDepr;
+        const proceeds = rand(Math.max(1, Math.floor(bv / 1000) - 10), Math.floor(bv / 1000) + 10) * 1000, gainLoss = proceeds - bv;
+        return { question: 'A company sells equipment (cost $' + fmt(cost) + ', accumulated depreciation $' + fmt(accumDepr) + ') for $' + fmt(proceeds) + '.<br><br>What is the gain or loss? (Enter negative for loss)', type: 'number', answer: gainLoss, explanation: 'BV = $' + fmt(cost) + ' \u2212 $' + fmt(accumDepr) + ' = $' + fmt(bv) + '. ' + (gainLoss >= 0 ? 'Gain' : 'Loss') + ' = $' + fmt(proceeds) + ' \u2212 $' + fmt(bv) + ' = $' + fmt(gainLoss) };
     }
-
+    // --- Q6: Capitalize vs Expense (expanded pool) ---
     function genCapVsExp() {
         const scenarios = [
-            { text: 'Adding a new wing to a building', answer: 0, explain: 'This extends the useful life and adds new capabilities — capitalize as CapEx.' },
-            { text: 'Replacing a broken window in the office', answer: 1, explain: 'Routine repair that maintains (but does not enhance) the asset — expense immediately.' },
-            { text: 'Installing a new engine in a delivery truck that extends its life by 3 years', answer: 0, explain: 'This extends the useful life — capitalize.' },
-            { text: 'Painting the office walls', answer: 1, explain: 'Routine maintenance — expense immediately.' },
-            { text: 'Adding a security system to a warehouse', answer: 0, explain: 'This adds new capability — capitalize.' },
-            { text: 'Annual HVAC maintenance and filter replacement', answer: 1, explain: 'Routine maintenance — expense.' }
+            { text: 'Adding a new wing to a building', answer: 0, explain: 'Extends useful life and adds new capabilities \u2014 capitalize.' },
+            { text: 'Replacing a broken window in the office', answer: 1, explain: 'Routine repair that maintains the asset \u2014 expense.' },
+            { text: 'Installing a new engine in a delivery truck that extends its life by 3 years', answer: 0, explain: 'Extends useful life \u2014 capitalize.' },
+            { text: 'Painting the office walls', answer: 1, explain: 'Routine maintenance \u2014 expense.' },
+            { text: 'Adding a security system to a warehouse', answer: 0, explain: 'Adds new capability \u2014 capitalize.' },
+            { text: 'Annual HVAC maintenance and filter replacement', answer: 1, explain: 'Routine maintenance \u2014 expense.' },
+            { text: 'Upgrading a factory\u2019s electrical system to handle higher voltage', answer: 0, explain: 'Increases capacity \u2014 capitalize.' },
+            { text: 'Replacing worn-out tires on the company fleet', answer: 1, explain: 'Routine maintenance that doesn\u2019t extend useful life \u2014 expense.' },
+            { text: 'Adding a second story to a retail store', answer: 0, explain: 'Adds new capacity/capabilities \u2014 capitalize.' },
+            { text: 'Fixing a leaky roof', answer: 1, explain: 'Routine repair \u2014 expense.' },
+            { text: 'Installing an elevator in an existing office building', answer: 0, explain: 'Adds new capability \u2014 capitalize.' },
+            { text: 'Replacing lightbulbs throughout the building', answer: 1, explain: 'Routine maintenance \u2014 expense.' },
+            { text: 'Converting a warehouse into a retail showroom', answer: 0, explain: 'Changes the asset\u2019s function \u2014 capitalize.' },
+            { text: 'Oiling the machinery on the factory floor', answer: 1, explain: 'Routine maintenance \u2014 expense.' },
+            { text: 'Adding GPS tracking systems to delivery trucks', answer: 0, explain: 'Adds new capability \u2014 capitalize.' },
+            { text: 'Repainting the company logo on delivery vans', answer: 1, explain: 'Routine maintenance/cosmetic \u2014 expense.' },
+            { text: 'Reinforcing a building\u2019s foundation to support heavier equipment', answer: 0, explain: 'Increases capacity \u2014 capitalize.' },
+            { text: 'Pest control treatment for the warehouse', answer: 1, explain: 'Routine maintenance \u2014 expense.' }
         ];
         const s = pick(scenarios);
         return { question: s.text + '<br><br>Should this be capitalized or expensed?', type: 'mc', options: ['Capitalize (CapEx)', 'Expense immediately'], answer: s.answer, explanation: s.explain };
     }
-
+    // --- Q7: Change in estimate ---
     function genEstimateChange() {
-        const cost = rand(50, 150) * 1000;
-        const salvage = rand(2, 10) * 1000;
-        const origLife = rand(5, 10);
-        const yearsUsed = rand(2, origLife - 2);
-        const origAnnual = Math.round((cost - salvage) / origLife);
-        const accumDepr = origAnnual * yearsUsed;
-        const bv = cost - accumDepr;
-        const newLife = origLife + rand(1, 4);
-        const remaining = newLife - yearsUsed;
+        const cost = rand(50, 150) * 1000, salvage = rand(2, 10) * 1000, origLife = rand(5, 10);
+        const yearsUsed = rand(2, origLife - 2), origAnnual = Math.round((cost - salvage) / origLife);
+        const accumDepr = origAnnual * yearsUsed, bv = cost - accumDepr;
+        const newLife = origLife + rand(1, 4), remaining = newLife - yearsUsed;
         const newAnnual = Math.round((bv - salvage) / remaining);
-        return { question: 'Asset cost $' + cost.toLocaleString() + ', salvage $' + salvage.toLocaleString() + ', original life ' + origLife + ' years (SL). After ' + yearsUsed + ' years, useful life is extended to ' + newLife + ' years total.<br><br>What is the new annual depreciation?', type: 'number', answer: newAnnual, explanation: 'BV after ' + yearsUsed + ' yrs = $' + cost.toLocaleString() + ' − $' + accumDepr.toLocaleString() + ' = $' + bv.toLocaleString() + '. Remaining life = ' + remaining + ' yrs. New depr = ($' + bv.toLocaleString() + ' − $' + salvage.toLocaleString() + ') ÷ ' + remaining + ' = $' + newAnnual.toLocaleString() };
+        return { question: 'Asset cost $' + fmt(cost) + ', salvage $' + fmt(salvage) + ', original life ' + origLife + ' years (SL). After ' + yearsUsed + ' years, useful life is extended to ' + newLife + ' years total.<br><br>What is the new annual depreciation?', type: 'number', answer: newAnnual, explanation: 'BV after ' + yearsUsed + ' yrs = $' + fmt(cost) + ' \u2212 $' + fmt(accumDepr) + ' = $' + fmt(bv) + '. Remaining = ' + remaining + ' yrs. New depr = ($' + fmt(bv) + ' \u2212 $' + fmt(salvage) + ') \u00f7 ' + remaining + ' = $' + fmt(newAnnual) };
+    }
+    // --- Q8: DDB Year N ---
+    function genDDBYearN() {
+        const cost = rand(40, 120) * 1000, life = rand(4, 6), rate = 2 / life;
+        const yr = rand(2, 3);
+        let bv = cost;
+        for (let i = 1; i < yr; i++) bv = Math.round(bv - rate * bv);
+        const ans = Math.round(rate * bv);
+        return { question: 'DDB depreciation: Cost = $' + fmt(cost) + ', Useful life = ' + life + ' years.<br><br>What is Year ' + yr + ' depreciation expense?', type: 'number', answer: ans, explanation: 'Rate = ' + (rate * 100).toFixed(1) + '%. After ' + (yr - 1) + ' year(s), BV = $' + fmt(bv) + '. Year ' + yr + ' = ' + (rate * 100).toFixed(1) + '% \u00d7 $' + fmt(bv) + ' = $' + fmt(ans) };
+    }
+    // --- Q9: Depreciation rate ---
+    function genDeprRate() {
+        const life = rand(3, 12);
+        const method = pick(['SL', 'DDB']);
+        const rate = method === 'SL' ? (1 / life) * 100 : (2 / life) * 100;
+        return { question: 'What is the ' + (method === 'SL' ? 'straight-line' : 'double-declining balance') + ' depreciation rate for an asset with a ' + life + '-year useful life?<br><br>Enter as a percentage (e.g., 25 for 25%).', type: 'number', answer: Math.round(rate * 100) / 100, explanation: method === 'SL' ? 'SL rate = 1/' + life + ' = ' + rate.toFixed(2) + '%' : 'DDB rate = 2/' + life + ' = ' + rate.toFixed(2) + '%' };
+    }
+    // --- Q10: Units-of-production depreciation ---
+    function genUnits() {
+        const cost = rand(50, 150) * 1000, salvage = rand(2, 10) * 1000, totalUnits = rand(50, 200) * 1000;
+        const unitsUsed = rand(10, Math.floor(totalUnits / 1000) - 5) * 1000;
+        const ratePerUnit = (cost - salvage) / totalUnits;
+        const ans = Math.round(ratePerUnit * unitsUsed);
+        return { question: 'Units-of-production: Cost = $' + fmt(cost) + ', Salvage = $' + fmt(salvage) + ', Total estimated units = ' + fmt(totalUnits) + '. This year, ' + fmt(unitsUsed) + ' units were produced.<br><br>What is this year\u2019s depreciation expense?', type: 'number', answer: ans, explanation: 'Rate = ($' + fmt(cost) + ' \u2212 $' + fmt(salvage) + ') \u00f7 ' + fmt(totalUnits) + ' = $' + ratePerUnit.toFixed(2) + '/unit. Expense = $' + ratePerUnit.toFixed(2) + ' \u00d7 ' + fmt(unitsUsed) + ' = $' + fmt(ans) };
+    }
+    // --- Q11: Accumulated depreciation after N years (SL) ---
+    function genAccumDepr() {
+        const cost = rand(40, 180) * 1000, salvage = rand(1, 8) * 1000, life = rand(4, 10);
+        const annual = Math.round((cost - salvage) / life);
+        const yrs = rand(1, life);
+        const accum = annual * yrs;
+        return { question: 'An asset costs $' + fmt(cost) + ', salvage $' + fmt(salvage) + ', ' + life + '-year life (SL). What is the accumulated depreciation after ' + yrs + ' year' + (yrs > 1 ? 's' : '') + '?', type: 'number', answer: accum, explanation: 'Annual = ($' + fmt(cost) + ' \u2212 $' + fmt(salvage) + ') \u00f7 ' + life + ' = $' + fmt(annual) + '. After ' + yrs + ' yrs: $' + fmt(annual) + ' \u00d7 ' + yrs + ' = $' + fmt(accum) };
+    }
+    // --- Q12: Percent depreciated ---
+    function genPctDepreciated() {
+        const cost = rand(50, 200) * 1000, accumDepr = rand(10, Math.floor(cost / 1000) - 5) * 1000;
+        const pct = Math.round(accumDepr / cost * 100 * 10) / 10;
+        return { question: 'An asset has gross cost of $' + fmt(cost) + ' and accumulated depreciation of $' + fmt(accumDepr) + '.<br><br>What percentage of the asset has been depreciated? (Enter as a number, e.g. 25 for 25%)', type: 'number', answer: pct, explanation: '$' + fmt(accumDepr) + ' \u00f7 $' + fmt(cost) + ' \u00d7 100 = ' + pct + '%' };
+    }
+    // --- Q13: Partial-year SL depreciation ---
+    function genPartialYear() {
+        const cost = rand(40, 150) * 1000, salvage = rand(2, 8) * 1000, life = rand(4, 8);
+        const months = rand(3, 9);
+        const fullYear = Math.round((cost - salvage) / life);
+        const ans = Math.round(fullYear * months / 12);
+        return { question: 'Equipment costing $' + fmt(cost) + ' (salvage $' + fmt(salvage) + ', ' + life + '-year life, SL) was purchased on ' + pick(['April 1', 'July 1', 'October 1', 'March 1', 'June 1', 'September 1']) + '. The company uses a calendar year end.<br><br>What is Year 1 depreciation expense if the company prorates to the nearest month (' + months + ' months)?', type: 'number', answer: ans, explanation: 'Full year = $' + fmt(fullYear) + '. Prorated: $' + fmt(fullYear) + ' \u00d7 ' + months + '/12 = $' + fmt(ans) };
+    }
+    // --- Q14: Depreciation base ---
+    function genDeprBase() {
+        const cost = rand(30, 200) * 1000, salvage = rand(1, 15) * 1000;
+        return { question: 'Equipment costs $' + fmt(cost) + ' with a salvage value of $' + fmt(salvage) + '.<br><br>What is the depreciation base?', type: 'number', answer: cost - salvage, explanation: 'Depreciation base = Cost \u2212 Salvage = $' + fmt(cost) + ' \u2212 $' + fmt(salvage) + ' = $' + fmt(cost - salvage) };
+    }
+    // --- Q15: Cash flow classification ---
+    function genCFClassification() {
+        const scenarios = [
+            { text: 'A company buys equipment for $50,000 cash', answer: 1, explain: 'Purchasing PP&E is a Cash Flow from Investing (CFI) activity.' },
+            { text: 'A company pays $3,000 for routine building maintenance', answer: 0, explain: 'Routine repairs are expensed and reported in Cash Flow from Operations (CFO).' },
+            { text: 'A company sells a vehicle for $20,000 cash', answer: 1, explain: 'Selling PP&E is a Cash Flow from Investing (CFI) activity.' },
+            { text: 'Depreciation expense of $12,000 is recorded', answer: 2, explain: 'Depreciation is a non-cash expense. It is added back to net income in the CFO section (indirect method) but involves no actual cash flow.' },
+            { text: 'A company pays $2,000 in property taxes on its building', answer: 0, explain: 'Property taxes are operating expenses \u2014 Cash Flow from Operations (CFO).' },
+            { text: 'A company purchases land for $100,000', answer: 1, explain: 'Purchasing land is a Cash Flow from Investing (CFI) activity.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text + '.<br><br>How should this appear on the Statement of Cash Flows?', type: 'mc', options: ['Cash Flow from Operations (CFO)', 'Cash Flow from Investing (CFI)', 'Non-cash / added back in CFO'], answer: s.answer, explanation: s.explain };
+    }
+    // --- Q16: True/False conceptual ---
+    function genTrueFalse() {
+        const scenarios = [
+            { text: 'Depreciation is a cash expense that reduces the company\u2019s bank balance', answer: 1, explain: 'False. Depreciation is a non-cash expense. It reduces reported income but has no direct effect on cash.' },
+            { text: 'Under DDB, the depreciation rate is applied to the depreciation base (cost minus salvage)', answer: 1, explain: 'False. DDB applies the rate to the Beginning Book Value, not the depreciation base.' },
+            { text: 'Total depreciation over an asset\u2019s life is the same regardless of method chosen', answer: 0, explain: 'True. Total depreciation always equals cost minus salvage. Only the timing differs between methods.' },
+            { text: 'An impairment loss can be reversed if the asset\u2019s value later recovers', answer: 1, explain: 'False. Under US GAAP, impairment losses on long-lived assets cannot be reversed.' },
+            { text: 'Land is depreciated over its useful life', answer: 1, explain: 'False. Land has an indefinite useful life and is never depreciated.' },
+            { text: 'A gain on sale of equipment increases stockholders\u2019 equity', answer: 0, explain: 'True. Gains increase net income, which increases retained earnings (a component of SE).' },
+            { text: 'Accumulated depreciation is a contra-asset account with a credit balance', answer: 0, explain: 'True. It offsets the asset account to show net book value.' },
+            { text: 'Changes in depreciation estimates are applied retroactively', answer: 1, explain: 'False. Changes in estimates are applied prospectively (future periods only).' },
+            { text: 'DDB depreciation can result in a book value below salvage value', answer: 1, explain: 'False. DDB caps depreciation so that book value never drops below salvage value.' },
+            { text: 'Routine maintenance costs should be capitalized as part of the asset', answer: 1, explain: 'False. Routine maintenance is expensed immediately.' },
+            { text: 'The impairment test under US GAAP uses undiscounted future cash flows for the recoverability test', answer: 0, explain: 'True. Step 1 compares book value to undiscounted expected future cash flows. If BV > undiscounted CFs, the asset is impaired.' },
+            { text: 'A fully depreciated asset must be removed from the balance sheet', answer: 1, explain: 'False. Fully depreciated assets remain on the balance sheet (cost and accumulated depreciation are both shown) until they are disposed of.' }
+        ];
+        const s = pick(scenarios);
+        return { question: 'True or False: ' + s.text, type: 'mc', options: ['True', 'False'], answer: s.answer, explanation: s.explain };
+    }
+    // --- Q17: Post-impairment depreciation ---
+    function genPostImpairment() {
+        const origCost = rand(60, 150) * 1000, salvage = rand(2, 8) * 1000, origLife = rand(5, 10);
+        const yearsUsed = rand(2, origLife - 3), annual = Math.round((origCost - salvage) / origLife);
+        const bvBefore = origCost - annual * yearsUsed;
+        const fv = rand(Math.floor(salvage / 1000) + 5, Math.floor(bvBefore / 1000) - 5) * 1000;
+        const remaining = origLife - yearsUsed;
+        const newAnnual = Math.round((fv - salvage) / remaining);
+        return { question: 'Equipment (cost $' + fmt(origCost) + ', salvage $' + fmt(salvage) + ', ' + origLife + '-year life, SL) is impaired after ' + yearsUsed + ' years. New fair value = $' + fmt(fv) + '.<br><br>What is the new annual depreciation for the remaining ' + remaining + ' years?', type: 'number', answer: newAnnual, explanation: 'New BV = $' + fmt(fv) + '. New depr = ($' + fmt(fv) + ' \u2212 $' + fmt(salvage) + ') \u00f7 ' + remaining + ' = $' + fmt(newAnnual) };
+    }
+    // --- Q18: Fixed asset turnover ---
+    function genFATurnover() {
+        const rev = rand(200, 800) * 1000;
+        const begPPE = rand(80, 300) * 1000, endPPE = rand(80, 300) * 1000;
+        const avgPPE = (begPPE + endPPE) / 2;
+        const ratio = Math.round(rev / avgPPE * 100) / 100;
+        return { question: 'Revenue = $' + fmt(rev) + '. Beginning Net PP&E = $' + fmt(begPPE) + ', Ending Net PP&E = $' + fmt(endPPE) + '.<br><br>What is the Fixed Asset Turnover ratio? (Round to 2 decimal places)', type: 'number', answer: ratio, explanation: 'Avg Net PP&E = ($' + fmt(begPPE) + ' + $' + fmt(endPPE) + ') / 2 = $' + fmt(avgPPE) + '. FA Turnover = $' + fmt(rev) + ' / $' + fmt(avgPPE) + ' = ' + ratio };
+    }
+    // --- Q19: Average age of assets ---
+    function genAvgAge() {
+        const accumDepr = rand(20, 150) * 1000, deprExp = rand(5, 30) * 1000;
+        const age = Math.round(accumDepr / deprExp * 10) / 10;
+        return { question: 'A company has Accumulated Depreciation of $' + fmt(accumDepr) + ' and annual Depreciation Expense of $' + fmt(deprExp) + '.<br><br>What is the average age of assets (in years, round to 1 decimal)?', type: 'number', answer: age, explanation: 'Average Age = Accum Depr / Depr Expense = $' + fmt(accumDepr) + ' / $' + fmt(deprExp) + ' = ' + age + ' years' };
     }
 
-    const qGens = [genSL, genDDB, genNBV, genImpairment, genDisposal, genCapVsExp, genEstimateChange];
+    // ========== JE GENERATORS (50+ via parametric templates) ==========
+    const jeAccounts = ['Cash','PP&E (Equipment)','PP&E (Vehicle)','PP&E (Building)','PP&E (Machinery)','PP&E (Furniture)','Land','Accumulated Depreciation','Accounts Payable','Notes Payable','Depreciation Expense','Impairment Loss','Gain on Sale of Assets','Loss on Sale of Assets','Maintenance Expense','Common Stock','Retained Earnings'];
 
-    window.pNew = function() {
-        curQ = pick(qGens)();
-        document.getElementById('p-question').innerHTML = '<p class="text-slate-300 text-sm">' + curQ.question + '</p>';
-        document.getElementById('p-feedback').classList.add('hidden');
-        const ans = document.getElementById('p-answer');
-        ans.classList.remove('hidden');
-        if (curQ.type === 'mc') {
-            ans.innerHTML = curQ.options.map((o,i) => '<label class="block mb-2 cursor-pointer"><input type="radio" name="pmc" value="' + i + '" class="mr-2 accent-teal-500"><span class="text-slate-300 text-sm">' + o + '</span></label>').join('');
-        } else {
-            ans.innerHTML = '<input type="number" id="p-num" class="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white w-48" placeholder="Enter amount">';
-        }
-        document.getElementById('p-check-btn').classList.remove('hidden');
-    };
-
-    window.pCheck = function() {
-        if (!curQ) return;
-        let userAns, ok;
-        if (curQ.type === 'mc') {
-            const sel = document.querySelector('input[name="pmc"]:checked');
-            if (!sel) return;
-            userAns = parseInt(sel.value); ok = userAns === curQ.answer;
-        } else {
-            const inp = document.getElementById('p-num');
-            if (!inp || !inp.value) return;
-            userAns = parseFloat(inp.value); ok = Math.abs(userAns - curQ.answer) < 2;
-        }
-        pTotal++; if (ok) { pCorrect++; pStreak++; } else { pStreak = 0; }
-        document.getElementById('p-correct').textContent = pCorrect;
-        document.getElementById('p-total').textContent = pTotal;
-        document.getElementById('p-streak').textContent = pStreak;
-        const fb = document.getElementById('p-feedback'); fb.classList.remove('hidden');
-        const c = ok ? 'emerald' : 'rose';
-        fb.innerHTML = '<div class="bg-' + c + '-500/10 border border-' + c + '-500/30 rounded-lg p-4"><p class="font-bold text-' + c + '-400 mb-1">' + (ok ? 'Correct!' : 'Not quite.') + '</p><p class="text-sm text-slate-300">' + curQ.explanation + '</p></div>';
-        document.getElementById('p-check-btn').classList.add('hidden');
-    };
-
-    // ========== JOURNAL ENTRY PRACTICE ==========
-    const jeAccts = ['Cash','PP&E (Equipment)','PP&E (Vehicle)','PP&E (Building)','Accumulated Depreciation','Accounts Payable','Notes Payable','Depreciation Expense','Impairment Loss','Gain on Sale of Assets','Loss on Sale of Assets','Maintenance Expense','Common Stock','Retained Earnings'];
-    let curJE = null;
-
-    const jeScenarios = [
-        { prompt: 'Purchase equipment for $45,000 cash.', answer: [{acct:'PP&E (Equipment)',dr:45000,cr:0},{acct:'Cash',dr:0,cr:45000}] },
-        { prompt: 'Record annual straight-line depreciation of $8,000 on a vehicle.', answer: [{acct:'Depreciation Expense',dr:8000,cr:0},{acct:'Accumulated Depreciation',dr:0,cr:8000}] },
-        { prompt: 'Record an impairment loss of $15,000 on equipment.', answer: [{acct:'Impairment Loss',dr:15000,cr:0},{acct:'Accumulated Depreciation',dr:0,cr:15000}] },
-        { prompt: 'Sell a vehicle (cost $50,000, accum depr $35,000) for $18,000 cash — a gain.', answer: [{acct:'Cash',dr:18000,cr:0},{acct:'Accumulated Depreciation',dr:35000,cr:0},{acct:'PP&E (Vehicle)',dr:0,cr:50000},{acct:'Gain on Sale of Assets',dr:0,cr:3000}] },
-        { prompt: 'Sell equipment (cost $30,000, accum depr $22,000) for $5,000 cash — a loss.', answer: [{acct:'Cash',dr:5000,cr:0},{acct:'Accumulated Depreciation',dr:22000,cr:0},{acct:'Loss on Sale of Assets',dr:3000,cr:0},{acct:'PP&E (Equipment)',dr:0,cr:30000}] },
-        { prompt: 'Pay $2,500 for routine maintenance on a building.', answer: [{acct:'Maintenance Expense',dr:2500,cr:0},{acct:'Cash',dr:0,cr:2500}] }
-    ];
-
-    function makeJELine() {
-        const div = document.createElement('div');
-        div.className = 'flex gap-2 items-center';
-        div.innerHTML = '<select class="je-acct bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm flex-1"><option value="">-- Account --</option>' + jeAccts.map(a => '<option value="' + a + '">' + a + '</option>').join('') + '</select><input type="number" class="je-dr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Debit"><input type="number" class="je-cr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Credit"><button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-rose-400 text-sm">✕</button>';
-        return div;
+    function jeGenPurchaseCash() {
+        const asset = pick(['Equipment', 'Vehicle', 'Building', 'Machinery', 'Furniture']);
+        const amt = rand(10, 200) * 1000;
+        return { prompt: 'Purchase ' + asset.toLowerCase() + ' for $' + fmt(amt) + ' cash.', answer: [{ acct: 'PP&E (' + asset + ')', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+    function jeGenPurchaseNote() {
+        const asset = pick(['Equipment', 'Vehicle', 'Machinery']);
+        const amt = rand(20, 150) * 1000;
+        return { prompt: 'Purchase ' + asset.toLowerCase() + ' for $' + fmt(amt) + ' by signing a note payable.', answer: [{ acct: 'PP&E (' + asset + ')', dr: amt, cr: 0 }, { acct: 'Notes Payable', dr: 0, cr: amt }] };
+    }
+    function jeGenPurchaseMixed() {
+        const asset = pick(['Equipment', 'Vehicle', 'Building']);
+        const total = rand(40, 200) * 1000;
+        const cashPart = rand(10, Math.floor(total / 1000) - 10) * 1000;
+        const notePart = total - cashPart;
+        return { prompt: 'Purchase ' + asset.toLowerCase() + ' for $' + fmt(total) + ': pay $' + fmt(cashPart) + ' cash and sign a note payable for $' + fmt(notePart) + '.', answer: [{ acct: 'PP&E (' + asset + ')', dr: total, cr: 0 }, { acct: 'Cash', dr: 0, cr: cashPart }, { acct: 'Notes Payable', dr: 0, cr: notePart }] };
+    }
+    function jeGenPurchaseLand() {
+        const amt = rand(50, 500) * 1000;
+        return { prompt: 'Purchase land for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Land', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+    function jeGenDeprExpense() {
+        const asset = pick(['equipment', 'vehicle', 'building', 'machinery']);
+        const amt = rand(2, 50) * 1000;
+        return { prompt: 'Record annual depreciation of $' + fmt(amt) + ' on ' + asset + '.', answer: [{ acct: 'Depreciation Expense', dr: amt, cr: 0 }, { acct: 'Accumulated Depreciation', dr: 0, cr: amt }] };
+    }
+    function jeGenImpairment() {
+        const asset = pick(['Equipment', 'Vehicle', 'Building', 'Machinery']);
+        const amt = rand(5, 40) * 1000;
+        return { prompt: 'Record an impairment loss of $' + fmt(amt) + ' on ' + asset.toLowerCase() + '.', answer: [{ acct: 'Impairment Loss', dr: amt, cr: 0 }, { acct: 'Accumulated Depreciation', dr: 0, cr: amt }] };
+    }
+    function jeGenMaintenance() {
+        const amt = rand(1, 15) * 500;
+        const desc = pick(['routine maintenance on a building', 'oil change on delivery trucks', 'HVAC filter replacement', 'parking lot cleaning', 'window repair']);
+        return { prompt: 'Pay $' + fmt(amt) + ' for ' + desc + '.', answer: [{ acct: 'Maintenance Expense', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+    function jeGenSaleGain() {
+        const asset = pick(['Equipment', 'Vehicle', 'Machinery']);
+        const cost = rand(30, 120) * 1000;
+        const accumDepr = rand(Math.floor(cost / 2000), Math.floor(cost / 1000) - 5) * 1000;
+        const bv = cost - accumDepr;
+        const gain = rand(1, 10) * 1000;
+        const proceeds = bv + gain;
+        return { prompt: 'Sell ' + asset.toLowerCase() + ' (cost $' + fmt(cost) + ', accumulated depreciation $' + fmt(accumDepr) + ') for $' + fmt(proceeds) + ' cash.', answer: [{ acct: 'Cash', dr: proceeds, cr: 0 }, { acct: 'Accumulated Depreciation', dr: accumDepr, cr: 0 }, { acct: 'PP&E (' + asset + ')', dr: 0, cr: cost }, { acct: 'Gain on Sale of Assets', dr: 0, cr: gain }] };
+    }
+    function jeGenSaleLoss() {
+        const asset = pick(['Equipment', 'Vehicle', 'Machinery']);
+        const cost = rand(30, 120) * 1000;
+        const accumDepr = rand(Math.floor(cost / 3000), Math.floor(cost / 1000) - 10) * 1000;
+        const bv = cost - accumDepr;
+        const loss = rand(1, 8) * 1000;
+        const proceeds = bv - loss;
+        return { prompt: 'Sell ' + asset.toLowerCase() + ' (cost $' + fmt(cost) + ', accumulated depreciation $' + fmt(accumDepr) + ') for $' + fmt(proceeds) + ' cash.', answer: [{ acct: 'Cash', dr: proceeds, cr: 0 }, { acct: 'Accumulated Depreciation', dr: accumDepr, cr: 0 }, { acct: 'Loss on Sale of Assets', dr: loss, cr: 0 }, { acct: 'PP&E (' + asset + ')', dr: 0, cr: cost }] };
+    }
+    function jeGenSaleAtBV() {
+        const asset = pick(['Equipment', 'Vehicle', 'Furniture']);
+        const cost = rand(20, 80) * 1000;
+        const accumDepr = rand(5, Math.floor(cost / 1000) - 3) * 1000;
+        const bv = cost - accumDepr;
+        return { prompt: 'Sell ' + asset.toLowerCase() + ' (cost $' + fmt(cost) + ', accumulated depreciation $' + fmt(accumDepr) + ') for exactly its book value of $' + fmt(bv) + ' cash.', answer: [{ acct: 'Cash', dr: bv, cr: 0 }, { acct: 'Accumulated Depreciation', dr: accumDepr, cr: 0 }, { acct: 'PP&E (' + asset + ')', dr: 0, cr: cost }] };
+    }
+    function jeGenDiscard() {
+        const asset = pick(['Equipment', 'Machinery', 'Furniture']);
+        const cost = rand(20, 60) * 1000;
+        return { prompt: 'Discard fully depreciated ' + asset.toLowerCase() + ' (cost $' + fmt(cost) + ', accumulated depreciation $' + fmt(cost) + '). No proceeds.', answer: [{ acct: 'Accumulated Depreciation', dr: cost, cr: 0 }, { acct: 'PP&E (' + asset + ')', dr: 0, cr: cost }] };
+    }
+    function jeGenDiscardLoss() {
+        const asset = pick(['Equipment', 'Machinery']);
+        const cost = rand(30, 80) * 1000;
+        const accumDepr = rand(Math.floor(cost / 2000), Math.floor(cost / 1000) - 3) * 1000;
+        const loss = cost - accumDepr;
+        return { prompt: 'Discard ' + asset.toLowerCase() + ' (cost $' + fmt(cost) + ', accumulated depreciation $' + fmt(accumDepr) + '). No proceeds received.', answer: [{ acct: 'Accumulated Depreciation', dr: accumDepr, cr: 0 }, { acct: 'Loss on Sale of Assets', dr: loss, cr: 0 }, { acct: 'PP&E (' + asset + ')', dr: 0, cr: cost }] };
+    }
+    function jeGenCapImprovement() {
+        const asset = pick(['Equipment', 'Building', 'Vehicle']);
+        const amt = rand(5, 50) * 1000;
+        const desc = pick(['engine replacement', 'addition of a loading dock', 'capacity upgrade', 'roof replacement that extends useful life', 'major overhaul']);
+        return { prompt: 'Pay $' + fmt(amt) + ' cash for a ' + desc + ' on ' + asset.toLowerCase() + ' (capitalize).', answer: [{ acct: 'PP&E (' + asset + ')', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+    function jeGenPurchaseOnAccount() {
+        const asset = pick(['Equipment', 'Furniture']);
+        const amt = rand(10, 80) * 1000;
+        return { prompt: 'Purchase ' + asset.toLowerCase() + ' for $' + fmt(amt) + ' on account.', answer: [{ acct: 'PP&E (' + asset + ')', dr: amt, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: amt }] };
+    }
+    function jeGenExchangeForStock() {
+        const asset = pick(['Equipment', 'Building', 'Machinery']);
+        const amt = rand(50, 200) * 1000;
+        return { prompt: 'Issue common stock (fair value $' + fmt(amt) + ') to acquire ' + asset.toLowerCase() + '.', answer: [{ acct: 'PP&E (' + asset + ')', dr: amt, cr: 0 }, { acct: 'Common Stock', dr: 0, cr: amt }] };
     }
 
-    window.jeAdd = function() { document.getElementById('je-lines').appendChild(makeJELine()); };
-
-    window.jeNew = function() {
-        curJE = pick(jeScenarios);
-        document.getElementById('je-prompt').innerHTML = '<p class="text-slate-300 text-sm">' + curJE.prompt + '</p>';
-        document.getElementById('je-lines').innerHTML = '';
-        document.getElementById('je-feedback').classList.add('hidden');
-        jeAdd(); jeAdd();
-    };
-
-    window.jeCheck = function() {
-        if (!curJE) return;
-        const lines = document.getElementById('je-lines').children;
-        let tDr = 0, tCr = 0, entries = [];
-        for (let l of lines) {
-            const a = l.querySelector('.je-acct').value;
-            const d = parseFloat(l.querySelector('.je-dr').value) || 0;
-            const c = parseFloat(l.querySelector('.je-cr').value) || 0;
-            if (a && (d || c)) { entries.push({acct:a,dr:d,cr:c}); tDr += d; tCr += c; }
-        }
-        const fb = document.getElementById('je-feedback'); fb.classList.remove('hidden');
-        if (Math.abs(tDr - tCr) > 0.01) {
-            fb.innerHTML = '<div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4"><p class="text-rose-400 font-bold">Debits ($' + tDr.toLocaleString() + ') ≠ Credits ($' + tCr.toLocaleString() + ')</p></div>';
-            return;
-        }
-        const ansStr = curJE.answer.map(a => a.acct+':'+a.dr+':'+a.cr).sort().join('|');
-        const userStr = entries.map(a => a.acct+':'+a.dr+':'+a.cr).sort().join('|');
-        if (ansStr === userStr) {
-            fb.innerHTML = '<div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-bold">Correct!</p></div>';
-        } else {
-            const correctHTML = curJE.answer.map(a => (a.dr ? 'Dr ' + a.acct + ' ' + a.dr.toLocaleString() : 'Cr ' + a.acct + ' ' + a.cr.toLocaleString())).join('<br>');
-            fb.innerHTML = '<div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-400 font-bold">Not quite.</p><p class="text-sm text-slate-300 mt-2">Expected:<br><span class="font-mono text-xs">' + correctHTML + '</span></p></div>';
-        }
-    };
+    // ========== INIT QuizEngine ==========
+    QuizEngine.init({
+        questionGenerators: [genSL, genDDB, genNBV, genImpairment, genDisposal, genCapVsExp, genEstimateChange,
+            genDDBYearN, genDeprRate, genUnits, genAccumDepr, genPctDepreciated, genPartialYear, genDeprBase,
+            genCFClassification, genTrueFalse, genPostImpairment, genFATurnover, genAvgAge],
+        jeGenerators: [jeGenPurchaseCash, jeGenPurchaseNote, jeGenPurchaseMixed, jeGenPurchaseLand,
+            jeGenDeprExpense, jeGenImpairment, jeGenMaintenance, jeGenSaleGain, jeGenSaleLoss,
+            jeGenSaleAtBV, jeGenDiscard, jeGenDiscardLoss, jeGenCapImprovement, jeGenPurchaseOnAccount,
+            jeGenExchangeForStock,
+            jeGenPurchaseCash, jeGenDeprExpense, jeGenSaleGain, jeGenSaleLoss, jeGenMaintenance,
+            jeGenPurchaseNote, jeGenCapImprovement, jeGenDiscard, jeGenDiscardLoss, jeGenPurchaseMixed,
+            jeGenPurchaseLand, jeGenPurchaseOnAccount, jeGenExchangeForStock, jeGenImpairment, jeGenSaleAtBV],
+        jeAccounts: jeAccounts,
+        accentColor: 'teal',
+        qCopies: 6,
+        jeCopies: 2
+    });
 </script>
 </body>
 </html>

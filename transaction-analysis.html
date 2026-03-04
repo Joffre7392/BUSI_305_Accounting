@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Analysis | BUSI 305 Accounting</title>
+    <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .fade-in { animation: fadeIn 0.4s ease-in; }
@@ -976,16 +977,37 @@
 
         <!-- ======================== TAB 4: PRACTICE ======================== -->
         <div id="panel-practice" class="tab-panel hidden">
-            <div class="flex items-center justify-between mb-6">
-                <div class="bg-slate-800/50 rounded-xl p-4 border border-slate-700 flex items-center gap-4">
-                    <p class="text-slate-300 text-sm">Score: <span id="practice-score" class="text-emerald-400 font-bold text-lg">0</span> / <span id="practice-total" class="text-slate-400 font-bold text-lg">0</span></p>
-                    <div class="w-px h-8 bg-slate-600"></div>
-                    <p class="text-slate-300 text-sm">Streak: <span id="practice-streak" class="text-amber-400 font-bold text-lg">0</span></p>
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-sky-400">Practice Questions</h2>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
+                        <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
+                        <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
+                    </div>
                 </div>
-                <button onclick="generateQuestion()" class="px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition">Next Question</button>
+                <div id="p-question" class="mb-4"><p class="text-slate-400">Click "New Question" to start.</p></div>
+                <div id="p-answer" class="mb-4 hidden"></div>
+                <div id="p-feedback" class="mb-4 hidden"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.pNew()" class="bg-sky-600 hover:bg-sky-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
             </div>
-            <div id="question-area" class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                <p class="text-slate-400 text-center py-8">Click "Next Question" to start practicing.</p>
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-sky-400">Journal Entry Practice</h2>
+                    <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
+                </div>
+                <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click "New Entry" to start.</p></div>
+                <div id="je-lines" class="space-y-2 mb-4"></div>
+                <div class="flex gap-3 mb-4">
+                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                    <button onclick="QuizEngine.jeNew()" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                </div>
+                <div id="je-feedback" class="hidden"></div>
             </div>
         </div>
     </div>
@@ -1280,678 +1302,370 @@ function renderBuilder() {
     bdetail.textContent = `Assets: $${assets.toLocaleString()} = Liabilities: $${t.liab.toLocaleString()} + SE: $${(t.cc + t.re).toLocaleString()}`;
 }
 
-// ==================== TAB 4: PRACTICE ====================
-let score = 0, total = 0, streak = 0;
+// ==================== TAB 4: PRACTICE (QuizEngine) ====================
+const { rand, pick, fmt: qfmt } = QuizEngine;
 
-function randAmount() {
-    const vals = [1000, 2000, 2500, 3000, 4000, 5000, 6000, 7500, 8000, 10000, 12000, 15000, 20000, 25000];
-    return vals[Math.floor(Math.random() * vals.length)];
-}
+const jeAccounts = ['Cash','Accounts Receivable','Supplies','Prepaid Insurance','Equipment','Land','Building','Accumulated Depreciation','Accounts Payable','Notes Payable','Unearned Revenue','Wages Payable','Interest Payable','Taxes Payable','Common Stock','Additional Paid-in Capital','Retained Earnings','Dividends','Service Revenue','Sales Revenue','Interest Revenue','Wages Expense','Rent Expense','Utilities Expense','Insurance Expense','Depreciation Expense','Interest Expense','Income Tax Expense','Supplies Expense'];
 
-function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
+// ========== QUESTION GENERATORS (12 types, 100+ questions) ==========
 
-function generateQuestion() {
-    const qType = Math.floor(Math.random() * 6);
-    switch (qType) {
-        case 0: genRecordQuestion(); break;
-        case 1: genMissingAmount(); break;
-        case 2: genBalanceCheck(); break;
-        case 3: genBuildStatement(); break;
-        case 4: genConceptual(); break;
-        case 5: genJournalEntry(); break;
-    }
-}
-
-function showFeedback(correct, explanation) {
-    total++;
-    if (correct) { score++; streak++; } else { streak = 0; }
-    document.getElementById('practice-score').textContent = score;
-    document.getElementById('practice-total').textContent = total;
-    document.getElementById('practice-streak').textContent = streak;
-
-    const fb = document.getElementById('feedback-area');
-    if (fb) {
-        fb.innerHTML = `
-            <div class="mt-4 p-4 rounded-lg border ${correct ? 'bg-emerald-900/20 border-emerald-700' : 'bg-rose-900/20 border-rose-700'} fade-in">
-                <p class="font-bold ${correct ? 'text-emerald-400' : 'text-rose-400'}">${correct ? 'Correct!' : 'Incorrect'}</p>
-                <p class="text-slate-300 text-sm mt-1">${explanation}</p>
-            </div>`;
-    }
-    // Disable all answer buttons
-    document.querySelectorAll('.answer-btn').forEach(b => { b.disabled = true; b.classList.add('opacity-50', 'cursor-not-allowed'); });
-    document.querySelectorAll('.answer-input').forEach(i => { i.disabled = true; });
-}
-
-// TYPE 1: Record this transaction
-function genRecordQuestion() {
-    const amt = randAmount();
+// 1. FSET Effect: "What is the effect on A, L, SE?"
+function genFSETEffect() {
+    const amt = rand(1, 50) * 1000;
     const scenarios = [
-        { text: `The company issues common stock for $${amt.toLocaleString()} cash.`, correct: { cash: amt, nca: 0, liab: 0, cc: amt, re: 0 },
-          label: `Cash +${amt.toLocaleString()}, CC +${amt.toLocaleString()}`, explanation: "Issuing stock increases Cash (asset) and Contributed Capital (equity). No revenue is earned." },
-        { text: `The company borrows $${amt.toLocaleString()} from a bank, signing a note.`, correct: { cash: amt, nca: 0, liab: amt, cc: 0, re: 0 },
-          label: `Cash +${amt.toLocaleString()}, Notes Payable +${amt.toLocaleString()}`, explanation: "Borrowing increases Cash and creates a liability (Notes Payable). This is not revenue." },
-        { text: `The company purchases equipment for $${amt.toLocaleString()} cash.`, correct: { cash: -amt, nca: amt, liab: 0, cc: 0, re: 0 },
-          label: `Cash -${amt.toLocaleString()}, Equipment +${amt.toLocaleString()}`, explanation: "Cash decreases but Equipment (noncash asset) increases. Total assets stay the same." },
-        { text: `The company provides services for $${amt.toLocaleString()} cash.`, correct: { cash: amt, nca: 0, liab: 0, cc: 0, re: amt },
-          label: `Cash +${amt.toLocaleString()}, RE +${amt.toLocaleString()} (Rev +${amt.toLocaleString()})`, explanation: "Cash increases and Revenue is earned, increasing Retained Earnings and Net Income." },
-        { text: `The company pays $${amt.toLocaleString()} in wages to employees.`, correct: { cash: -amt, nca: 0, liab: 0, cc: 0, re: -amt },
-          label: `Cash -${amt.toLocaleString()}, RE -${amt.toLocaleString()} (Exp +${amt.toLocaleString()})`, explanation: "Cash decreases and an expense is incurred, decreasing Retained Earnings and Net Income." },
-        { text: `The company provides $${amt.toLocaleString()} of services on account.`, correct: { cash: 0, nca: amt, liab: 0, cc: 0, re: amt },
-          label: `AR +${amt.toLocaleString()}, RE +${amt.toLocaleString()} (Rev +${amt.toLocaleString()})`, explanation: "Accounts Receivable (asset) increases and Revenue is earned. Cash is not received yet but revenue is recognized." },
-        { text: `The company pays $${amt.toLocaleString()} on its accounts payable.`, correct: { cash: -amt, nca: 0, liab: -amt, cc: 0, re: 0 },
-          label: `Cash -${amt.toLocaleString()}, AP -${amt.toLocaleString()}`, explanation: "Cash decreases and Accounts Payable decreases. Paying off a liability is not an expense." },
-        { text: `The company collects $${amt.toLocaleString()} from a customer on account.`, correct: { cash: amt, nca: -amt, liab: 0, cc: 0, re: 0 },
-          label: `Cash +${amt.toLocaleString()}, AR -${amt.toLocaleString()}`, explanation: "Cash increases but Accounts Receivable decreases. Revenue was already recognized earlier. This is just a collection." },
-        { text: `The company pays $${amt.toLocaleString()} rent for the month.`, correct: { cash: -amt, nca: 0, liab: 0, cc: 0, re: -amt },
-          label: `Cash -${amt.toLocaleString()}, RE -${amt.toLocaleString()} (Exp +${amt.toLocaleString()})`, explanation: "Cash decreases. Rent expense reduces Retained Earnings and Net Income." },
-        { text: `The company purchases $${amt.toLocaleString()} of supplies on account.`, correct: { cash: 0, nca: amt, liab: amt, cc: 0, re: 0 },
-          label: `Supplies +${amt.toLocaleString()}, AP +${amt.toLocaleString()}`, explanation: "Supplies (noncash asset) increases and Accounts Payable (liability) increases. No cash moves." }
+        { q: 'Issue common stock for $' + qfmt(amt) + ' cash.', a: 0, opts: ['Assets \u2191, SE \u2191, Liabilities unchanged', 'Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets unchanged, SE \u2191, Liabilities \u2193', 'Assets \u2191, Liabilities \u2191, SE \u2191'], exp: 'Issuing stock increases Cash (asset) and Contributed Capital (SE). Liabilities are not affected.' },
+        { q: 'Borrow $' + qfmt(amt) + ' cash from the bank, signing a note.', a: 0, opts: ['Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets \u2191, SE \u2191, Liabilities unchanged', 'Liabilities \u2191, SE \u2193, Assets unchanged', 'Assets \u2191, Liabilities \u2191, SE \u2191'], exp: 'Borrowing increases Cash (asset) and Notes Payable (liability). SE is not affected.' },
+        { q: 'Purchase equipment for $' + qfmt(amt) + ' cash.', a: 0, opts: ['Assets unchanged, Liabilities unchanged, SE unchanged', 'Assets \u2193, Liabilities unchanged, SE \u2193', 'Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets \u2191, SE \u2191, Liabilities unchanged'], exp: 'Cash decreases and Equipment increases \u2014 one asset swaps for another. Total assets, liabilities, and SE are all unchanged.' },
+        { q: 'Provide services for $' + qfmt(amt) + ' cash.', a: 0, opts: ['Assets \u2191, SE \u2191, Liabilities unchanged', 'Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets unchanged, SE \u2191, Liabilities \u2193', 'Assets \u2191, SE unchanged, Liabilities unchanged'], exp: 'Cash increases (asset) and Revenue is earned, which increases RE (SE). Liabilities are not affected.' },
+        { q: 'Pay $' + qfmt(amt) + ' in wages to employees.', a: 0, opts: ['Assets \u2193, SE \u2193, Liabilities unchanged', 'Assets \u2193, Liabilities \u2193, SE unchanged', 'Assets unchanged, SE \u2193, Liabilities \u2191', 'Assets \u2193, SE unchanged, Liabilities \u2193'], exp: 'Cash decreases (asset) and Wages Expense reduces RE (SE). Liabilities are not affected.' },
+        { q: 'Provide $' + qfmt(amt) + ' of services on account.', a: 0, opts: ['Assets \u2191, SE \u2191, Liabilities unchanged', 'Assets unchanged, SE \u2191, Liabilities \u2193', 'Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets unchanged, SE unchanged, Liabilities unchanged'], exp: 'Accounts Receivable increases (asset) and Revenue increases RE (SE). Cash and Liabilities are not affected.' },
+        { q: 'Collect $' + qfmt(amt) + ' from a customer on account.', a: 0, opts: ['Assets unchanged, Liabilities unchanged, SE unchanged', 'Assets \u2191, SE \u2191, Liabilities unchanged', 'Assets \u2191, Liabilities \u2193, SE unchanged', 'Assets \u2193, SE \u2193, Liabilities unchanged'], exp: 'Cash increases but AR decreases \u2014 an asset swap. Total assets, liabilities, and SE are all unchanged.' },
+        { q: 'Pay $' + qfmt(amt) + ' on accounts payable.', a: 0, opts: ['Assets \u2193, Liabilities \u2193, SE unchanged', 'Assets \u2193, SE \u2193, Liabilities unchanged', 'Assets unchanged, Liabilities \u2193, SE \u2191', 'Assets \u2193, Liabilities unchanged, SE \u2193'], exp: 'Cash decreases (asset) and AP decreases (liability). SE is not affected \u2014 paying a liability is not an expense.' },
+        { q: 'Purchase $' + qfmt(amt) + ' of supplies on account.', a: 0, opts: ['Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets unchanged, Liabilities \u2191, SE \u2193', 'Assets \u2191, SE \u2191, Liabilities unchanged', 'Assets unchanged, Liabilities unchanged, SE unchanged'], exp: 'Supplies increases (asset) and AP increases (liability). Cash and SE are not affected.' },
+        { q: 'Pay $' + qfmt(amt) + ' in dividends to shareholders.', a: 0, opts: ['Assets \u2193, SE \u2193, Liabilities unchanged', 'Assets \u2193, Liabilities \u2193, SE unchanged', 'Assets unchanged, SE \u2193, Liabilities \u2191', 'Assets \u2193, SE unchanged, Liabilities \u2193'], exp: 'Cash decreases (asset) and Dividends reduce RE (SE). Dividends are NOT an expense \u2014 they are a distribution to owners.' },
+        { q: 'Receive $' + qfmt(amt) + ' cash in advance for services not yet performed.', a: 0, opts: ['Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets \u2191, SE \u2191, Liabilities unchanged', 'Assets \u2191, Liabilities unchanged, SE \u2191', 'Assets unchanged, Liabilities \u2191, SE \u2193'], exp: 'Cash increases (asset) and Unearned Revenue increases (liability). Revenue is NOT recognized until the service is performed.' },
+        { q: 'Pay $' + qfmt(amt) + ' for 12 months of insurance in advance.', a: 0, opts: ['Assets unchanged, Liabilities unchanged, SE unchanged', 'Assets \u2193, SE \u2193, Liabilities unchanged', 'Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets \u2193, Liabilities \u2193, SE unchanged'], exp: 'Cash decreases but Prepaid Insurance increases \u2014 an asset swap. It is not an expense until the coverage period passes.' },
+        { q: 'Purchase land for $' + qfmt(amt) + ' cash.', a: 0, opts: ['Assets unchanged, Liabilities unchanged, SE unchanged', 'Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets \u2191, SE \u2191, Liabilities unchanged', 'Assets \u2193, SE \u2193, Liabilities unchanged'], exp: 'Cash decreases but Land increases \u2014 one asset swaps for another. Total assets unchanged.' },
+        { q: 'Pay $' + qfmt(amt) + ' utility bill for the current month.', a: 0, opts: ['Assets \u2193, SE \u2193, Liabilities unchanged', 'Assets \u2193, Liabilities \u2193, SE unchanged', 'Assets unchanged, SE \u2193, Liabilities \u2191', 'Assets \u2193, SE unchanged, Liabilities \u2193'], exp: 'Cash decreases (asset) and Utilities Expense reduces Net Income and RE (SE). Liabilities are not affected since cash was paid immediately.' },
+        { q: 'Owners invest $' + qfmt(amt) + ' of equipment into the business in exchange for stock.', a: 0, opts: ['Assets \u2191, SE \u2191, Liabilities unchanged', 'Assets unchanged, SE unchanged, Liabilities unchanged', 'Assets \u2191, Liabilities \u2191, SE unchanged', 'Assets \u2191, SE \u2191, Liabilities \u2191'], exp: 'Equipment increases (asset) and Common Stock increases (SE). Non-cash investments by owners still increase both assets and SE.' },
+        { q: 'Pay $' + qfmt(amt) + ' toward a notes payable.', a: 0, opts: ['Assets \u2193, Liabilities \u2193, SE unchanged', 'Assets \u2193, SE \u2193, Liabilities unchanged', 'Assets unchanged, Liabilities \u2193, SE \u2191', 'Assets \u2193, Liabilities \u2193, SE \u2193'], exp: 'Cash decreases (asset) and Notes Payable decreases (liability). SE is not affected \u2014 repaying a loan is not an expense.' }
     ];
-    const s = scenarios[Math.floor(Math.random() * scenarios.length)];
-
-    // Generate wrong answers
-    const wrongOptions = [
-        `Cash +${amt.toLocaleString()}, RE +${amt.toLocaleString()} (Rev +${amt.toLocaleString()})`,
-        `Cash -${amt.toLocaleString()}, RE -${amt.toLocaleString()} (Exp +${amt.toLocaleString()})`,
-        `Cash +${amt.toLocaleString()}, Liabilities +${amt.toLocaleString()}`,
-        `Cash -${amt.toLocaleString()}, Equipment +${amt.toLocaleString()}`,
-        `Cash +${amt.toLocaleString()}, CC +${amt.toLocaleString()}`,
-        `AR +${amt.toLocaleString()}, RE +${amt.toLocaleString()} (Rev +${amt.toLocaleString()})`,
-        `Cash -${amt.toLocaleString()}, AP -${amt.toLocaleString()}`,
-        `Cash +${amt.toLocaleString()}, AR -${amt.toLocaleString()}`,
-        `Supplies +${amt.toLocaleString()}, AP +${amt.toLocaleString()}`,
-        `Cash -${amt.toLocaleString()}, CC -${amt.toLocaleString()}`
-    ].filter(o => o !== s.label);
-
-    const wrongPicks = shuffle(wrongOptions).slice(0, 3);
-    const options = shuffle([{ text: s.label, correct: true }, ...wrongPicks.map(w => ({ text: w, correct: false }))]);
-
-    const area = document.getElementById('question-area');
-    area.innerHTML = `
-        <p class="text-xs text-sky-400 font-semibold mb-2 uppercase tracking-wide">Record This Transaction</p>
-        <p class="text-white text-lg font-medium mb-6">${s.text}</p>
-        <p class="text-slate-400 text-sm mb-3">Which FSET effect is correct?</p>
-        <div class="space-y-3">
-            ${options.map((o, i) => `
-                <button class="answer-btn w-full text-left px-4 py-3 rounded-lg border border-slate-600 hover:border-sky-500 hover:bg-sky-900/20 transition text-sm text-slate-200"
-                    onclick="showFeedback(${o.correct}, '${s.explanation.replace(/'/g, "\\'")}'); this.classList.add('${o.correct ? 'border-emerald-500' : 'border-rose-500'}', '${o.correct ? 'bg-emerald-900/30' : 'bg-rose-900/30'}')">
-                    <span class="text-slate-500 font-bold mr-2">${String.fromCharCode(65 + i)}.</span> ${o.text}
-                </button>`).join('')}
-        </div>
-        <div id="feedback-area"></div>`;
+    const s = pick(scenarios);
+    return { question: s.q + ' What is the effect on Assets, Liabilities, and SE?', type: 'mc', answer: s.a, options: s.opts, explanation: s.exp };
 }
 
-// TYPE 2: Missing amount
+// 2. Debit or Credit: "Does this transaction debit or credit [account]?"
+function genDebitOrCredit() {
+    const amt = rand(1, 40) * 1000;
+    const scenarios = [
+        { q: 'Issue stock for $' + qfmt(amt) + ' cash. What happens to Cash?', a: 0, opts: ['Debit (increase)', 'Credit (decrease)'], exp: 'Cash is an asset. Assets increase with debits.' },
+        { q: 'Issue stock for $' + qfmt(amt) + ' cash. What happens to Common Stock?', a: 0, opts: ['Credit (increase)', 'Debit (increase)'], exp: 'Common Stock is equity. Equity increases with credits.' },
+        { q: 'Borrow $' + qfmt(amt) + ' from a bank. What happens to Notes Payable?', a: 0, opts: ['Credit (increase)', 'Debit (increase)'], exp: 'Notes Payable is a liability. Liabilities increase with credits.' },
+        { q: 'Pay $' + qfmt(amt) + ' in wages. What happens to Cash?', a: 0, opts: ['Credit (decrease)', 'Debit (increase)'], exp: 'Cash is an asset. Assets decrease with credits.' },
+        { q: 'Pay $' + qfmt(amt) + ' in wages. What happens to Wages Expense?', a: 0, opts: ['Debit (increase)', 'Credit (increase)'], exp: 'Wages Expense is an expense. Expenses increase with debits.' },
+        { q: 'Earn $' + qfmt(amt) + ' service revenue for cash. What happens to Service Revenue?', a: 0, opts: ['Credit (increase)', 'Debit (increase)'], exp: 'Service Revenue is a revenue account. Revenues increase with credits.' },
+        { q: 'Purchase equipment for $' + qfmt(amt) + ' cash. What happens to Equipment?', a: 0, opts: ['Debit (increase)', 'Credit (increase)'], exp: 'Equipment is an asset. Assets increase with debits.' },
+        { q: 'Purchase supplies on account for $' + qfmt(amt) + '. What happens to Accounts Payable?', a: 0, opts: ['Credit (increase)', 'Debit (increase)'], exp: 'Accounts Payable is a liability. Liabilities increase with credits.' },
+        { q: 'Collect $' + qfmt(amt) + ' from a customer on account. What happens to Accounts Receivable?', a: 0, opts: ['Credit (decrease)', 'Debit (increase)'], exp: 'Accounts Receivable is an asset. Assets decrease with credits.' },
+        { q: 'Pay $' + qfmt(amt) + ' on accounts payable. What happens to Accounts Payable?', a: 0, opts: ['Debit (decrease)', 'Credit (decrease)'], exp: 'Accounts Payable is a liability. Liabilities decrease with debits.' },
+        { q: 'Pay $' + qfmt(amt) + ' dividends. What happens to Dividends?', a: 0, opts: ['Debit (increase)', 'Credit (increase)'], exp: 'Dividends is a contra-equity account. It increases with debits (reducing SE).' },
+        { q: 'Receive $' + qfmt(amt) + ' cash in advance for future services. What happens to Unearned Revenue?', a: 0, opts: ['Credit (increase)', 'Debit (increase)'], exp: 'Unearned Revenue is a liability. Liabilities increase with credits.' },
+        { q: 'Pay $' + qfmt(amt) + ' for rent expense. What happens to Rent Expense?', a: 0, opts: ['Debit (increase)', 'Credit (increase)'], exp: 'Rent Expense is an expense. Expenses increase with debits.' },
+        { q: 'Provide $' + qfmt(amt) + ' of services on account. What happens to Accounts Receivable?', a: 0, opts: ['Debit (increase)', 'Credit (decrease)'], exp: 'Accounts Receivable is an asset. Assets increase with debits.' },
+        { q: 'Pay $' + qfmt(amt) + ' for utilities. What happens to Utilities Expense?', a: 0, opts: ['Debit (increase)', 'Credit (increase)'], exp: 'Utilities Expense is an expense. Expenses increase with debits.' }
+    ];
+    const s = pick(scenarios);
+    return { question: s.q, type: 'mc', answer: s.a, options: s.opts, explanation: s.exp };
+}
+
+// 3. Missing Amount from A = L + SE
 function genMissingAmount() {
-    const amt = randAmount();
-    const scenarios = [
-        { text: `The company borrows cash from a bank. Cash increases by $${amt.toLocaleString()}. Notes Payable increases by <span class="text-amber-400 font-bold">???</span>.`, answer: amt, explanation: `Notes Payable must also increase by $${amt.toLocaleString()} to keep the equation balanced. A = L + SE: both sides increase by $${amt.toLocaleString()}.` },
-        { text: `The company earns service revenue on account for $${amt.toLocaleString()}. AR increases by $${amt.toLocaleString()}. Retained Earnings changes by <span class="text-amber-400 font-bold">???</span>.`, answer: amt, explanation: `Retained Earnings increases by $${amt.toLocaleString()} because Revenue of $${amt.toLocaleString()} flows into Net Income, which increases RE.` },
-        { text: `The company pays wages of $${amt.toLocaleString()}. Cash decreases by $${amt.toLocaleString()}. Retained Earnings changes by <span class="text-amber-400 font-bold">???</span>.`, answer: -amt, explanation: `Retained Earnings decreases by $${amt.toLocaleString()} (enter -${amt.toLocaleString()}). The wages expense reduces Net Income, which reduces RE.` },
-        { text: `The company purchases equipment for cash. Equipment increases by $${amt.toLocaleString()}. Cash changes by <span class="text-amber-400 font-bold">???</span>.`, answer: -amt, explanation: `Cash decreases by $${amt.toLocaleString()} (enter -${amt.toLocaleString()}). This is an asset swap: one asset goes up, the other goes down by the same amount.` },
-        { text: `The company issues stock for $${amt.toLocaleString()} cash. Cash increases by $${amt.toLocaleString()}. Contributed Capital changes by <span class="text-amber-400 font-bold">???</span>.`, answer: amt, explanation: `Contributed Capital increases by $${amt.toLocaleString()} to balance the increase in Cash.` }
-    ];
-    const s = scenarios[Math.floor(Math.random() * scenarios.length)];
-    const area = document.getElementById('question-area');
-    area.innerHTML = `
-        <p class="text-xs text-amber-400 font-semibold mb-2 uppercase tracking-wide">What's the Missing Amount?</p>
-        <p class="text-white text-lg font-medium mb-6">${s.text}</p>
-        <div class="flex items-center gap-3 mb-4">
-            <label class="text-slate-400 text-sm">Enter the missing amount (use negative for decreases):</label>
-            <input type="number" id="missing-input" class="answer-input bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="e.g. -5000">
-            <button class="answer-btn px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition" onclick="checkMissing(${s.answer}, '${s.explanation.replace(/'/g, "\\'")}')">Submit</button>
-        </div>
-        <div id="feedback-area"></div>`;
-}
-
-function checkMissing(answer, explanation) {
-    const input = document.getElementById('missing-input');
-    const val = parseInt(input.value);
-    if (isNaN(val)) { alert('Please enter a number.'); return; }
-    showFeedback(val === answer, explanation);
-}
-
-// TYPE 3: Does this balance?
-function genBalanceCheck() {
-    const a1 = randAmount(), a2 = randAmount(), a3 = randAmount();
-    const makeError = Math.random() > 0.5;
-    let txns, hasError, explanation;
-
-    if (makeError) {
-        const errorAmt = [500, 1000, 2000][Math.floor(Math.random() * 3)];
-        txns = [
-            { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0 },
-            { desc: `Earn service revenue of $${a2.toLocaleString()} cash`, cash: a2, nca: 0, liab: 0, cc: 0, re: a2 },
-            { desc: `Pay rent of $${a3.toLocaleString()}`, cash: -a3, nca: 0, liab: 0, cc: 0, re: -a3 + errorAmt }
-        ];
-        hasError = true;
-        explanation = `The third transaction has an error. Paying rent of $${a3.toLocaleString()} should decrease RE by $${a3.toLocaleString()}, but it shows RE changing by -$${(a3 - errorAmt).toLocaleString()}. The equation does NOT balance.`;
+    const a = rand(50, 300) * 1000;
+    const l = rand(10, 150) * 1000;
+    const se = a - l;
+    const variant = rand(0, 2);
+    if (variant === 0) {
+        return { question: 'A company has Liabilities of $' + qfmt(l) + ' and Stockholders\u2019 Equity of $' + qfmt(se) + '. What are Total Assets?', type: 'number', answer: a, explanation: 'A = L + SE = $' + qfmt(l) + ' + $' + qfmt(se) + ' = $' + qfmt(a) + '.' };
+    } else if (variant === 1) {
+        return { question: 'A company has Assets of $' + qfmt(a) + ' and Stockholders\u2019 Equity of $' + qfmt(se) + '. What are Total Liabilities?', type: 'number', answer: l, explanation: 'L = A \u2212 SE = $' + qfmt(a) + ' \u2212 $' + qfmt(se) + ' = $' + qfmt(l) + '.' };
     } else {
-        txns = [
-            { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0 },
-            { desc: `Borrow $${a2.toLocaleString()} from bank`, cash: a2, nca: 0, liab: a2, cc: 0, re: 0 },
-            { desc: `Purchase equipment for $${a3.toLocaleString()} cash`, cash: -a3, nca: a3, liab: 0, cc: 0, re: 0 }
-        ];
-        hasError = false;
-        explanation = `All three transactions are correctly recorded. After all transactions: Assets ($${(a1 + a2 - a3 + a3).toLocaleString()}) = Liabilities ($${a2.toLocaleString()}) + SE ($${a1.toLocaleString()}).`;
+        return { question: 'A company has Assets of $' + qfmt(a) + ' and Liabilities of $' + qfmt(l) + '. What is Total Stockholders\u2019 Equity?', type: 'number', answer: se, explanation: 'SE = A \u2212 L = $' + qfmt(a) + ' \u2212 $' + qfmt(l) + ' = $' + qfmt(se) + '.' };
     }
-
-    let tCash = 0, tNca = 0, tLiab = 0, tCc = 0, tRe = 0;
-    txns.forEach(t => { tCash += t.cash; tNca += t.nca; tLiab += t.liab; tCc += t.cc; tRe += t.re; });
-
-    const area = document.getElementById('question-area');
-    area.innerHTML = `
-        <p class="text-xs text-purple-400 font-semibold mb-2 uppercase tracking-wide">Does This Balance?</p>
-        <p class="text-white text-lg font-medium mb-4">After these three transactions, does A = L + SE?</p>
-        <div class="overflow-x-auto mb-6">
-            <table class="fset-table w-full text-sm border-collapse">
-                <thead>
-                    <tr class="border-b border-slate-600 text-xs">
-                        <th class="text-left text-slate-400">Transaction</th>
-                        <th class="text-sky-300">Cash</th><th class="text-sky-300">Noncash Assets</th>
-                        <th class="text-amber-300">Liabilities</th><th class="text-purple-300">CC</th><th class="text-purple-300">RE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${txns.map(t => `<tr class="border-b border-slate-700/50">
-                        <td class="text-left text-slate-300">${t.desc}</td>
-                        <td>${fmt(t.cash)}</td><td>${fmt(t.nca)}</td><td>${fmt(t.liab)}</td><td>${fmt(t.cc)}</td><td>${fmt(t.re)}</td>
-                    </tr>`).join('')}
-                    <tr class="border-t-2 border-slate-500 font-bold">
-                        <td class="text-left text-slate-300">Totals</td>
-                        <td>${fmt(tCash)}</td><td>${fmt(tNca)}</td><td>${fmt(tLiab)}</td><td>${fmt(tCc)}</td><td>${fmt(tRe)}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="flex gap-3">
-            <button class="answer-btn px-6 py-3 rounded-lg border border-slate-600 hover:border-emerald-500 hover:bg-emerald-900/20 transition text-emerald-400 font-medium"
-                onclick="showFeedback(${!hasError}, '${explanation.replace(/'/g, "\\'")}'); this.classList.add('${!hasError ? 'border-emerald-500 bg-emerald-900/30' : 'border-rose-500 bg-rose-900/30'}')">
-                Yes, it balances
-            </button>
-            <button class="answer-btn px-6 py-3 rounded-lg border border-slate-600 hover:border-rose-500 hover:bg-rose-900/20 transition text-rose-400 font-medium"
-                onclick="showFeedback(${hasError}, '${explanation.replace(/'/g, "\\'")}'); this.classList.add('${hasError ? 'border-emerald-500 bg-emerald-900/30' : 'border-rose-500 bg-rose-900/30'}')">
-                No, there is an error
-            </button>
-        </div>
-        <div id="feedback-area"></div>`;
 }
 
-// TYPE 4: Build the financial statement
-function genBuildStatement() {
-    const a1 = randAmount(), a2 = randAmount(), a3 = randAmount(), a4 = randAmount();
-    const questionTypes = [
-        {
-            txns: [
-                { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0, rev: 0, exp: 0 },
-                { desc: `Earn service revenue of $${a2.toLocaleString()} cash`, cash: a2, nca: 0, liab: 0, cc: 0, re: a2, rev: a2, exp: 0 },
-                { desc: `Pay wages of $${a3.toLocaleString()}`, cash: -a3, nca: 0, liab: 0, cc: 0, re: -a3, rev: 0, exp: a3 },
-                { desc: `Pay rent of $${a4.toLocaleString()}`, cash: -a4, nca: 0, liab: 0, cc: 0, re: -a4, rev: 0, exp: a4 }
-            ],
-            question: "What is the company's <span class='text-amber-400 font-bold'>Net Income</span> after these transactions?",
-            answer: a2 - a3 - a4,
-            explanation: `Net Income = Revenue - Expenses = $${a2.toLocaleString()} - $${a3.toLocaleString()} - $${a4.toLocaleString()} = $${(a2 - a3 - a4).toLocaleString()}.`
-        },
-        {
-            txns: [
-                { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0, rev: 0, exp: 0 },
-                { desc: `Borrow $${a2.toLocaleString()} from bank`, cash: a2, nca: 0, liab: a2, cc: 0, re: 0, rev: 0, exp: 0 },
-                { desc: `Purchase equipment for $${a3.toLocaleString()} cash`, cash: -a3, nca: a3, liab: 0, cc: 0, re: 0, rev: 0, exp: 0 },
-                { desc: `Earn $${a4.toLocaleString()} revenue on account`, cash: 0, nca: a4, liab: 0, cc: 0, re: a4, rev: a4, exp: 0 }
-            ],
-            question: "What are <span class='text-emerald-400 font-bold'>Total Assets</span> after these transactions?",
-            answer: a1 + a2 - a3 + a3 + a4,
-            explanation: `Total Assets = Cash ($${(a1 + a2 - a3).toLocaleString()}) + Equipment ($${a3.toLocaleString()}) + AR ($${a4.toLocaleString()}) = $${(a1 + a2 + a4).toLocaleString()}.`
-        },
-        {
-            txns: [
-                { desc: `Issue stock for $${a1.toLocaleString()} cash`, cash: a1, nca: 0, liab: 0, cc: a1, re: 0, rev: 0, exp: 0 },
-                { desc: `Earn $${a2.toLocaleString()} service revenue (cash)`, cash: a2, nca: 0, liab: 0, cc: 0, re: a2, rev: a2, exp: 0 },
-                { desc: `Pay wages of $${a3.toLocaleString()}`, cash: -a3, nca: 0, liab: 0, cc: 0, re: -a3, rev: 0, exp: a3 }
-            ],
-            question: "What is <span class='text-purple-400 font-bold'>Retained Earnings</span> after these transactions?",
-            answer: a2 - a3,
-            explanation: `Retained Earnings = Net Income (since there are no dividends) = Revenue ($${a2.toLocaleString()}) - Expenses ($${a3.toLocaleString()}) = $${(a2 - a3).toLocaleString()}.`
-        }
-    ];
-
-    const q = questionTypes[Math.floor(Math.random() * questionTypes.length)];
-    let tCash = 0, tNca = 0, tLiab = 0, tCc = 0, tRe = 0;
-    q.txns.forEach(t => { tCash += t.cash; tNca += t.nca; tLiab += t.liab; tCc += t.cc; tRe += t.re; });
-
-    const area = document.getElementById('question-area');
-    area.innerHTML = `
-        <p class="text-xs text-emerald-400 font-semibold mb-2 uppercase tracking-wide">Build the Financial Statement</p>
-        <p class="text-white text-lg font-medium mb-4">Given these transactions:</p>
-        <div class="overflow-x-auto mb-4">
-            <table class="fset-table w-full text-sm border-collapse">
-                <thead>
-                    <tr class="border-b border-slate-600 text-xs">
-                        <th class="text-left text-slate-400">#</th>
-                        <th class="text-left text-slate-400">Transaction</th>
-                        <th class="text-sky-300">Cash</th><th class="text-sky-300">Noncash Assets</th>
-                        <th class="text-amber-300">Liabilities</th><th class="text-purple-300">CC</th><th class="text-purple-300">RE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${q.txns.map((t, i) => `<tr class="border-b border-slate-700/50">
-                        <td class="text-slate-400">${i + 1}</td>
-                        <td class="text-left text-slate-300">${t.desc}</td>
-                        <td>${fmt(t.cash)}</td><td>${fmt(t.nca)}</td><td>${fmt(t.liab)}</td><td>${fmt(t.cc)}</td><td>${fmt(t.re)}</td>
-                    </tr>`).join('')}
-                </tbody>
-            </table>
-        </div>
-        <p class="text-white mb-4">${q.question}</p>
-        <div class="flex items-center gap-3 mb-4">
-            <input type="number" id="statement-input" class="answer-input bg-slate-800 border border-slate-700 rounded-lg p-2 text-white w-40" placeholder="e.g. 15000">
-            <button class="answer-btn px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition" onclick="checkStatement(${q.answer}, '${q.explanation.replace(/'/g, "\\'")}')">Submit</button>
-        </div>
-        <div id="feedback-area"></div>`;
+// 4. Balance Check: "Do these journal entries balance?"
+function genBalanceCheck() {
+    const a1 = rand(5, 50) * 1000;
+    const a2 = rand(5, 50) * 1000;
+    const makeError = rand(0, 1) === 1;
+    const errAmt = rand(1, 5) * 500;
+    if (makeError) {
+        return { question: 'A company records: Dr Cash $' + qfmt(a1) + ', Cr Service Revenue $' + qfmt(a1) + '; Dr Wages Expense $' + qfmt(a2) + ', Cr Cash $' + qfmt(a2 + errAmt) + '. Do the entries balance overall?', type: 'mc', answer: 1, options: ['Yes, debits equal credits', 'No, debits do not equal credits'], explanation: 'Total debits = $' + qfmt(a1 + a2) + '. Total credits = $' + qfmt(a1 + a2 + errAmt) + '. The entries do NOT balance \u2014 credits exceed debits by $' + qfmt(errAmt) + '.' };
+    } else {
+        return { question: 'A company records: Dr Cash $' + qfmt(a1) + ', Cr Common Stock $' + qfmt(a1) + '; Dr Equipment $' + qfmt(a2) + ', Cr Cash $' + qfmt(a2) + '. Do the entries balance overall?', type: 'mc', answer: 0, options: ['Yes, debits equal credits', 'No, debits do not equal credits'], explanation: 'Total debits = $' + qfmt(a1 + a2) + '. Total credits = $' + qfmt(a1 + a2) + '. Debits equal credits \u2014 the entries balance.' };
+    }
 }
 
-function checkStatement(answer, explanation) {
-    const val = parseInt(document.getElementById('statement-input').value);
-    if (isNaN(val)) { alert('Please enter a number.'); return; }
-    showFeedback(val === answer, explanation);
+// 5. Build Net Income
+function genBuildNetIncome() {
+    const rev = rand(20, 100) * 1000;
+    const w = rand(5, 30) * 1000;
+    const r = rand(1, 10) * 1000;
+    const u = rand(1, 5) * 1000;
+    const ni = rev - w - r - u;
+    return { question: 'A company has Service Revenue of $' + qfmt(rev) + ', Wages Expense of $' + qfmt(w) + ', Rent Expense of $' + qfmt(r) + ', and Utilities Expense of $' + qfmt(u) + '. What is Net Income?', type: 'number', answer: ni, explanation: 'NI = Revenue \u2212 Expenses = $' + qfmt(rev) + ' \u2212 $' + qfmt(w) + ' \u2212 $' + qfmt(r) + ' \u2212 $' + qfmt(u) + ' = $' + qfmt(ni) + '.' };
 }
 
-// TYPE 5: Conceptual
+// 6. Build Total Assets
+function genBuildTotalAssets() {
+    const cash = rand(10, 80) * 1000;
+    const ar = rand(5, 30) * 1000;
+    const sup = rand(1, 10) * 1000;
+    const equip = rand(10, 60) * 1000;
+    const land = rand(20, 100) * 1000;
+    const total = cash + ar + sup + equip + land;
+    return { question: 'A company has Cash $' + qfmt(cash) + ', Accounts Receivable $' + qfmt(ar) + ', Supplies $' + qfmt(sup) + ', Equipment $' + qfmt(equip) + ', and Land $' + qfmt(land) + '. What are Total Assets?', type: 'number', answer: total, explanation: 'Total Assets = $' + qfmt(cash) + ' + $' + qfmt(ar) + ' + $' + qfmt(sup) + ' + $' + qfmt(equip) + ' + $' + qfmt(land) + ' = $' + qfmt(total) + '.' };
+}
+
+// 7. Build Ending RE
+function genBuildRE() {
+    const begRE = rand(0, 50) * 1000;
+    const ni = rand(10, 60) * 1000;
+    const div = rand(0, 20) * 1000;
+    const endRE = begRE + ni - div;
+    return { question: 'Beginning Retained Earnings = $' + qfmt(begRE) + ', Net Income = $' + qfmt(ni) + ', Dividends = $' + qfmt(div) + '. What is Ending Retained Earnings?', type: 'number', answer: endRE, explanation: 'Ending RE = Beginning RE + NI \u2212 Dividends = $' + qfmt(begRE) + ' + $' + qfmt(ni) + ' \u2212 $' + qfmt(div) + ' = $' + qfmt(endRE) + '.' };
+}
+
+// 8. Conceptual MC
 function genConceptual() {
-    const questions = [
-        {
-            text: "Which type of transaction increases <strong>both</strong> assets and liabilities?",
-            options: [
-                { text: "Borrowing cash from a bank", correct: true },
-                { text: "Issuing stock for cash", correct: false },
-                { text: "Providing services for cash", correct: false },
-                { text: "Paying employees wages", correct: false }
-            ],
-            explanation: "Borrowing cash increases Cash (an asset) and Notes Payable (a liability). Issuing stock increases assets and equity, not liabilities."
-        },
-        {
-            text: "Which transaction affects the Income Statement?",
-            options: [
-                { text: "Earning service revenue", correct: true },
-                { text: "Borrowing from a bank", correct: false },
-                { text: "Collecting an accounts receivable", correct: false },
-                { text: "Paying off accounts payable", correct: false }
-            ],
-            explanation: "Earning revenue is recorded on the Income Statement. Borrowing, collecting receivables, and paying AP are all balance-sheet-only transactions."
-        },
-        {
-            text: "When a company provides services on account, which accounts are affected?",
-            options: [
-                { text: "Accounts Receivable increases, Revenue increases", correct: true },
-                { text: "Cash increases, Revenue increases", correct: false },
-                { text: "Accounts Receivable increases, Cash increases", correct: false },
-                { text: "Accounts Payable increases, Revenue increases", correct: false }
-            ],
-            explanation: "'On account' means the customer will pay later. AR (asset) increases and Revenue is earned, increasing RE. Cash does not change until collection."
-        },
-        {
-            text: "Paying accounts payable is an example of what type of transaction?",
-            options: [
-                { text: "Decrease in an asset and decrease in a liability", correct: true },
-                { text: "Decrease in an asset and an expense", correct: false },
-                { text: "Increase in a liability and decrease in equity", correct: false },
-                { text: "Decrease in an asset and decrease in equity", correct: false }
-            ],
-            explanation: "Paying AP reduces Cash (asset) and AP (liability). The expense was already recorded when the purchase was made on account. Payment is not an additional expense."
-        },
-        {
-            text: "Which transaction has NO effect on total assets?",
-            options: [
-                { text: "Collecting cash from a customer who owed money", correct: true },
-                { text: "Earning cash revenue from a new customer", correct: false },
-                { text: "Issuing stock for cash", correct: false },
-                { text: "Borrowing money from a bank", correct: false }
-            ],
-            explanation: "Collecting a receivable swaps one asset (AR) for another (Cash). Total assets stay the same. Earning revenue, issuing stock, and borrowing all increase total assets."
-        },
-        {
-            text: "Retained Earnings on the balance sheet is increased by:",
-            options: [
-                { text: "Net Income", correct: true },
-                { text: "Owner investments", correct: false },
-                { text: "Borrowing from a bank", correct: false },
-                { text: "Purchasing equipment", correct: false }
-            ],
-            explanation: "Retained Earnings increases with Net Income (Revenue minus Expenses) and decreases with dividends. Owner investments go to Contributed Capital."
-        },
-        {
-            text: "Why does the accounting equation still balance after paying a cash expense?",
-            options: [
-                { text: "Assets decrease (Cash) and Equity decreases (RE) by the same amount", correct: true },
-                { text: "Assets decrease and Liabilities increase", correct: false },
-                { text: "Both sides increase by the same amount", correct: false },
-                { text: "The Income Statement absorbs the change so the BS is unaffected", correct: false }
-            ],
-            explanation: "Paying an expense reduces Cash (left side) and reduces RE through the expense hitting Net Income (right side). Both sides decrease equally."
-        },
-        {
-            text: "A company purchases $5,000 of supplies on account. What happens to total assets?",
-            options: [
-                { text: "Total assets increase by $5,000", correct: true },
-                { text: "Total assets decrease by $5,000", correct: false },
-                { text: "Total assets are unchanged", correct: false },
-                { text: "Total assets increase by $10,000", correct: false }
-            ],
-            explanation: "Supplies (a noncash asset) increases by $5,000. Cash is not affected since the purchase is on account. So total assets rise by $5,000, balanced by AP rising $5,000."
-        },
-        {
-            text: "Which of the following is NOT a balance-sheet-only transaction?",
-            options: [
-                { text: "Paying monthly rent expense", correct: true },
-                { text: "Purchasing equipment for cash", correct: false },
-                { text: "Collecting an accounts receivable", correct: false },
-                { text: "Paying off a bank loan", correct: false }
-            ],
-            explanation: "Paying rent is an expense that affects both the Balance Sheet (Cash decreases, RE decreases) and the Income Statement (Expense increases, NI decreases)."
-        },
-        {
-            text: "If a company has Revenue of $40,000 and Expenses of $25,000, what is the effect on Retained Earnings?",
-            options: [
-                { text: "RE increases by $15,000", correct: true },
-                { text: "RE increases by $40,000", correct: false },
-                { text: "RE decreases by $25,000", correct: false },
-                { text: "RE increases by $65,000", correct: false }
-            ],
-            explanation: "Net Income = $40,000 - $25,000 = $15,000. Retained Earnings increases by the Net Income amount ($15,000), assuming no dividends."
-        }
+    const pool = [
+        { q: 'Which type of transaction increases both assets and liabilities?', a: 0, opts: ['Borrowing cash from a bank', 'Issuing stock for cash', 'Providing services for cash', 'Paying employee wages'], exp: 'Borrowing increases Cash (asset) and Notes Payable (liability). Issuing stock increases assets and equity, not liabilities.' },
+        { q: 'Which transaction affects the Income Statement?', a: 0, opts: ['Earning service revenue', 'Borrowing from a bank', 'Collecting an accounts receivable', 'Paying off accounts payable'], exp: 'Earning revenue is recorded on the Income Statement. Borrowing, collecting receivables, and paying AP are balance-sheet-only.' },
+        { q: 'Retained Earnings is increased by:', a: 0, opts: ['Net Income', 'Owner investments', 'Borrowing from a bank', 'Purchasing equipment'], exp: 'RE increases with Net Income and decreases with dividends. Owner investments go to Contributed Capital.' },
+        { q: 'Why does A = L + SE still balance after paying a cash expense?', a: 0, opts: ['Assets decrease (Cash) and SE decreases (RE) by the same amount', 'Assets decrease and Liabilities increase', 'Both sides increase equally', 'The Income Statement absorbs the change'], exp: 'Paying an expense reduces Cash (left side) and reduces RE through expenses (right side). Both sides decrease equally.' },
+        { q: 'Which transaction has NO effect on total assets?', a: 0, opts: ['Collecting cash from a customer on account', 'Earning cash revenue from a customer', 'Issuing stock for cash', 'Borrowing money from a bank'], exp: 'Collecting a receivable swaps AR for Cash. Total assets stay the same.' },
+        { q: 'A company receives $10,000 cash in advance for services. Is this revenue?', a: 0, opts: ['No \u2014 it is a liability (Unearned Revenue)', 'Yes \u2014 cash was received', 'Yes \u2014 it increases SE', 'No \u2014 it is an expense'], exp: 'Cash received in advance creates a liability (Unearned Revenue) because the service has not been performed yet.' },
+        { q: 'When a company collects cash from a receivable, what happens to revenue?', a: 0, opts: ['Nothing \u2014 revenue was already recognized', 'Revenue increases again', 'Revenue decreases', 'Revenue is reclassified'], exp: 'Revenue was recognized when the service was performed (accrual basis). Collecting cash is just an asset swap.' },
+        { q: 'Prepaid Rent is classified as:', a: 0, opts: ['An asset', 'A liability', 'An expense', 'Revenue'], exp: 'Prepaid Rent is an asset because the company has a future benefit (the right to use the space). It becomes an expense as the benefit is consumed.' },
+        { q: 'Dividends paid to shareholders:', a: 0, opts: ['Reduce Retained Earnings but are NOT an expense', 'Are recorded as an expense on the Income Statement', 'Reduce Contributed Capital', 'Increase Liabilities'], exp: 'Dividends reduce RE (equity) but are distributions, not expenses. They do not appear on the Income Statement.' },
+        { q: 'Purchasing supplies on account affects which two accounts?', a: 0, opts: ['Supplies (asset \u2191) and Accounts Payable (liability \u2191)', 'Cash (asset \u2193) and Supplies Expense (expense \u2191)', 'Supplies (asset \u2191) and Cash (asset \u2193)', 'Accounts Payable (liability \u2191) and Supplies Expense (expense \u2191)'], exp: 'Supplies increases (asset) and AP increases (liability). Cash is not affected since no payment was made.' },
+        { q: 'Which of the following is NOT a balance-sheet-only transaction?', a: 0, opts: ['Paying monthly rent expense', 'Purchasing equipment for cash', 'Collecting an accounts receivable', 'Paying off a bank loan'], exp: 'Paying rent is an expense \u2014 it affects both the BS (Cash \u2193, RE \u2193) and the IS (Expense \u2191, NI \u2193).' },
+        { q: 'In the FSET, the RE column change always equals:', a: 0, opts: ['The Net Income column change', 'The Revenue column change', 'The Cash column change', 'The Total Assets change'], exp: 'RE changes by exactly the Net Income amount because NI flows into RE. If revenue is $10K and expenses are $3K, NI = $7K and RE increases by $7K.' },
+        { q: 'Accounts Receivable represents:', a: 0, opts: ['Amounts owed to the company by customers', 'Amounts the company owes to suppliers', 'Cash that has been received', 'Revenue that has been earned in cash'], exp: 'AR is money customers owe the company for services already provided but not yet paid for.' },
+        { q: 'Notes Payable is classified as:', a: 0, opts: ['A liability', 'An asset', 'Stockholders\u2019 Equity', 'An expense'], exp: 'Notes Payable represents money the company owes to lenders. It is a liability on the balance sheet.' },
+        { q: 'Which statement correctly describes Contributed Capital?', a: 0, opts: ['The total amount invested by owners in exchange for stock', 'Accumulated profits minus dividends', 'Money borrowed from banks', 'Revenue earned from operations'], exp: 'Contributed Capital (Common Stock + APIC) represents owner investments. Accumulated profits are Retained Earnings.' }
     ];
-
-    const q = questions[Math.floor(Math.random() * questions.length)];
-    const options = shuffle(q.options);
-
-    const area = document.getElementById('question-area');
-    area.innerHTML = `
-        <p class="text-xs text-rose-400 font-semibold mb-2 uppercase tracking-wide">Conceptual Question</p>
-        <p class="text-white text-lg font-medium mb-6">${q.text}</p>
-        <div class="space-y-3">
-            ${options.map((o, i) => `
-                <button class="answer-btn w-full text-left px-4 py-3 rounded-lg border border-slate-600 hover:border-sky-500 hover:bg-sky-900/20 transition text-sm text-slate-200"
-                    onclick="showFeedback(${o.correct}, '${q.explanation.replace(/'/g, "\\'")}'); this.classList.add('${o.correct ? 'border-emerald-500' : 'border-rose-500'}', '${o.correct ? 'bg-emerald-900/30' : 'bg-rose-900/30'}')">
-                    <span class="text-slate-500 font-bold mr-2">${String.fromCharCode(65 + i)}.</span> ${o.text}
-                </button>`).join('')}
-        </div>
-        <div id="feedback-area"></div>`;
+    const s = pick(pool);
+    return { question: s.q, type: 'mc', answer: s.a, options: s.opts, explanation: s.exp };
 }
 
-// TYPE 6: Journal Entry
-function genJournalEntry() {
-    const amt = randAmount();
-    const scenarios = [
-        {
-            text: `The company issues common stock for $${amt.toLocaleString()} cash.`,
-            entries: [
-                { account: 'Cash', debit: amt, credit: 0 },
-                { account: 'Common Stock', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Cash $${amt.toLocaleString()} (asset increases), Credit Common Stock $${amt.toLocaleString()} (equity increases).`
-        },
-        {
-            text: `The company borrows $${amt.toLocaleString()} cash by signing a note payable.`,
-            entries: [
-                { account: 'Cash', debit: amt, credit: 0 },
-                { account: 'Notes Payable', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Cash $${amt.toLocaleString()} (asset increases), Credit Notes Payable $${amt.toLocaleString()} (liability increases).`
-        },
-        {
-            text: `The company purchases equipment for $${amt.toLocaleString()} cash.`,
-            entries: [
-                { account: 'Equipment', debit: amt, credit: 0 },
-                { account: 'Cash', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Equipment $${amt.toLocaleString()} (asset increases), Credit Cash $${amt.toLocaleString()} (asset decreases).`
-        },
-        {
-            text: `The company purchases $${amt.toLocaleString()} of supplies on account.`,
-            entries: [
-                { account: 'Supplies', debit: amt, credit: 0 },
-                { account: 'Accounts Payable', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Supplies $${amt.toLocaleString()} (asset increases), Credit Accounts Payable $${amt.toLocaleString()} (liability increases).`
-        },
-        {
-            text: `The company provides services for $${amt.toLocaleString()} cash.`,
-            entries: [
-                { account: 'Cash', debit: amt, credit: 0 },
-                { account: 'Service Revenue', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Cash $${amt.toLocaleString()} (asset increases), Credit Service Revenue $${amt.toLocaleString()} (revenue increases equity).`
-        },
-        {
-            text: `The company provides $${amt.toLocaleString()} of services on account.`,
-            entries: [
-                { account: 'Accounts Receivable', debit: amt, credit: 0 },
-                { account: 'Service Revenue', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Accounts Receivable $${amt.toLocaleString()} (asset increases), Credit Service Revenue $${amt.toLocaleString()} (revenue increases equity).`
-        },
-        {
-            text: `The company pays $${amt.toLocaleString()} in employee wages.`,
-            entries: [
-                { account: 'Wages Expense', debit: amt, credit: 0 },
-                { account: 'Cash', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Wages Expense $${amt.toLocaleString()} (expense increases, reducing equity), Credit Cash $${amt.toLocaleString()} (asset decreases).`
-        },
-        {
-            text: `The company pays $${amt.toLocaleString()} for rent expense.`,
-            entries: [
-                { account: 'Rent Expense', debit: amt, credit: 0 },
-                { account: 'Cash', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Rent Expense $${amt.toLocaleString()} (expense increases, reducing equity), Credit Cash $${amt.toLocaleString()} (asset decreases).`
-        },
-        {
-            text: `The company pays $${amt.toLocaleString()} on its accounts payable.`,
-            entries: [
-                { account: 'Accounts Payable', debit: amt, credit: 0 },
-                { account: 'Cash', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Accounts Payable $${amt.toLocaleString()} (liability decreases), Credit Cash $${amt.toLocaleString()} (asset decreases).`
-        },
-        {
-            text: `The company collects $${amt.toLocaleString()} from a customer on account.`,
-            entries: [
-                { account: 'Cash', debit: amt, credit: 0 },
-                { account: 'Accounts Receivable', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Cash $${amt.toLocaleString()} (asset increases), Credit Accounts Receivable $${amt.toLocaleString()} (asset decreases).`
-        },
-        {
-            text: `The company pays $${amt.toLocaleString()} in dividends to shareholders.`,
-            entries: [
-                { account: 'Dividends', debit: amt, credit: 0 },
-                { account: 'Cash', debit: 0, credit: amt }
-            ],
-            explanation: `Debit Dividends $${amt.toLocaleString()} (reduces equity), Credit Cash $${amt.toLocaleString()} (asset decreases).`
-        }
+// 9. True/False
+function genTrueFalse() {
+    const pool = [
+        { q: 'Borrowing cash from a bank is recorded as revenue.', a: 1, opts: ['True', 'False'], exp: 'False. Borrowing creates a liability (Notes Payable), not revenue. The company must repay the loan.' },
+        { q: 'Every transaction must keep the accounting equation in balance.', a: 0, opts: ['True', 'False'], exp: 'True. A = L + SE must hold after every recorded transaction.' },
+        { q: 'Collecting cash from a customer on account increases total assets.', a: 1, opts: ['True', 'False'], exp: 'False. Cash increases but AR decreases \u2014 total assets are unchanged (asset swap).' },
+        { q: 'Revenue is recognized when cash is received.', a: 1, opts: ['True', 'False'], exp: 'False. Under accrual accounting, revenue is recognized when the service is performed, regardless of when cash is collected.' },
+        { q: 'Expenses decrease Retained Earnings.', a: 0, opts: ['True', 'False'], exp: 'True. Expenses reduce Net Income, which reduces RE.' },
+        { q: 'Accounts Payable is an asset.', a: 1, opts: ['True', 'False'], exp: 'False. Accounts Payable is a liability \u2014 it represents amounts owed to suppliers.' },
+        { q: 'Dividends are an expense on the Income Statement.', a: 1, opts: ['True', 'False'], exp: 'False. Dividends reduce Retained Earnings directly; they are not an expense and do not appear on the Income Statement.' },
+        { q: 'Purchasing equipment for cash changes total assets.', a: 1, opts: ['True', 'False'], exp: 'False. Cash decreases and Equipment increases by the same amount \u2014 total assets are unchanged.' },
+        { q: 'Prepaid insurance is an expense when paid.', a: 1, opts: ['True', 'False'], exp: 'False. When paid, Prepaid Insurance is an asset. It becomes an expense as the coverage period elapses.' },
+        { q: 'Unearned Revenue is a liability.', a: 0, opts: ['True', 'False'], exp: 'True. The company received cash but has not yet performed the service \u2014 it owes future service to the customer.' },
+        { q: 'Net Income increases Contributed Capital.', a: 1, opts: ['True', 'False'], exp: 'False. Net Income increases Retained Earnings, not Contributed Capital. CC only changes when owners invest or withdraw.' },
+        { q: 'Debits always increase account balances.', a: 1, opts: ['True', 'False'], exp: 'False. Debits increase assets and expenses but decrease liabilities, equity, and revenue.' }
     ];
-
-    const s = scenarios[Math.floor(Math.random() * scenarios.length)];
-
-    const accountList = ['', 'Cash', 'Accounts Receivable', 'Supplies', 'Equipment', 'Land',
-        'Accounts Payable', 'Notes Payable', 'Unearned Revenue',
-        'Common Stock', 'Additional Paid-in Capital', 'Retained Earnings',
-        'Service Revenue', 'Wages Expense', 'Rent Expense', 'Utilities Expense',
-        'Insurance Expense', 'Depreciation Expense', 'Interest Expense', 'Dividends'];
-
-    const optionsHtml = accountList.map(a =>
-        `<option value="${a}">${a || '-- Select Account --'}</option>`
-    ).join('');
-
-    const area = document.getElementById('question-area');
-    area.innerHTML = `
-        <p class="text-xs text-cyan-400 font-semibold mb-2 uppercase tracking-wide">Journal Entry</p>
-        <p class="text-white text-lg font-medium mb-6">${s.text}</p>
-        <p class="text-slate-400 text-sm mb-3">Record the journal entry for this transaction:</p>
-        <div class="overflow-x-auto mb-4">
-            <table class="w-full text-sm">
-                <thead>
-                    <tr class="border-b border-slate-600">
-                        <th class="text-left p-2 text-slate-400">Account</th>
-                        <th class="p-2 text-emerald-400 w-32">Debit</th>
-                        <th class="p-2 text-rose-400 w-32">Credit</th>
-                        <th class="w-10"></th>
-                    </tr>
-                </thead>
-                <tbody id="je-rows">
-                    <tr class="je-row" data-indent="0">
-                        <td class="p-2">
-                            <select class="je-account w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
-                                ${optionsHtml}
-                            </select>
-                        </td>
-                        <td class="p-2"><input type="number" class="je-debit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
-                        <td class="p-2"><input type="number" class="je-credit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
-                        <td></td>
-                    </tr>
-                    <tr class="je-row" data-indent="1">
-                        <td class="p-2 pl-8">
-                            <select class="je-account w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
-                                ${optionsHtml}
-                            </select>
-                        </td>
-                        <td class="p-2"><input type="number" class="je-debit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
-                        <td class="p-2"><input type="number" class="je-credit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
-                        <td class="p-2"><button onclick="removeJERow(this)" class="text-slate-500 hover:text-rose-400 transition text-lg" title="Remove row">&times;</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="flex gap-3 mb-4">
-            <button onclick="addJERow()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg text-sm font-medium transition">+ Add Line</button>
-            <button class="answer-btn px-5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-medium transition" onclick="checkJournalEntry()">Check Answer</button>
-        </div>
-        <div id="feedback-area"></div>`;
-
-    // Store correct answer on the area element for checking
-    area.dataset.jeAnswer = JSON.stringify(s.entries);
-    area.dataset.jeExplanation = s.explanation;
+    const s = pick(pool);
+    return { question: 'True or False: ' + s.q, type: 'mc', answer: s.a, options: s.opts, explanation: s.exp };
 }
 
-function addJERow() {
-    const tbody = document.getElementById('je-rows');
-    const accountList = ['', 'Cash', 'Accounts Receivable', 'Supplies', 'Equipment', 'Land',
-        'Accounts Payable', 'Notes Payable', 'Unearned Revenue',
-        'Common Stock', 'Additional Paid-in Capital', 'Retained Earnings',
-        'Service Revenue', 'Wages Expense', 'Rent Expense', 'Utilities Expense',
-        'Insurance Expense', 'Depreciation Expense', 'Interest Expense', 'Dividends'];
-    const optionsHtml = accountList.map(a =>
-        `<option value="${a}">${a || '-- Select Account --'}</option>`
-    ).join('');
-    const tr = document.createElement('tr');
-    tr.className = 'je-row fade-in';
-    tr.dataset.indent = '1';
-    tr.innerHTML = `
-        <td class="p-2 pl-8">
-            <select class="je-account w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm">
-                ${optionsHtml}
-            </select>
-        </td>
-        <td class="p-2"><input type="number" class="je-debit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
-        <td class="p-2"><input type="number" class="je-credit w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white text-sm text-center" placeholder="0" min="0"></td>
-        <td class="p-2"><button onclick="removeJERow(this)" class="text-slate-500 hover:text-rose-400 transition text-lg" title="Remove row">&times;</button></td>`;
-    tbody.appendChild(tr);
+// 10. Account Classification
+function genAccountClassification() {
+    const pool = [
+        { acct: 'Cash', a: 0, opts: ['Asset', 'Liability', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Accounts Receivable', a: 0, opts: ['Asset', 'Liability', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Supplies', a: 0, opts: ['Asset', 'Liability', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Equipment', a: 0, opts: ['Asset', 'Liability', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Land', a: 0, opts: ['Asset', 'Liability', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Prepaid Insurance', a: 0, opts: ['Asset', 'Liability', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Building', a: 0, opts: ['Asset', 'Liability', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Accounts Payable', a: 0, opts: ['Liability', 'Asset', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Notes Payable', a: 0, opts: ['Liability', 'Asset', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Unearned Revenue', a: 0, opts: ['Liability', 'Asset', 'Revenue', 'Stockholders\u2019 Equity', 'Expense'] },
+        { acct: 'Wages Payable', a: 0, opts: ['Liability', 'Asset', 'Stockholders\u2019 Equity', 'Expense', 'Revenue'] },
+        { acct: 'Interest Payable', a: 0, opts: ['Liability', 'Asset', 'Stockholders\u2019 Equity', 'Revenue', 'Expense'] },
+        { acct: 'Common Stock', a: 0, opts: ['Stockholders\u2019 Equity', 'Asset', 'Liability', 'Revenue', 'Expense'] },
+        { acct: 'Retained Earnings', a: 0, opts: ['Stockholders\u2019 Equity', 'Asset', 'Liability', 'Revenue', 'Expense'] },
+        { acct: 'Additional Paid-in Capital', a: 0, opts: ['Stockholders\u2019 Equity', 'Asset', 'Liability', 'Revenue', 'Expense'] },
+        { acct: 'Service Revenue', a: 0, opts: ['Revenue', 'Asset', 'Liability', 'Stockholders\u2019 Equity', 'Expense'] },
+        { acct: 'Interest Revenue', a: 0, opts: ['Revenue', 'Asset', 'Liability', 'Stockholders\u2019 Equity', 'Expense'] },
+        { acct: 'Wages Expense', a: 0, opts: ['Expense', 'Asset', 'Liability', 'Revenue', 'Stockholders\u2019 Equity'] },
+        { acct: 'Rent Expense', a: 0, opts: ['Expense', 'Asset', 'Liability', 'Revenue', 'Stockholders\u2019 Equity'] },
+        { acct: 'Utilities Expense', a: 0, opts: ['Expense', 'Asset', 'Liability', 'Revenue', 'Stockholders\u2019 Equity'] },
+        { acct: 'Insurance Expense', a: 0, opts: ['Expense', 'Asset', 'Liability', 'Revenue', 'Stockholders\u2019 Equity'] },
+        { acct: 'Depreciation Expense', a: 0, opts: ['Expense', 'Asset', 'Liability', 'Revenue', 'Stockholders\u2019 Equity'] },
+        { acct: 'Dividends', a: 0, opts: ['Contra-Equity (reduces SE)', 'Expense', 'Liability', 'Revenue', 'Asset'] }
+    ];
+    const s = pick(pool);
+    const classMap = { 'Asset': 'Assets increase with debits and decrease with credits.', 'Liability': 'Liabilities increase with credits and decrease with debits.', 'Stockholders\u2019 Equity': 'SE accounts increase with credits and decrease with debits.', 'Revenue': 'Revenue increases SE through Net Income. It increases with credits.', 'Expense': 'Expenses decrease SE through Net Income. They increase with debits.', 'Contra-Equity (reduces SE)': 'Dividends reduce Retained Earnings. They are NOT an expense.' };
+    return { question: 'How is <strong>' + s.acct + '</strong> classified?', type: 'mc', answer: s.a, options: s.opts, explanation: s.acct + ' is classified as: ' + s.opts[0] + '. ' + (classMap[s.opts[0]] || '') };
 }
 
-function removeJERow(btn) {
-    const tbody = document.getElementById('je-rows');
-    if (tbody.querySelectorAll('.je-row').length > 2) {
-        btn.closest('tr').remove();
+// 11. Normal Balance
+function genNormalBalance() {
+    const pool = [
+        { acct: 'Cash', a: 0 }, { acct: 'Accounts Receivable', a: 0 }, { acct: 'Supplies', a: 0 },
+        { acct: 'Equipment', a: 0 }, { acct: 'Land', a: 0 }, { acct: 'Prepaid Insurance', a: 0 },
+        { acct: 'Building', a: 0 }, { acct: 'Wages Expense', a: 0 }, { acct: 'Rent Expense', a: 0 },
+        { acct: 'Utilities Expense', a: 0 }, { acct: 'Insurance Expense', a: 0 }, { acct: 'Dividends', a: 0 },
+        { acct: 'Accounts Payable', a: 1 }, { acct: 'Notes Payable', a: 1 }, { acct: 'Unearned Revenue', a: 1 },
+        { acct: 'Wages Payable', a: 1 }, { acct: 'Interest Payable', a: 1 },
+        { acct: 'Common Stock', a: 1 }, { acct: 'Retained Earnings', a: 1 }, { acct: 'Additional Paid-in Capital', a: 1 },
+        { acct: 'Service Revenue', a: 1 }, { acct: 'Sales Revenue', a: 1 }, { acct: 'Interest Revenue', a: 1 }
+    ];
+    const s = pick(pool);
+    const isDebit = s.a === 0;
+    const exp = isDebit
+        ? s.acct + ' has a normal debit balance. Assets, expenses, and dividends increase with debits.'
+        : s.acct + ' has a normal credit balance. Liabilities, equity, and revenue increase with credits.';
+    return { question: 'What is the normal balance of <strong>' + s.acct + '</strong>?', type: 'mc', answer: s.a, options: ['Debit', 'Credit'], explanation: exp };
+}
+
+// 12. Transaction Effect on Total Assets
+function genTransactionEffect() {
+    const amt = rand(5, 50) * 1000;
+    const pool = [
+        { q: 'Issue common stock for $' + qfmt(amt) + ' cash.', a: 0, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash increases by $' + qfmt(amt) + ', so total assets increase.' },
+        { q: 'Purchase equipment for $' + qfmt(amt) + ' cash.', a: 2, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash decreases but Equipment increases by the same amount \u2014 asset swap. Total assets unchanged.' },
+        { q: 'Collect $' + qfmt(amt) + ' on accounts receivable.', a: 2, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash increases but AR decreases by the same amount \u2014 asset swap. Total assets unchanged.' },
+        { q: 'Earn $' + qfmt(amt) + ' service revenue for cash.', a: 0, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash increases by $' + qfmt(amt) + ', so total assets increase.' },
+        { q: 'Pay $' + qfmt(amt) + ' wages expense.', a: 1, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash decreases by $' + qfmt(amt) + ', so total assets decrease.' },
+        { q: 'Borrow $' + qfmt(amt) + ' from a bank.', a: 0, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash increases by $' + qfmt(amt) + ', so total assets increase.' },
+        { q: 'Pay $' + qfmt(amt) + ' on accounts payable.', a: 1, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash decreases by $' + qfmt(amt) + ', so total assets decrease.' },
+        { q: 'Provide $' + qfmt(amt) + ' of services on account.', a: 0, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'AR increases by $' + qfmt(amt) + ', so total assets increase.' },
+        { q: 'Purchase supplies on account for $' + qfmt(amt) + '.', a: 0, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Supplies increases by $' + qfmt(amt) + ', so total assets increase. (AP also increases.)' },
+        { q: 'Pay $' + qfmt(amt) + ' in dividends.', a: 1, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash decreases by $' + qfmt(amt) + ', so total assets decrease.' },
+        { q: 'Pay $' + qfmt(amt) + ' for 12 months of insurance in advance.', a: 2, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash decreases but Prepaid Insurance increases \u2014 asset swap. Total assets unchanged.' },
+        { q: 'Receive $' + qfmt(amt) + ' cash in advance for future services.', a: 0, opts: ['Total assets increase', 'Total assets decrease', 'Total assets stay the same'], exp: 'Cash increases by $' + qfmt(amt) + '. Total assets increase. (Unearned Revenue liability also increases.)' }
+    ];
+    const s = pick(pool);
+    return { question: s.q + ' What happens to total assets?', type: 'mc', answer: s.a, options: s.opts, explanation: s.exp };
+}
+
+// ========== JE GENERATORS (25 templates) ==========
+
+function jeGenIssueStock() {
+    const amt = rand(10, 200) * 1000;
+    return { prompt: 'Issue common stock for $' + qfmt(amt) + ' cash.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Common Stock', dr: 0, cr: amt }] };
+}
+function jeGenBorrowCash() {
+    const amt = rand(10, 150) * 1000;
+    return { prompt: 'Borrow $' + qfmt(amt) + ' cash from the bank by signing a note payable.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Notes Payable', dr: 0, cr: amt }] };
+}
+function jeGenPurchaseEquipment() {
+    const amt = rand(5, 100) * 1000;
+    return { prompt: 'Purchase equipment for $' + qfmt(amt) + ' cash.', answer: [{ acct: 'Equipment', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenPurchaseSuppliesOnAccount() {
+    const amt = rand(1, 20) * 1000;
+    return { prompt: 'Purchase $' + qfmt(amt) + ' of supplies on account.', answer: [{ acct: 'Supplies', dr: amt, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: amt }] };
+}
+function jeGenServiceRevenueCash() {
+    const amt = rand(5, 80) * 1000;
+    return { prompt: 'Provide consulting services for $' + qfmt(amt) + ' cash.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Service Revenue', dr: 0, cr: amt }] };
+}
+function jeGenServiceRevenueOnAccount() {
+    const amt = rand(5, 60) * 1000;
+    return { prompt: 'Provide $' + qfmt(amt) + ' of services on account.', answer: [{ acct: 'Accounts Receivable', dr: amt, cr: 0 }, { acct: 'Service Revenue', dr: 0, cr: amt }] };
+}
+function jeGenPayWages() {
+    const amt = rand(2, 30) * 1000;
+    return { prompt: 'Pay $' + qfmt(amt) + ' in employee wages.', answer: [{ acct: 'Wages Expense', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenPayRent() {
+    const amt = rand(1, 15) * 1000;
+    return { prompt: 'Pay $' + qfmt(amt) + ' for rent expense for the month.', answer: [{ acct: 'Rent Expense', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenPayAP() {
+    const amt = rand(2, 25) * 1000;
+    return { prompt: 'Pay $' + qfmt(amt) + ' on accounts payable.', answer: [{ acct: 'Accounts Payable', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenCollectAR() {
+    const amt = rand(3, 40) * 1000;
+    return { prompt: 'Collect $' + qfmt(amt) + ' from a customer on account.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: amt }] };
+}
+function jeGenPayDividends() {
+    const amt = rand(2, 20) * 1000;
+    return { prompt: 'Pay $' + qfmt(amt) + ' in cash dividends to shareholders.', answer: [{ acct: 'Dividends', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenPrepaidInsurance() {
+    const months = pick([6, 12, 24]);
+    const perMonth = rand(1, 5) * 500;
+    const amt = months * perMonth;
+    return { prompt: 'Pay $' + qfmt(amt) + ' cash for ' + months + ' months of insurance in advance.', answer: [{ acct: 'Prepaid Insurance', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenPayUtilities() {
+    const amt = rand(1, 8) * 500;
+    return { prompt: 'Pay $' + qfmt(amt) + ' utility bill for the current month.', answer: [{ acct: 'Utilities Expense', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenReceiveAdvance() {
+    const amt = rand(5, 50) * 1000;
+    return { prompt: 'Receive $' + qfmt(amt) + ' cash in advance from a client for services to be performed next quarter.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Unearned Revenue', dr: 0, cr: amt }] };
+}
+function jeGenPurchaseLand() {
+    const amt = rand(30, 200) * 1000;
+    return { prompt: 'Purchase land for $' + qfmt(amt) + ' cash.', answer: [{ acct: 'Land', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenIssueBond() {
+    const amt = rand(50, 300) * 1000;
+    return { prompt: 'Issue bonds payable at face value of $' + qfmt(amt) + ', receiving cash.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Notes Payable', dr: 0, cr: amt }] };
+}
+function jeGenPayInterest() {
+    const amt = rand(1, 10) * 1000;
+    return { prompt: 'Pay $' + qfmt(amt) + ' of interest expense on a bank loan.', answer: [{ acct: 'Interest Expense', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenWithdrawCash() {
+    const amt = rand(1, 10) * 1000;
+    return { prompt: 'Owner withdraws $' + qfmt(amt) + ' cash from the business (dividends).', answer: [{ acct: 'Dividends', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenInvestCash() {
+    const amt = rand(20, 150) * 1000;
+    return { prompt: 'Owner invests $' + qfmt(amt) + ' cash into the business in exchange for common stock.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Common Stock', dr: 0, cr: amt }] };
+}
+function jeGenPayTaxes() {
+    const amt = rand(2, 25) * 1000;
+    return { prompt: 'Pay $' + qfmt(amt) + ' in income taxes.', answer: [{ acct: 'Income Tax Expense', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenPurchaseSuppliesCash() {
+    const amt = rand(1, 10) * 1000;
+    return { prompt: 'Purchase $' + qfmt(amt) + ' of supplies for cash.', answer: [{ acct: 'Supplies', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenEarnInterest() {
+    const amt = rand(1, 8) * 500;
+    return { prompt: 'Earn $' + qfmt(amt) + ' of interest revenue on a bank deposit, received in cash.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Interest Revenue', dr: 0, cr: amt }] };
+}
+function jeGenRepayLoan() {
+    const amt = rand(5, 50) * 1000;
+    return { prompt: 'Repay $' + qfmt(amt) + ' of principal on a notes payable.', answer: [{ acct: 'Notes Payable', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+function jeGenPurchaseInventory() {
+    const amt = rand(5, 60) * 1000;
+    const method = pick(['cash', 'account']);
+    if (method === 'cash') {
+        return { prompt: 'Purchase $' + qfmt(amt) + ' of inventory for cash.', answer: [{ acct: 'Supplies', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    } else {
+        return { prompt: 'Purchase $' + qfmt(amt) + ' of inventory on account.', answer: [{ acct: 'Supplies', dr: amt, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: amt }] };
+    }
+}
+function jeGenRecordSale() {
+    const amt = rand(5, 80) * 1000;
+    const method = pick(['cash', 'account']);
+    if (method === 'cash') {
+        return { prompt: 'Record a sale of $' + qfmt(amt) + ' for cash.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: amt }] };
+    } else {
+        return { prompt: 'Record a sale of $' + qfmt(amt) + ' on account.', answer: [{ acct: 'Accounts Receivable', dr: amt, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: amt }] };
     }
 }
 
-function checkJournalEntry() {
-    const area = document.getElementById('question-area');
-    const correctEntries = JSON.parse(area.dataset.jeAnswer);
-    const explanation = area.dataset.jeExplanation;
-
-    // Gather student entries (skip blank rows)
-    const rows = document.querySelectorAll('#je-rows .je-row');
-    const studentEntries = [];
-    let totalDebit = 0, totalCredit = 0;
-
-    rows.forEach(row => {
-        const account = row.querySelector('.je-account').value;
-        const debit = parseFloat(row.querySelector('.je-debit').value) || 0;
-        const credit = parseFloat(row.querySelector('.je-credit').value) || 0;
-        if (account || debit > 0 || credit > 0) {
-            studentEntries.push({ account, debit, credit });
-            totalDebit += debit;
-            totalCredit += credit;
-        }
-    });
-
-    // Build the correct entry display
-    let correctDisplay = '<div class="mt-3 p-3 bg-slate-900/60 rounded-lg border border-slate-600"><p class="text-sm text-slate-400 mb-2 font-semibold">Correct journal entry:</p><table class="w-full text-sm"><thead><tr class="border-b border-slate-700"><th class="text-left p-1 text-slate-500">Account</th><th class="p-1 text-emerald-400 w-28">Debit</th><th class="p-1 text-rose-400 w-28">Credit</th></tr></thead><tbody>';
-    correctEntries.forEach((e, i) => {
-        const indent = e.credit > 0 ? 'pl-6' : '';
-        correctDisplay += `<tr><td class="p-1 text-slate-300 ${indent}">${e.account}</td><td class="p-1 text-center ${e.debit > 0 ? 'text-emerald-400' : 'text-slate-600'}">${e.debit > 0 ? '$' + e.debit.toLocaleString() : ''}</td><td class="p-1 text-center ${e.credit > 0 ? 'text-rose-400' : 'text-slate-600'}">${e.credit > 0 ? '$' + e.credit.toLocaleString() : ''}</td></tr>`;
-    });
-    correctDisplay += '</tbody></table></div>';
-
-    // Validate
-    let errors = [];
-
-    if (studentEntries.length === 0) {
-        errors.push('No entries were provided.');
-    }
-
-    if (totalDebit !== totalCredit) {
-        errors.push(`Total debits ($${totalDebit.toLocaleString()}) do not equal total credits ($${totalCredit.toLocaleString()}).`);
-    }
-
-    // Check that each correct entry is matched
-    const matchedCorrect = new Array(correctEntries.length).fill(false);
-    const matchedStudent = new Array(studentEntries.length).fill(false);
-
-    correctEntries.forEach((ce, ci) => {
-        studentEntries.forEach((se, si) => {
-            if (!matchedStudent[si] && !matchedCorrect[ci]) {
-                if (se.account === ce.account && se.debit === ce.debit && se.credit === ce.credit) {
-                    matchedCorrect[ci] = true;
-                    matchedStudent[si] = true;
-                }
-            }
-        });
-    });
-
-    const allCorrectMatched = matchedCorrect.every(m => m);
-    const noExtraEntries = matchedStudent.every(m => m) && studentEntries.length === correctEntries.length;
-    const isCorrect = allCorrectMatched && noExtraEntries && totalDebit === totalCredit && studentEntries.length > 0;
-
-    if (!isCorrect && errors.length === 0) {
-        // Build specific feedback about what went wrong
-        matchedCorrect.forEach((m, i) => {
-            if (!m) {
-                const ce = correctEntries[i];
-                if (ce.debit > 0) errors.push(`Missing or incorrect debit: ${ce.account} for $${ce.debit.toLocaleString()}.`);
-                if (ce.credit > 0) errors.push(`Missing or incorrect credit: ${ce.account} for $${ce.credit.toLocaleString()}.`);
-            }
-        });
-        studentEntries.forEach((se, i) => {
-            if (!matchedStudent[i] && se.account) {
-                errors.push(`"${se.account}" with Debit $${se.debit.toLocaleString()} / Credit $${se.credit.toLocaleString()} is not part of the correct entry.`);
-            }
-        });
-    }
-
-    const fullExplanation = explanation + (errors.length > 0 ? '<br><br><strong>Issues:</strong> ' + errors.join(' ') : '') + correctDisplay;
-
-    showFeedback(isCorrect, fullExplanation);
-}
+// ========== INIT QuizEngine ==========
+QuizEngine.init({
+    questionGenerators: [genFSETEffect, genDebitOrCredit, genMissingAmount, genBalanceCheck,
+        genBuildNetIncome, genBuildTotalAssets, genBuildRE, genConceptual,
+        genTrueFalse, genAccountClassification, genNormalBalance, genTransactionEffect],
+    jeGenerators: [jeGenIssueStock, jeGenBorrowCash, jeGenPurchaseEquipment,
+        jeGenPurchaseSuppliesOnAccount, jeGenServiceRevenueCash,
+        jeGenServiceRevenueOnAccount, jeGenPayWages, jeGenPayRent,
+        jeGenPayAP, jeGenCollectAR, jeGenPayDividends,
+        jeGenPrepaidInsurance, jeGenPayUtilities, jeGenReceiveAdvance,
+        jeGenPurchaseLand, jeGenIssueBond, jeGenPayInterest,
+        jeGenWithdrawCash, jeGenInvestCash, jeGenPayTaxes,
+        jeGenPurchaseSuppliesCash, jeGenEarnInterest,
+        jeGenRepayLoan, jeGenPurchaseInventory, jeGenRecordSale],
+    jeAccounts: jeAccounts,
+    accentColor: 'sky',
+    qCopies: 8,
+    jeCopies: 2
+});
 
 // ==================== INIT ====================
 buildExamples();

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>T-Accounts, Closing &amp; Accruals | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html { scroll-behavior: smooth; }
@@ -727,45 +728,33 @@
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-bold text-purple-400">Practice Questions</h2>
                     <div class="flex items-center gap-4">
-                        <div class="text-right">
-                            <p class="text-xs text-slate-500">Score</p>
-                            <p class="text-lg font-bold text-emerald-400"><span id="score-correct">0</span>/<span id="score-total">0</span></p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xs text-slate-500">Streak</p>
-                            <p class="text-lg font-bold text-amber-400" id="streak">0</p>
-                        </div>
+                        <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
+                        <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
+                        <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
                     </div>
                 </div>
-
-                <div id="question-area" class="mb-4">
-                    <p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p>
-                </div>
-
-                <div id="answer-area" class="mb-4 hidden"></div>
-                <div id="feedback-area" class="mb-4 hidden"></div>
-
+                <div id="p-question" class="mb-4"><p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p></div>
+                <div id="p-answer" class="mb-4 hidden"></div>
+                <div id="p-feedback" class="mb-4 hidden"></div>
                 <div class="flex gap-3">
-                    <button onclick="newQuestion()" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
-                    <button onclick="checkAnswer()" id="check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                    <button onclick="QuizEngine.pNew()" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
                 </div>
             </div>
 
             <!-- Journal Entry Practice -->
             <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                <h2 class="text-xl font-bold text-purple-400 mb-4">Journal Entry Practice</h2>
-                <p class="text-slate-400 text-sm mb-4">Select accounts from the dropdowns, enter debit/credit amounts, and check your entry.</p>
-
-                <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4">
-                    <p class="text-slate-400">Click &ldquo;New Journal Entry&rdquo; to start.</p>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-purple-400">Journal Entry Practice</h2>
+                    <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
                 </div>
-
+                <p class="text-slate-400 text-sm mb-4">Select accounts from the dropdowns, enter debit/credit amounts, and check your entry.</p>
+                <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
                 <div id="je-lines" class="space-y-2 mb-4"></div>
-
                 <div class="flex gap-3 mb-4">
-                    <button onclick="addJELine()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">+ Add Line</button>
-                    <button onclick="checkJE()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Check Entry</button>
-                    <button onclick="newJE()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">New Journal Entry</button>
+                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                    <button onclick="QuizEngine.jeNew()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
                 </div>
                 <div id="je-feedback" class="hidden"></div>
             </div>
@@ -800,253 +789,522 @@
         }
     };
 
-    // Practice Questions
-    let correct = 0, total = 0, streak = 0, currentQ = null;
+    // ==================== PRACTICE QUESTION & JE GENERATORS ====================
+    const { rand, pick, fmt } = QuizEngine;
 
-    const accounts = ['Cash','Accounts Receivable','Supplies','Prepaid Insurance','Prepaid Rent','Office Equipment',
-        'Accumulated Depreciation','Accounts Payable','Salary Payable','Unearned Revenue','Interest Payable',
-        'Common Stock','Retained Earnings','Service Revenue','Rent Revenue','Salary Expense','Rent Expense',
-        'Insurance Expense','Depreciation Expense','Interest Expense','Supplies Expense','Utilities Expense'];
-
+    // ---- Account pool & normal balances ----
     const normalBalances = {
         'Cash':'Dr','Accounts Receivable':'Dr','Supplies':'Dr','Prepaid Insurance':'Dr','Prepaid Rent':'Dr',
-        'Office Equipment':'Dr','Accumulated Depreciation':'Cr','Accounts Payable':'Cr','Salary Payable':'Cr',
-        'Unearned Revenue':'Cr','Interest Payable':'Cr','Common Stock':'Cr','Retained Earnings':'Cr',
-        'Service Revenue':'Cr','Rent Revenue':'Cr','Salary Expense':'Dr','Rent Expense':'Dr',
-        'Insurance Expense':'Dr','Depreciation Expense':'Dr','Interest Expense':'Dr','Supplies Expense':'Dr','Utilities Expense':'Dr'
+        'Office Equipment':'Dr','Land':'Dr','Buildings':'Dr','Vehicles':'Dr',
+        'Accumulated Depreciation':'Cr','Accounts Payable':'Cr','Salary Payable':'Cr',
+        'Interest Payable':'Cr','Unearned Revenue':'Cr','Notes Payable':'Cr','Utilities Payable':'Cr',
+        'Common Stock':'Cr','Retained Earnings':'Cr','Additional Paid-in Capital':'Cr',
+        'Income Summary':'Dr',
+        'Dividends':'Dr',
+        'Service Revenue':'Cr','Rent Revenue':'Cr','Interest Revenue':'Cr',
+        'Salary Expense':'Dr','Rent Expense':'Dr','Insurance Expense':'Dr','Depreciation Expense':'Dr',
+        'Interest Expense':'Dr','Supplies Expense':'Dr','Utilities Expense':'Dr','Advertising Expense':'Dr'
     };
+    const acctList = Object.keys(normalBalances);
 
-    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-    function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-
+    // ---- 1. genNormalBalance (20+ accounts) ----
     function genNormalBalance() {
-        const acct = pick(accounts);
+        const acct = pick(acctList);
         const ans = normalBalances[acct];
+        const isDr = ans === 'Dr';
+        let why;
+        if (acct === 'Accumulated Depreciation') why = 'a contra-asset account (credit balance offsets the related asset).';
+        else if (acct === 'Dividends') why = 'a temporary equity account that reduces SE, so it has a debit normal balance (like expenses).';
+        else if (acct === 'Income Summary') why = 'a temporary account used during closing \u2014 its normal balance depends on context, but it is debited to close it, so we treat it as debit-normal.';
+        else if (isDr) why = 'an asset or expense account (increases with debits \u2014 left side of T-account).';
+        else why = 'a liability, equity, or revenue account (increases with credits \u2014 right side of T-account).';
         return {
             question: 'What is the normal balance of <strong class="text-white">' + acct + '</strong>?',
-            type: 'mc',
-            options: ['Debit (Dr)', 'Credit (Cr)'],
-            answer: ans === 'Dr' ? 0 : 1,
-            explanation: acct + ' has a normal ' + (ans === 'Dr' ? 'debit' : 'credit') + ' balance because it is ' +
-                (acct === 'Accumulated Depreciation' ? 'a contra-asset account (it offsets the related asset, so it has the opposite normal balance of an asset).' :
-                ans === 'Dr' ? 'an asset or expense account (left side of T-account increases).' : 'a liability, equity, or revenue account (right side of T-account increases).')
+            type: 'mc', options: ['Debit (Dr)', 'Credit (Cr)'],
+            answer: isDr ? 0 : 1,
+            explanation: acct + ' has a normal ' + (isDr ? 'debit' : 'credit') + ' balance because it is ' + why
         };
     }
 
+    // ---- 2. genAdjustingType (12+ scenarios) ----
     function genAdjustingType() {
         const scenarios = [
-            { text: 'A company received $12,000 for a 6-month service contract two months ago. It\'s now time to recognize revenue for this month.', answer: 0, explain: 'Cash was received first (creating a liability), now we recognize the earned portion as revenue.' },
+            { text: 'A company received $12,000 for a 6-month service contract two months ago. It\u2019s now time to recognize revenue for this month.', answer: 0, explain: 'Cash was received first (creating a liability), now we recognize the earned portion as revenue.' },
             { text: 'Insurance paid in advance 3 months ago needs to be expensed for the current month.', answer: 1, explain: 'Cash was paid first (creating an asset), now we recognize the used portion as expense.' },
-            { text: 'Employees earned $5,000 in wages during the last week of the period but won\'t be paid until next period.', answer: 3, explain: 'The expense has been incurred but cash hasn\'t been paid yet. We need to record both the expense and the liability.' },
-            { text: 'Interest of $300 has been earned on a note receivable but hasn\'t been received yet.', answer: 2, explain: 'Revenue has been earned but cash hasn\'t been received. We record the receivable and the revenue.' },
-            { text: 'A tenant owes us $2,000 for December rent but hasn\'t paid yet.', answer: 2, explain: 'Rent revenue has been earned but not yet received in cash — this is accrued revenue.' },
-            { text: 'We paid $6,000 for supplies at the start of the year. $2,000 of supplies remain at year end.', answer: 1, explain: 'We paid in advance for supplies (asset). Now we expense the used portion ($4,000) — this is a deferred/prepaid expense adjustment.' }
+            { text: 'Employees earned $5,000 in wages during the last week of the period but won\u2019t be paid until next period.', answer: 3, explain: 'The expense has been incurred but cash hasn\u2019t been paid yet. We record both the expense and the liability.' },
+            { text: 'Interest of $300 has been earned on a note receivable but hasn\u2019t been received yet.', answer: 2, explain: 'Revenue has been earned but cash hasn\u2019t been received. We record the receivable and the revenue.' },
+            { text: 'A tenant owes us $2,000 for December rent but hasn\u2019t paid yet.', answer: 2, explain: 'Rent revenue has been earned but not yet received in cash \u2014 this is accrued revenue.' },
+            { text: 'We paid $6,000 for supplies at the start of the year. $2,000 of supplies remain at year end.', answer: 1, explain: 'We paid in advance for supplies (asset). Now we expense the used portion ($4,000) \u2014 this is a deferred/prepaid expense adjustment.' },
+            { text: 'A magazine publisher collected $24,000 for 12-month subscriptions on July 1. By December 31 they need to adjust the books.', answer: 0, explain: 'Cash was collected in advance (liability). Now 6 months have been delivered, so we recognize that portion as revenue \u2014 deferred revenue.' },
+            { text: 'The company\u2019s electric bill for December ($800) arrived on January 3 and will be paid January 15.', answer: 3, explain: 'The utility was consumed in December (expense incurred) but not yet paid \u2014 accrued expense.' },
+            { text: 'On September 1 the company paid $18,000 for 12 months of rent. By December 31 we need to adjust.', answer: 1, explain: 'Cash was paid first (prepaid asset). 4 months have been used up, so we expense $6,000 \u2014 prepaid/deferred expense.' },
+            { text: 'A law firm completed $7,500 of work for a client in December but hasn\u2019t billed them yet.', answer: 2, explain: 'Services have been performed (revenue earned) but no cash received and no invoice sent \u2014 accrued revenue.' },
+            { text: 'A gym collected $3,600 for annual memberships on October 1. Three months of service have been provided by December 31.', answer: 0, explain: 'Cash was collected up front (liability). As months pass, the earned portion is recognized as revenue \u2014 deferred revenue.' },
+            { text: 'Property taxes of $4,200 for the current year have not been recorded or paid by December 31.', answer: 3, explain: 'The expense relates to the current period but hasn\u2019t been paid \u2014 accrued expense. We record the expense and a payable.' }
         ];
         const s = pick(scenarios);
         return {
             question: s.text + '<br><br>What type of adjusting entry is this?',
-            type: 'mc',
-            options: ['Deferred Revenue', 'Prepaid Expense', 'Accrued Revenue', 'Accrued Expense'],
-            answer: s.answer,
-            explanation: s.explain
+            type: 'mc', options: ['Deferred Revenue', 'Prepaid Expense', 'Accrued Revenue', 'Accrued Expense'],
+            answer: s.answer, explanation: s.explain
         };
     }
 
+    // ---- 3. genTAccountBalance (parametric) ----
     function genTAccountBalance() {
         const startBal = rand(5, 50) * 1000;
         const debits = rand(2, 20) * 1000;
         const credits = rand(2, 20) * 1000;
         const isDebitNormal = Math.random() > 0.5;
-        const acctName = isDebitNormal ? pick(['Cash','Accounts Receivable','Equipment']) : pick(['Accounts Payable','Unearned Revenue','Common Stock']);
-        let endBal;
-        if (isDebitNormal) {
-            endBal = startBal + debits - credits;
-        } else {
-            endBal = startBal - debits + credits;
-        }
+        const acctName = isDebitNormal ? pick(['Cash','Accounts Receivable','Equipment','Supplies','Prepaid Rent']) : pick(['Accounts Payable','Unearned Revenue','Common Stock','Notes Payable']);
+        const endBal = isDebitNormal ? startBal + debits - credits : startBal - debits + credits;
         return {
-            question: '<strong class="text-white">' + acctName + '</strong> has a beginning balance of $' + startBal.toLocaleString() +
-                '. During the period, total debits posted = $' + debits.toLocaleString() + ' and total credits posted = $' + credits.toLocaleString() +
+            question: '<strong class="text-white">' + acctName + '</strong> has a beginning balance of $' + fmt(startBal) +
+                '. During the period, total debits posted = $' + fmt(debits) + ' and total credits posted = $' + fmt(credits) +
                 '.<br><br>What is the ending balance?',
-            type: 'number',
-            answer: endBal,
-            explanation: acctName + ' has a normal ' + (isDebitNormal ? 'debit' : 'credit') + ' balance. Ending = ' + startBal.toLocaleString() +
-                (isDebitNormal ? ' + ' + debits.toLocaleString() + ' - ' + credits.toLocaleString() : ' - ' + debits.toLocaleString() + ' + ' + credits.toLocaleString()) +
-                ' = $' + endBal.toLocaleString()
+            type: 'number', answer: endBal,
+            explanation: acctName + ' has a normal ' + (isDebitNormal ? 'debit' : 'credit') + ' balance. Ending = ' + fmt(startBal) +
+                (isDebitNormal ? ' + ' + fmt(debits) + ' \u2212 ' + fmt(credits) : ' \u2212 ' + fmt(debits) + ' + ' + fmt(credits)) +
+                ' = $' + fmt(endBal) + '.'
         };
     }
 
+    // ---- 4. genClosingEntry (parametric) ----
     function genClosingEntry() {
-        const rev = rand(40, 200) * 1000;
-        const exp = rand(20, rev/1000 - 5) * 1000;
-        const ni = rev - exp;
-        return {
-            question: 'At year end, total revenues = $' + rev.toLocaleString() + ' and total expenses = $' + exp.toLocaleString() +
-                '.<br><br>What is the net change to Retained Earnings after closing?',
-            type: 'number',
-            answer: ni,
-            explanation: 'Close revenues: RE increases by $' + rev.toLocaleString() + '. Close expenses: RE decreases by $' + exp.toLocaleString() +
-                '. Net change = $' + rev.toLocaleString() + ' - $' + exp.toLocaleString() + ' = $' + ni.toLocaleString() + ' (= Net Income).'
-        };
+        const scenarios = [
+            function() {
+                const rev = rand(40, 200) * 1000;
+                const exp = rand(20, Math.max(21, Math.floor(rev/1000) - 5)) * 1000;
+                const ni = rev - exp;
+                return { question: 'At year end, total revenues = $' + fmt(rev) + ' and total expenses = $' + fmt(exp) + '.<br><br>What is the net change to Retained Earnings after closing?',
+                    type: 'number', answer: ni,
+                    explanation: 'Close revenues (+$' + fmt(rev) + ') and expenses (\u2212$' + fmt(exp) + '). Net change = $' + fmt(rev) + ' \u2212 $' + fmt(exp) + ' = $' + fmt(ni) + ' (Net Income).' };
+            },
+            function() {
+                const sRev = rand(30, 120) * 1000;
+                const rRev = rand(2, 15) * 1000;
+                const totRev = sRev + rRev;
+                return { question: 'Service Revenue has a balance of $' + fmt(sRev) + ' and Rent Revenue has a balance of $' + fmt(rRev) + '.<br><br>What total amount is credited to Retained Earnings when closing revenue accounts?',
+                    type: 'number', answer: totRev,
+                    explanation: 'All revenue accounts are closed to RE. Total credit to RE = $' + fmt(sRev) + ' + $' + fmt(rRev) + ' = $' + fmt(totRev) + '.' };
+            },
+            function() {
+                const sal = rand(10, 50) * 1000;
+                const rent = rand(5, 20) * 1000;
+                const dep = rand(1, 8) * 1000;
+                const totExp = sal + rent + dep;
+                return { question: 'Salary Expense = $' + fmt(sal) + ', Rent Expense = $' + fmt(rent) + ', Depreciation Expense = $' + fmt(dep) + '.<br><br>What total amount is debited to Retained Earnings when closing expense accounts?',
+                    type: 'number', answer: totExp,
+                    explanation: 'All expense accounts are closed to RE. Total debit to RE = $' + fmt(sal) + ' + $' + fmt(rent) + ' + $' + fmt(dep) + ' = $' + fmt(totExp) + '.' };
+            },
+            function() {
+                const begRE = rand(50, 300) * 1000;
+                const ni = rand(10, 80) * 1000;
+                const div = rand(2, Math.min(20, Math.floor(ni/1000))) * 1000;
+                const endRE = begRE + ni - div;
+                return { question: 'Beginning Retained Earnings = $' + fmt(begRE) + '. Net Income = $' + fmt(ni) + '. Dividends declared = $' + fmt(div) + '.<br><br>What is the ending Retained Earnings balance after closing?',
+                    type: 'number', answer: endRE,
+                    explanation: 'Ending RE = Beginning RE + Net Income \u2212 Dividends = $' + fmt(begRE) + ' + $' + fmt(ni) + ' \u2212 $' + fmt(div) + ' = $' + fmt(endRE) + '.' };
+            }
+        ];
+        return pick(scenarios)();
     }
 
+    // ---- 5. genTrueFalse (12+ items) ----
     function genTrueFalse() {
         const statements = [
-            { text: 'After closing entries, revenue and expense accounts have zero balances.', answer: true, explain: 'Correct — closing transfers their balances to Retained Earnings, resetting them to zero.' },
+            { text: 'After closing entries, revenue and expense accounts have zero balances.', answer: true, explain: 'Correct \u2014 closing transfers their balances to Retained Earnings, resetting them to zero.' },
             { text: 'Accumulated Depreciation has a normal debit balance.', answer: false, explain: 'Accumulated Depreciation is a contra-asset with a normal credit balance.' },
             { text: 'An accrued expense is recorded when cash is paid before the expense is incurred.', answer: false, explain: 'That describes a prepaid expense (deferred expense). An accrued expense is incurred BEFORE cash is paid.' },
-            { text: 'A trial balance proves that all transactions have been recorded correctly.', answer: false, explain: 'A trial balance only proves debits = credits. Errors like posting to the wrong account or omitting a transaction entirely won\'t be caught.' },
-            { text: 'Unearned revenue is a liability because the company owes goods or services to the customer.', answer: true, explain: 'Correct — cash was received but the performance obligation hasn\'t been fulfilled yet.' },
+            { text: 'A trial balance proves that all transactions have been recorded correctly.', answer: false, explain: 'A trial balance only proves debits = credits. Errors like posting to the wrong account or omitting a transaction entirely won\u2019t be caught.' },
+            { text: 'Unearned revenue is a liability because the company owes goods or services to the customer.', answer: true, explain: 'Correct \u2014 cash was received but the performance obligation hasn\u2019t been fulfilled yet.' },
             { text: 'Closing entries are made before adjusting entries.', answer: false, explain: 'Adjusting entries come first (to get correct balances), then closing entries transfer those balances to Retained Earnings.' },
-            { text: 'Retained Earnings is a temporary account.', answer: false, explain: 'Retained Earnings is a permanent (real) account that carries forward from period to period.' }
+            { text: 'Retained Earnings is a temporary account.', answer: false, explain: 'Retained Earnings is a permanent (real) account that carries forward from period to period.' },
+            { text: 'Dividends is closed directly to Retained Earnings at year end.', answer: true, explain: 'Correct \u2014 Dividends is a temporary account. Its balance is debited to Retained Earnings during closing.' },
+            { text: 'Prepaid Insurance is an expense account.', answer: false, explain: 'Prepaid Insurance is an asset. The expense is recognized over time as the insurance is used up.' },
+            { text: 'Under cash-basis accounting, revenue is recognized when earned regardless of cash receipt.', answer: false, explain: 'That describes accrual-basis accounting. Under cash basis, revenue is recognized only when cash is received.' },
+            { text: 'The Income Summary account is a permanent account that appears on the balance sheet.', answer: false, explain: 'Income Summary is a temporary account used only during the closing process. It does not appear on financial statements.' },
+            { text: 'Every adjusting entry affects at least one balance sheet account and at least one income statement account.', answer: true, explain: 'Correct \u2014 adjusting entries always pair a BS account (asset or liability) with an IS account (revenue or expense).' },
+            { text: 'A debit always means an increase.', answer: false, explain: 'A debit increases assets and expenses but decreases liabilities, equity, and revenue. The effect depends on the account type.' },
+            { text: 'The accounting equation must remain in balance after every transaction.', answer: true, explain: 'Correct \u2014 double-entry bookkeeping ensures A = L + SE after every recorded transaction.' }
         ];
         const s = pick(statements);
+        return { question: 'True or False: ' + s.text, type: 'mc', options: ['True', 'False'], answer: s.answer ? 0 : 1, explanation: s.explain };
+    }
+
+    // ---- 6. genAdjustingCalc (parametric) ----
+    function genAdjustingCalc() {
+        const scenarios = [
+            function() {
+                const total = pick([6000, 9000, 12000, 18000, 24000, 36000]);
+                const months = pick([6, 12, 24]);
+                const elapsed = rand(1, Math.min(months, 6));
+                const amt = Math.round(total / months * elapsed);
+                return { question: 'A company paid $' + fmt(total) + ' for a ' + months + '-month insurance policy. ' + elapsed + ' month(s) have elapsed.<br><br>What is the adjusting entry amount for Insurance Expense?',
+                    type: 'number', answer: amt,
+                    explanation: '$' + fmt(total) + ' \u00f7 ' + months + ' months = $' + fmt(Math.round(total/months)) + '/month \u00d7 ' + elapsed + ' = $' + fmt(amt) + '.' };
+            },
+            function() {
+                const total = pick([3600, 7200, 9600, 14400]);
+                const months = 12;
+                const elapsed = rand(1, 6);
+                const amt = Math.round(total / months * elapsed);
+                return { question: 'Prepaid Rent was recorded at $' + fmt(total) + ' for a ' + months + '-month lease. ' + elapsed + ' month(s) have passed.<br><br>How much Rent Expense should be recognized?',
+                    type: 'number', answer: amt,
+                    explanation: '$' + fmt(total) + ' \u00f7 ' + months + ' = $' + fmt(Math.round(total/months)) + '/month \u00d7 ' + elapsed + ' = $' + fmt(amt) + '.' };
+            },
+            function() {
+                const principal = rand(5, 50) * 1000;
+                const rate = pick([6, 8, 9, 10, 12]);
+                const monthsAccrued = rand(1, 4);
+                const interest = Math.round(principal * rate / 100 / 12 * monthsAccrued);
+                return { question: 'A $' + fmt(principal) + ' note payable carries ' + rate + '% annual interest. ' + monthsAccrued + ' month(s) of interest have accrued.<br><br>What is the accrued interest expense?',
+                    type: 'number', answer: interest,
+                    explanation: '$' + fmt(principal) + ' \u00d7 ' + rate + '% \u00d7 ' + monthsAccrued + '/12 = $' + fmt(interest) + '.' };
+            },
+            function() {
+                const beginning = rand(2, 10) * 1000;
+                const remaining = rand(1, Math.floor(beginning/1000)) * 500;
+                const used = beginning - remaining;
+                return { question: 'Supplies had a beginning balance of $' + fmt(beginning) + '. A count at period end shows $' + fmt(remaining) + ' of supplies on hand.<br><br>What is the Supplies Expense adjustment?',
+                    type: 'number', answer: used,
+                    explanation: 'Supplies used = $' + fmt(beginning) + ' \u2212 $' + fmt(remaining) + ' = $' + fmt(used) + '.' };
+            }
+        ];
+        return pick(scenarios)();
+    }
+
+    // ---- 7. genTrialBalance (parametric) ----
+    function genTrialBalance() {
+        const cash = rand(10, 80) * 1000;
+        const ar = rand(5, 30) * 1000;
+        const equip = rand(10, 50) * 1000;
+        const ap = rand(3, 20) * 1000;
+        const cs = rand(20, 100) * 1000;
+        const sRev = rand(20, 80) * 1000;
+        const salExp = rand(5, 30) * 1000;
+        const totalDr = cash + ar + equip + salExp;
+        const totalCrKnown = ap + cs;
+        const missing = totalDr - totalCrKnown - sRev;
+        const scenarios = [
+            function() {
+                const missingRev = totalDr - totalCrKnown;
+                return { question: 'A trial balance shows the following debit balances: Cash $' + fmt(cash) + ', A/R $' + fmt(ar) + ', Equipment $' + fmt(equip) + ', Salary Expense $' + fmt(salExp) +
+                        '. Credit balances: A/P $' + fmt(ap) + ', Common Stock $' + fmt(cs) + ', Service Revenue ?<br><br>What must Service Revenue be for the trial balance to balance?',
+                    type: 'number', answer: missingRev,
+                    explanation: 'Total debits = $' + fmt(totalDr) + '. Known credits = $' + fmt(ap) + ' + $' + fmt(cs) + ' = $' + fmt(totalCrKnown) + '. Service Revenue = $' + fmt(totalDr) + ' \u2212 $' + fmt(totalCrKnown) + ' = $' + fmt(missingRev) + '.' };
+            },
+            function() {
+                const totalCr = ap + cs + sRev;
+                const missingAsset = totalCr - ar - equip - salExp;
+                return { question: 'A trial balance shows: A/R $' + fmt(ar) + ' (Dr), Equipment $' + fmt(equip) + ' (Dr), Salary Expense $' + fmt(salExp) + ' (Dr), A/P $' + fmt(ap) + ' (Cr), Common Stock $' + fmt(cs) + ' (Cr), Service Revenue $' + fmt(sRev) + ' (Cr). Cash is missing.<br><br>What is the Cash balance?',
+                    type: 'number', answer: missingAsset,
+                    explanation: 'Total credits = $' + fmt(totalCr) + '. Known debits = $' + fmt(ar + equip + salExp) + '. Cash = $' + fmt(totalCr) + ' \u2212 $' + fmt(ar + equip + salExp) + ' = $' + fmt(missingAsset) + '.' };
+            }
+        ];
+        return pick(scenarios)();
+    }
+
+    // ---- 8. genMultiStep (parametric multi-transaction T-account) ----
+    function genMultiStep() {
+        const t1 = rand(5, 40) * 1000;
+        const t2 = rand(3, 20) * 1000;
+        const t3 = rand(2, 15) * 1000;
+        const t4 = rand(1, 10) * 1000;
+        const bal = t1 + t3 - t2 - t4;
         return {
-            question: 'True or False: ' + s.text,
-            type: 'mc',
-            options: ['True', 'False'],
-            answer: s.answer ? 0 : 1,
-            explanation: s.explain
+            question: 'The Cash T-account shows the following entries:<br>' +
+                '\u2022 Debit: $' + fmt(t1) + ' (owner investment)<br>' +
+                '\u2022 Credit: $' + fmt(t2) + ' (rent payment)<br>' +
+                '\u2022 Debit: $' + fmt(t3) + ' (service revenue collected)<br>' +
+                '\u2022 Credit: $' + fmt(t4) + ' (supplies purchased)<br><br>' +
+                'What is the ending Cash balance?',
+            type: 'number', answer: bal,
+            explanation: 'Cash (debit-normal): $' + fmt(t1) + ' + $' + fmt(t3) + ' \u2212 $' + fmt(t2) + ' \u2212 $' + fmt(t4) + ' = $' + fmt(bal) + '.'
         };
     }
 
-    const questionGenerators = [genNormalBalance, genAdjustingType, genTAccountBalance, genClosingEntry, genTrueFalse];
-
-    window.newQuestion = function() {
-        currentQ = pick(questionGenerators)();
-        document.getElementById('question-area').innerHTML = '<p class="text-slate-300 text-sm">' + currentQ.question + '</p>';
-        document.getElementById('feedback-area').classList.add('hidden');
-
-        const ansArea = document.getElementById('answer-area');
-        ansArea.classList.remove('hidden');
-
-        if (currentQ.type === 'mc') {
-            ansArea.innerHTML = currentQ.options.map((opt, i) =>
-                '<label class="block mb-2 cursor-pointer"><input type="radio" name="mc" value="' + i + '" class="mr-2 accent-purple-500">' +
-                '<span class="text-slate-300 text-sm">' + opt + '</span></label>'
-            ).join('');
-        } else {
-            ansArea.innerHTML = '<input type="number" id="num-answer" class="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white w-48" placeholder="Enter amount">';
-        }
-        document.getElementById('check-btn').classList.remove('hidden');
-    };
-
-    window.checkAnswer = function() {
-        if (!currentQ) return;
-        let userAns, isCorrect;
-        if (currentQ.type === 'mc') {
-            const sel = document.querySelector('input[name="mc"]:checked');
-            if (!sel) return;
-            userAns = parseInt(sel.value);
-            isCorrect = userAns === currentQ.answer;
-        } else {
-            const inp = document.getElementById('num-answer');
-            if (!inp || !inp.value) return;
-            userAns = parseFloat(inp.value);
-            isCorrect = Math.abs(userAns - currentQ.answer) < 1;
-        }
-
-        total++;
-        if (isCorrect) { correct++; streak++; } else { streak = 0; }
-
-        document.getElementById('score-correct').textContent = correct;
-        document.getElementById('score-total').textContent = total;
-        document.getElementById('streak').textContent = streak;
-
-        const fb = document.getElementById('feedback-area');
-        fb.classList.remove('hidden');
-        const color = isCorrect ? 'emerald' : 'rose';
-        fb.innerHTML = '<div class="bg-' + color + '-500/10 border border-' + color + '-500/30 rounded-lg p-4"><p class="font-bold text-' + color + '-400 mb-1">' +
-            (isCorrect ? 'Correct!' : 'Not quite.') + '</p><p class="text-sm text-slate-300">' + currentQ.explanation + '</p></div>';
-
-        document.getElementById('check-btn').classList.add('hidden');
-    };
-
-    // Journal Entry Practice
-    const jeAccounts = accounts;
-    const jeScenarios = [
-        { prompt: 'Record: Owners invest $80,000 cash for common stock.', answer: [{acct:'Cash',dr:80000,cr:0},{acct:'Common Stock',dr:0,cr:80000}] },
-        { prompt: 'Record: Purchase office equipment for $25,000 cash.', answer: [{acct:'Office Equipment',dr:25000,cr:0},{acct:'Cash',dr:0,cr:25000}] },
-        { prompt: 'Record: Provide services for $15,000 on credit.', answer: [{acct:'Accounts Receivable',dr:15000,cr:0},{acct:'Service Revenue',dr:0,cr:15000}] },
-        { prompt: 'Adjusting entry: Recognize $1,500 of insurance expense from prepaid insurance.', answer: [{acct:'Insurance Expense',dr:1500,cr:0},{acct:'Prepaid Insurance',dr:0,cr:1500}] },
-        { prompt: 'Adjusting entry: Accrue $2,000 of salaries owed but not yet paid.', answer: [{acct:'Salary Expense',dr:2000,cr:0},{acct:'Salary Payable',dr:0,cr:2000}] },
-        { prompt: 'Adjusting entry: Recognize $4,000 of unearned revenue that has now been earned.', answer: [{acct:'Unearned Revenue',dr:4000,cr:0},{acct:'Service Revenue',dr:0,cr:4000}] },
-        { prompt: 'Adjusting entry: Record $500 of depreciation on equipment.', answer: [{acct:'Depreciation Expense',dr:500,cr:0},{acct:'Accumulated Depreciation',dr:0,cr:500}] },
-        { prompt: 'Adjusting entry: Accrue $150 of interest expense on a note payable.', answer: [{acct:'Interest Expense',dr:150,cr:0},{acct:'Interest Payable',dr:0,cr:150}] },
-        { prompt: 'Closing entry: Close Service Revenue of $90,000 to Retained Earnings.', answer: [{acct:'Service Revenue',dr:90000,cr:0},{acct:'Retained Earnings',dr:0,cr:90000}] },
-        { prompt: 'Closing entry: Close Salary Expense of $35,000 and Rent Expense of $10,000 to Retained Earnings.', answer: [{acct:'Retained Earnings',dr:45000,cr:0},{acct:'Salary Expense',dr:0,cr:35000},{acct:'Rent Expense',dr:0,cr:10000}] }
-    ];
-
-    let currentJE = null;
-
-    function makeJELine() {
-        const div = document.createElement('div');
-        div.className = 'flex gap-2 items-center';
-        div.innerHTML = '<select class="je-acct bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm flex-1"><option value="">-- Account --</option>' +
-            jeAccounts.map(a => '<option value="' + a + '">' + a + '</option>').join('') +
-            '</select>' +
-            '<input type="number" class="je-dr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Debit">' +
-            '<input type="number" class="je-cr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Credit">' +
-            '<button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-rose-400 text-sm">✕</button>';
-        return div;
+    // ---- 9. genDebitCredit (12+ scenarios) ----
+    function genDebitCredit() {
+        const scenarios = [
+            { text: 'The company pays $3,000 in rent', acct: 'Cash', dir: 1, explain: 'Paying cash reduces the Cash account \u2192 credit.' },
+            { text: 'The company receives $10,000 from clients for services', acct: 'Cash', dir: 0, explain: 'Receiving cash increases the Cash account \u2192 debit.' },
+            { text: 'The company buys supplies on account for $2,000', acct: 'Accounts Payable', dir: 1, explain: 'Purchasing on account increases the liability (A/P) \u2192 credit.' },
+            { text: 'The company pays off a $5,000 note payable', acct: 'Notes Payable', dir: 0, explain: 'Paying off a liability decreases it \u2192 debit.' },
+            { text: 'The company provides $8,000 of services on credit', acct: 'Service Revenue', dir: 1, explain: 'Earning revenue increases Service Revenue \u2192 credit.' },
+            { text: 'The company pays employee salaries of $6,000', acct: 'Salary Expense', dir: 0, explain: 'Incurring an expense increases Salary Expense \u2192 debit.' },
+            { text: 'Owners invest $50,000 cash in the business', acct: 'Common Stock', dir: 1, explain: 'Issuing stock increases equity (Common Stock) \u2192 credit.' },
+            { text: 'The company collects $4,000 from a customer who owed money', acct: 'Accounts Receivable', dir: 1, explain: 'Collecting a receivable decreases A/R (asset) \u2192 credit.' },
+            { text: 'The company records $700 of depreciation expense', acct: 'Accumulated Depreciation', dir: 1, explain: 'Recording depreciation increases the contra-asset Accumulated Depreciation \u2192 credit.' },
+            { text: 'The company purchases equipment for $15,000 cash', acct: 'Office Equipment', dir: 0, explain: 'Acquiring an asset increases it \u2192 debit.' },
+            { text: 'The company receives $9,000 in advance for future services', acct: 'Unearned Revenue', dir: 1, explain: 'Receiving cash before earning it creates a liability (Unearned Revenue) \u2192 credit.' },
+            { text: 'The company declares $3,000 in dividends', acct: 'Dividends', dir: 0, explain: 'Declaring dividends increases the Dividends account (contra-equity) \u2192 debit.' },
+            { text: 'The company pays a $1,200 utility bill', acct: 'Utilities Expense', dir: 0, explain: 'Incurring an expense increases Utilities Expense \u2192 debit.' },
+            { text: 'The company records the adjusting entry for $500 of accrued interest owed', acct: 'Interest Payable', dir: 1, explain: 'Accruing a liability increases Interest Payable \u2192 credit.' }
+        ];
+        const s = pick(scenarios);
+        return {
+            question: 'Transaction: ' + s.text + '.<br><br>Is <strong class="text-white">' + s.acct + '</strong> debited or credited?',
+            type: 'mc', options: ['Debited', 'Credited'],
+            answer: s.dir, explanation: s.explain
+        };
     }
 
-    window.addJELine = function() {
-        document.getElementById('je-lines').appendChild(makeJELine());
-    };
+    // ---- 10. genRevenueExpenseRecognition (10+ scenarios) ----
+    function genRevenueExpenseRecognition() {
+        const scenarios = [
+            { text: 'A law firm performs $5,000 of work in December but won\u2019t bill the client until January.', answer: 0, explain: 'Under accrual accounting, revenue is recognized when earned (December), not when billed or collected.' },
+            { text: 'A company receives $3,000 cash in March for services to be performed in April.', answer: 1, explain: 'Revenue is not earned until April when the service is performed. In March it is unearned (a liability).' },
+            { text: 'An employee works the last week of June but won\u2019t be paid until July 5.', answer: 0, explain: 'The expense is incurred in June when the work is performed, regardless of when payment occurs.' },
+            { text: 'A company pays $12,000 for a full year of insurance on January 1. It\u2019s now January 31.', answer: 0, explain: 'One month ($1,000) of insurance has been used \u2014 that expense should be recognized in January.' },
+            { text: 'On November 15, a client pays $8,000 for a project that won\u2019t start until December 1.', answer: 1, explain: 'No service has been performed yet in November. Revenue is recognized in December when work begins.' },
+            { text: 'A magazine delivers the February issue to subscribers who paid in full last October.', answer: 0, explain: 'Revenue for the February issue is recognized in February when the magazine is delivered (performance obligation satisfied).' },
+            { text: 'A company uses electricity in December. The bill arrives January 10 and is paid January 25.', answer: 0, explain: 'The expense is incurred in December when the electricity is consumed, not when the bill arrives or is paid.' },
+            { text: 'On July 1, a company borrows $100,000 at 6% annual interest, payable in one year.', answer: 0, explain: 'Interest expense accrues daily. Each month, interest expense should be recognized even though payment isn\u2019t due until next July.' },
+            { text: 'A contractor receives a $20,000 deposit for a project. No work has started yet.', answer: 1, explain: 'No performance obligation has been satisfied. The deposit is unearned revenue (a liability), not revenue.' },
+            { text: 'A tenant pays January rent of $2,000 on December 28.', answer: 1, explain: 'The landlord hasn\u2019t provided January\u2019s use of the space yet. Revenue is recognized in January, not December.' },
+            { text: 'An accounting firm completes a tax return on March 20. The client pays on April 5.', answer: 0, explain: 'Revenue is earned when the service is complete (March 20), not when cash is received.' }
+        ];
+        const s = pick(scenarios);
+        return {
+            question: s.text + '<br><br>Should revenue or expense be recognized in the <strong class="text-white">current</strong> period?',
+            type: 'mc', options: ['Yes \u2014 recognize now', 'No \u2014 recognize later'],
+            answer: s.answer, explanation: s.explain
+        };
+    }
 
-    window.newJE = function() {
-        currentJE = pick(jeScenarios);
-        document.getElementById('je-prompt').innerHTML = '<p class="text-slate-300 text-sm">' + currentJE.prompt + '</p>';
-        document.getElementById('je-lines').innerHTML = '';
-        document.getElementById('je-feedback').classList.add('hidden');
-        for (let i = 0; i < 2; i++) addJELine();
-    };
-
-    window.checkJE = function() {
-        if (!currentJE) return;
-        const lines = document.getElementById('je-lines').children;
-        let totalDr = 0, totalCr = 0, userEntries = [];
-        for (let line of lines) {
-            const acct = line.querySelector('.je-acct').value;
-            const dr = parseFloat(line.querySelector('.je-dr').value) || 0;
-            const cr = parseFloat(line.querySelector('.je-cr').value) || 0;
-            if (acct && (dr || cr)) {
-                userEntries.push({acct, dr, cr});
-                totalDr += dr;
-                totalCr += cr;
-            }
-        }
-
-        const fb = document.getElementById('je-feedback');
-        fb.classList.remove('hidden');
-
-        if (totalDr === 0 && totalCr === 0) {
-            fb.innerHTML = '<div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4"><p class="text-rose-400 font-bold">Enter at least one debit and one credit amount.</p></div>';
-            return;
-        }
-
-        if (Math.abs(totalDr - totalCr) > 0.01) {
-            fb.innerHTML = '<div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4"><p class="text-rose-400 font-bold">Debits ($' + totalDr.toLocaleString() + ') ≠ Credits ($' + totalCr.toLocaleString() + ')</p><p class="text-sm text-slate-300 mt-1">Remember: every journal entry must have equal debits and credits.</p></div>';
-            return;
-        }
-
-        // Check against answer
-        const ansStr = currentJE.answer.map(a => a.acct + ':' + a.dr + ':' + a.cr).sort().join('|');
-        const userStr = userEntries.map(a => a.acct + ':' + a.dr + ':' + a.cr).sort().join('|');
-
-        if (ansStr === userStr) {
-            fb.innerHTML = '<div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-bold">Correct!</p><p class="text-sm text-slate-300 mt-1">Debits = Credits = $' + totalDr.toLocaleString() + '. Well done!</p></div>';
+    // ---- 11. genCashVsAccrual (parametric) ----
+    function genCashVsAccrual() {
+        const cashRev = rand(20, 80) * 1000;
+        const arRev = rand(5, 25) * 1000;
+        const cashExp = rand(10, 40) * 1000;
+        const accruedExp = rand(2, 10) * 1000;
+        const prepaidUsed = rand(1, 5) * 1000;
+        const cashBasisIncome = cashRev - cashExp;
+        const accrualIncome = (cashRev + arRev) - (cashExp + accruedExp + prepaidUsed);
+        const askCash = Math.random() > 0.5;
+        if (askCash) {
+            return {
+                question: 'During the year: Cash collected from customers = $' + fmt(cashRev) + '. Services on account (not yet collected) = $' + fmt(arRev) + '. Cash paid for expenses = $' + fmt(cashExp) + '. Accrued expenses = $' + fmt(accruedExp) + '. Prepaid expense used up = $' + fmt(prepaidUsed) + '.<br><br>What is net income under <strong class="text-white">cash-basis</strong> accounting?',
+                type: 'number', answer: cashBasisIncome,
+                explanation: 'Cash basis: revenue = cash received ($' + fmt(cashRev) + '), expenses = cash paid ($' + fmt(cashExp) + '). Net income = $' + fmt(cashRev) + ' \u2212 $' + fmt(cashExp) + ' = $' + fmt(cashBasisIncome) + '. (Accruals and prepaid adjustments are ignored under cash basis.)'
+            };
         } else {
-            const correctHTML = currentJE.answer.map(a => {
-                const parts = [];
-                if (a.dr) parts.push('Dr ' + a.acct + ' ' + a.dr.toLocaleString());
-                if (a.cr) parts.push('Cr ' + a.acct + ' ' + a.cr.toLocaleString());
-                return parts.join(' / ');
-            }).join('<br>');
-            fb.innerHTML = '<div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-400 font-bold">Not quite — debits do equal credits, but check your accounts.</p><p class="text-sm text-slate-300 mt-2">Expected:<br><span class="font-mono text-xs">' + correctHTML + '</span></p></div>';
+            return {
+                question: 'During the year: Cash collected from customers = $' + fmt(cashRev) + '. Services on account (not yet collected) = $' + fmt(arRev) + '. Cash paid for expenses = $' + fmt(cashExp) + '. Accrued expenses = $' + fmt(accruedExp) + '. Prepaid expense used up = $' + fmt(prepaidUsed) + '.<br><br>What is net income under <strong class="text-white">accrual-basis</strong> accounting?',
+                type: 'number', answer: accrualIncome,
+                explanation: 'Accrual basis: revenue = $' + fmt(cashRev) + ' + $' + fmt(arRev) + ' = $' + fmt(cashRev + arRev) + '. Expenses = $' + fmt(cashExp) + ' + $' + fmt(accruedExp) + ' + $' + fmt(prepaidUsed) + ' = $' + fmt(cashExp + accruedExp + prepaidUsed) + '. Net income = $' + fmt(accrualIncome) + '.'
+            };
         }
-    };
+    }
+
+    // ---- 12. genClosingProcess (parametric) ----
+    function genClosingProcess() {
+        const begRE = rand(30, 200) * 1000;
+        const rev = rand(40, 150) * 1000;
+        const exp = rand(20, Math.max(21, Math.floor(rev/1000) - 5)) * 1000;
+        const div = rand(2, 15) * 1000;
+        const endRE = begRE + rev - exp - div;
+        return {
+            question: 'Beginning Retained Earnings = $' + fmt(begRE) + '. During the year: Service Revenue = $' + fmt(rev) + ', total expenses = $' + fmt(exp) + ', Dividends = $' + fmt(div) + '.<br><br>After closing all temporary accounts, what is the balance of Retained Earnings?',
+            type: 'number', answer: endRE,
+            explanation: 'Ending RE = $' + fmt(begRE) + ' + $' + fmt(rev) + ' \u2212 $' + fmt(exp) + ' \u2212 $' + fmt(div) + ' = $' + fmt(endRE) + '.'
+        };
+    }
+
+    // ---- 13. genPermanentVsTemp (12+ items) ----
+    function genPermanentVsTemp() {
+        const items = [
+            { acct: 'Cash', answer: 0, explain: 'Cash is an asset \u2014 a permanent (real) account that carries forward.' },
+            { acct: 'Service Revenue', answer: 1, explain: 'Revenue is a temporary account, closed to Retained Earnings each period.' },
+            { acct: 'Salary Expense', answer: 1, explain: 'Expenses are temporary accounts, closed to Retained Earnings each period.' },
+            { acct: 'Retained Earnings', answer: 0, explain: 'Retained Earnings is a permanent equity account on the balance sheet.' },
+            { acct: 'Accounts Payable', answer: 0, explain: 'A/P is a liability \u2014 a permanent account that carries forward.' },
+            { acct: 'Dividends', answer: 1, explain: 'Dividends is a temporary account, closed to Retained Earnings each period.' },
+            { acct: 'Accumulated Depreciation', answer: 0, explain: 'Accumulated Depreciation is a contra-asset \u2014 a permanent account on the balance sheet.' },
+            { acct: 'Depreciation Expense', answer: 1, explain: 'Expenses are temporary accounts, reset to zero each period via closing entries.' },
+            { acct: 'Common Stock', answer: 0, explain: 'Common Stock is a permanent equity account.' },
+            { acct: 'Unearned Revenue', answer: 0, explain: 'Unearned Revenue is a liability \u2014 a permanent account.' },
+            { acct: 'Rent Expense', answer: 1, explain: 'Expenses are temporary accounts.' },
+            { acct: 'Prepaid Insurance', answer: 0, explain: 'Prepaid Insurance is an asset \u2014 a permanent account.' },
+            { acct: 'Income Summary', answer: 1, explain: 'Income Summary is a temporary account used only during closing.' },
+            { acct: 'Interest Revenue', answer: 1, explain: 'Revenue is a temporary account, closed each period.' },
+            { acct: 'Notes Payable', answer: 0, explain: 'Notes Payable is a liability \u2014 a permanent account.' }
+        ];
+        const s = pick(items);
+        return {
+            question: 'Is <strong class="text-white">' + s.acct + '</strong> a permanent or temporary account?',
+            type: 'mc', options: ['Permanent', 'Temporary'],
+            answer: s.answer, explanation: s.explain
+        };
+    }
+
+    // ==================== JE GENERATORS (25 templates, parametric) ====================
+    const jeAccounts = ['Cash','Accounts Receivable','Supplies','Prepaid Insurance','Prepaid Rent','Office Equipment','Accumulated Depreciation','Accounts Payable','Salary Payable','Interest Payable','Unearned Revenue','Notes Payable','Common Stock','Retained Earnings','Income Summary','Dividends','Service Revenue','Rent Revenue','Salary Expense','Rent Expense','Insurance Expense','Depreciation Expense','Interest Expense','Supplies Expense','Utilities Expense'];
+
+    function jeGenRecordSalary() {
+        const amt = rand(3, 20) * 1000;
+        return { prompt: 'Record: Pay employee salaries of $' + fmt(amt) + ' in cash.', answer: [{acct:'Salary Expense',dr:amt,cr:0},{acct:'Cash',dr:0,cr:amt}] };
+    }
+    function jeGenRecordRent() {
+        const amt = rand(1, 8) * 1000;
+        return { prompt: 'Record: Pay $' + fmt(amt) + ' cash for this month\u2019s rent.', answer: [{acct:'Rent Expense',dr:amt,cr:0},{acct:'Cash',dr:0,cr:amt}] };
+    }
+    function jeGenPrepaidInsurance() {
+        const months = pick([6, 12, 24]);
+        const perMonth = rand(1, 4) * 500;
+        const total = perMonth * months;
+        return { prompt: 'Record: Pay $' + fmt(total) + ' cash for a ' + months + '-month insurance policy.', answer: [{acct:'Prepaid Insurance',dr:total,cr:0},{acct:'Cash',dr:0,cr:total}] };
+    }
+    function jeGenAdjustPrepaidInsurance() {
+        const total = pick([6000, 12000, 18000, 24000]);
+        const months = pick([6, 12]);
+        const elapsed = rand(1, Math.min(months, 4));
+        const amt = Math.round(total / months * elapsed);
+        return { prompt: 'Adjusting entry: Recognize ' + elapsed + ' month(s) of insurance expense from a $' + fmt(total) + ' prepaid policy covering ' + months + ' months.', answer: [{acct:'Insurance Expense',dr:amt,cr:0},{acct:'Prepaid Insurance',dr:0,cr:amt}] };
+    }
+    function jeGenDepreciation() {
+        const amt = rand(2, 15) * 100;
+        return { prompt: 'Adjusting entry: Record $' + fmt(amt) + ' of depreciation on office equipment.', answer: [{acct:'Depreciation Expense',dr:amt,cr:0},{acct:'Accumulated Depreciation',dr:0,cr:amt}] };
+    }
+    function jeGenAccrueInterest() {
+        const principal = rand(5, 50) * 1000;
+        const rate = pick([6, 8, 10, 12]);
+        const monthsAccrued = rand(1, 3);
+        const interest = Math.round(principal * rate / 100 / 12 * monthsAccrued);
+        return { prompt: 'Adjusting entry: Accrue ' + monthsAccrued + ' month(s) of interest on a $' + fmt(principal) + ' note payable at ' + rate + '% annual interest. (Interest = $' + fmt(interest) + ')', answer: [{acct:'Interest Expense',dr:interest,cr:0},{acct:'Interest Payable',dr:0,cr:interest}] };
+    }
+    function jeGenAccrueSalary() {
+        const amt = rand(1, 8) * 1000;
+        return { prompt: 'Adjusting entry: Accrue $' + fmt(amt) + ' of salaries earned by employees but not yet paid.', answer: [{acct:'Salary Expense',dr:amt,cr:0},{acct:'Salary Payable',dr:0,cr:amt}] };
+    }
+    function jeGenUnearnedRevenue() {
+        const amt = rand(3, 20) * 1000;
+        return { prompt: 'Record: Receive $' + fmt(amt) + ' cash from a client for services to be performed next month.', answer: [{acct:'Cash',dr:amt,cr:0},{acct:'Unearned Revenue',dr:0,cr:amt}] };
+    }
+    function jeGenRecognizeUnearned() {
+        const total = pick([6000, 9000, 12000, 15000, 18000]);
+        const totalMonths = pick([3, 6, 12]);
+        const earned = rand(1, Math.min(totalMonths, 4));
+        const amt = Math.round(total / totalMonths * earned);
+        return { prompt: 'Adjusting entry: Recognize ' + earned + ' month(s) of revenue from $' + fmt(total) + ' originally recorded as Unearned Revenue (' + totalMonths + '-month contract). Amount earned = $' + fmt(amt) + '.', answer: [{acct:'Unearned Revenue',dr:amt,cr:0},{acct:'Service Revenue',dr:0,cr:amt}] };
+    }
+    function jeGenPayAP() {
+        const amt = rand(1, 15) * 1000;
+        return { prompt: 'Record: Pay $' + fmt(amt) + ' cash to settle an account payable.', answer: [{acct:'Accounts Payable',dr:amt,cr:0},{acct:'Cash',dr:0,cr:amt}] };
+    }
+    function jeGenCollectAR() {
+        const amt = rand(2, 25) * 1000;
+        return { prompt: 'Record: Collect $' + fmt(amt) + ' cash from a client on their outstanding account receivable.', answer: [{acct:'Cash',dr:amt,cr:0},{acct:'Accounts Receivable',dr:0,cr:amt}] };
+    }
+    function jeGenServiceRevenueCash() {
+        const amt = rand(3, 30) * 1000;
+        return { prompt: 'Record: Provide consulting services for $' + fmt(amt) + ' and receive cash immediately.', answer: [{acct:'Cash',dr:amt,cr:0},{acct:'Service Revenue',dr:0,cr:amt}] };
+    }
+    function jeGenServiceRevenueOnAccount() {
+        const amt = rand(5, 40) * 1000;
+        return { prompt: 'Record: Provide $' + fmt(amt) + ' of services on account (client will pay later).', answer: [{acct:'Accounts Receivable',dr:amt,cr:0},{acct:'Service Revenue',dr:0,cr:amt}] };
+    }
+    function jeGenPurchaseSupplies() {
+        const amt = rand(1, 6) * 500;
+        const onAccount = Math.random() > 0.5;
+        if (onAccount) {
+            return { prompt: 'Record: Purchase $' + fmt(amt) + ' of office supplies on account.', answer: [{acct:'Supplies',dr:amt,cr:0},{acct:'Accounts Payable',dr:0,cr:amt}] };
+        } else {
+            return { prompt: 'Record: Purchase $' + fmt(amt) + ' of office supplies for cash.', answer: [{acct:'Supplies',dr:amt,cr:0},{acct:'Cash',dr:0,cr:amt}] };
+        }
+    }
+    function jeGenAdjustSupplies() {
+        const beginning = rand(2, 8) * 1000;
+        const remaining = rand(1, Math.floor(beginning/1000)) * 500;
+        const used = beginning - remaining;
+        return { prompt: 'Adjusting entry: Supplies account shows $' + fmt(beginning) + '. A physical count reveals $' + fmt(remaining) + ' on hand. Record supplies expense of $' + fmt(used) + '.', answer: [{acct:'Supplies Expense',dr:used,cr:0},{acct:'Supplies',dr:0,cr:used}] };
+    }
+    function jeGenCloseRevenue() {
+        const amt = rand(30, 150) * 1000;
+        return { prompt: 'Closing entry: Close Service Revenue of $' + fmt(amt) + ' to Retained Earnings.', answer: [{acct:'Service Revenue',dr:amt,cr:0},{acct:'Retained Earnings',dr:0,cr:amt}] };
+    }
+    function jeGenCloseExpense() {
+        const sal = rand(10, 40) * 1000;
+        const rent = rand(3, 15) * 1000;
+        const total = sal + rent;
+        return { prompt: 'Closing entry: Close Salary Expense ($' + fmt(sal) + ') and Rent Expense ($' + fmt(rent) + ') to Retained Earnings.', answer: [{acct:'Retained Earnings',dr:total,cr:0},{acct:'Salary Expense',dr:0,cr:sal},{acct:'Rent Expense',dr:0,cr:rent}] };
+    }
+    function jeGenCloseIncomeSummary() {
+        const ni = rand(10, 80) * 1000;
+        const profit = Math.random() > 0.3;
+        if (profit) {
+            return { prompt: 'Closing entry: Income Summary has a credit balance of $' + fmt(ni) + ' (net income). Close it to Retained Earnings.', answer: [{acct:'Income Summary',dr:ni,cr:0},{acct:'Retained Earnings',dr:0,cr:ni}] };
+        } else {
+            return { prompt: 'Closing entry: Income Summary has a debit balance of $' + fmt(ni) + ' (net loss). Close it to Retained Earnings.', answer: [{acct:'Retained Earnings',dr:ni,cr:0},{acct:'Income Summary',dr:0,cr:ni}] };
+        }
+    }
+    function jeGenBorrowCash() {
+        const amt = rand(5, 100) * 1000;
+        return { prompt: 'Record: Borrow $' + fmt(amt) + ' cash by signing a note payable.', answer: [{acct:'Cash',dr:amt,cr:0},{acct:'Notes Payable',dr:0,cr:amt}] };
+    }
+    function jeGenPayDividends() {
+        const amt = rand(1, 10) * 1000;
+        return { prompt: 'Record: Pay $' + fmt(amt) + ' cash dividends to stockholders.', answer: [{acct:'Dividends',dr:amt,cr:0},{acct:'Cash',dr:0,cr:amt}] };
+    }
+    function jeGenIssueStock() {
+        const amt = rand(20, 200) * 1000;
+        return { prompt: 'Record: Issue common stock for $' + fmt(amt) + ' cash.', answer: [{acct:'Cash',dr:amt,cr:0},{acct:'Common Stock',dr:0,cr:amt}] };
+    }
+    function jeGenUtilities() {
+        const amt = rand(2, 12) * 100;
+        return { prompt: 'Record: Pay the $' + fmt(amt) + ' utility bill in cash.', answer: [{acct:'Utilities Expense',dr:amt,cr:0},{acct:'Cash',dr:0,cr:amt}] };
+    }
+    function jeGenPrepaidRent() {
+        const months = pick([3, 6, 12]);
+        const perMonth = rand(1, 5) * 1000;
+        const total = perMonth * months;
+        return { prompt: 'Record: Pay $' + fmt(total) + ' cash for ' + months + ' months of rent in advance.', answer: [{acct:'Prepaid Rent',dr:total,cr:0},{acct:'Cash',dr:0,cr:total}] };
+    }
+    function jeGenAdjustPrepaidRent() {
+        const total = pick([6000, 12000, 18000, 24000]);
+        const months = pick([6, 12]);
+        const elapsed = rand(1, Math.min(months, 4));
+        const amt = Math.round(total / months * elapsed);
+        return { prompt: 'Adjusting entry: Recognize ' + elapsed + ' month(s) of rent expense from a $' + fmt(total) + ' prepaid rent covering ' + months + ' months. Amount = $' + fmt(amt) + '.', answer: [{acct:'Rent Expense',dr:amt,cr:0},{acct:'Prepaid Rent',dr:0,cr:amt}] };
+    }
+    function jeGenAccrueUtilities() {
+        const amt = rand(2, 12) * 100;
+        return { prompt: 'Adjusting entry: Accrue $' + fmt(amt) + ' of utilities expense incurred but not yet paid.', answer: [{acct:'Utilities Expense',dr:amt,cr:0},{acct:'Accounts Payable',dr:0,cr:amt}] };
+    }
+
+    // ==================== INIT ====================
+    QuizEngine.init({
+        questionGenerators: [
+            genNormalBalance, genAdjustingType, genTAccountBalance, genClosingEntry,
+            genTrueFalse, genAdjustingCalc, genTrialBalance, genMultiStep,
+            genDebitCredit, genRevenueExpenseRecognition, genCashVsAccrual,
+            genClosingProcess, genPermanentVsTemp
+        ],
+        jeGenerators: [
+            jeGenRecordSalary, jeGenRecordRent, jeGenPrepaidInsurance, jeGenAdjustPrepaidInsurance,
+            jeGenDepreciation, jeGenAccrueInterest, jeGenAccrueSalary, jeGenUnearnedRevenue,
+            jeGenRecognizeUnearned, jeGenPayAP, jeGenCollectAR, jeGenServiceRevenueCash,
+            jeGenServiceRevenueOnAccount, jeGenPurchaseSupplies, jeGenAdjustSupplies,
+            jeGenCloseRevenue, jeGenCloseExpense, jeGenCloseIncomeSummary,
+            jeGenBorrowCash, jeGenPayDividends, jeGenIssueStock,
+            jeGenUtilities, jeGenPrepaidRent, jeGenAdjustPrepaidRent, jeGenAccrueUtilities,
+            // Duplicate high-value templates to reach 50+ deck slots
+            jeGenRecordSalary, jeGenAdjustPrepaidInsurance, jeGenAccrueSalary,
+            jeGenRecognizeUnearned, jeGenDepreciation, jeGenServiceRevenueCash,
+            jeGenServiceRevenueOnAccount, jeGenPurchaseSupplies, jeGenAdjustSupplies,
+            jeGenCloseRevenue, jeGenCloseExpense, jeGenAccrueInterest,
+            jeGenPayAP, jeGenCollectAR, jeGenUnearnedRevenue,
+            jeGenBorrowCash, jeGenPayDividends, jeGenIssueStock,
+            jeGenUtilities, jeGenPrepaidRent, jeGenAdjustPrepaidRent,
+            jeGenAccrueUtilities, jeGenCloseIncomeSummary, jeGenRecordRent,
+            jeGenPrepaidInsurance
+        ],
+        jeAccounts: jeAccounts,
+        accentColor: 'purple',
+        qCopies: 7,
+        jeCopies: 2
+    });
 </script>
 </body>
 </html>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intangible Assets | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         html { scroll-behavior: smooth; }
@@ -550,6 +551,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-bold text-indigo-400">Practice Questions</h2>
                     <div class="flex items-center gap-4">
+                        <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
                         <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
                         <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
                     </div>
@@ -558,20 +560,23 @@
                 <div id="p-answer" class="mb-4 hidden"></div>
                 <div id="p-feedback" class="mb-4 hidden"></div>
                 <div class="flex gap-3">
-                    <button onclick="pNew()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
-                    <button onclick="pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                    <button onclick="QuizEngine.pNew()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
                 </div>
             </div>
 
             <!-- Journal Entry Practice -->
             <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                <h2 class="text-xl font-bold text-indigo-400 mb-4">Journal Entry Practice</h2>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-indigo-400">Journal Entry Practice</h2>
+                    <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
+                </div>
                 <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
                 <div id="je-lines" class="space-y-2 mb-4"></div>
                 <div class="flex gap-3 mb-4">
-                    <button onclick="jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
-                    <button onclick="jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
-                    <button onclick="jeNew()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                    <button onclick="QuizEngine.jeNew()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
                 </div>
                 <div id="je-feedback" class="hidden"></div>
             </div>
@@ -603,38 +608,38 @@
         }
     };
 
-    // ========== PRACTICE QUESTIONS ==========
-    let pCorrect = 0, pTotal = 0, pStreak = 0, curQ = null;
-    function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
-    function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    // ========== PRACTICE QUESTION GENERATORS ==========
+    const { rand, pick, fmt } = QuizEngine;
 
-    // Q1: Amortization calculation
+    // --- Q1: Amortization calculation ---
     function genAmort() {
-        const cost = rand(50, 300) * 1000;
-        const life = rand(3, 15);
+        const cost = rand(40, 300) * 1000;
+        const life = rand(3, 20);
         const ans = Math.round(cost / life);
-        return { question: 'A company purchases a patent for $' + cost.toLocaleString() + ' with a useful life of ' + life + ' years (no salvage value).<br><br>What is the annual amortization expense?', type: 'number', answer: ans, explanation: '$' + cost.toLocaleString() + ' &divide; ' + life + ' = $' + ans.toLocaleString() + '/year' };
+        const asset = pick(['patent', 'copyright', 'customer list', 'franchise right', 'licensing agreement']);
+        return { question: 'A company purchases a ' + asset + ' for $' + fmt(cost) + ' with a useful life of ' + life + ' years (no salvage value).<br><br>What is the annual straight-line amortization expense?', type: 'number', answer: ans, explanation: '$' + fmt(cost) + ' \u00f7 ' + life + ' = <strong>$' + fmt(ans) + '</strong>/year' };
     }
 
-    // Q2: Goodwill calculation
+    // --- Q2: Goodwill calculation ---
     function genGoodwill() {
-        const fvAssets = rand(200, 600) * 1000;
-        const fvLiab = rand(50, Math.floor(fvAssets/1000) - 50) * 1000;
+        const fvAssets = rand(200, 800) * 1000;
+        const fvLiab = rand(50, Math.floor(fvAssets / 1000) - 50) * 1000;
         const fvNet = fvAssets - fvLiab;
-        const premium = rand(20, 150) * 1000;
+        const premium = rand(20, 200) * 1000;
         const price = fvNet + premium;
-        return { question: 'A company pays $' + price.toLocaleString() + ' to acquire a target. The fair value of identifiable assets is $' + fvAssets.toLocaleString() + ' and fair value of liabilities assumed is $' + fvLiab.toLocaleString() + '.<br><br>What is goodwill?', type: 'number', answer: premium, explanation: 'FV Net Assets = $' + fvAssets.toLocaleString() + ' &minus; $' + fvLiab.toLocaleString() + ' = $' + fvNet.toLocaleString() + '. Goodwill = $' + price.toLocaleString() + ' &minus; $' + fvNet.toLocaleString() + ' = $' + premium.toLocaleString() };
+        return { question: 'A company pays $' + fmt(price) + ' to acquire a target. The fair value of identifiable assets is $' + fmt(fvAssets) + ' and fair value of liabilities assumed is $' + fmt(fvLiab) + '.<br><br>What is goodwill?', type: 'number', answer: premium, explanation: 'FV Net Assets = $' + fmt(fvAssets) + ' \u2212 $' + fmt(fvLiab) + ' = $' + fmt(fvNet) + '.<br>Goodwill = $' + fmt(price) + ' \u2212 $' + fmt(fvNet) + ' = <strong>$' + fmt(premium) + '</strong>' };
     }
 
-    // Q3: Impairment calculation
+    // --- Q3: Impairment calculation ---
     function genImpairment() {
-        const bv = rand(30, 120) * 1000;
-        const fv = rand(10, Math.floor(bv/1000) - 5) * 1000;
+        const bv = rand(30, 200) * 1000;
+        const fv = rand(5, Math.floor(bv / 1000) - 5) * 1000;
         const charge = bv - fv;
-        return { question: 'A trademark has a book value of $' + bv.toLocaleString() + '. Annual impairment testing determines its fair value is $' + fv.toLocaleString() + '.<br><br>What is the impairment charge?', type: 'number', answer: charge, explanation: 'Impairment = BV &minus; FV = $' + bv.toLocaleString() + ' &minus; $' + fv.toLocaleString() + ' = $' + charge.toLocaleString() };
+        const asset = pick(['trademark', 'brand name', 'copyright', 'franchise right']);
+        return { question: 'A ' + asset + ' has a book value of $' + fmt(bv) + '. Annual impairment testing determines its fair value is $' + fmt(fv) + '.<br><br>What is the impairment charge?', type: 'number', answer: charge, explanation: 'Impairment = BV \u2212 FV = $' + fmt(bv) + ' \u2212 $' + fmt(fv) + ' = <strong>$' + fmt(charge) + '</strong>' };
     }
 
-    // Q4: Capitalize vs Expense (R&D)
+    // --- Q4: Capitalize vs Expense (MC, 14+ scenarios) ---
     function genCapVsExp() {
         const scenarios = [
             { text: 'A company spends $200,000 on in-house R&D that results in a new technology', answer: 1, explain: 'Under US GAAP, internally developed intangibles (R&D) are expensed immediately.' },
@@ -642,160 +647,453 @@
             { text: 'A company pays $50,000 to renew a trademark registration', answer: 0, explain: 'Costs to renew or extend an intangible asset are capitalized.' },
             { text: 'A pharmaceutical company spends $5M on drug research with uncertain outcomes', answer: 1, explain: 'R&D is expensed when incurred under US GAAP, regardless of the amount.' },
             { text: 'A company buys a patent from a competitor for $120,000', answer: 0, explain: 'Externally acquired intangibles are capitalized at acquisition cost.' },
-            { text: 'A tech company pays developers $300,000 to create proprietary software (before technological feasibility)', answer: 1, explain: 'Software development costs before technological feasibility are expensed as R&D under US GAAP.' }
+            { text: 'A tech company pays developers $300,000 to create proprietary software (before technological feasibility)', answer: 1, explain: 'Software development costs before technological feasibility are expensed as R&D under US GAAP.' },
+            { text: 'A startup spends $40,000 on market research to identify potential customers', answer: 1, explain: 'Market research costs are expensed as incurred \u2014 they cannot be capitalized as an intangible asset.' },
+            { text: 'A company acquires a franchise right from a franchisee for $250,000', answer: 0, explain: 'Externally acquired franchise rights are capitalized at acquisition cost.' },
+            { text: 'A biotech firm spends $1.2M on clinical trials for a new drug', answer: 1, explain: 'Clinical trial costs are R&D and must be expensed as incurred under US GAAP.' },
+            { text: 'A publisher purchases the copyright to a bestselling book series for $800,000', answer: 0, explain: 'Externally acquired copyrights are capitalized at the purchase price.' },
+            { text: 'A company pays $15,000 in legal fees to successfully defend a patent in court', answer: 0, explain: 'Legal costs to successfully defend an intangible asset are capitalized (added to the asset\u2019s cost).' },
+            { text: 'A company spends $90,000 developing a brand name through advertising campaigns', answer: 1, explain: 'Internally developed brand names cannot be capitalized \u2014 advertising and development costs are expensed.' },
+            { text: 'A software company capitalizes $500,000 of development costs after achieving technological feasibility', answer: 0, explain: 'Under US GAAP, software development costs after technological feasibility are capitalized.' },
+            { text: 'A company pays $60,000 to train employees on a new proprietary system', answer: 1, explain: 'Employee training costs are always expensed as incurred \u2014 they are not capitalizable intangible assets.' },
+            { text: 'A company pays legal fees of $25,000 to unsuccessfully defend a patent in court', answer: 1, explain: 'Legal costs from an unsuccessful defense are expensed \u2014 only successful legal defense costs are capitalized.' },
+            { text: 'A company purchases an internet domain name from another party for $30,000', answer: 0, explain: 'Externally acquired domain names are marketing-related intangibles and are capitalized at acquisition cost.' }
         ];
         const s = pick(scenarios);
         return { question: s.text + '<br><br>Should this be capitalized or expensed?', type: 'mc', options: ['Capitalize (recognize as asset)', 'Expense immediately'], answer: s.answer, explanation: s.explain };
     }
 
-    // Q5: Finite vs Indefinite life
+    // --- Q5: Finite vs Indefinite life (12+ scenarios) ---
     function genFiniteIndef() {
         const scenarios = [
             { text: 'A patent with 8 years remaining', answer: 0, explain: 'Patents have a finite legal life and are amortized over their useful life.' },
-            { text: 'A well-known brand name (e.g., Coca-Cola)', answer: 1, explain: 'Brand names are considered indefinite-life intangibles &mdash; not amortized, but tested annually for impairment.' },
+            { text: 'A well-known brand name (e.g., Coca-Cola)', answer: 1, explain: 'Brand names are considered indefinite-life intangibles \u2014 not amortized, but tested annually for impairment.' },
             { text: 'A licensing agreement for 5 years', answer: 0, explain: 'Contract-based intangibles with a set term have a finite life and are amortized.' },
-            { text: 'Goodwill from an acquisition', answer: 1, explain: 'Goodwill has an indefinite life &mdash; it is not amortized but tested annually for impairment.' },
+            { text: 'Goodwill from an acquisition', answer: 1, explain: 'Goodwill has an indefinite life \u2014 it is not amortized but tested annually for impairment.' },
             { text: 'A copyright on a textbook with 20 years remaining', answer: 0, explain: 'Copyrights have a finite life and are amortized over the remaining useful period.' },
-            { text: 'A trademark that has been in use for 50 years with no expiration', answer: 1, explain: 'Trademarks with no foreseeable end to their useful life are indefinite-life intangibles.' }
+            { text: 'A trademark that has been in use for 50 years with no expiration', answer: 1, explain: 'Trademarks with no foreseeable end to their useful life are indefinite-life intangibles.' },
+            { text: 'A customer list expected to provide benefits for 7 years', answer: 0, explain: 'Customer lists with an estimated useful life are finite-life intangibles and are amortized.' },
+            { text: 'A franchise agreement for 10 years with no renewal option', answer: 0, explain: 'A franchise agreement with a fixed term and no renewal is finite-life and amortized over 10 years.' },
+            { text: 'An FCC broadcast license that is renewable indefinitely at minimal cost', answer: 1, explain: 'When renewal is expected indefinitely at minimal cost, the license is treated as indefinite-life.' },
+            { text: 'A non-compete agreement lasting 3 years', answer: 0, explain: 'Non-compete agreements have a contractual term and are finite-life intangibles.' },
+            { text: 'A taxi medallion with no expiration date', answer: 1, explain: 'Taxi medallions with no expiration are indefinite-life intangibles (though they may still be impaired).' },
+            { text: 'Software purchased with an expected useful life of 4 years', answer: 0, explain: 'Purchased software with a limited useful life is a finite-life intangible and is amortized.' },
+            { text: 'An acquired trade name that management intends to use perpetually', answer: 1, explain: 'When there is no foreseeable limit to the period the trade name will generate cash flows, it is indefinite-life.' }
         ];
         const s = pick(scenarios);
         return { question: s.text + '<br><br>Is this a finite-life or indefinite-life intangible?', type: 'mc', options: ['Finite life (amortize)', 'Indefinite life (impairment test only)'], answer: s.answer, explanation: s.explain };
     }
 
-    // Q6: NCI calculation
+    // --- Q6: NCI calculation ---
     function genNCI() {
-        const pct = pick([60, 70, 75, 80]);
-        const price = rand(100, 500) * 1000;
+        const pct = pick([60, 65, 70, 75, 80, 85, 90]);
+        const price = rand(100, 600) * 1000;
         const implied = Math.round(price / (pct / 100));
         const nci = implied - price;
-        return { question: 'A company acquires ' + pct + '% of a target for $' + price.toLocaleString() + '.<br><br>What is the Non-Controlling Interest (NCI)?', type: 'number', answer: nci, explanation: 'Implied total value = $' + price.toLocaleString() + ' &divide; ' + pct + '% = $' + implied.toLocaleString() + '. NCI = ' + (100 - pct) + '% &times; $' + implied.toLocaleString() + ' = $' + nci.toLocaleString() };
+        return { question: 'A company acquires ' + pct + '% of a target for $' + fmt(price) + ' cash.<br><br>What is the Non-Controlling Interest (NCI)?', type: 'number', answer: nci, explanation: 'Implied total value = $' + fmt(price) + ' \u00f7 ' + pct + '% = $' + fmt(implied) + '.<br>NCI = ' + (100 - pct) + '% \u00d7 $' + fmt(implied) + ' = <strong>$' + fmt(nci) + '</strong>' };
     }
 
-    // Q7: Net book value after amortization
+    // --- Q7: Net book value after amortization ---
     function genNBV() {
-        const cost = rand(60, 250) * 1000;
-        const life = rand(4, 12);
+        const cost = rand(60, 300) * 1000;
+        const life = rand(4, 15);
         const yearsUsed = rand(1, life - 1);
         const annual = Math.round(cost / life);
         const accum = annual * yearsUsed;
         const nbv = cost - accum;
-        return { question: 'A patent was purchased for $' + cost.toLocaleString() + ' with a ' + life + '-year useful life (no salvage). After ' + yearsUsed + ' year' + (yearsUsed > 1 ? 's' : '') + ' of straight-line amortization, what is the net book value?', type: 'number', answer: nbv, explanation: 'Annual amort = $' + cost.toLocaleString() + ' &divide; ' + life + ' = $' + annual.toLocaleString() + '. After ' + yearsUsed + ' years: Accum Amort = $' + accum.toLocaleString() + '. NBV = $' + cost.toLocaleString() + ' &minus; $' + accum.toLocaleString() + ' = $' + nbv.toLocaleString() };
+        const asset = pick(['patent', 'copyright', 'customer list', 'franchise right']);
+        return { question: 'A ' + asset + ' was purchased for $' + fmt(cost) + ' with a ' + life + '-year useful life (no salvage). After ' + yearsUsed + ' year' + (yearsUsed > 1 ? 's' : '') + ' of straight-line amortization, what is the net book value?', type: 'number', answer: nbv, explanation: 'Annual amortization = $' + fmt(cost) + ' \u00f7 ' + life + ' = $' + fmt(annual) + '.<br>After ' + yearsUsed + ' year' + (yearsUsed > 1 ? 's' : '') + ': Accumulated Amortization = $' + fmt(accum) + '.<br>NBV = $' + fmt(cost) + ' \u2212 $' + fmt(accum) + ' = <strong>$' + fmt(nbv) + '</strong>' };
     }
 
-    // Q8: US GAAP vs IFRS
+    // --- Q8: US GAAP vs IFRS (8+ scenarios) ---
     function genGAAPvsIFRS() {
         const scenarios = [
             { text: 'Under US GAAP, can a company capitalize software development costs?', answer: 0, explain: 'Yes, but only AFTER technological feasibility has been established. Costs before that point are expensed as R&D.' },
             { text: 'Under IFRS, can a company capitalize development costs?', answer: 0, explain: 'Yes, IFRS allows capitalization of development costs once certain criteria are met (technical feasibility, intent to complete, ability to use/sell, probable future economic benefits, etc.). Research costs are still expensed.' },
             { text: 'Under US GAAP, can internally generated goodwill be recorded on the balance sheet?', answer: 1, explain: 'No. Goodwill can ONLY be recorded when a business is acquired. Internally generated goodwill cannot be capitalized under either US GAAP or IFRS.' },
-            { text: 'Under US GAAP, can you write goodwill back up after an impairment?', answer: 1, explain: 'No. Once goodwill is written down, it cannot be reversed (written back up) under US GAAP.' }
+            { text: 'Under US GAAP, can you write goodwill back up after an impairment?', answer: 1, explain: 'No. Once goodwill is written down, it cannot be reversed (written back up) under US GAAP.' },
+            { text: 'Under IFRS, can you reverse an impairment loss on a trademark?', answer: 0, explain: 'Yes, IFRS permits reversal of impairment losses on intangible assets other than goodwill, up to the original carrying amount. US GAAP does not allow this.' },
+            { text: 'Under US GAAP, is goodwill amortized?', answer: 1, explain: 'No. Under US GAAP, goodwill is not amortized \u2014 it is tested for impairment at least annually. (Note: private companies may elect to amortize goodwill over 10 years, but this is the exception.)' },
+            { text: 'Under IFRS, can a company capitalize research costs?', answer: 1, explain: 'No. Under IFRS, research costs must always be expensed. Only development costs (once specific criteria are met) can be capitalized.' },
+            { text: 'Under US GAAP, are R&D costs for a new product expensed or capitalized?', answer: 0, explain: 'Expensed. Under US GAAP, virtually all R&D costs are expensed as incurred. The main exception is software development costs after technological feasibility.' },
+            { text: 'Under IFRS, can you reverse a goodwill impairment loss?', answer: 1, explain: 'No. Reversal of goodwill impairment is prohibited under both IFRS and US GAAP.' }
         ];
         const s = pick(scenarios);
         return { question: s.text, type: 'mc', options: ['Yes', 'No'], answer: s.answer, explanation: s.explain };
     }
 
-    const qGens = [genAmort, genGoodwill, genImpairment, genCapVsExp, genFiniteIndef, genNCI, genNBV, genGAAPvsIFRS];
-
-    window.pNew = function() {
-        curQ = pick(qGens)();
-        document.getElementById('p-question').innerHTML = '<p class="text-slate-300 text-sm">' + curQ.question + '</p>';
-        document.getElementById('p-feedback').classList.add('hidden');
-        const ans = document.getElementById('p-answer');
-        ans.classList.remove('hidden');
-        if (curQ.type === 'mc') {
-            ans.innerHTML = curQ.options.map((o,i) => '<button onclick="checkMC(' + i + ')" class="w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm mb-2"><span class="font-semibold text-slate-400 mr-2">' + String.fromCharCode(65+i) + '.</span>' + o + '</button>').join('');
-            document.getElementById('p-check-btn').classList.add('hidden');
-        } else {
-            ans.innerHTML = '<input type="number" id="p-num" class="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white w-48" placeholder="Enter amount">';
-            document.getElementById('p-check-btn').classList.remove('hidden');
-        }
-    };
-
-    window.checkMC = function(idx) {
-        if (!curQ) return;
-        const ok = idx === curQ.answer;
-        pTotal++; if (ok) { pCorrect++; pStreak++; } else { pStreak = 0; }
-        updateScore();
-        showFeedback(ok);
-    };
-
-    window.pCheck = function() {
-        if (!curQ) return;
-        const inp = document.getElementById('p-num');
-        if (!inp || !inp.value) return;
-        const userAns = parseFloat(inp.value);
-        const ok = Math.abs(userAns - curQ.answer) < 2;
-        pTotal++; if (ok) { pCorrect++; pStreak++; } else { pStreak = 0; }
-        updateScore();
-        showFeedback(ok);
-    };
-
-    function updateScore() {
-        document.getElementById('p-correct').textContent = pCorrect;
-        document.getElementById('p-total').textContent = pTotal;
-        document.getElementById('p-streak').textContent = pStreak;
+    // --- Q9: Amortization schedule (accumulated amort after N years) ---
+    function genAmortSchedule() {
+        const cost = rand(60, 400) * 1000;
+        const life = rand(4, 15);
+        const n = rand(2, life);
+        const annual = Math.round(cost / life);
+        const accumAmort = annual * n;
+        const asset = pick(['patent', 'copyright', 'customer list', 'licensing agreement']);
+        return { question: 'A company purchases a ' + asset + ' for $' + fmt(cost) + ' with a ' + life + '-year useful life (straight-line, no salvage).<br><br>What is the accumulated amortization after ' + n + ' years?', type: 'number', answer: accumAmort, explanation: 'Annual amortization = $' + fmt(cost) + ' \u00f7 ' + life + ' = $' + fmt(annual) + '.<br>After ' + n + ' years: $' + fmt(annual) + ' \u00d7 ' + n + ' = <strong>$' + fmt(accumAmort) + '</strong>' };
     }
 
-    function showFeedback(ok) {
-        const fb = document.getElementById('p-feedback'); fb.classList.remove('hidden');
-        const c = ok ? 'emerald' : 'rose';
-        fb.innerHTML = '<div class="bg-' + c + '-500/10 border border-' + c + '-500/30 rounded-lg p-4"><p class="font-bold text-' + c + '-400 mb-1">' + (ok ? 'Correct!' : 'Not quite.') + '</p><p class="text-sm text-slate-300">' + curQ.explanation + '</p></div>';
-        document.getElementById('p-check-btn').classList.add('hidden');
+    // --- Q10: Goodwill impairment (reporting unit level) ---
+    function genGoodwillImpairment() {
+        const gwBV = rand(50, 300) * 1000;
+        const otherNetAssets = rand(200, 600) * 1000;
+        const unitBV = otherNetAssets + gwBV;
+        const unitFV = rand(Math.floor(otherNetAssets / 1000), Math.floor(unitBV / 1000) - 10) * 1000;
+        const impliedGW = unitFV - otherNetAssets;
+        const impairment = Math.max(0, gwBV - Math.max(0, impliedGW));
+        return { question: 'A reporting unit has the following:<br>\u2022 Book value of goodwill: $' + fmt(gwBV) + '<br>\u2022 Book value of other net assets: $' + fmt(otherNetAssets) + '<br>\u2022 Fair value of the entire reporting unit: $' + fmt(unitFV) + '<br><br>Total book value of the unit = $' + fmt(unitBV) + '. Since FV ($' + fmt(unitFV) + ') < BV ($' + fmt(unitBV) + '), goodwill is impaired.<br><br>What is the goodwill impairment loss?', type: 'number', answer: impairment, explanation: 'Implied goodwill = Unit FV \u2212 FV of other net assets = $' + fmt(unitFV) + ' \u2212 $' + fmt(otherNetAssets) + ' = $' + fmt(Math.max(0, impliedGW)) + '.<br>Impairment = BV of goodwill \u2212 Implied goodwill = $' + fmt(gwBV) + ' \u2212 $' + fmt(Math.max(0, impliedGW)) + ' = <strong>$' + fmt(impairment) + '</strong>' };
     }
 
-    // ========== JOURNAL ENTRY PRACTICE ==========
-    const jeAccts = ['Cash','Patent','Trademark','Goodwill','Customer List','PP&E','Inventory','Accumulated Amortization','Accounts Payable','Notes Payable','Current Liabilities','Long-term Liabilities','Contributed Capital','Non-Controlling Interest','Amortization Expense','R&D Expense','Loss Due to Impairment'];
-    let curJE = null;
+    // --- Q11: Remaining life (legal vs economic) ---
+    function genRemainingLife() {
+        const legalLife = rand(10, 20);
+        const econLife = rand(3, legalLife - 2);
+        const scenarios = [
+            { text: 'A patent has a remaining legal life of ' + legalLife + ' years but management expects it to generate economic benefits for only ' + econLife + ' years.', answer: 0, explain: 'Intangibles are amortized over the shorter of legal life (' + legalLife + ' years) or economic life (' + econLife + ' years). Use <strong>' + econLife + ' years</strong>.' },
+            { text: 'A copyright has ' + legalLife + ' years remaining on its legal protection, but the company expects the content to be commercially viable for only ' + econLife + ' years.', answer: 0, explain: 'Use the shorter of legal (' + legalLife + ' years) or economic (' + econLife + ' years) life. Amortize over <strong>' + econLife + ' years</strong>.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text + '<br><br>Over how many years should the asset be amortized?', type: 'mc', options: [econLife + ' years (economic life)', legalLife + ' years (legal life)'], answer: s.answer, explanation: s.explain };
+    }
 
-    const jeScenarios = [
-        { prompt: 'Purchase a patent from another company for $150,000 cash.', answer: [{acct:'Patent',dr:150000,cr:0},{acct:'Cash',dr:0,cr:150000}] },
-        { prompt: 'Record annual amortization of $25,000 on a patent.', answer: [{acct:'Amortization Expense',dr:25000,cr:0},{acct:'Accumulated Amortization',dr:0,cr:25000}] },
-        { prompt: 'Expense $80,000 of in-house R&D costs.', answer: [{acct:'R&D Expense',dr:80000,cr:0},{acct:'Cash',dr:0,cr:80000}] },
-        { prompt: 'Record a $35,000 impairment loss on a trademark.', answer: [{acct:'Loss Due to Impairment',dr:35000,cr:0},{acct:'Trademark',dr:0,cr:35000}] },
-        { prompt: 'Acquire a company for $200,000 cash. FV of acquired assets: Inventory $40,000, PP&E $120,000, Customer List $30,000. FV of liabilities assumed: Accounts Payable $50,000. Record the full acquisition entry.', answer: [{acct:'Inventory',dr:40000,cr:0},{acct:'PP&E',dr:120000,cr:0},{acct:'Customer List',dr:30000,cr:0},{acct:'Goodwill',dr:60000,cr:0},{acct:'Cash',dr:0,cr:200000},{acct:'Accounts Payable',dr:0,cr:50000}] },
+    // --- Q12: Acquisition price from goodwill and FV net assets ---
+    function genAcqPrice() {
+        const fvNet = rand(100, 500) * 1000;
+        const goodwill = rand(20, 200) * 1000;
+        const price = fvNet + goodwill;
+        return { question: 'In a business acquisition, the fair value of net identifiable assets acquired is $' + fmt(fvNet) + ' and goodwill recorded is $' + fmt(goodwill) + '.<br><br>What was the acquisition price?', type: 'number', answer: price, explanation: 'Acquisition Price = FV Net Assets + Goodwill = $' + fmt(fvNet) + ' + $' + fmt(goodwill) + ' = <strong>$' + fmt(price) + '</strong>' };
+    }
+
+    // --- Q13: NCI with partial acquisition (different angle) ---
+    function genNCIPartial() {
+        const pct = pick([55, 60, 65, 70, 75, 80]);
+        const fvNetAssets = rand(150, 500) * 1000;
+        const goodwill = rand(30, 150) * 1000;
+        const impliedTotal = fvNetAssets + goodwill;
+        const cashPaid = Math.round(impliedTotal * pct / 100);
+        const nci = impliedTotal - cashPaid;
+        return { question: 'A company acquires ' + pct + '% of a target for $' + fmt(cashPaid) + ' cash. The fair value of the target\u2019s net identifiable assets is $' + fmt(fvNetAssets) + '.<br><br>The implied total value is $' + fmt(cashPaid) + ' \u00f7 ' + pct + '% = $' + fmt(impliedTotal) + '.<br>Goodwill = $' + fmt(impliedTotal) + ' \u2212 $' + fmt(fvNetAssets) + ' = $' + fmt(goodwill) + '.<br><br>What is the Non-Controlling Interest?', type: 'number', answer: nci, explanation: 'NCI = ' + (100 - pct) + '% \u00d7 implied total value = ' + (100 - pct) + '% \u00d7 $' + fmt(impliedTotal) + ' = <strong>$' + fmt(nci) + '</strong>' };
+    }
+
+    // --- Q14: Intangible book value at year N ---
+    function genIntangibleBV() {
+        const cost = rand(80, 350) * 1000;
+        const life = rand(5, 15);
+        const n = rand(1, life);
+        const annual = Math.round(cost / life);
+        const bv = cost - (annual * n);
+        const asset = pick(['patent', 'copyright', 'franchise right', 'customer list']);
+        return { question: 'A ' + asset + ' is acquired for $' + fmt(cost) + ' and amortized straight-line over ' + life + ' years.<br><br>What is the book value (cost minus accumulated amortization) at the end of Year ' + n + '?', type: 'number', answer: bv, explanation: 'Annual amortization = $' + fmt(cost) + ' \u00f7 ' + life + ' = $' + fmt(annual) + '.<br>Accumulated amortization at Year ' + n + ' = $' + fmt(annual) + ' \u00d7 ' + n + ' = $' + fmt(annual * n) + '.<br>Book value = $' + fmt(cost) + ' \u2212 $' + fmt(annual * n) + ' = <strong>$' + fmt(bv) + '</strong>' };
+    }
+
+    // --- Q15: FV of net assets from acquisition data ---
+    function genFVNetAssets() {
+        const price = rand(200, 800) * 1000;
+        const goodwill = rand(30, 200) * 1000;
+        const fvNet = price - goodwill;
+        return { question: 'A company acquires a target for $' + fmt(price) + '. Goodwill of $' + fmt(goodwill) + ' was recorded.<br><br>What is the fair value of net identifiable assets acquired?', type: 'number', answer: fvNet, explanation: 'FV Net Assets = Acquisition Price \u2212 Goodwill = $' + fmt(price) + ' \u2212 $' + fmt(goodwill) + ' = <strong>$' + fmt(fvNet) + '</strong>' };
+    }
+
+    // --- Q16: Impairment yes/no decision ---
+    function genImpairmentYesNo() {
+        const bv = rand(40, 200) * 1000;
+        const isImpaired = pick([true, false]);
+        const fv = isImpaired ? rand(5, Math.floor(bv / 1000) - 5) * 1000 : rand(Math.floor(bv / 1000), Math.floor(bv / 1000) + 80) * 1000;
+        const ansIdx = isImpaired ? 0 : 1;
+        return { question: 'A trademark has a carrying value of $' + fmt(bv) + '. Its current fair value is estimated at $' + fmt(fv) + '.<br><br>Is the trademark impaired?', type: 'mc', options: ['Yes \u2014 record an impairment loss', 'No \u2014 no impairment needed'], answer: ansIdx, explanation: isImpaired ? 'FV ($' + fmt(fv) + ') < BV ($' + fmt(bv) + ') \u2192 Impairment loss = $' + fmt(bv - fv) + '.' : 'FV ($' + fmt(fv) + ') \u2265 BV ($' + fmt(bv) + ') \u2192 No impairment. The asset is not written down.' };
+    }
+
+    // ========== JOURNAL ENTRY GENERATORS ==========
+
+    // JE1: Purchase patent for cash
+    function jeGenPurchasePatent() {
+        const amt = rand(40, 300) * 1000;
+        return { prompt: 'Purchase a patent from another company for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Patent', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE2: Purchase trademark for cash
+    function jeGenPurchaseTrademark() {
+        const amt = rand(20, 200) * 1000;
+        return { prompt: 'Purchase a trademark from another company for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Trademark', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE3: Purchase copyright for cash
+    function jeGenPurchaseCopyright() {
+        const amt = rand(30, 250) * 1000;
+        return { prompt: 'Purchase a copyright for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Copyright', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE4: Purchase customer list for cash
+    function jeGenPurchaseCustomerList() {
+        const amt = rand(15, 150) * 1000;
+        return { prompt: 'Purchase a customer list from a competitor for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Customer List', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE5: Purchase franchise rights for cash
+    function jeGenPurchaseFranchise() {
+        const amt = rand(50, 400) * 1000;
+        return { prompt: 'Acquire franchise rights for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Franchise Rights', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE6: Amortization of a finite-life intangible
+    function jeGenAmortization() {
+        const cost = rand(60, 300) * 1000;
+        const life = rand(3, 15);
+        const annual = Math.round(cost / life);
+        const asset = pick(['patent', 'copyright', 'customer list', 'franchise right']);
+        return { prompt: 'Record annual straight-line amortization on a ' + asset + ' (cost $' + fmt(cost) + ', ' + life + '-year life, no salvage). Annual amortization = $' + fmt(cost) + ' \u00f7 ' + life + ' = $' + fmt(annual) + '.', answer: [{ acct: 'Amortization Expense', dr: annual, cr: 0 }, { acct: 'Accumulated Amortization', dr: 0, cr: annual }] };
+    }
+
+    // JE7: R&D expense
+    function jeGenRDExpense() {
+        const amt = rand(30, 500) * 1000;
+        const desc = pick(['in-house research and development', 'laboratory research', 'product development', 'drug research']);
+        return { prompt: 'Record $' + fmt(amt) + ' of ' + desc + ' costs paid in cash.', answer: [{ acct: 'R&D Expense', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE8: Impairment of trademark
+    function jeGenImpairmentTrademark() {
+        const bv = rand(40, 200) * 1000;
+        const fv = rand(10, Math.floor(bv / 1000) - 5) * 1000;
+        const loss = bv - fv;
+        return { prompt: 'A trademark with a book value of $' + fmt(bv) + ' has a fair value of $' + fmt(fv) + '. Record the impairment loss of $' + fmt(loss) + '.', answer: [{ acct: 'Loss Due to Impairment', dr: loss, cr: 0 }, { acct: 'Trademark', dr: 0, cr: loss }] };
+    }
+
+    // JE9: Impairment of patent (finite-life, uses accum amort)
+    function jeGenImpairmentPatent() {
+        const cost = rand(80, 300) * 1000;
+        const life = rand(5, 12);
+        const yearsUsed = rand(1, life - 2);
+        const annual = Math.round(cost / life);
+        const accumAmort = annual * yearsUsed;
+        const bv = cost - accumAmort;
+        const fv = rand(5, Math.floor(bv / 1000) - 5) * 1000;
+        const loss = bv - fv;
+        return { prompt: 'A patent (cost $' + fmt(cost) + ', accumulated amortization $' + fmt(accumAmort) + ', BV = $' + fmt(bv) + ') has a fair value of $' + fmt(fv) + '. Record the impairment loss of $' + fmt(loss) + '.', answer: [{ acct: 'Loss Due to Impairment', dr: loss, cr: 0 }, { acct: 'Patent', dr: 0, cr: loss }] };
+    }
+
+    // JE10: Acquisition \u2014 all cash
+    function jeGenAcquisitionAllCash() {
+        const inv = rand(20, 80) * 1000;
+        const ppe = rand(100, 300) * 1000;
+        const custList = rand(10, 60) * 1000;
+        const cl = rand(20, 80) * 1000;
+        const np = rand(30, 120) * 1000;
+        const fvNetAssets = inv + ppe + custList - cl - np;
+        const goodwill = rand(20, 150) * 1000;
+        const price = fvNetAssets + goodwill;
+        return { prompt: 'Acquire 100% of a target for $' + fmt(price) + ' cash. Fair values: Inventory $' + fmt(inv) + ', PP&E $' + fmt(ppe) + ', Customer List $' + fmt(custList) + ', Current Liabilities $' + fmt(cl) + ', Notes Payable $' + fmt(np) + '. Goodwill = $' + fmt(goodwill) + '.', answer: [{ acct: 'Inventory', dr: inv, cr: 0 }, { acct: 'PP&E', dr: ppe, cr: 0 }, { acct: 'Customer List', dr: custList, cr: 0 }, { acct: 'Goodwill', dr: goodwill, cr: 0 }, { acct: 'Cash', dr: 0, cr: price }, { acct: 'Current Liabilities', dr: 0, cr: cl }, { acct: 'Notes Payable', dr: 0, cr: np }] };
+    }
+
+    // JE11: Acquisition \u2014 cash + stock
+    function jeGenAcquisitionCashStock() {
+        const inv = rand(20, 60) * 1000;
+        const ppe = rand(80, 250) * 1000;
+        const trademark = rand(15, 50) * 1000;
+        const cl = rand(15, 60) * 1000;
+        const ltl = rand(40, 150) * 1000;
+        const fvNetAssets = inv + ppe + trademark - cl - ltl;
+        const goodwill = rand(20, 120) * 1000;
+        const totalPrice = fvNetAssets + goodwill;
+        const stockPortion = rand(2, 5) * 10000;
+        const cashPortion = totalPrice - stockPortion;
+        return { prompt: 'Acquire 100% of a target for $' + fmt(totalPrice) + ' ($' + fmt(cashPortion) + ' cash + $' + fmt(stockPortion) + ' in stock). Fair values: Inventory $' + fmt(inv) + ', PP&E $' + fmt(ppe) + ', Trademark $' + fmt(trademark) + ', Current Liabilities $' + fmt(cl) + ', Long-term Liabilities $' + fmt(ltl) + '. Goodwill = $' + fmt(goodwill) + '.', answer: [{ acct: 'Inventory', dr: inv, cr: 0 }, { acct: 'PP&E', dr: ppe, cr: 0 }, { acct: 'Trademark', dr: trademark, cr: 0 }, { acct: 'Goodwill', dr: goodwill, cr: 0 }, { acct: 'Cash', dr: 0, cr: cashPortion }, { acct: 'Contributed Capital', dr: 0, cr: stockPortion }, { acct: 'Current Liabilities', dr: 0, cr: cl }, { acct: 'Long-term Liabilities', dr: 0, cr: ltl }] };
+    }
+
+    // JE12: Acquisition \u2014 partial (NCI)
+    function jeGenAcquisitionPartial() {
+        const pct = pick([60, 70, 75, 80]);
+        const inv = rand(15, 50) * 1000;
+        const ppe = rand(80, 200) * 1000;
+        const patent = rand(10, 40) * 1000;
+        const cl = rand(10, 50) * 1000;
+        const np = rand(20, 80) * 1000;
+        const fvNetAssets = inv + ppe + patent - cl - np;
+        const goodwill = rand(15, 100) * 1000;
+        const impliedTotal = fvNetAssets + goodwill;
+        const cashPaid = Math.round(impliedTotal * pct / 100);
+        const nci = impliedTotal - cashPaid;
+        return { prompt: 'Acquire ' + pct + '% of a target for $' + fmt(cashPaid) + ' cash. Fair values: Inventory $' + fmt(inv) + ', PP&E $' + fmt(ppe) + ', Patent $' + fmt(patent) + ', Current Liabilities $' + fmt(cl) + ', Notes Payable $' + fmt(np) + '. Goodwill = $' + fmt(goodwill) + '. NCI = $' + fmt(nci) + '.', answer: [{ acct: 'Inventory', dr: inv, cr: 0 }, { acct: 'PP&E', dr: ppe, cr: 0 }, { acct: 'Patent', dr: patent, cr: 0 }, { acct: 'Goodwill', dr: goodwill, cr: 0 }, { acct: 'Cash', dr: 0, cr: cashPaid }, { acct: 'Non-Controlling Interest', dr: 0, cr: nci }, { acct: 'Current Liabilities', dr: 0, cr: cl }, { acct: 'Notes Payable', dr: 0, cr: np }] };
+    }
+
+    // JE13: Goodwill impairment
+    function jeGenGoodwillImpairment() {
+        const amt = rand(20, 200) * 1000;
+        return { prompt: 'Record a goodwill impairment loss of $' + fmt(amt) + '.', answer: [{ acct: 'Loss Due to Impairment', dr: amt, cr: 0 }, { acct: 'Goodwill', dr: 0, cr: amt }] };
+    }
+
+    // JE14: Renewal cost (capitalize)
+    function jeGenRenewalCost() {
+        const amt = rand(5, 50) * 1000;
+        const asset = pick(['Trademark', 'Patent', 'Franchise Rights']);
+        return { prompt: 'Pay $' + fmt(amt) + ' cash to renew the ' + asset.toLowerCase() + ' registration.', answer: [{ acct: asset, dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE15: Successful legal defense (capitalize)
+    function jeGenLegalDefenseSuccess() {
+        const amt = rand(10, 80) * 1000;
+        const asset = pick(['Patent', 'Trademark', 'Copyright']);
+        return { prompt: 'Pay $' + fmt(amt) + ' in legal fees to successfully defend a ' + asset.toLowerCase() + ' in court.', answer: [{ acct: asset, dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE16: Unsuccessful legal defense (expense)
+    function jeGenLegalDefenseFail() {
+        const amt = rand(10, 60) * 1000;
+        const asset = pick(['patent', 'trademark', 'copyright']);
+        return { prompt: 'Pay $' + fmt(amt) + ' in legal fees for an unsuccessful defense of a ' + asset + '. The legal defense failed.', answer: [{ acct: 'Legal Expense', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE17: Software development costs (capitalize after tech feasibility)
+    function jeGenSoftwareDev() {
+        const amt = rand(50, 300) * 1000;
+        return { prompt: 'Capitalize $' + fmt(amt) + ' of software development costs incurred after technological feasibility was established. Paid in cash.', answer: [{ acct: 'Software Development Costs', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+    }
+
+    // JE18: Write off fully amortized patent
+    function jeGenWriteOffFullyAmort() {
+        const cost = rand(50, 200) * 1000;
+        return { prompt: 'A patent with original cost of $' + fmt(cost) + ' is now fully amortized (accumulated amortization = $' + fmt(cost) + '). Remove it from the books.', answer: [{ acct: 'Accumulated Amortization', dr: cost, cr: 0 }, { acct: 'Patent', dr: 0, cr: cost }] };
+    }
+
+    // JE19: Purchase patent on account (notes payable)
+    function jeGenPurchasePatentOnAccount() {
+        const amt = rand(40, 250) * 1000;
+        return { prompt: 'Purchase a patent for $' + fmt(amt) + ' by issuing a note payable.', answer: [{ acct: 'Patent', dr: amt, cr: 0 }, { acct: 'Notes Payable', dr: 0, cr: amt }] };
+    }
+
+    // JE20: Software amortization
+    function jeGenSoftwareAmort() {
+        const cost = rand(60, 250) * 1000;
+        const life = rand(3, 7);
+        const annual = Math.round(cost / life);
+        return { prompt: 'Record annual amortization of capitalized software development costs (cost $' + fmt(cost) + ', ' + life + '-year life). Annual amortization = $' + fmt(annual) + '.', answer: [{ acct: 'Amortization Expense', dr: annual, cr: 0 }, { acct: 'Accumulated Amortization', dr: 0, cr: annual }] };
+    }
+
+    // JE21: Acquisition with trademark (all cash, simpler)
+    function jeGenAcquisitionSimple() {
+        const ppe = rand(80, 200) * 1000;
+        const trademark = rand(20, 60) * 1000;
+        const liab = rand(30, 100) * 1000;
+        const fvNet = ppe + trademark - liab;
+        const goodwill = rand(15, 80) * 1000;
+        const price = fvNet + goodwill;
+        return { prompt: 'Acquire a company for $' + fmt(price) + ' cash. Fair values: PP&E $' + fmt(ppe) + ', Trademark $' + fmt(trademark) + ', Accounts Payable $' + fmt(liab) + '. Goodwill = $' + fmt(goodwill) + '.', answer: [{ acct: 'PP&E', dr: ppe, cr: 0 }, { acct: 'Trademark', dr: trademark, cr: 0 }, { acct: 'Goodwill', dr: goodwill, cr: 0 }, { acct: 'Cash', dr: 0, cr: price }, { acct: 'Accounts Payable', dr: 0, cr: liab }] };
+    }
+
+    // JE22: R&D expense on account
+    function jeGenRDExpenseOnAccount() {
+        const amt = rand(40, 300) * 1000;
+        return { prompt: 'Incur $' + fmt(amt) + ' of R&D services on account (not yet paid).', answer: [{ acct: 'R&D Expense', dr: amt, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: amt }] };
+    }
+
+    // JE23: Impairment of copyright
+    function jeGenImpairmentCopyright() {
+        const bv = rand(30, 150) * 1000;
+        const fv = rand(5, Math.floor(bv / 1000) - 5) * 1000;
+        const loss = bv - fv;
+        return { prompt: 'A copyright with a book value of $' + fmt(bv) + ' has a fair value of $' + fmt(fv) + '. Record the impairment loss of $' + fmt(loss) + '.', answer: [{ acct: 'Loss Due to Impairment', dr: loss, cr: 0 }, { acct: 'Copyright', dr: 0, cr: loss }] };
+    }
+
+    // JE24: Impairment of goodwill (larger scale)
+    function jeGenGoodwillImpairmentLarge() {
+        const amt = rand(100, 500) * 1000;
+        return { prompt: 'Annual impairment testing reveals that goodwill is impaired by $' + fmt(amt) + '. Record the impairment.', answer: [{ acct: 'Loss Due to Impairment', dr: amt, cr: 0 }, { acct: 'Goodwill', dr: 0, cr: amt }] };
+    }
+
+    // JE25: Purchase copyright on account
+    function jeGenPurchaseCopyrightOnAccount() {
+        const amt = rand(30, 200) * 1000;
+        return { prompt: 'Purchase a copyright for $' + fmt(amt) + ' on account (accounts payable).', answer: [{ acct: 'Copyright', dr: amt, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: amt }] };
+    }
+
+    // JE26: Write off fully amortized copyright
+    function jeGenWriteOffCopyright() {
+        const cost = rand(40, 150) * 1000;
+        return { prompt: 'A copyright with original cost of $' + fmt(cost) + ' is now fully amortized (accumulated amortization = $' + fmt(cost) + '). Remove it from the books.', answer: [{ acct: 'Accumulated Amortization', dr: cost, cr: 0 }, { acct: 'Copyright', dr: 0, cr: cost }] };
+    }
+
+    // JE27: Impairment of customer list
+    function jeGenImpairmentCustomerList() {
+        const bv = rand(20, 100) * 1000;
+        const fv = rand(5, Math.floor(bv / 1000) - 3) * 1000;
+        const loss = bv - fv;
+        return { prompt: 'A customer list with a book value of $' + fmt(bv) + ' has declined in fair value to $' + fmt(fv) + '. Record the impairment loss of $' + fmt(loss) + '.', answer: [{ acct: 'Loss Due to Impairment', dr: loss, cr: 0 }, { acct: 'Customer List', dr: 0, cr: loss }] };
+    }
+
+    // JE28: Acquisition with franchise rights
+    function jeGenAcquisitionFranchise() {
+        const ppe = rand(60, 180) * 1000;
+        const franchise = rand(20, 80) * 1000;
+        const cl = rand(15, 50) * 1000;
+        const fvNet = ppe + franchise - cl;
+        const goodwill = rand(10, 70) * 1000;
+        const price = fvNet + goodwill;
+        return { prompt: 'Acquire a company for $' + fmt(price) + ' cash. Fair values: PP&E $' + fmt(ppe) + ', Franchise Rights $' + fmt(franchise) + ', Current Liabilities $' + fmt(cl) + '. Goodwill = $' + fmt(goodwill) + '.', answer: [{ acct: 'PP&E', dr: ppe, cr: 0 }, { acct: 'Franchise Rights', dr: franchise, cr: 0 }, { acct: 'Goodwill', dr: goodwill, cr: 0 }, { acct: 'Cash', dr: 0, cr: price }, { acct: 'Current Liabilities', dr: 0, cr: cl }] };
+    }
+
+    // JE29: Purchase trademark by issuing stock
+    function jeGenPurchaseTrademarkStock() {
+        const amt = rand(30, 200) * 1000;
+        return { prompt: 'Acquire a trademark by issuing common stock with a fair value of $' + fmt(amt) + '.', answer: [{ acct: 'Trademark', dr: amt, cr: 0 }, { acct: 'Contributed Capital', dr: 0, cr: amt }] };
+    }
+
+    // JE30: Amortization of franchise right
+    function jeGenAmortFranchise() {
+        const cost = rand(50, 300) * 1000;
+        const life = rand(5, 20);
+        const annual = Math.round(cost / life);
+        return { prompt: 'Record annual amortization of a franchise right (cost $' + fmt(cost) + ', ' + life + '-year life). Annual amortization = $' + fmt(annual) + '.', answer: [{ acct: 'Amortization Expense', dr: annual, cr: 0 }, { acct: 'Accumulated Amortization', dr: 0, cr: annual }] };
+    }
+
+    // ========== ACCOUNTS LIST ==========
+    const jeAccounts = [
+        'Cash', 'Patent', 'Trademark', 'Copyright', 'Customer List', 'Franchise Rights',
+        'Goodwill', 'PP&E', 'Inventory', 'Software Development Costs',
+        'Accumulated Amortization', 'Accounts Payable', 'Notes Payable',
+        'Current Liabilities', 'Long-term Liabilities',
+        'Contributed Capital', 'Non-Controlling Interest',
+        'Amortization Expense', 'R&D Expense', 'Loss Due to Impairment', 'Legal Expense'
     ];
 
-    function makeJELine() {
-        const div = document.createElement('div');
-        div.className = 'flex gap-2 items-center';
-        div.innerHTML = '<select class="je-acct bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm flex-1"><option value="">-- Account --</option>' + jeAccts.map(a => '<option value="' + a + '">' + a + '</option>').join('') + '</select><input type="number" class="je-dr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Debit"><input type="number" class="je-cr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Credit"><button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-rose-400 text-sm">&times;</button>';
-        return div;
-    }
-
-    window.jeAdd = function() { document.getElementById('je-lines').appendChild(makeJELine()); };
-
-    window.jeNew = function() {
-        curJE = pick(jeScenarios);
-        document.getElementById('je-prompt').innerHTML = '<p class="text-slate-300 text-sm">' + curJE.prompt + '</p>';
-        document.getElementById('je-lines').innerHTML = '';
-        document.getElementById('je-feedback').classList.add('hidden');
-        jeAdd(); jeAdd();
-    };
-
-    window.jeCheck = function() {
-        if (!curJE) return;
-        const lines = document.getElementById('je-lines').children;
-        let tDr = 0, tCr = 0, entries = [];
-        for (let l of lines) {
-            const a = l.querySelector('.je-acct').value;
-            const d = parseFloat(l.querySelector('.je-dr').value) || 0;
-            const c = parseFloat(l.querySelector('.je-cr').value) || 0;
-            if (a && (d || c)) { entries.push({acct:a,dr:d,cr:c}); tDr += d; tCr += c; }
-        }
-        const fb = document.getElementById('je-feedback'); fb.classList.remove('hidden');
-        if (Math.abs(tDr - tCr) > 0.01) {
-            fb.innerHTML = '<div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4"><p class="text-rose-400 font-bold">Debits ($' + tDr.toLocaleString() + ') &ne; Credits ($' + tCr.toLocaleString() + ')</p></div>';
-            return;
-        }
-        const ansStr = curJE.answer.map(a => a.acct+':'+a.dr+':'+a.cr).sort().join('|');
-        const userStr = entries.map(a => a.acct+':'+a.dr+':'+a.cr).sort().join('|');
-        if (ansStr === userStr) {
-            fb.innerHTML = '<div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-bold">Correct!</p></div>';
-        } else {
-            const correctHTML = curJE.answer.map(a => (a.dr ? 'Dr ' + a.acct + ' ' + a.dr.toLocaleString() : 'Cr ' + a.acct + ' ' + a.cr.toLocaleString())).join('<br>');
-            fb.innerHTML = '<div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-400 font-bold">Not quite.</p><p class="text-sm text-slate-300 mt-2">Expected:<br><span class="font-mono text-xs">' + correctHTML + '</span></p></div>';
-        }
-    };
+    // ========== INIT QuizEngine ==========
+    QuizEngine.init({
+        questionGenerators: [
+            genAmort, genGoodwill, genImpairment, genCapVsExp, genFiniteIndef,
+            genNCI, genNBV, genGAAPvsIFRS, genAmortSchedule, genGoodwillImpairment,
+            genRemainingLife, genAcqPrice, genNCIPartial, genIntangibleBV,
+            genFVNetAssets, genImpairmentYesNo
+        ],
+        jeGenerators: [
+            // First copy of all 30 generators
+            jeGenPurchasePatent, jeGenPurchaseTrademark, jeGenPurchaseCopyright,
+            jeGenPurchaseCustomerList, jeGenPurchaseFranchise,
+            jeGenAmortization, jeGenRDExpense,
+            jeGenImpairmentTrademark, jeGenImpairmentPatent,
+            jeGenAcquisitionAllCash, jeGenAcquisitionCashStock, jeGenAcquisitionPartial,
+            jeGenGoodwillImpairment, jeGenRenewalCost,
+            jeGenLegalDefenseSuccess, jeGenLegalDefenseFail,
+            jeGenSoftwareDev, jeGenWriteOffFullyAmort,
+            jeGenPurchasePatentOnAccount, jeGenSoftwareAmort,
+            jeGenAcquisitionSimple, jeGenRDExpenseOnAccount,
+            jeGenImpairmentCopyright, jeGenGoodwillImpairmentLarge,
+            jeGenPurchaseCopyrightOnAccount, jeGenWriteOffCopyright,
+            jeGenImpairmentCustomerList, jeGenAcquisitionFranchise,
+            jeGenPurchaseTrademarkStock, jeGenAmortFranchise,
+            // Second copy of high-frequency generators to reach 50+
+            jeGenPurchasePatent, jeGenPurchaseTrademark, jeGenAmortization,
+            jeGenRDExpense, jeGenImpairmentTrademark, jeGenGoodwillImpairment,
+            jeGenAcquisitionAllCash, jeGenAcquisitionCashStock, jeGenAcquisitionPartial,
+            jeGenRenewalCost, jeGenLegalDefenseSuccess, jeGenSoftwareDev,
+            jeGenWriteOffFullyAmort, jeGenPurchasePatentOnAccount, jeGenSoftwareAmort,
+            jeGenAcquisitionSimple, jeGenRDExpenseOnAccount, jeGenImpairmentCopyright,
+            jeGenPurchaseCustomerList, jeGenPurchaseFranchise, jeGenLegalDefenseFail,
+            jeGenAcquisitionFranchise, jeGenPurchaseTrademarkStock, jeGenAmortFranchise
+        ],
+        jeAccounts: jeAccounts,
+        accentColor: 'indigo',
+        qCopies: 7,
+        jeCopies: 2
+    });
 </script>
 </body>
 </html>
