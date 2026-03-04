@@ -815,38 +815,82 @@
 
         <!-- ======================== TAB 6: PRACTICE QUESTIONS ======================== -->
         <div id="panel-practice" class="tab-panel">
-            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-2xl font-bold text-cyan-400">Practice Questions</h2>
-                    <div class="flex items-center gap-4">
-                        <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
-                        <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
-                        <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left: Questions (2/3 width) -->
+                <div class="lg:col-span-2">
+                    <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-2xl font-bold text-cyan-400">Practice Questions</h2>
+                            <div class="flex items-center gap-4">
+                                <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
+                                <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
+                                <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
+                            </div>
+                        </div>
+                        <div id="p-question" class="mb-4"><p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p></div>
+                        <div id="p-answer" class="mb-4 hidden"></div>
+                        <div id="p-feedback" class="mb-4 hidden"></div>
+                        <div class="flex gap-3">
+                            <button onclick="QuizEngine.pNew()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                            <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                        </div>
+                    </div>
+
+                    <!-- Journal Entry Practice -->
+                    <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-xl font-bold text-cyan-400">Journal Entry Practice</h2>
+                            <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
+                        </div>
+                        <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
+                        <div id="je-lines" class="space-y-2 mb-4"></div>
+                        <div class="flex gap-3 mb-4">
+                            <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                            <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                            <button onclick="QuizEngine.jeNew()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                        </div>
+                        <div id="je-feedback" class="hidden"></div>
                     </div>
                 </div>
-                <div id="p-question" class="mb-4"><p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p></div>
-                <div id="p-answer" class="mb-4 hidden"></div>
-                <div id="p-feedback" class="mb-4 hidden"></div>
-                <div class="flex gap-3">
-                    <button onclick="QuizEngine.pNew()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
-                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
-                </div>
-            </div>
 
-            <!-- Journal Entry Practice -->
-            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-cyan-400">Journal Entry Practice</h2>
-                    <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
+                <!-- Right: Sidebar Financial Calculator (1/3 width, sticky) -->
+                <div class="lg:col-span-1">
+                    <div class="lg:sticky lg:top-4 bg-slate-800/50 rounded-xl p-5 border border-cyan-500/30">
+                        <h3 class="text-sm font-bold text-cyan-400 uppercase tracking-wider mb-3">Financial Calculator</h3>
+                        <!-- Mode tabs -->
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            <button onclick="setSideMode('fv')" id="side-mode-fv" class="side-mode text-xs px-2 py-1 rounded bg-cyan-600 text-white font-medium">FV</button>
+                            <button onclick="setSideMode('pv')" id="side-mode-pv" class="side-mode text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 font-medium">PV</button>
+                            <button onclick="setSideMode('pmt')" id="side-mode-pmt" class="side-mode text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 font-medium">PMT</button>
+                            <button onclick="setSideMode('fva')" id="side-mode-fva" class="side-mode text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 font-medium">FV Ann</button>
+                            <button onclick="setSideMode('pva')" id="side-mode-pva" class="side-mode text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 font-medium">PV Ann</button>
+                            <button onclick="setSideMode('perp')" id="side-mode-perp" class="side-mode text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 font-medium">Perp</button>
+                        </div>
+                        <!-- Inputs -->
+                        <div class="space-y-2 text-sm">
+                            <div id="side-row-pv"><label class="text-xs text-slate-500">PV ($)</label><input type="number" id="s-pv" class="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm" placeholder="0"></div>
+                            <div id="side-row-fv"><label class="text-xs text-slate-500">FV ($)</label><input type="number" id="s-fv" class="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm" placeholder="0"></div>
+                            <div id="side-row-pmt"><label class="text-xs text-slate-500">PMT ($)</label><input type="number" id="s-pmt" class="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm" placeholder="0"></div>
+                            <div id="side-row-rate"><label class="text-xs text-slate-500">Rate (%)</label><input type="number" id="s-rate" class="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm" placeholder="0" step="0.01"></div>
+                            <div id="side-row-n"><label class="text-xs text-slate-500">Periods (n)</label><input type="number" id="s-n" class="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm" placeholder="0"></div>
+                            <div id="side-row-m"><label class="text-xs text-slate-500">Compound/yr (m)</label>
+                                <select id="s-m" class="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm">
+                                    <option value="1">1 (Annual)</option><option value="2">2 (Semi)</option><option value="4">4 (Qtr)</option><option value="12">12 (Monthly)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button onclick="sideCalc()" class="mt-3 w-full bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors">Calculate</button>
+                        <!-- Result -->
+                        <div id="side-result" class="mt-3 bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                            <p class="text-xs text-slate-500">Result</p>
+                            <p id="side-answer" class="text-lg font-bold text-cyan-400">&mdash;</p>
+                        </div>
+                        <!-- Formula reminder -->
+                        <div id="side-formula" class="mt-2 text-xs text-slate-500 font-mono text-center">FV = PV &times; (1+r)<sup>n</sup></div>
+                        <!-- Quick-clear -->
+                        <button onclick="sideClear()" class="mt-2 w-full text-xs text-slate-500 hover:text-slate-300 transition-colors">Clear All</button>
+                    </div>
                 </div>
-                <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
-                <div id="je-lines" class="space-y-2 mb-4"></div>
-                <div class="flex gap-3 mb-4">
-                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
-                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
-                    <button onclick="QuizEngine.jeNew()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
-                </div>
-                <div id="je-feedback" class="hidden"></div>
             </div>
         </div>
 
@@ -1054,6 +1098,64 @@
 
     // Init calc mode visibility
     setCalcMode('fv');
+
+    // ========== SIDEBAR FINANCIAL CALCULATOR ==========
+    let sideMode = 'fv';
+    const sideFormulas = {
+        fv:   'FV = PV &times; (1+r/m)<sup>n&times;m</sup>',
+        pv:   'PV = FV &divide; (1+r/m)<sup>n&times;m</sup>',
+        pmt:  'PMT = PV &times; r / [1 &minus; (1+r)<sup>&minus;n</sup>]',
+        fva:  'FV = PMT &times; [(1+r)<sup>n</sup> &minus; 1] / r',
+        pva:  'PV = PMT &times; [1 &minus; (1+r)<sup>&minus;n</sup>] / r',
+        perp: 'PV = PMT &divide; r'
+    };
+    // Which rows to show per mode
+    const sideFields = {
+        fv:   { pv:1, fv:0, pmt:0, rate:1, n:1, m:1 },
+        pv:   { pv:0, fv:1, pmt:0, rate:1, n:1, m:1 },
+        pmt:  { pv:1, fv:0, pmt:0, rate:1, n:1, m:0 },
+        fva:  { pv:0, fv:0, pmt:1, rate:1, n:1, m:0 },
+        pva:  { pv:0, fv:0, pmt:1, rate:1, n:1, m:0 },
+        perp: { pv:0, fv:0, pmt:1, rate:1, n:0, m:0 }
+    };
+    window.setSideMode = function(mode) {
+        sideMode = mode;
+        document.querySelectorAll('.side-mode').forEach(b => { b.className = 'side-mode text-xs px-2 py-1 rounded bg-slate-700 text-slate-300 font-medium'; });
+        document.getElementById('side-mode-' + mode).className = 'side-mode text-xs px-2 py-1 rounded bg-cyan-600 text-white font-medium';
+        const f = sideFields[mode];
+        document.getElementById('side-row-pv').style.display = f.pv ? '' : 'none';
+        document.getElementById('side-row-fv').style.display = f.fv ? '' : 'none';
+        document.getElementById('side-row-pmt').style.display = f.pmt ? '' : 'none';
+        document.getElementById('side-row-rate').style.display = f.rate ? '' : 'none';
+        document.getElementById('side-row-n').style.display = f.n ? '' : 'none';
+        document.getElementById('side-row-m').style.display = f.m ? '' : 'none';
+        document.getElementById('side-formula').innerHTML = sideFormulas[mode];
+    };
+    window.sideCalc = function() {
+        const pv = parseFloat(document.getElementById('s-pv').value) || 0;
+        const fv = parseFloat(document.getElementById('s-fv').value) || 0;
+        const pmt = parseFloat(document.getElementById('s-pmt').value) || 0;
+        const rate = (parseFloat(document.getElementById('s-rate').value) || 0) / 100;
+        const n = parseFloat(document.getElementById('s-n').value) || 0;
+        const m = parseInt(document.getElementById('s-m').value) || 1;
+        const rP = rate / m; const nP = n * m;
+        let result;
+        switch(sideMode) {
+            case 'fv':  result = pv * Math.pow(1+rP, nP); break;
+            case 'pv':  result = fv / Math.pow(1+rP, nP); break;
+            case 'pmt': result = pv * rate / (1 - Math.pow(1+rate, -n)); break;
+            case 'fva': result = pmt * (Math.pow(1+rate, n) - 1) / rate; break;
+            case 'pva': result = pmt * (1 - Math.pow(1+rate, -n)) / rate; break;
+            case 'perp': result = pmt / rate; break;
+        }
+        document.getElementById('side-answer').textContent = isFinite(result) ? '$' + Number(result.toFixed(2)).toLocaleString('en-US') : 'Error';
+    };
+    window.sideClear = function() {
+        ['s-pv','s-fv','s-pmt','s-rate','s-n'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('s-m').value = '1';
+        document.getElementById('side-answer').textContent = '\u2014';
+    };
+    setSideMode('fv');
 
     // ========== PRACTICE QUESTION GENERATORS ==========
     const { rand, pick, fmt } = QuizEngine;
