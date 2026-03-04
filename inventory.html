@@ -1510,7 +1510,7 @@
     }
 
     // ===== QUIZ ENGINE GENERATORS =====
-    const { rand, pick, fmt } = QuizEngine;
+    const { rand, pick, fmt: qfmt } = QuizEngine;
 
     // Helper: build inventory layers for parametric questions
     function makeLayers() {
@@ -1531,10 +1531,10 @@
 
     function layerTable(d) {
         return '<table class="w-full text-sm mt-1 mb-1">' +
-            '<tr class="border-b border-slate-700"><td class="py-1">Beginning Inventory</td><td class="text-right">' + d.biU + ' units @ $' + d.biC + '</td><td class="text-right">$' + fmt(d.biU * d.biC) + '</td></tr>' +
-            '<tr class="border-b border-slate-700"><td class="py-1">Purchase 1</td><td class="text-right">' + d.p1U + ' units @ $' + d.p1C + '</td><td class="text-right">$' + fmt(d.p1U * d.p1C) + '</td></tr>' +
-            '<tr class="border-b border-slate-700"><td class="py-1">Purchase 2</td><td class="text-right">' + d.p2U + ' units @ $' + d.p2C + '</td><td class="text-right">$' + fmt(d.p2U * d.p2C) + '</td></tr>' +
-            '<tr class="border-t-2 border-slate-500 font-bold"><td class="py-1">Total Available</td><td class="text-right">' + d.totalU + ' units</td><td class="text-right">$' + fmt(d.totalC) + '</td></tr>' +
+            '<tr class="border-b border-slate-700"><td class="py-1">Beginning Inventory</td><td class="text-right">' + d.biU + ' units @ $' + d.biC + '</td><td class="text-right">$' + qfmt(d.biU * d.biC) + '</td></tr>' +
+            '<tr class="border-b border-slate-700"><td class="py-1">Purchase 1</td><td class="text-right">' + d.p1U + ' units @ $' + d.p1C + '</td><td class="text-right">$' + qfmt(d.p1U * d.p1C) + '</td></tr>' +
+            '<tr class="border-b border-slate-700"><td class="py-1">Purchase 2</td><td class="text-right">' + d.p2U + ' units @ $' + d.p2C + '</td><td class="text-right">$' + qfmt(d.p2U * d.p2C) + '</td></tr>' +
+            '<tr class="border-t-2 border-slate-500 font-bold"><td class="py-1">Total Available</td><td class="text-right">' + d.totalU + ' units</td><td class="text-right">$' + qfmt(d.totalC) + '</td></tr>' +
             '<tr><td class="py-1 text-rose-400">Units Sold</td><td class="text-right text-rose-400">' + d.soldU + '</td><td></td></tr></table>';
     }
 
@@ -1546,11 +1546,11 @@
         const ask = pick(['COGS', 'Ending Inventory']);
         const answer = ask === 'COGS' ? r.cogs : r.ei;
         const detail = ask === 'COGS' ? r.cogsDetail : r.eiDetail;
-        const work = detail.map(x => x.units + ' \u00d7 $' + x.cost + ' = $' + fmt(x.units * x.cost)).join('<br>');
+        const work = detail.map(x => x.units + ' \u00d7 $' + x.cost + ' = $' + qfmt(x.units * x.cost)).join('<br>');
         return {
             question: 'Using <strong>FIFO</strong>, calculate <strong>' + ask + '</strong>.' + layerTable(d),
             type: 'number', answer: answer,
-            explanation: 'FIFO ' + ask + ':<br>' + work + '<br><strong>Total = $' + fmt(answer) + '</strong>'
+            explanation: 'FIFO ' + ask + ':<br>' + work + '<br><strong>Total = $' + qfmt(answer) + '</strong>'
         };
     }
 
@@ -1560,11 +1560,11 @@
         const ask = pick(['COGS', 'Ending Inventory']);
         const answer = ask === 'COGS' ? r.cogs : r.ei;
         const detail = ask === 'COGS' ? r.cogsDetail : r.eiDetail;
-        const work = detail.map(x => x.units + ' \u00d7 $' + x.cost + ' = $' + fmt(x.units * x.cost)).join('<br>');
+        const work = detail.map(x => x.units + ' \u00d7 $' + x.cost + ' = $' + qfmt(x.units * x.cost)).join('<br>');
         return {
             question: 'Using <strong>LIFO</strong>, calculate <strong>' + ask + '</strong>.' + layerTable(d),
             type: 'number', answer: answer,
-            explanation: 'LIFO ' + ask + ':<br>' + work + '<br><strong>Total = $' + fmt(answer) + '</strong>'
+            explanation: 'LIFO ' + ask + ':<br>' + work + '<br><strong>Total = $' + qfmt(answer) + '</strong>'
         };
     }
 
@@ -1578,7 +1578,7 @@
         return {
             question: 'Using <strong>Weighted Average</strong>, calculate <strong>' + ask + '</strong>.' + layerTable(d),
             type: 'number', answer: answer,
-            explanation: 'Average cost = $' + fmt(d.totalC) + ' \u00f7 ' + d.totalU + ' = $' + avgStr + '/unit<br>' + ask + ' = ' + units + ' \u00d7 $' + avgStr + ' = <strong>$' + fmt(answer) + '</strong>'
+            explanation: 'Average cost = $' + qfmt(d.totalC) + ' \u00f7 ' + d.totalU + ' = $' + avgStr + '/unit<br>' + ask + ' = ' + units + ' \u00d7 $' + avgStr + ' = <strong>$' + qfmt(answer) + '</strong>'
         };
     }
 
@@ -1606,11 +1606,11 @@
         const cogs = bi + purch - ei;
         const ask = pick(['COGS', 'Ending Inventory', 'Purchases']);
         if (ask === 'COGS') {
-            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Purchases = $' + fmt(purch) + ', Ending Inventory = $' + fmt(ei) + '. Calculate <strong>COGS</strong>.', type: 'number', answer: cogs, explanation: 'COGS = Beginning Inventory + Purchases \u2212 Ending Inventory = $' + fmt(bi) + ' + $' + fmt(purch) + ' \u2212 $' + fmt(ei) + ' = <strong>$' + fmt(cogs) + '</strong>' };
+            return { question: 'Beginning Inventory = $' + qfmt(bi) + ', Purchases = $' + qfmt(purch) + ', Ending Inventory = $' + qfmt(ei) + '. Calculate <strong>COGS</strong>.', type: 'number', answer: cogs, explanation: 'COGS = Beginning Inventory + Purchases \u2212 Ending Inventory = $' + qfmt(bi) + ' + $' + qfmt(purch) + ' \u2212 $' + qfmt(ei) + ' = <strong>$' + qfmt(cogs) + '</strong>' };
         } else if (ask === 'Ending Inventory') {
-            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Purchases = $' + fmt(purch) + ', COGS = $' + fmt(cogs) + '. Calculate <strong>Ending Inventory</strong>.', type: 'number', answer: ei, explanation: 'Ending Inventory = Beginning Inventory + Purchases \u2212 COGS = $' + fmt(bi) + ' + $' + fmt(purch) + ' \u2212 $' + fmt(cogs) + ' = <strong>$' + fmt(ei) + '</strong>' };
+            return { question: 'Beginning Inventory = $' + qfmt(bi) + ', Purchases = $' + qfmt(purch) + ', COGS = $' + qfmt(cogs) + '. Calculate <strong>Ending Inventory</strong>.', type: 'number', answer: ei, explanation: 'Ending Inventory = Beginning Inventory + Purchases \u2212 COGS = $' + qfmt(bi) + ' + $' + qfmt(purch) + ' \u2212 $' + qfmt(cogs) + ' = <strong>$' + qfmt(ei) + '</strong>' };
         } else {
-            return { question: 'Beginning Inventory = $' + fmt(bi) + ', COGS = $' + fmt(cogs) + ', Ending Inventory = $' + fmt(ei) + '. Calculate <strong>Purchases</strong>.', type: 'number', answer: purch, explanation: 'Purchases = COGS + Ending Inventory \u2212 Beginning Inventory = $' + fmt(cogs) + ' + $' + fmt(ei) + ' \u2212 $' + fmt(bi) + ' = <strong>$' + fmt(purch) + '</strong>' };
+            return { question: 'Beginning Inventory = $' + qfmt(bi) + ', COGS = $' + qfmt(cogs) + ', Ending Inventory = $' + qfmt(ei) + '. Calculate <strong>Purchases</strong>.', type: 'number', answer: purch, explanation: 'Purchases = COGS + Ending Inventory \u2212 Beginning Inventory = $' + qfmt(cogs) + ' + $' + qfmt(ei) + ' \u2212 $' + qfmt(bi) + ' = <strong>$' + qfmt(purch) + '</strong>' };
         }
     }
 
@@ -1622,9 +1622,9 @@
         const gmPct = Math.round((gp / rev) * 10000) / 100;
         const ask = pick(['gross profit', 'gross margin percentage']);
         if (ask === 'gross profit') {
-            return { question: 'Revenue = $' + fmt(rev) + ', COGS = $' + fmt(cogsAmt) + '. Calculate <strong>Gross Profit</strong>.', type: 'number', answer: gp, explanation: 'Gross Profit = Revenue \u2212 COGS = $' + fmt(rev) + ' \u2212 $' + fmt(cogsAmt) + ' = <strong>$' + fmt(gp) + '</strong>' };
+            return { question: 'Revenue = $' + qfmt(rev) + ', COGS = $' + qfmt(cogsAmt) + '. Calculate <strong>Gross Profit</strong>.', type: 'number', answer: gp, explanation: 'Gross Profit = Revenue \u2212 COGS = $' + qfmt(rev) + ' \u2212 $' + qfmt(cogsAmt) + ' = <strong>$' + qfmt(gp) + '</strong>' };
         } else {
-            return { question: 'Revenue = $' + fmt(rev) + ', COGS = $' + fmt(cogsAmt) + '. Calculate the <strong>Gross Margin %</strong> (enter as a whole number, e.g. 35 for 35%).', type: 'number', answer: gmPct, explanation: 'Gross Margin = (Revenue \u2212 COGS) \u00f7 Revenue = ($' + fmt(rev) + ' \u2212 $' + fmt(cogsAmt) + ') \u00f7 $' + fmt(rev) + ' = <strong>' + gmPct + '%</strong>' };
+            return { question: 'Revenue = $' + qfmt(rev) + ', COGS = $' + qfmt(cogsAmt) + '. Calculate the <strong>Gross Margin %</strong> (enter as a whole number, e.g. 35 for 35%).', type: 'number', answer: gmPct, explanation: 'Gross Margin = (Revenue \u2212 COGS) \u00f7 Revenue = ($' + qfmt(rev) + ' \u2212 $' + qfmt(cogsAmt) + ') \u00f7 $' + qfmt(rev) + ' = <strong>' + gmPct + '%</strong>' };
         }
     }
 
@@ -1634,9 +1634,9 @@
         const writedown = cost - nrv;
         const ask = pick(['write-down amount', 'reported inventory value']);
         if (ask === 'write-down amount') {
-            return { question: 'Inventory carrying cost = $' + fmt(cost) + '. Net Realizable Value (NRV) = $' + fmt(nrv) + '. Under <strong>LCNRV</strong>, what is the <strong>write-down amount</strong>?', type: 'number', answer: writedown, explanation: 'Write-down = Cost \u2212 NRV = $' + fmt(cost) + ' \u2212 $' + fmt(nrv) + ' = <strong>$' + fmt(writedown) + '</strong>. Inventory must be written down because NRV < Cost.' };
+            return { question: 'Inventory carrying cost = $' + qfmt(cost) + '. Net Realizable Value (NRV) = $' + qfmt(nrv) + '. Under <strong>LCNRV</strong>, what is the <strong>write-down amount</strong>?', type: 'number', answer: writedown, explanation: 'Write-down = Cost \u2212 NRV = $' + qfmt(cost) + ' \u2212 $' + qfmt(nrv) + ' = <strong>$' + qfmt(writedown) + '</strong>. Inventory must be written down because NRV < Cost.' };
         } else {
-            return { question: 'Inventory carrying cost = $' + fmt(cost) + '. Net Realizable Value (NRV) = $' + fmt(nrv) + '. Under <strong>LCNRV</strong>, at what value should inventory be reported?', type: 'number', answer: nrv, explanation: 'Report at the <strong>lower</strong> of cost ($' + fmt(cost) + ') or NRV ($' + fmt(nrv) + ') = <strong>$' + fmt(nrv) + '</strong>.' };
+            return { question: 'Inventory carrying cost = $' + qfmt(cost) + '. Net Realizable Value (NRV) = $' + qfmt(nrv) + '. Under <strong>LCNRV</strong>, at what value should inventory be reported?', type: 'number', answer: nrv, explanation: 'Report at the <strong>lower</strong> of cost ($' + qfmt(cost) + ') or NRV ($' + qfmt(nrv) + ') = <strong>$' + qfmt(nrv) + '</strong>.' };
         }
     }
 
@@ -1647,9 +1647,9 @@
         const dio = Math.round(365 / turnover);
         const ask = pick(['inventory turnover', 'days inventory outstanding']);
         if (ask === 'inventory turnover') {
-            return { question: 'COGS = $' + fmt(cogsAmt) + ', Average Inventory = $' + fmt(avgInv) + '. Calculate <strong>Inventory Turnover</strong> (round to 2 decimal places).', type: 'number', answer: turnover, explanation: 'Inventory Turnover = COGS \u00f7 Average Inventory = $' + fmt(cogsAmt) + ' \u00f7 $' + fmt(avgInv) + ' = <strong>' + turnover.toFixed(2) + '\u00d7</strong>' };
+            return { question: 'COGS = $' + qfmt(cogsAmt) + ', Average Inventory = $' + qfmt(avgInv) + '. Calculate <strong>Inventory Turnover</strong> (round to 2 decimal places).', type: 'number', answer: turnover, explanation: 'Inventory Turnover = COGS \u00f7 Average Inventory = $' + qfmt(cogsAmt) + ' \u00f7 $' + qfmt(avgInv) + ' = <strong>' + turnover.toFixed(2) + '\u00d7</strong>' };
         } else {
-            return { question: 'COGS = $' + fmt(cogsAmt) + ', Average Inventory = $' + fmt(avgInv) + '. Calculate <strong>Days Inventory Outstanding</strong> (round to nearest day).', type: 'number', answer: dio, explanation: 'Inventory Turnover = $' + fmt(cogsAmt) + ' \u00f7 $' + fmt(avgInv) + ' = ' + turnover.toFixed(2) + '\u00d7<br>DIO = 365 \u00f7 ' + turnover.toFixed(2) + ' = <strong>' + dio + ' days</strong>' };
+            return { question: 'COGS = $' + qfmt(cogsAmt) + ', Average Inventory = $' + qfmt(avgInv) + '. Calculate <strong>Days Inventory Outstanding</strong> (round to nearest day).', type: 'number', answer: dio, explanation: 'Inventory Turnover = $' + qfmt(cogsAmt) + ' \u00f7 $' + qfmt(avgInv) + ' = ' + turnover.toFixed(2) + '\u00d7<br>DIO = 365 \u00f7 ' + turnover.toFixed(2) + ' = <strong>' + dio + ' days</strong>' };
         }
     }
 
@@ -1702,14 +1702,14 @@
         const taxRate = pick([25, 30, 35]);
         const askType = pick(['LIFO Inventory', 'FIFO Inventory', 'LIFO Reserve', 'tax savings']);
         if (askType === 'LIFO Inventory') {
-            return { question: 'FIFO Inventory = $' + fmt(fifoInv) + ', LIFO Reserve = $' + fmt(reserve) + '. Calculate <strong>LIFO Inventory</strong>.', type: 'number', answer: lifoInv, explanation: 'LIFO Inventory = FIFO Inventory \u2212 LIFO Reserve = $' + fmt(fifoInv) + ' \u2212 $' + fmt(reserve) + ' = <strong>$' + fmt(lifoInv) + '</strong>' };
+            return { question: 'FIFO Inventory = $' + qfmt(fifoInv) + ', LIFO Reserve = $' + qfmt(reserve) + '. Calculate <strong>LIFO Inventory</strong>.', type: 'number', answer: lifoInv, explanation: 'LIFO Inventory = FIFO Inventory \u2212 LIFO Reserve = $' + qfmt(fifoInv) + ' \u2212 $' + qfmt(reserve) + ' = <strong>$' + qfmt(lifoInv) + '</strong>' };
         } else if (askType === 'FIFO Inventory') {
-            return { question: 'LIFO Inventory = $' + fmt(lifoInv) + ', LIFO Reserve = $' + fmt(reserve) + '. Calculate <strong>FIFO Inventory</strong>.', type: 'number', answer: fifoInv, explanation: 'FIFO Inventory = LIFO Inventory + LIFO Reserve = $' + fmt(lifoInv) + ' + $' + fmt(reserve) + ' = <strong>$' + fmt(fifoInv) + '</strong>' };
+            return { question: 'LIFO Inventory = $' + qfmt(lifoInv) + ', LIFO Reserve = $' + qfmt(reserve) + '. Calculate <strong>FIFO Inventory</strong>.', type: 'number', answer: fifoInv, explanation: 'FIFO Inventory = LIFO Inventory + LIFO Reserve = $' + qfmt(lifoInv) + ' + $' + qfmt(reserve) + ' = <strong>$' + qfmt(fifoInv) + '</strong>' };
         } else if (askType === 'LIFO Reserve') {
-            return { question: 'FIFO Inventory = $' + fmt(fifoInv) + ', LIFO Inventory = $' + fmt(lifoInv) + '. Calculate the <strong>LIFO Reserve</strong>.', type: 'number', answer: reserve, explanation: 'LIFO Reserve = FIFO Inventory \u2212 LIFO Inventory = $' + fmt(fifoInv) + ' \u2212 $' + fmt(lifoInv) + ' = <strong>$' + fmt(reserve) + '</strong>' };
+            return { question: 'FIFO Inventory = $' + qfmt(fifoInv) + ', LIFO Inventory = $' + qfmt(lifoInv) + '. Calculate the <strong>LIFO Reserve</strong>.', type: 'number', answer: reserve, explanation: 'LIFO Reserve = FIFO Inventory \u2212 LIFO Inventory = $' + qfmt(fifoInv) + ' \u2212 $' + qfmt(lifoInv) + ' = <strong>$' + qfmt(reserve) + '</strong>' };
         } else {
             const savings = Math.round(reserve * taxRate / 100);
-            return { question: 'LIFO Reserve = $' + fmt(reserve) + ', Tax Rate = ' + taxRate + '%. Calculate the <strong>cumulative tax savings</strong> from using LIFO.', type: 'number', answer: savings, explanation: 'Tax Savings = LIFO Reserve \u00d7 Tax Rate = $' + fmt(reserve) + ' \u00d7 ' + taxRate + '% = <strong>$' + fmt(savings) + '</strong>' };
+            return { question: 'LIFO Reserve = $' + qfmt(reserve) + ', Tax Rate = ' + taxRate + '%. Calculate the <strong>cumulative tax savings</strong> from using LIFO.', type: 'number', answer: savings, explanation: 'Tax Savings = LIFO Reserve \u00d7 Tax Rate = $' + qfmt(reserve) + ' \u00d7 ' + taxRate + '% = <strong>$' + qfmt(savings) + '</strong>' };
         }
     }
 
@@ -1737,14 +1737,14 @@
         const ask = pick(['basic', 'with freight', 'with returns']);
         if (ask === 'basic') {
             const ga = bi + p1 + p2;
-            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Purchase 1 = $' + fmt(p1) + ', Purchase 2 = $' + fmt(p2) + '. Calculate <strong>Cost of Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Goods Available = BI + Purchases = $' + fmt(bi) + ' + $' + fmt(p1) + ' + $' + fmt(p2) + ' = <strong>$' + fmt(ga) + '</strong>' };
+            return { question: 'Beginning Inventory = $' + qfmt(bi) + ', Purchase 1 = $' + qfmt(p1) + ', Purchase 2 = $' + qfmt(p2) + '. Calculate <strong>Cost of Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Goods Available = BI + Purchases = $' + qfmt(bi) + ' + $' + qfmt(p1) + ' + $' + qfmt(p2) + ' = <strong>$' + qfmt(ga) + '</strong>' };
         } else if (ask === 'with freight') {
             const ga = bi + p1 + p2 + freight;
-            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Purchases = $' + fmt(p1 + p2) + ', Freight-In = $' + fmt(freight) + '. Calculate <strong>Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Freight-in is part of inventory cost. Goods Available = $' + fmt(bi) + ' + $' + fmt(p1 + p2) + ' + $' + fmt(freight) + ' = <strong>$' + fmt(ga) + '</strong>' };
+            return { question: 'Beginning Inventory = $' + qfmt(bi) + ', Purchases = $' + qfmt(p1 + p2) + ', Freight-In = $' + qfmt(freight) + '. Calculate <strong>Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Freight-in is part of inventory cost. Goods Available = $' + qfmt(bi) + ' + $' + qfmt(p1 + p2) + ' + $' + qfmt(freight) + ' = <strong>$' + qfmt(ga) + '</strong>' };
         } else {
             const netPurch = p1 + p2 - returns;
             const ga = bi + netPurch;
-            return { question: 'Beginning Inventory = $' + fmt(bi) + ', Gross Purchases = $' + fmt(p1 + p2) + ', Purchase Returns = $' + fmt(returns) + '. Calculate <strong>Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Net Purchases = $' + fmt(p1 + p2) + ' \u2212 $' + fmt(returns) + ' = $' + fmt(netPurch) + '<br>Goods Available = $' + fmt(bi) + ' + $' + fmt(netPurch) + ' = <strong>$' + fmt(ga) + '</strong>' };
+            return { question: 'Beginning Inventory = $' + qfmt(bi) + ', Gross Purchases = $' + qfmt(p1 + p2) + ', Purchase Returns = $' + qfmt(returns) + '. Calculate <strong>Goods Available for Sale</strong>.', type: 'number', answer: ga, explanation: 'Net Purchases = $' + qfmt(p1 + p2) + ' \u2212 $' + qfmt(returns) + ' = $' + qfmt(netPurch) + '<br>Goods Available = $' + qfmt(bi) + ' + $' + qfmt(netPurch) + ' = <strong>$' + qfmt(ga) + '</strong>' };
         }
     }
 
@@ -1752,37 +1752,37 @@
 
     function jeGenPurchaseCash() {
         const a = rand(5, 80) * 100;
-        return { prompt: 'A company purchases inventory for <strong>$' + fmt(a) + '</strong> cash.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+        return { prompt: 'A company purchases inventory for <strong>$' + qfmt(a) + '</strong> cash.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
     }
     function jeGenPurchaseOnAccount() {
         const a = rand(5, 80) * 100;
-        return { prompt: 'A company purchases inventory on account for <strong>$' + fmt(a) + '</strong>.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
+        return { prompt: 'A company purchases inventory on account for <strong>$' + qfmt(a) + '</strong>.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
     }
     function jeGenPayFreight() {
         const a = rand(2, 15) * 100;
-        return { prompt: 'A company pays <strong>$' + fmt(a) + '</strong> cash for freight-in on an inventory shipment.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+        return { prompt: 'A company pays <strong>$' + qfmt(a) + '</strong> cash for freight-in on an inventory shipment.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
     }
     function jeGenPurchaseReturn() {
         const a = rand(3, 30) * 100;
-        return { prompt: 'A company returns defective inventory costing <strong>$' + fmt(a) + '</strong> to the supplier (purchased on account).', answer: [{ acct: 'Accounts Payable', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
+        return { prompt: 'A company returns defective inventory costing <strong>$' + qfmt(a) + '</strong> to the supplier (purchased on account).', answer: [{ acct: 'Accounts Payable', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
     }
     function jeGenPurchaseDiscount() {
         const inv = rand(20, 80) * 100;
         const disc = Math.round(inv * pick([1, 2, 3]) / 100);
         const paid = inv - disc;
-        return { prompt: 'A company pays for a <strong>$' + fmt(inv) + '</strong> inventory purchase within the discount period, earning a <strong>$' + fmt(disc) + '</strong> purchase discount. Record the payment.', answer: [{ acct: 'Accounts Payable', dr: inv, cr: 0 }, { acct: 'Cash', dr: 0, cr: paid }, { acct: 'Inventory', dr: 0, cr: disc }] };
+        return { prompt: 'A company pays for a <strong>$' + qfmt(inv) + '</strong> inventory purchase within the discount period, earning a <strong>$' + qfmt(disc) + '</strong> purchase discount. Record the payment.', answer: [{ acct: 'Accounts Payable', dr: inv, cr: 0 }, { acct: 'Cash', dr: 0, cr: paid }, { acct: 'Inventory', dr: 0, cr: disc }] };
     }
     function jeGenSaleRevenue() {
         const a = rand(10, 100) * 100;
         const onAcct = pick([true, false]);
         if (onAcct) {
-            return { prompt: 'A company sells inventory to a customer on account for <strong>$' + fmt(a) + '</strong>. Record the <strong>revenue entry only</strong>.', answer: [{ acct: 'Accounts Receivable', dr: a, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: a }] };
+            return { prompt: 'A company sells inventory to a customer on account for <strong>$' + qfmt(a) + '</strong>. Record the <strong>revenue entry only</strong>.', answer: [{ acct: 'Accounts Receivable', dr: a, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: a }] };
         }
-        return { prompt: 'A company sells inventory for <strong>$' + fmt(a) + '</strong> cash. Record the <strong>revenue entry only</strong>.', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: a }] };
+        return { prompt: 'A company sells inventory for <strong>$' + qfmt(a) + '</strong> cash. Record the <strong>revenue entry only</strong>.', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: a }] };
     }
     function jeGenRecordCOGS() {
         const a = rand(5, 60) * 100;
-        return { prompt: 'The cost of inventory just sold was <strong>$' + fmt(a) + '</strong>. Record the <strong>COGS entry</strong>.', answer: [{ acct: 'Cost of Goods Sold', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
+        return { prompt: 'The cost of inventory just sold was <strong>$' + qfmt(a) + '</strong>. Record the <strong>COGS entry</strong>.', answer: [{ acct: 'Cost of Goods Sold', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
     }
     function jeGenSaleWithCOGS() {
         const units = rand(10, 100);
@@ -1795,84 +1795,84 @@
     function jeGenSalesReturn() {
         const rev = rand(5, 30) * 100;
         const cost = Math.round(rev * rand(40, 70) / 100);
-        return { prompt: 'A customer returns merchandise that was sold for <strong>$' + fmt(rev) + '</strong> (cost was <strong>$' + fmt(cost) + '</strong>). The customer had paid cash. Record <strong>both</strong> the sales return and inventory restoration.', answer: [{ acct: 'Sales Returns and Allowances', dr: rev, cr: 0 }, { acct: 'Cash', dr: 0, cr: rev }, { acct: 'Inventory', dr: cost, cr: 0 }, { acct: 'Cost of Goods Sold', dr: 0, cr: cost }] };
+        return { prompt: 'A customer returns merchandise that was sold for <strong>$' + qfmt(rev) + '</strong> (cost was <strong>$' + qfmt(cost) + '</strong>). The customer had paid cash. Record <strong>both</strong> the sales return and inventory restoration.', answer: [{ acct: 'Sales Returns and Allowances', dr: rev, cr: 0 }, { acct: 'Cash', dr: 0, cr: rev }, { acct: 'Inventory', dr: cost, cr: 0 }, { acct: 'Cost of Goods Sold', dr: 0, cr: cost }] };
     }
     function jeGenLCNRV() {
         const cost = rand(10, 80) * 1000;
         const nrv = cost - rand(2, 15) * 1000;
         const wd = cost - nrv;
-        return { prompt: 'Inventory has a carrying cost of <strong>$' + fmt(cost) + '</strong> and NRV of <strong>$' + fmt(nrv) + '</strong>. Record the <strong>LCNRV write-down</strong>.', answer: [{ acct: 'Loss on Inventory Write-down', dr: wd, cr: 0 }, { acct: 'Inventory', dr: 0, cr: wd }] };
+        return { prompt: 'Inventory has a carrying cost of <strong>$' + qfmt(cost) + '</strong> and NRV of <strong>$' + qfmt(nrv) + '</strong>. Record the <strong>LCNRV write-down</strong>.', answer: [{ acct: 'Loss on Inventory Write-down', dr: wd, cr: 0 }, { acct: 'Inventory', dr: 0, cr: wd }] };
     }
     function jeGenEndingInvAdjust() {
         const oldBal = rand(20, 60) * 1000;
         const counted = rand(10, 50) * 1000;
         const diff = oldBal - counted;
-        return { prompt: 'Under the periodic system, the Inventory account shows <strong>$' + fmt(oldBal) + '</strong> (beginning balance). A physical count shows ending inventory of <strong>$' + fmt(counted) + '</strong>. COGS for the period was <strong>$' + fmt(diff) + '</strong>. Record the adjusting entry to update inventory.', answer: [{ acct: 'Cost of Goods Sold', dr: diff, cr: 0 }, { acct: 'Inventory', dr: 0, cr: diff }] };
+        return { prompt: 'Under the periodic system, the Inventory account shows <strong>$' + qfmt(oldBal) + '</strong> (beginning balance). A physical count shows ending inventory of <strong>$' + qfmt(counted) + '</strong>. COGS for the period was <strong>$' + qfmt(diff) + '</strong>. Record the adjusting entry to update inventory.', answer: [{ acct: 'Cost of Goods Sold', dr: diff, cr: 0 }, { acct: 'Inventory', dr: 0, cr: diff }] };
     }
     function jeGenPhysicalCountAdjust() {
         const book = rand(30, 80) * 1000;
         const shrinkPct = rand(1, 5);
         const shrink = Math.round(book * shrinkPct / 100);
-        return { prompt: 'The perpetual inventory system shows a balance of <strong>$' + fmt(book) + '</strong>. A physical count reveals actual inventory of <strong>$' + fmt(book - shrink) + '</strong>. Record the <strong>shrinkage adjustment</strong>.', answer: [{ acct: 'Cost of Goods Sold', dr: shrink, cr: 0 }, { acct: 'Inventory', dr: 0, cr: shrink }] };
+        return { prompt: 'The perpetual inventory system shows a balance of <strong>$' + qfmt(book) + '</strong>. A physical count reveals actual inventory of <strong>$' + qfmt(book - shrink) + '</strong>. Record the <strong>shrinkage adjustment</strong>.', answer: [{ acct: 'Cost of Goods Sold', dr: shrink, cr: 0 }, { acct: 'Inventory', dr: 0, cr: shrink }] };
     }
     function jeGenFreightIn() {
         const a = rand(2, 20) * 100;
-        return { prompt: 'A company receives an invoice for <strong>$' + fmt(a) + '</strong> freight charges on incoming inventory (FOB shipping point). The company will pay later.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
+        return { prompt: 'A company receives an invoice for <strong>$' + qfmt(a) + '</strong> freight charges on incoming inventory (FOB shipping point). The company will pay later.', answer: [{ acct: 'Inventory', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
     }
     function jeGenFreightOut() {
         const a = rand(2, 15) * 100;
-        return { prompt: 'A company pays <strong>$' + fmt(a) + '</strong> cash to ship goods to a customer (freight-out).', answer: [{ acct: 'Freight-Out Expense', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+        return { prompt: 'A company pays <strong>$' + qfmt(a) + '</strong> cash to ship goods to a customer (freight-out).', answer: [{ acct: 'Freight-Out Expense', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
     }
     function jeGenPurchasePeriodicSystem() {
         const a = rand(10, 80) * 100;
-        return { prompt: 'Under the <strong>periodic</strong> system, a company purchases inventory on account for <strong>$' + fmt(a) + '</strong>. (Use the Purchases account.)', answer: [{ acct: 'Purchases', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
+        return { prompt: 'Under the <strong>periodic</strong> system, a company purchases inventory on account for <strong>$' + qfmt(a) + '</strong>. (Use the Purchases account.)', answer: [{ acct: 'Purchases', dr: a, cr: 0 }, { acct: 'Accounts Payable', dr: 0, cr: a }] };
     }
     function jeGenClosingCOGSPeriodic() {
         const bi = rand(10, 40) * 1000;
         const purch = rand(30, 100) * 1000;
         const ei = rand(8, 35) * 1000;
         const cogs = bi + purch - ei;
-        return { prompt: 'Under the periodic system at year-end: Beginning Inventory = <strong>$' + fmt(bi) + '</strong>, Purchases = <strong>$' + fmt(purch) + '</strong>, Ending Inventory = <strong>$' + fmt(ei) + '</strong>. Record the closing entry to establish COGS. (Debit COGS, debit Ending Inventory, credit Beginning Inventory, credit Purchases.)', answer: [{ acct: 'Cost of Goods Sold', dr: cogs, cr: 0 }, { acct: 'Inventory', dr: ei, cr: 0 }, { acct: 'Inventory', dr: 0, cr: bi }, { acct: 'Purchases', dr: 0, cr: purch }] };
+        return { prompt: 'Under the periodic system at year-end: Beginning Inventory = <strong>$' + qfmt(bi) + '</strong>, Purchases = <strong>$' + qfmt(purch) + '</strong>, Ending Inventory = <strong>$' + qfmt(ei) + '</strong>. Record the closing entry to establish COGS. (Debit COGS, debit Ending Inventory, credit Beginning Inventory, credit Purchases.)', answer: [{ acct: 'Cost of Goods Sold', dr: cogs, cr: 0 }, { acct: 'Inventory', dr: ei, cr: 0 }, { acct: 'Inventory', dr: 0, cr: bi }, { acct: 'Purchases', dr: 0, cr: purch }] };
     }
     function jeGenConsignmentSale() {
         const rev = rand(5, 30) * 1000;
         const comm = Math.round(rev * rand(8, 15) / 100);
         const remit = rev - comm;
-        return { prompt: 'A consignee sells consigned goods for <strong>$' + fmt(rev) + '</strong> cash, earning a <strong>$' + fmt(comm) + '</strong> commission. Record the consignee\'s entry to remit proceeds to the consignor.', answer: [{ acct: 'Cash', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: comm }, { acct: 'Accounts Payable', dr: 0, cr: remit }] };
+        return { prompt: 'A consignee sells consigned goods for <strong>$' + qfmt(rev) + '</strong> cash, earning a <strong>$' + qfmt(comm) + '</strong> commission. Record the consignee\'s entry to remit proceeds to the consignor.', answer: [{ acct: 'Cash', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: comm }, { acct: 'Accounts Payable', dr: 0, cr: remit }] };
     }
     function jeGenWarrantyProvision() {
         const sales = rand(50, 200) * 1000;
         const pct = pick([2, 3, 5]);
         const amt = Math.round(sales * pct / 100);
-        return { prompt: 'A company estimates warranty costs at <strong>' + pct + '%</strong> of sales (<strong>$' + fmt(sales) + '</strong>). Record the <strong>warranty provision</strong>.', answer: [{ acct: 'Warranty Expense', dr: amt, cr: 0 }, { acct: 'Warranty Liability', dr: 0, cr: amt }] };
+        return { prompt: 'A company estimates warranty costs at <strong>' + pct + '%</strong> of sales (<strong>$' + qfmt(sales) + '</strong>). Record the <strong>warranty provision</strong>.', answer: [{ acct: 'Warranty Expense', dr: amt, cr: 0 }, { acct: 'Warranty Liability', dr: 0, cr: amt }] };
     }
     function jeGenPayAP() {
         const a = rand(5, 60) * 100;
-        return { prompt: 'A company pays <strong>$' + fmt(a) + '</strong> cash to settle an accounts payable balance from an earlier inventory purchase.', answer: [{ acct: 'Accounts Payable', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+        return { prompt: 'A company pays <strong>$' + qfmt(a) + '</strong> cash to settle an accounts payable balance from an earlier inventory purchase.', answer: [{ acct: 'Accounts Payable', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
     }
     function jeGenCollectAR() {
         const a = rand(5, 60) * 100;
-        return { prompt: 'A company collects <strong>$' + fmt(a) + '</strong> cash from a customer on account (from a prior inventory sale).', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: a }] };
+        return { prompt: 'A company collects <strong>$' + qfmt(a) + '</strong> cash from a customer on account (from a prior inventory sale).', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: a }] };
     }
     function jeGenCashSale() {
         const rev = rand(10, 80) * 100;
         const cost = Math.round(rev * rand(40, 70) / 100);
-        return { prompt: 'A company makes a cash sale of <strong>$' + fmt(rev) + '</strong>. The cost of goods sold is <strong>$' + fmt(cost) + '</strong>. Record <strong>both</strong> entries.', answer: [{ acct: 'Cash', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: rev }, { acct: 'Cost of Goods Sold', dr: cost, cr: 0 }, { acct: 'Inventory', dr: 0, cr: cost }] };
+        return { prompt: 'A company makes a cash sale of <strong>$' + qfmt(rev) + '</strong>. The cost of goods sold is <strong>$' + qfmt(cost) + '</strong>. Record <strong>both</strong> entries.', answer: [{ acct: 'Cash', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: rev }, { acct: 'Cost of Goods Sold', dr: cost, cr: 0 }, { acct: 'Inventory', dr: 0, cr: cost }] };
     }
     function jeGenCreditSaleReturn() {
         const rev = rand(5, 25) * 100;
         const cost = Math.round(rev * rand(40, 65) / 100);
-        return { prompt: 'A customer returns merchandise originally sold on account for <strong>$' + fmt(rev) + '</strong> (cost <strong>$' + fmt(cost) + '</strong>). A credit is issued. Record <strong>both</strong> entries.', answer: [{ acct: 'Sales Returns and Allowances', dr: rev, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: rev }, { acct: 'Inventory', dr: cost, cr: 0 }, { acct: 'Cost of Goods Sold', dr: 0, cr: cost }] };
+        return { prompt: 'A customer returns merchandise originally sold on account for <strong>$' + qfmt(rev) + '</strong> (cost <strong>$' + qfmt(cost) + '</strong>). A credit is issued. Record <strong>both</strong> entries.', answer: [{ acct: 'Sales Returns and Allowances', dr: rev, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: rev }, { acct: 'Inventory', dr: cost, cr: 0 }, { acct: 'Cost of Goods Sold', dr: 0, cr: cost }] };
     }
     function jeGenSalesDiscount() {
         const inv = rand(10, 60) * 100;
         const disc = Math.round(inv * pick([1, 2, 3]) / 100);
         const received = inv - disc;
-        return { prompt: 'A customer pays their <strong>$' + fmt(inv) + '</strong> account receivable within the discount period, earning a <strong>$' + fmt(disc) + '</strong> sales discount. Record the collection.', answer: [{ acct: 'Cash', dr: received, cr: 0 }, { acct: 'Sales Discounts', dr: disc, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: inv }] };
+        return { prompt: 'A customer pays their <strong>$' + qfmt(inv) + '</strong> account receivable within the discount period, earning a <strong>$' + qfmt(disc) + '</strong> sales discount. Record the collection.', answer: [{ acct: 'Cash', dr: received, cr: 0 }, { acct: 'Sales Discounts', dr: disc, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: inv }] };
     }
     function jeGenPurchaseReturnCash() {
         const a = rand(3, 25) * 100;
-        return { prompt: 'A company returns defective inventory costing <strong>$' + fmt(a) + '</strong> and receives a <strong>cash refund</strong> from the supplier.', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
+        return { prompt: 'A company returns defective inventory costing <strong>$' + qfmt(a) + '</strong> and receives a <strong>cash refund</strong> from the supplier.', answer: [{ acct: 'Cash', dr: a, cr: 0 }, { acct: 'Inventory', dr: 0, cr: a }] };
     }
     function jeGenCreditSaleWithCOGS() {
         const units = rand(10, 80);
@@ -1884,7 +1884,7 @@
     }
     function jeGenFreightInCash() {
         const a = rand(2, 12) * 100;
-        return { prompt: 'A company pays <strong>$' + fmt(a) + '</strong> cash for freight charges on an incoming inventory shipment (FOB shipping point).', answer: [{ acct: 'Freight-In', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
+        return { prompt: 'A company pays <strong>$' + qfmt(a) + '</strong> cash for freight charges on an incoming inventory shipment (FOB shipping point).', answer: [{ acct: 'Freight-In', dr: a, cr: 0 }, { acct: 'Cash', dr: 0, cr: a }] };
     }
 
     // ===== ACCOUNTS & INIT =====
