@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="animations.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -190,51 +191,51 @@
                 <div class="card bg-slate-800/50 rounded-xl p-6 border border-slate-700 lg:col-span-2">
                     <h2 class="text-xl font-bold text-sky-400 mb-4">Warehouse Analogy: Visualizing the Flow</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="text-center">
+                        <div class="warehouse-col text-center">
                             <p class="font-semibold text-sky-400 mb-3">FIFO: Sell from the Front</p>
                             <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
                                 <div class="space-y-2">
-                                    <div class="warehouse-layer bg-rose-500/30 border border-rose-500/50 rounded p-2 text-sm">
+                                    <div class="warehouse-layer sold-layer bg-rose-500/30 border border-rose-500/50 rounded p-2 text-sm">
                                         <span class="text-rose-300">Oldest &rarr; SOLD FIRST</span>
                                     </div>
-                                    <div class="warehouse-layer bg-rose-500/20 border border-rose-500/30 rounded p-2 text-sm">
+                                    <div class="warehouse-layer sold-layer bg-rose-500/20 border border-rose-500/30 rounded p-2 text-sm">
                                         <span class="text-rose-300">Middle &rarr; Sold next</span>
                                     </div>
-                                    <div class="warehouse-layer bg-emerald-500/20 border border-emerald-500/40 rounded p-2 text-sm">
+                                    <div class="warehouse-layer ei-layer bg-emerald-500/20 border border-emerald-500/40 rounded p-2 text-sm">
                                         <span class="text-emerald-300">Newest &rarr; Stays in EI</span>
                                     </div>
                                 </div>
                                 <p class="text-xs text-slate-500 mt-3">EI = most recent costs</p>
                             </div>
                         </div>
-                        <div class="text-center">
+                        <div class="warehouse-col text-center">
                             <p class="font-semibold text-rose-400 mb-3">LIFO: Sell from the Top</p>
                             <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
                                 <div class="space-y-2">
-                                    <div class="warehouse-layer bg-emerald-500/20 border border-emerald-500/40 rounded p-2 text-sm">
+                                    <div class="warehouse-layer ei-layer bg-emerald-500/20 border border-emerald-500/40 rounded p-2 text-sm">
                                         <span class="text-emerald-300">Oldest &rarr; Stays in EI</span>
                                     </div>
-                                    <div class="warehouse-layer bg-rose-500/20 border border-rose-500/30 rounded p-2 text-sm">
+                                    <div class="warehouse-layer sold-layer bg-rose-500/20 border border-rose-500/30 rounded p-2 text-sm">
                                         <span class="text-rose-300">Middle &rarr; Sold next</span>
                                     </div>
-                                    <div class="warehouse-layer bg-rose-500/30 border border-rose-500/50 rounded p-2 text-sm">
+                                    <div class="warehouse-layer sold-layer bg-rose-500/30 border border-rose-500/50 rounded p-2 text-sm">
                                         <span class="text-rose-300">Newest &rarr; SOLD FIRST</span>
                                     </div>
                                 </div>
                                 <p class="text-xs text-slate-500 mt-3">EI = oldest costs</p>
                             </div>
                         </div>
-                        <div class="text-center">
+                        <div class="warehouse-col text-center">
                             <p class="font-semibold text-amber-400 mb-3">Weighted Avg: Blend All</p>
                             <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
                                 <div class="space-y-2">
-                                    <div class="warehouse-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
+                                    <div class="warehouse-layer sold-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
                                         <span class="text-amber-300">All mixed &rarr; Same cost</span>
                                     </div>
-                                    <div class="warehouse-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
+                                    <div class="warehouse-layer ei-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
                                         <span class="text-amber-300">All mixed &rarr; Same cost</span>
                                     </div>
-                                    <div class="warehouse-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
+                                    <div class="warehouse-layer ei-layer bg-amber-500/20 border border-amber-500/40 rounded p-2 text-sm">
                                         <span class="text-amber-300">All mixed &rarr; Same cost</span>
                                     </div>
                                 </div>
@@ -1922,5 +1923,6 @@
     </script>
 
     <div class="page-footer"><p>BUSI 305 &mdash; Inventory Accounting Methods &mdash; Rice University</p></div>
+    <script src="cursor.js"></script>
 </body>
 </html>

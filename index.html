@@ -233,11 +233,6 @@
     </style>
 </head>
 <body class="min-h-screen bg-[#08090d] text-white font-sans noise">
-    <!-- Custom cursor -->
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-ring" id="cursor-ring"></div>
-    <div class="cursor-glow" id="cursor-glow"></div>
-
     <div class="grid-bg min-h-screen relative">
         <!-- Top gradient orbs -->
         <div class="fixed top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-emerald-500/[0.03] blur-[120px] pointer-events-none"></div>
@@ -566,44 +561,10 @@
         </div>
     </div>
 
+    <script src="cursor.js"></script>
     <script>
     (function() {
-        const dot = document.getElementById('cursor-dot');
-        const ring = document.getElementById('cursor-ring');
-        const glow = document.getElementById('cursor-glow');
-        let mouseX = 0, mouseY = 0;
-        let dotX = 0, dotY = 0, ringX = 0, ringY = 0, glowX = 0, glowY = 0;
-
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        // Smooth follow loop
-        function animate() {
-            // Dot follows fast
-            dotX += (mouseX - dotX) * 0.35;
-            dotY += (mouseY - dotY) * 0.35;
-            dot.style.left = (dotX - 4) + 'px';
-            dot.style.top = (dotY - 4) + 'px';
-
-            // Ring follows with lag
-            ringX += (mouseX - ringX) * 0.15;
-            ringY += (mouseY - ringY) * 0.15;
-            ring.style.left = (ringX - 20) + 'px';
-            ring.style.top = (ringY - 20) + 'px';
-
-            // Glow follows slowly
-            glowX += (mouseX - glowX) * 0.06;
-            glowY += (mouseY - glowY) * 0.06;
-            glow.style.left = (glowX - 300) + 'px';
-            glow.style.top = (glowY - 300) + 'px';
-
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // Card interactions
+        // Card interactions — 3D tilt & glow
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
@@ -612,7 +573,6 @@
                 card.style.setProperty('--mouse-x', x + 'px');
                 card.style.setProperty('--mouse-y', y + 'px');
 
-                // Subtle 3D tilt
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 const rotateX = (y - centerY) / 25;
@@ -623,28 +583,11 @@
             card.addEventListener('mouseleave', () => {
                 card.style.transform = '';
             });
-
-            card.addEventListener('mouseenter', () => {
-                ring.classList.add('hovering');
-            });
-            card.addEventListener('mouseleave', () => {
-                ring.classList.remove('hovering');
-            });
         });
 
         // Stagger entrance on load
         document.querySelectorAll('.card-enter').forEach((el, i) => {
             el.style.animationDelay = (i * 0.07) + 's';
-        });
-
-        // Hide custom cursor when leaving window
-        document.addEventListener('mouseleave', () => {
-            dot.style.opacity = '0';
-            ring.style.opacity = '0';
-        });
-        document.addEventListener('mouseenter', () => {
-            dot.style.opacity = '1';
-            ring.style.opacity = '1';
         });
     })();
     </script>

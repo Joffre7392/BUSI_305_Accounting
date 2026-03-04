@@ -21,9 +21,9 @@
         .tab-content.active { display: block; }
         .equation-box { transition: all 0.3s ease; }
         .equation-box:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
-        .timeline-line { height: 4px; background: linear-gradient(90deg, #10b981, #0ea5e9, #10b981); }
-        .flow-arrow { animation: pulse-arrow 2s infinite; }
-        @keyframes pulse-arrow { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+        /* Arc path brightens on hover */
+        .stmt-arc-container:hover path#stmtArc,
+        .stmt-arc-container.arc-active path#stmtArc { opacity: 0.8; }
         .score-bar { transition: width 0.5s ease; }
         .flash-correct { animation: flash-green 0.5s ease; }
         .flash-wrong { animation: flash-red 0.5s ease; }
@@ -119,14 +119,43 @@
             </div>
         </div>
 
-        <!-- Visual Timeline Diagram -->
+        <!-- Visual Timeline Diagram — SVG Arc -->
         <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
             <h2 class="text-2xl font-bold text-emerald-400 mb-6">How the Statements Connect Over Time</h2>
-            <div class="relative px-4 py-8">
-                <!-- Timeline container -->
-                <div class="flex items-center justify-between relative">
+            <div class="stmt-arc-container relative px-4 pt-2 pb-4" style="min-height: 260px;">
+                <!-- SVG Arc overlay -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 260" preserveAspectRatio="xMidYMid meet" style="z-index:1;">
+                    <defs>
+                        <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#10b981" stop-opacity="0.6"/>
+                            <stop offset="50%" stop-color="#0ea5e9" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#10b981" stop-opacity="0.6"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Arc path: curves above the period statements -->
+                    <path id="stmtArc" d="M 90 200 C 90 30, 710 30, 710 200" fill="none" stroke="url(#arcGrad)" stroke-width="3" stroke-dasharray="6 4" opacity="0.5"/>
+                    <!-- Animated arrows traveling along the arc -->
+                    <polygon class="arc-arrow" points="-6,-4 6,0 -6,4" fill="#10b981">
+                        <animateMotion dur="2.5s" repeatCount="indefinite" rotate="auto" calcMode="linear">
+                            <mpath href="#stmtArc"/>
+                        </animateMotion>
+                    </polygon>
+                    <polygon class="arc-arrow" points="-6,-4 6,0 -6,4" fill="#0ea5e9">
+                        <animateMotion dur="2.5s" repeatCount="indefinite" rotate="auto" begin="0.8s" calcMode="linear">
+                            <mpath href="#stmtArc"/>
+                        </animateMotion>
+                    </polygon>
+                    <polygon class="arc-arrow" points="-6,-4 6,0 -6,4" fill="#10b981">
+                        <animateMotion dur="2.5s" repeatCount="indefinite" rotate="auto" begin="1.6s" calcMode="linear">
+                            <mpath href="#stmtArc"/>
+                        </animateMotion>
+                    </polygon>
+                </svg>
+
+                <!-- Content layer -->
+                <div class="relative flex items-end justify-between" style="z-index:2; padding-top: 60px;">
                     <!-- Left BS -->
-                    <div class="flex-shrink-0 w-40 text-center z-10">
+                    <div class="flex-shrink-0 w-40 text-center">
                         <div class="bg-emerald-500/20 border-2 border-emerald-500 rounded-xl p-3 mb-2">
                             <div class="text-emerald-400 font-bold text-sm">Balance Sheet</div>
                             <div class="text-xs text-slate-400 mt-1">Jan 1, 2025</div>
@@ -136,14 +165,8 @@
                     </div>
 
                     <!-- Middle: Period Statements -->
-                    <div class="flex-1 mx-4 relative">
-                        <!-- Connecting line -->
-                        <div class="timeline-line absolute top-1/2 left-0 right-0 transform -translate-y-1/2 rounded-full z-0"></div>
-                        <!-- Arrow indicators -->
-                        <div class="flow-arrow absolute top-1/2 left-1/4 transform -translate-y-1/2 text-emerald-400 text-xl z-10">&rarr;</div>
-                        <div class="flow-arrow absolute top-1/2 right-1/4 transform -translate-y-1/2 text-emerald-400 text-xl z-10">&rarr;</div>
-                        <!-- Period statements stacked -->
-                        <div class="relative z-10 flex flex-col items-center gap-2 py-2">
+                    <div class="flex-1 mx-4">
+                        <div class="flex flex-col items-center gap-2 py-2">
                             <div class="bg-sky-500/20 border border-sky-500 rounded-lg px-4 py-1.5 text-xs font-semibold text-sky-300 w-48 text-center">Income Statement</div>
                             <div class="bg-amber-500/20 border border-amber-500 rounded-lg px-4 py-1.5 text-xs font-semibold text-amber-300 w-48 text-center">Statement of Cash Flows</div>
                             <div class="bg-purple-500/20 border border-purple-500 rounded-lg px-4 py-1.5 text-xs font-semibold text-purple-300 w-48 text-center">Statement of SE</div>
@@ -152,7 +175,7 @@
                     </div>
 
                     <!-- Right BS -->
-                    <div class="flex-shrink-0 w-40 text-center z-10">
+                    <div class="flex-shrink-0 w-40 text-center">
                         <div class="bg-emerald-500/20 border-2 border-emerald-500 rounded-xl p-3 mb-2">
                             <div class="text-emerald-400 font-bold text-sm">Balance Sheet</div>
                             <div class="text-xs text-slate-400 mt-1">Dec 31, 2025</div>
@@ -162,8 +185,8 @@
                     </div>
                 </div>
                 <!-- Explanation -->
-                <div class="mt-6 text-center text-sm text-slate-400">
-                    The period statements <span class="text-white">(IS, SCF, SSE)</span> explain how the firm moved from one Balance Sheet to the next.
+                <div class="mt-4 text-center text-sm text-slate-400" style="position:relative; z-index:2;">
+                    The period statements <span class="text-white">(IS, SCF, SSE)</span> explain how the firm moved from one Balance Sheet to the next. <span class="text-emerald-400/60 text-xs ml-1">(hover to animate)</span>
                 </div>
             </div>
         </div>
@@ -1915,5 +1938,7 @@
     });
     </script>
     <div class="page-footer"><p>BUSI 305 &mdash; Accounting Equation &amp; Financial Statements &mdash; Rice University</p></div>
+    <script src="cursor.js"></script>
+    <script src="animations.js"></script>
 </body>
 </html>
