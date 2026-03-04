@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Present Value | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(34,211,238,0.15); }
+        .tab-btn.active { border-color: #22d3ee; color: #22d3ee; background: rgba(34,211,238,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+        .timeline { display: flex; align-items: center; position: relative; padding: 2rem 0; }
+        .timeline::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 3px; background: #334155; }
+        .tl-point { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .tl-dot { width: 1rem; height: 1rem; border-radius: 50%; border: 2px solid #22d3ee; background: #0f172a; }
+        .tl-dot.filled { background: #22d3ee; }
+        .tl-label { font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem; }
+        .tl-value { font-size: 0.875rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .tl-arrow { position: relative; z-index: 1; flex: 0 0 auto; color: #475569; font-size: 1.25rem; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+    <script>
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+    </script>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-cyan-400 transition-colors mb-6 group">
+            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+
+        <div class="flex items-center gap-4 mb-8">
+            <div class="text-4xl">&#x23F3;</div>
+            <div>
+                <h1 class="text-3xl font-bold text-cyan-400">Present Value</h1>
+                <p class="text-slate-400">Lectures 14&ndash;16 &mdash; Time value of money, annuities &amp; NPV</p>
+            </div>
+            <span class="ml-auto text-xs bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full font-semibold">Lectures 14-16</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('basics')" id="tab-basics" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Time Value Basics</button>
+            <button onclick="switchTab('annuities')" id="tab-annuities" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Annuities &amp; Perpetuities</button>
+            <button onclick="switchTab('applications')" id="tab-applications" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">NPV &amp; Applications</button>
+            <button onclick="switchTab('calculator')" id="tab-calculator" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">TVM Calculator</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: TIME VALUE BASICS ======================== -->
+        <div id="panel-basics" class="tab-panel active">
+            <!-- Why $1 Today > $1 Tomorrow -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4">Why $1 Today Is Worth More Than $1 Tomorrow</h2>
+                <p class="text-slate-300 mb-4">This is the single most important idea in finance. A dollar today is worth more than a dollar in the future for three reasons:</p>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-cyan-500/20 text-center">
+                        <p class="text-cyan-300 font-bold text-lg mb-2">Earning Potential</p>
+                        <p class="text-sm text-slate-400">Money received today can be invested and earn a return. A dollar today grows into more than a dollar tomorrow.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-cyan-500/20 text-center">
+                        <p class="text-cyan-300 font-bold text-lg mb-2">Inflation</p>
+                        <p class="text-sm text-slate-400">Prices generally rise over time. A dollar buys less in the future than it does today &mdash; purchasing power erodes.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-cyan-500/20 text-center">
+                        <p class="text-cyan-300 font-bold text-lg mb-2">Risk</p>
+                        <p class="text-sm text-slate-400">A dollar in hand is certain. A promised future dollar carries the risk that the promise may not be kept.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simple vs Compound Interest -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-cyan-400 mb-4">Simple Interest</h2>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                        <p class="text-lg font-mono text-cyan-300">Interest = PV &times; r &times; n</p>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-3">Interest is earned only on the <span class="text-cyan-400 font-semibold">original principal</span>. No interest-on-interest.</p>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-slate-400 mb-1"><strong class="text-white">Example:</strong> $1,000 at 10% for 3 years</p>
+                        <p class="text-slate-300">Year 1: $100 &nbsp;|&nbsp; Year 2: $100 &nbsp;|&nbsp; Year 3: $100</p>
+                        <p class="text-cyan-400 font-bold mt-1">Total = $1,000 + $300 = $1,300</p>
+                    </div>
+                </div>
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-cyan-400 mb-4">Compound Interest</h2>
+                    <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                        <p class="text-lg font-mono text-cyan-300">FV = PV &times; (1 + r)<sup>n</sup></p>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-3">Interest is earned on the principal <span class="text-cyan-400 font-semibold">plus all previously earned interest</span>. The snowball effect.</p>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-slate-400 mb-1"><strong class="text-white">Example:</strong> $1,000 at 10% for 3 years</p>
+                        <p class="text-slate-300">Year 1: $100 &nbsp;|&nbsp; Year 2: $110 &nbsp;|&nbsp; Year 3: $121</p>
+                        <p class="text-cyan-400 font-bold mt-1">Total = $1,000 &times; 1.10<sup>3</sup> = $1,331</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Power of Compounding Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">The Power of Compounding</h2>
+                <p class="text-slate-300 text-sm mb-4">$1,000 invested at 10% &mdash; compound interest earns <span class="text-cyan-400 font-semibold">interest on interest</span>, creating an accelerating snowball:</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead><tr class="border-b border-slate-600">
+                            <th class="text-left py-2 px-3 text-slate-400">Year</th>
+                            <th class="text-right py-2 px-3 text-slate-400">Beg. Balance</th>
+                            <th class="text-right py-2 px-3 text-slate-400">Interest (10%)</th>
+                            <th class="text-right py-2 px-3 text-slate-400">End Balance</th>
+                            <th class="text-right py-2 px-3 text-slate-400">Simple Would Be</th>
+                            <th class="text-right py-2 px-3 text-cyan-400">Extra from Compounding</th>
+                        </tr></thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">1</td><td class="text-right py-2 px-3">$1,000</td><td class="text-right py-2 px-3">$100.00</td><td class="text-right py-2 px-3">$1,100.00</td><td class="text-right py-2 px-3 text-slate-500">$1,100</td><td class="text-right py-2 px-3 text-cyan-400">$0</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">2</td><td class="text-right py-2 px-3">$1,100</td><td class="text-right py-2 px-3">$110.00</td><td class="text-right py-2 px-3">$1,210.00</td><td class="text-right py-2 px-3 text-slate-500">$1,200</td><td class="text-right py-2 px-3 text-cyan-400">$10</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">3</td><td class="text-right py-2 px-3">$1,210</td><td class="text-right py-2 px-3">$121.00</td><td class="text-right py-2 px-3">$1,331.00</td><td class="text-right py-2 px-3 text-slate-500">$1,300</td><td class="text-right py-2 px-3 text-cyan-400">$31</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">5</td><td class="text-right py-2 px-3">$1,464</td><td class="text-right py-2 px-3">$146.41</td><td class="text-right py-2 px-3">$1,610.51</td><td class="text-right py-2 px-3 text-slate-500">$1,500</td><td class="text-right py-2 px-3 text-cyan-400">$111</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">10</td><td class="text-right py-2 px-3">$2,358</td><td class="text-right py-2 px-3">$235.79</td><td class="text-right py-2 px-3">$2,593.74</td><td class="text-right py-2 px-3 text-slate-500">$2,000</td><td class="text-right py-2 px-3 text-cyan-400">$594</td></tr>
+                            <tr><td class="py-2 px-3 font-bold">20</td><td class="text-right py-2 px-3">$6,116</td><td class="text-right py-2 px-3">$611.59</td><td class="text-right py-2 px-3 font-bold text-cyan-400">$6,727.50</td><td class="text-right py-2 px-3 text-slate-500">$3,000</td><td class="text-right py-2 px-3 text-cyan-400 font-bold">$3,728</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Future Value of a Single Amount -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">Future Value of a Single Amount</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-xl font-mono text-cyan-300">FV = PV &times; (1 + r)<sup>n</sup></p>
+                </div>
+                <p class="text-slate-300 text-sm mb-4">How much will a lump sum invested today be worth in the future?</p>
+                <!-- Timeline -->
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4">
+                    <div class="timeline">
+                        <div class="tl-point">
+                            <span class="tl-value text-emerald-400">PV = $5,000</span>
+                            <span class="tl-dot filled"></span>
+                            <span class="tl-label">Today (t=0)</span>
+                        </div>
+                        <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">1</span></div>
+                        <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">2</span></div>
+                        <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">3</span></div>
+                        <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">4</span></div>
+                        <div class="tl-point">
+                            <span class="tl-value text-cyan-400">FV = ?</span>
+                            <span class="tl-dot filled"></span>
+                            <span class="tl-label">5 years</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                    <p class="text-slate-400 mb-1"><strong class="text-white">Example:</strong> Invest $5,000 at 8% for 5 years</p>
+                    <p class="text-slate-300">FV = $5,000 &times; (1.08)<sup>5</sup> = $5,000 &times; 1.46933 = <strong class="text-cyan-400">$7,346.64</strong></p>
+                </div>
+            </div>
+
+            <!-- Present Value of a Single Amount -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">Present Value of a Single Amount</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-xl font-mono text-cyan-300">PV = FV &divide; (1 + r)<sup>n</sup></p>
+                </div>
+                <p class="text-slate-300 text-sm mb-4">How much is a future lump sum worth <em>today</em>? This is <span class="text-cyan-400 font-semibold">discounting</span> &mdash; the reverse of compounding.</p>
+                <!-- Timeline -->
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4">
+                    <div class="timeline">
+                        <div class="tl-point">
+                            <span class="tl-value text-cyan-400">PV = ?</span>
+                            <span class="tl-dot filled"></span>
+                            <span class="tl-label">Today (t=0)</span>
+                        </div>
+                        <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">1</span></div>
+                        <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">2</span></div>
+                        <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">3</span></div>
+                        <div class="tl-point">
+                            <span class="tl-value text-emerald-400">FV = $10,000</span>
+                            <span class="tl-dot filled"></span>
+                            <span class="tl-label">4 years</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                    <p class="text-slate-400 mb-1"><strong class="text-white">Example:</strong> You need $10,000 in 4 years. Rate = 6%.</p>
+                    <p class="text-slate-300">PV = $10,000 &divide; (1.06)<sup>4</sup> = $10,000 &divide; 1.26248 = <strong class="text-cyan-400">$7,920.94</strong></p>
+                    <p class="text-slate-500 mt-1">You need to invest $7,920.94 today to have $10,000 in 4 years at 6%.</p>
+                </div>
+            </div>
+
+            <!-- Sub-Period Compounding -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">Sub-Period Compounding</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-xl font-mono text-cyan-300">FV = PV &times; (1 + r/m)<sup>n&times;m</sup></p>
+                </div>
+                <p class="text-slate-300 text-sm mb-4">When interest compounds more than once per year, use <strong class="text-white">m</strong> = compounding periods per year. More frequent compounding &rarr; higher effective return.</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead><tr class="border-b border-slate-600">
+                            <th class="text-left py-2 px-3 text-slate-400">Frequency</th>
+                            <th class="text-right py-2 px-3 text-slate-400">m</th>
+                            <th class="text-right py-2 px-3 text-slate-400">Rate/Period</th>
+                            <th class="text-right py-2 px-3 text-slate-400">FV of $10,000 @ 8%, 5 yrs</th>
+                        </tr></thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">Annual</td><td class="text-right py-2 px-3">1</td><td class="text-right py-2 px-3">8.000%</td><td class="text-right py-2 px-3">$14,693.28</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">Semi-annual</td><td class="text-right py-2 px-3">2</td><td class="text-right py-2 px-3">4.000%</td><td class="text-right py-2 px-3">$14,802.44</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">Quarterly</td><td class="text-right py-2 px-3">4</td><td class="text-right py-2 px-3">2.000%</td><td class="text-right py-2 px-3">$14,859.47</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">Monthly</td><td class="text-right py-2 px-3">12</td><td class="text-right py-2 px-3">0.667%</td><td class="text-right py-2 px-3">$14,898.46</td></tr>
+                            <tr><td class="py-2 px-3">Daily</td><td class="text-right py-2 px-3">365</td><td class="text-right py-2 px-3">0.022%</td><td class="text-right py-2 px-3">$14,917.59</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>Important:</strong> The <strong>Effective Annual Rate (EAR)</strong> = (1 + r/m)<sup>m</sup> &minus; 1 captures the true annual return. At 8% compounded quarterly: EAR = (1.02)<sup>4</sup> &minus; 1 = 8.24%.</p>
+                </div>
+            </div>
+
+            <!-- Rule of 72 -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">Rule of 72</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-xl font-mono text-cyan-300">Years to Double &asymp; 72 &divide; r</p>
+                </div>
+                <p class="text-slate-300 text-sm mb-4">A quick mental shortcut to estimate how long it takes for money to double at a given interest rate.</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-cyan-400 font-bold">4%</p><p class="text-slate-300 text-sm">18 years</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-cyan-400 font-bold">6%</p><p class="text-slate-300 text-sm">12 years</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-cyan-400 font-bold">8%</p><p class="text-slate-300 text-sm">9 years</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-cyan-400 font-bold">12%</p><p class="text-slate-300 text-sm">6 years</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-cyan-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">In <strong class="text-white">A = L + SE</strong>, present value determines how long-term assets and liabilities appear on the balance sheet. A note receivable (asset) and a note payable (liability) are both reported at their <span class="text-cyan-400 font-semibold">present value</span> &mdash; the discounted value of future cash flows. The discount rate reflects the time value of money and risk.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 2: ANNUITIES & PERPETUITIES ======================== -->
+        <div id="panel-annuities" class="tab-panel">
+            <!-- What Is an Annuity? -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4">What Is an Annuity?</h2>
+                <p class="text-slate-300 mb-4">An <span class="text-cyan-400 font-semibold">annuity</span> is a series of <strong class="text-white">equal payments</strong> made at <strong class="text-white">equal intervals</strong>. Two types:</p>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-cyan-500/20">
+                        <h3 class="font-bold text-cyan-300 mb-2">Ordinary Annuity (End of Period)</h3>
+                        <p class="text-sm text-slate-400 mb-3">Payments occur at the <strong class="text-white">end</strong> of each period. Most common: bond coupons, loan payments.</p>
+                        <div class="bg-slate-800/80 rounded p-3">
+                            <div class="timeline" style="padding: 1.5rem 0;">
+                                <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">0</span></div>
+                                <div class="tl-point"><span class="tl-value text-emerald-400 text-xs">PMT</span><span class="tl-dot filled"></span><span class="tl-label">1</span></div>
+                                <div class="tl-point"><span class="tl-value text-emerald-400 text-xs">PMT</span><span class="tl-dot filled"></span><span class="tl-label">2</span></div>
+                                <div class="tl-point"><span class="tl-value text-emerald-400 text-xs">PMT</span><span class="tl-dot filled"></span><span class="tl-label">3</span></div>
+                                <div class="tl-point"><span class="tl-value text-emerald-400 text-xs">PMT</span><span class="tl-dot filled"></span><span class="tl-label">n</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-cyan-500/20">
+                        <h3 class="font-bold text-cyan-300 mb-2">Annuity Due (Beginning of Period)</h3>
+                        <p class="text-sm text-slate-400 mb-3">Payments occur at the <strong class="text-white">beginning</strong> of each period. Examples: rent, insurance premiums.</p>
+                        <div class="bg-slate-800/80 rounded p-3">
+                            <div class="timeline" style="padding: 1.5rem 0;">
+                                <div class="tl-point"><span class="tl-value text-emerald-400 text-xs">PMT</span><span class="tl-dot filled"></span><span class="tl-label">0</span></div>
+                                <div class="tl-point"><span class="tl-value text-emerald-400 text-xs">PMT</span><span class="tl-dot filled"></span><span class="tl-label">1</span></div>
+                                <div class="tl-point"><span class="tl-value text-emerald-400 text-xs">PMT</span><span class="tl-dot filled"></span><span class="tl-label">2</span></div>
+                                <div class="tl-point"><span class="tl-value text-emerald-400 text-xs">PMT</span><span class="tl-dot filled"></span><span class="tl-label">n-1</span></div>
+                                <div class="tl-point"><span class="tl-value text-slate-600">&nbsp;</span><span class="tl-dot"></span><span class="tl-label">n</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PV of Ordinary Annuity -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">PV of an Ordinary Annuity</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-lg font-mono text-cyan-300">PV = PMT &times; <span class="text-white">[</span> 1 &minus; (1+r)<sup>&minus;n</sup> <span class="text-white">]</span> &divide; r</p>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                    <p class="text-slate-400 mb-1"><strong class="text-white">Example:</strong> $10,000/year for 5 years at 12%</p>
+                    <p class="text-slate-300">PV = $10,000 &times; [1 &minus; (1.12)<sup>&minus;5</sup>] &divide; 0.12</p>
+                    <p class="text-slate-300">PV = $10,000 &times; [1 &minus; 0.56743] &divide; 0.12 = $10,000 &times; 3.60478</p>
+                    <p class="text-cyan-400 font-bold mt-1">PV = $36,047.76</p>
+                </div>
+            </div>
+
+            <!-- PV of Annuity Due -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">PV of an Annuity Due</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-lg font-mono text-cyan-300">PV<sub>due</sub> = PV<sub>ordinary</sub> &times; (1 + r)</p>
+                </div>
+                <p class="text-slate-300 text-sm mb-3">Since each payment arrives one period earlier, every payment is discounted one less period. The PV is simply the ordinary annuity PV multiplied by (1+r).</p>
+                <div class="bg-cyan-500/10 rounded-lg p-3 border border-cyan-500/30">
+                    <p class="text-sm text-cyan-300"><strong>Key insight:</strong> An annuity due is always worth <strong>more</strong> than an ordinary annuity with the same PMT, r, and n. Money received sooner is worth more.</p>
+                </div>
+            </div>
+
+            <!-- Perpetuities -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">Perpetuities</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-xl font-mono text-cyan-300">PV = PMT &divide; r</p>
+                </div>
+                <p class="text-slate-300 text-sm mb-3">A <span class="text-cyan-400 font-semibold">perpetuity</span> is an annuity that lasts <strong class="text-white">forever</strong>. The formula is beautifully simple because as n &rarr; &infin;, the annuity factor converges to 1/r.</p>
+                <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm mb-3">
+                    <p class="text-slate-400 mb-1"><strong class="text-white">Example:</strong> An endowment pays $2,000/year forever. Rate = 14%.</p>
+                    <p class="text-slate-300">PV = $2,000 &divide; 0.14 = <strong class="text-cyan-400">$14,285.71</strong></p>
+                </div>
+                <div class="bg-cyan-500/10 rounded-lg p-3 border border-cyan-500/30">
+                    <p class="text-sm text-cyan-300"><strong>Elegance:</strong> To fund a $25,000/year scholarship at 5%, you need $25,000 &divide; 0.05 = $500,000. The principal is never touched &mdash; only the interest is paid out each year.</p>
+                </div>
+            </div>
+
+            <!-- FV of Annuity -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">FV of an Annuity (Savings Plans)</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-lg font-mono text-cyan-300">FV = PMT &times; <span class="text-white">[</span> (1+r)<sup>n</sup> &minus; 1 <span class="text-white">]</span> &divide; r</p>
+                </div>
+                <p class="text-slate-300 text-sm mb-3">How much will a stream of regular deposits grow to? This is the core of retirement planning.</p>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-slate-400 mb-1"><strong class="text-white">Retirement:</strong> $500/month at 9%/year for 40 years</p>
+                        <p class="text-slate-300">r = 0.09/12 = 0.0075, n = 480</p>
+                        <p class="text-slate-300">FV = $500 &times; [(1.0075)<sup>480</sup> &minus; 1] / 0.0075</p>
+                        <p class="text-cyan-400 font-bold">FV = $2,340,660</p>
+                        <p class="text-slate-500 text-xs mt-1">Total deposited: $240,000. Interest earned: $2,100,660!</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-slate-400 mb-1"><strong class="text-white">ETF savings:</strong> $200/month at 7%/year for 30 years</p>
+                        <p class="text-slate-300">r = 0.07/12 = 0.005833, n = 360</p>
+                        <p class="text-slate-300">FV = $200 &times; [(1.005833)<sup>360</sup> &minus; 1] / 0.005833</p>
+                        <p class="text-cyan-400 font-bold">FV = $243,994</p>
+                        <p class="text-slate-500 text-xs mt-1">Total deposited: $72,000. Interest earned: $171,994!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-cyan-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Bond coupons are <strong class="text-white">ordinary annuities</strong> &mdash; the PV of the coupon stream is part of the bond&rsquo;s price (a liability on the issuer&rsquo;s balance sheet). Lease payments are <strong class="text-white">annuities due</strong> &mdash; the PV of lease payments determines the Right-of-Use Asset (A) and Lease Liability (L) on the balance sheet. In both cases, annuity formulas determine how these items enter <strong class="text-white">A = L + SE</strong>.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 3: NPV & APPLICATIONS ======================== -->
+        <div id="panel-applications" class="tab-panel">
+            <!-- PV of Uneven Cash Flow Stream -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-4">PV of an Uneven Cash Flow Stream</h2>
+                <p class="text-slate-300 text-sm mb-4">When cash flows are not equal each period, discount each one individually and sum them up.</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead><tr class="border-b border-slate-600">
+                            <th class="text-left py-2 px-3 text-slate-400">Year</th>
+                            <th class="text-right py-2 px-3 text-slate-400">Cash Flow</th>
+                            <th class="text-right py-2 px-3 text-slate-400">Discount Factor (10%)</th>
+                            <th class="text-right py-2 px-3 text-slate-400">Present Value</th>
+                        </tr></thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">1</td><td class="text-right py-2 px-3">$5,000</td><td class="text-right py-2 px-3">0.90909</td><td class="text-right py-2 px-3">$4,545.45</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">2</td><td class="text-right py-2 px-3">$8,000</td><td class="text-right py-2 px-3">0.82645</td><td class="text-right py-2 px-3">$6,611.57</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">3</td><td class="text-right py-2 px-3">$3,000</td><td class="text-right py-2 px-3">0.75131</td><td class="text-right py-2 px-3">$2,253.94</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-2 px-3">4</td><td class="text-right py-2 px-3">$12,000</td><td class="text-right py-2 px-3">0.68301</td><td class="text-right py-2 px-3">$8,196.16</td></tr>
+                            <tr class="border-t-2 border-slate-500 font-bold"><td class="py-2 px-3">Total</td><td class="text-right py-2 px-3">$28,000</td><td class="py-2 px-3"></td><td class="text-right py-2 px-3 text-cyan-400">$21,607.13</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- NPV -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">Net Present Value (NPV)</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-lg font-mono text-cyan-300">NPV = &minus;Initial Investment + PV of Future Cash Flows</p>
+                </div>
+                <p class="text-slate-300 text-sm mb-4">NPV measures whether an investment <strong class="text-white">creates or destroys value</strong>. It&rsquo;s the single most important capital budgeting tool.</p>
+                <div class="grid md:grid-cols-3 gap-3 mb-4">
+                    <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/30 text-center">
+                        <p class="text-emerald-400 font-bold text-lg">NPV &gt; 0</p>
+                        <p class="text-sm text-emerald-300">Accept</p>
+                        <p class="text-xs text-slate-400">Creates value</p>
+                    </div>
+                    <div class="bg-slate-700/50 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-slate-300 font-bold text-lg">NPV = 0</p>
+                        <p class="text-sm text-slate-400">Indifferent</p>
+                        <p class="text-xs text-slate-500">Earns exactly the required return</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/30 text-center">
+                        <p class="text-rose-400 font-bold text-lg">NPV &lt; 0</p>
+                        <p class="text-sm text-rose-300">Reject</p>
+                        <p class="text-xs text-slate-400">Destroys value</p>
+                    </div>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-sm">
+                    <p class="text-slate-400 mb-1"><strong class="text-white">Factory Example:</strong> Invest $1,100,000 today. Receive $350,000/year for 5 years. Cost of capital = 12%.</p>
+                    <p class="text-slate-300">PV of inflows = $350,000 &times; [1 &minus; (1.12)<sup>&minus;5</sup>] / 0.12 = $350,000 &times; 3.60478 = $1,261,673</p>
+                    <p class="text-slate-300">NPV = &minus;$1,100,000 + $1,261,673 = <strong class="text-emerald-400">+$161,673</strong></p>
+                    <p class="text-emerald-400 mt-1">NPV &gt; 0 &rarr; <strong>Accept</strong> the project. It creates $161,673 of value.</p>
+                </div>
+            </div>
+
+            <!-- IRR -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">Internal Rate of Return (IRR)</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-lg font-mono text-cyan-300">IRR = the rate that makes NPV = 0</p>
+                </div>
+                <p class="text-slate-300 text-sm mb-3">The IRR is the project&rsquo;s own &ldquo;rate of return.&rdquo; Compare it to the cost of capital to decide:</p>
+                <div class="grid md:grid-cols-2 gap-3 mb-4">
+                    <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/30">
+                        <p class="text-emerald-400 font-bold">IRR &gt; Cost of Capital &rarr; Accept</p>
+                        <p class="text-xs text-slate-400">Project earns more than required</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/30">
+                        <p class="text-rose-400 font-bold">IRR &lt; Cost of Capital &rarr; Reject</p>
+                        <p class="text-xs text-slate-400">Project earns less than required</p>
+                    </div>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                    <p class="text-slate-400 mb-1"><strong class="text-white">Same factory:</strong> &minus;$1,100,000 + $350,000/yr for 5 years</p>
+                    <p class="text-slate-300">IRR = <strong class="text-cyan-400">18.03%</strong> &gt; 12% cost of capital &rarr; Accept</p>
+                </div>
+            </div>
+
+            <!-- NPV vs IRR -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-cyan-400 mb-4">NPV vs. IRR: When They Disagree</h2>
+                <p class="text-slate-300 text-sm mb-3">For a single project, NPV and IRR always give the same accept/reject answer. But for <strong class="text-white">mutually exclusive projects</strong> (pick only one), they can rank differently.</p>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>Rule:</strong> When NPV and IRR conflict, <strong>always use NPV</strong> as the tiebreaker. NPV measures the actual dollar value created, while IRR can be misleading with different project sizes or timing patterns.</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-cyan-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">NPV determines whether acquiring assets <strong class="text-white">creates value for stockholders&rsquo; equity</strong>. A positive-NPV project increases the value of assets by more than the cost, which flows through to SE. A negative-NPV project would decrease SE &mdash; the company is better off not investing. This is how <strong class="text-white">A = L + SE</strong> connects to capital budgeting.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 4: TVM CALCULATOR ======================== -->
+        <div id="panel-calculator" class="tab-panel">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Input Panel -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-cyan-400 mb-4">TVM Calculator</h2>
+                    <!-- Mode Selector -->
+                    <div class="flex flex-wrap gap-2 mb-5">
+                        <button onclick="setCalcMode('fv')" id="mode-fv" class="calc-mode bg-cyan-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium">Solve for FV</button>
+                        <button onclick="setCalcMode('pv')" id="mode-pv" class="calc-mode bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-medium">Solve for PV</button>
+                        <button onclick="setCalcMode('pmt')" id="mode-pmt" class="calc-mode bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-medium">Solve for PMT</button>
+                        <button onclick="setCalcMode('npv')" id="mode-npv" class="calc-mode bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-medium">NPV</button>
+                    </div>
+                    <!-- Standard Inputs -->
+                    <div id="calc-standard" class="space-y-3">
+                        <div id="row-pv"><label class="text-sm text-slate-400 block mb-1">Present Value ($)</label><input type="number" id="c-pv" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" placeholder="e.g. 10000"></div>
+                        <div id="row-fv"><label class="text-sm text-slate-400 block mb-1">Future Value ($)</label><input type="number" id="c-fv" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" placeholder="e.g. 15000"></div>
+                        <div id="row-pmt"><label class="text-sm text-slate-400 block mb-1">Payment per Period ($)</label><input type="number" id="c-pmt" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" placeholder="e.g. 500"></div>
+                        <div><label class="text-sm text-slate-400 block mb-1">Annual Interest Rate (%)</label><input type="number" id="c-rate" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" placeholder="e.g. 8" step="0.01"></div>
+                        <div><label class="text-sm text-slate-400 block mb-1">Number of Years</label><input type="number" id="c-years" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" placeholder="e.g. 10"></div>
+                        <div><label class="text-sm text-slate-400 block mb-1">Compounding</label>
+                            <select id="c-compound" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white">
+                                <option value="1">Annual</option><option value="2">Semi-Annual</option><option value="4">Quarterly</option><option value="12">Monthly</option><option value="365">Daily</option>
+                            </select>
+                        </div>
+                        <div id="row-timing"><label class="text-sm text-slate-400 block mb-1">Payment Timing</label>
+                            <div class="flex gap-4">
+                                <label class="text-sm text-slate-300"><input type="radio" name="timing" value="end" checked class="mr-1">End (Ordinary)</label>
+                                <label class="text-sm text-slate-300"><input type="radio" name="timing" value="begin" class="mr-1">Beginning (Due)</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- NPV Inputs -->
+                    <div id="calc-npv" class="hidden space-y-3">
+                        <div><label class="text-sm text-slate-400 block mb-1">Initial Investment ($)</label><input type="number" id="c-npv-invest" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" placeholder="e.g. 1100000"></div>
+                        <div><label class="text-sm text-slate-400 block mb-1">Discount Rate (%)</label><input type="number" id="c-npv-rate" class="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white" placeholder="e.g. 12" step="0.01"></div>
+                        <div><label class="text-sm text-slate-400 block mb-1">Cash Flows by Year</label>
+                            <div id="npv-cf-rows" class="space-y-2">
+                                <div class="flex gap-2 items-center"><span class="text-xs text-slate-500 w-12">Year 1</span><input type="number" class="npv-cf flex-1 bg-slate-900 border border-slate-600 rounded px-3 py-1.5 text-white text-sm" placeholder="Cash flow"></div>
+                                <div class="flex gap-2 items-center"><span class="text-xs text-slate-500 w-12">Year 2</span><input type="number" class="npv-cf flex-1 bg-slate-900 border border-slate-600 rounded px-3 py-1.5 text-white text-sm" placeholder="Cash flow"></div>
+                                <div class="flex gap-2 items-center"><span class="text-xs text-slate-500 w-12">Year 3</span><input type="number" class="npv-cf flex-1 bg-slate-900 border border-slate-600 rounded px-3 py-1.5 text-white text-sm" placeholder="Cash flow"></div>
+                            </div>
+                            <button onclick="addNPVYear()" class="mt-2 text-cyan-400 hover:text-cyan-300 text-sm font-medium">+ Add Year</button>
+                        </div>
+                    </div>
+                    <button onclick="calculate()" class="mt-5 w-full bg-cyan-600 hover:bg-cyan-500 text-white px-5 py-2.5 rounded-lg font-medium transition-colors">Calculate</button>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-xl font-bold text-cyan-400 mb-4">Result</h2>
+                    <div id="calc-answer" class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-4 text-center">
+                        <p class="text-slate-400">Enter values and click Calculate.</p>
+                    </div>
+                    <div id="calc-steps" class="hidden mb-4">
+                        <h3 class="text-sm font-bold text-slate-400 mb-2 uppercase tracking-wider">Step-by-Step Solution</h3>
+                        <div id="calc-steps-content" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-sm text-slate-300 space-y-1 font-mono"></div>
+                    </div>
+                    <div id="calc-sensitivity" class="hidden mb-4">
+                        <h3 class="text-sm font-bold text-slate-400 mb-2 uppercase tracking-wider">Sensitivity Analysis</h3>
+                        <div id="calc-sens-content" class="overflow-x-auto"></div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600" style="height:250px;">
+                        <canvas id="tvmChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 5: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
+            <!-- Example 1: College Savings Fund -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-2">Example 1: College Savings Fund</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-cyan-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">You invest $5,000 today in a college savings account earning 7% per year, compounded annually. How much will be in the account after 18 years?</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 1:</span> <span class="text-slate-300">Identify Variables</span></div>
+                        <button onclick="revealStep('w1',1)" id="w1-btn-1" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w1-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PV = $5,000 &nbsp;|&nbsp; r = 7% = 0.07 &nbsp;|&nbsp; n = 18 years</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 2:</span> <span class="text-slate-300">Apply the Formula</span></div>
+                        <button onclick="revealStep('w1',2)" id="w1-btn-2" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w1-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">FV = PV &times; (1 + r)<sup>n</sup></p>
+                        <p class="text-slate-300">FV = $5,000 &times; (1.07)<sup>18</sup> = $5,000 &times; 3.37993 = <strong class="text-cyan-400">$16,899.66</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2: House Down Payment -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-2">Example 2: House Down Payment</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-cyan-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">You want to have $80,000 for a down payment in 5 years. If you can earn 6% annually, how much do you need to invest today?</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 1:</span> <span class="text-slate-300">Identify Variables</span></div>
+                        <button onclick="revealStep('w2',1)" id="w2-btn-1" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w2-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">FV = $80,000 &nbsp;|&nbsp; r = 6% = 0.06 &nbsp;|&nbsp; n = 5 years</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 2:</span> <span class="text-slate-300">Apply the Formula</span></div>
+                        <button onclick="revealStep('w2',2)" id="w2-btn-2" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w2-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PV = FV &divide; (1 + r)<sup>n</sup></p>
+                        <p class="text-slate-300">PV = $80,000 &divide; (1.06)<sup>5</sup> = $80,000 &divide; 1.33823 = <strong class="text-cyan-400">$59,780.65</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 3: Quarterly Compounding -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-2">Example 3: Quarterly Compounding</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-cyan-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">Invest $10,000 at 8% compounded quarterly for 5 years. What is the future value?</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 1:</span> <span class="text-slate-300">Identify Variables</span></div>
+                        <button onclick="revealStep('w3',1)" id="w3-btn-1" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w3-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PV = $10,000 &nbsp;|&nbsp; r = 8% &nbsp;|&nbsp; m = 4 (quarterly) &nbsp;|&nbsp; n = 5 years</p>
+                        <p class="text-slate-300">Rate per period = 8%/4 = 2% &nbsp;|&nbsp; Total periods = 5 &times; 4 = 20</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 2:</span> <span class="text-slate-300">Apply the Formula</span></div>
+                        <button onclick="revealStep('w3',2)" id="w3-btn-2" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w3-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">FV = PV &times; (1 + r/m)<sup>n&times;m</sup></p>
+                        <p class="text-slate-300">FV = $10,000 &times; (1.02)<sup>20</sup> = $10,000 &times; 1.48595 = <strong class="text-cyan-400">$14,859.47</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 4: Endowment Valuation -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-2">Example 4: Endowment Valuation (Perpetuity)</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-cyan-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">A university wants to fund a $25,000/year scholarship forever. The endowment earns 5% annually. How much must be donated?</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 1:</span> <span class="text-slate-300">Identify as a Perpetuity</span></div>
+                        <button onclick="revealStep('w4',1)" id="w4-btn-1" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w4-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PMT = $25,000/year forever &nbsp;|&nbsp; r = 5% = 0.05</p>
+                        <p class="text-slate-300">This is a perpetuity: PV = PMT &divide; r</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 2:</span> <span class="text-slate-300">Calculate</span></div>
+                        <button onclick="revealStep('w4',2)" id="w4-btn-2" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w4-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PV = $25,000 &divide; 0.05 = <strong class="text-cyan-400">$500,000</strong></p>
+                        <p class="text-slate-500 mt-1">A $500,000 endowment generates $25,000/year forever at 5%. The principal is never touched.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 5: Car Loan Payment -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-2">Example 5: Car Loan Payment</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-cyan-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">You borrow $35,000 for a car at 6% annual rate, monthly payments, 5-year loan. What is your monthly payment?</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 1:</span> <span class="text-slate-300">Identify Variables</span></div>
+                        <button onclick="revealStep('w5',1)" id="w5-btn-1" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w5-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PV = $35,000 (loan amount) &nbsp;|&nbsp; r = 6%/12 = 0.5% per month &nbsp;|&nbsp; n = 60 months</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 2:</span> <span class="text-slate-300">Solve for PMT</span></div>
+                        <button onclick="revealStep('w5',2)" id="w5-btn-2" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w5-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PMT = PV &times; r &divide; [1 &minus; (1+r)<sup>&minus;n</sup>]</p>
+                        <p class="text-slate-300">PMT = $35,000 &times; 0.005 &divide; [1 &minus; (1.005)<sup>&minus;60</sup>]</p>
+                        <p class="text-slate-300">PMT = $175 &divide; [1 &minus; 0.74137] = $175 &divide; 0.25863 = <strong class="text-cyan-400">$676.65/month</strong></p>
+                        <p class="text-slate-500 mt-1">Total paid: $676.65 &times; 60 = $40,599. Interest cost: $5,599.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 6: Retirement Savings -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-2">Example 6: Retirement Savings (FV of Annuity)</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-cyan-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">You save $500/month at 9% annual return for 40 years. How much will you have at retirement?</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 1:</span> <span class="text-slate-300">Identify Variables</span></div>
+                        <button onclick="revealStep('w6',1)" id="w6-btn-1" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w6-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PMT = $500/month &nbsp;|&nbsp; r = 9%/12 = 0.75% per month &nbsp;|&nbsp; n = 40 &times; 12 = 480 months</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 2:</span> <span class="text-slate-300">Apply FV of Annuity Formula</span></div>
+                        <button onclick="revealStep('w6',2)" id="w6-btn-2" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w6-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">FV = PMT &times; [(1+r)<sup>n</sup> &minus; 1] / r</p>
+                        <p class="text-slate-300">FV = $500 &times; [(1.0075)<sup>480</sup> &minus; 1] / 0.0075</p>
+                        <p class="text-slate-300">FV = $500 &times; [36.1099 &minus; 1] / 0.0075 = $500 &times; 4,681.32 = <strong class="text-cyan-400">$2,340,659</strong></p>
+                        <p class="text-slate-500 mt-1">Total deposited: $240,000. Compound growth: ~$2.1M!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 7: Should We Build the Factory? -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-2">Example 7: Should We Build the Factory? (NPV + IRR)</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-cyan-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">A factory costs $1,100,000 to build. It will generate $350,000/year in cash flows for 5 years. The company&rsquo;s cost of capital is 12%. Should we build it?</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 1:</span> <span class="text-slate-300">Calculate PV of Cash Flows</span></div>
+                        <button onclick="revealStep('w7',1)" id="w7-btn-1" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w7-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PV = $350,000 &times; [1 &minus; (1.12)<sup>&minus;5</sup>] / 0.12</p>
+                        <p class="text-slate-300">PV = $350,000 &times; 3.60478 = $1,261,673</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 2:</span> <span class="text-slate-300">Compute NPV</span></div>
+                        <button onclick="revealStep('w7',2)" id="w7-btn-2" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w7-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">NPV = &minus;$1,100,000 + $1,261,673 = <strong class="text-emerald-400">+$161,673</strong></p>
+                        <p class="text-emerald-400">NPV &gt; 0 &rarr; Build the factory!</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 3:</span> <span class="text-slate-300">Check IRR</span></div>
+                        <button onclick="revealStep('w7',3)" id="w7-btn-3" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w7-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">IRR = 18.03% (the rate that makes NPV = 0)</p>
+                        <p class="text-emerald-400">IRR (18.03%) &gt; Cost of Capital (12%) &rarr; Confirms: <strong>Accept!</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 8: Zero-Coupon Note Payable -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-cyan-400 mb-2">Example 8: Zero-Coupon Note Payable (Accounting Application)</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-cyan-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">A company issues a 3-year, $100,000 face value zero-coupon note. The market rate is 8%. What is the initial carrying value, and what are the journal entries?</p>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 1:</span> <span class="text-slate-300">Calculate PV (Issuance Price)</span></div>
+                        <button onclick="revealStep('w8',1)" id="w8-btn-1" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w8-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">PV = $100,000 &divide; (1.08)<sup>3</sup> = $100,000 &divide; 1.25971 = <strong class="text-cyan-400">$79,383.22</strong></p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 2:</span> <span class="text-slate-300">Issuance Journal Entry</span></div>
+                        <button onclick="revealStep('w8',2)" id="w8-btn-2" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w8-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <div class="bg-slate-800/80 rounded p-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Cash</td><td class="text-right pl-4">79,383</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Notes Payable</td><td></td><td class="text-right pl-4">79,383</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-slate-500 mt-2">Note recorded at present value. The discount ($20,617) will be recognized as interest expense over 3 years.</p>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-cyan-400 font-bold">Step 3:</span> <span class="text-slate-300">Year 1 Interest Accrual</span></div>
+                        <button onclick="revealStep('w8',3)" id="w8-btn-3" class="bg-cyan-600 hover:bg-cyan-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w8-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300 mb-2">Interest Expense = Carrying Value &times; Market Rate = $79,383 &times; 8% = <strong class="text-white">$6,351</strong></p>
+                        <div class="bg-slate-800/80 rounded p-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Interest Expense</td><td class="text-right pl-4">6,351</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Notes Payable</td><td></td><td class="text-right pl-4">6,351</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-slate-500 mt-2">New carrying value: $79,383 + $6,351 = $85,734. By Year 3, carrying value will reach $100,000 (face value).</p>
+                        <div class="overflow-x-auto mt-3">
+                            <table class="w-full text-sm">
+                                <thead><tr class="border-b border-slate-600 text-slate-400"><th class="p-2 text-left">Year</th><th class="p-2 text-right">Beg. CV</th><th class="p-2 text-right">Interest (8%)</th><th class="p-2 text-right">End CV</th></tr></thead>
+                                <tbody class="text-slate-300">
+                                    <tr class="border-b border-slate-700"><td class="p-2">1</td><td class="text-right p-2">$79,383</td><td class="text-right p-2">$6,351</td><td class="text-right p-2">$85,734</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">2</td><td class="text-right p-2">$85,734</td><td class="text-right p-2">$6,859</td><td class="text-right p-2">$92,593</td></tr>
+                                    <tr><td class="p-2">3</td><td class="text-right p-2">$92,593</td><td class="text-right p-2">$7,407</td><td class="text-right p-2 font-bold text-cyan-400">$100,000</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 6: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-cyan-400">Practice Questions</h2>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="p-progress"></p></div>
+                        <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
+                        <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
+                    </div>
+                </div>
+                <div id="p-question" class="mb-4"><p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p></div>
+                <div id="p-answer" class="mb-4 hidden"></div>
+                <div id="p-feedback" class="mb-4 hidden"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.pNew()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Journal Entry Practice -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-cyan-400">Journal Entry Practice</h2>
+                    <div class="text-right"><p class="text-xs text-slate-500">Progress</p><p class="text-sm text-slate-400" id="je-progress"></p></div>
+                </div>
+                <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
+                <div id="je-lines" class="space-y-2 mb-4"></div>
+                <div class="flex gap-3 mb-4">
+                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                    <button onclick="QuizEngine.jeNew()" class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                </div>
+                <div id="je-feedback" class="hidden"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Present Value Study Tool</p>
+    </div>
+
+<script>
+    // Tab switching
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+        if (tab === 'calculator' && !window.tvmChartInit) initCalcChart();
+    };
+
+    // Worked example reveals
+    window.revealStep = function(prefix, n) {
+        const div = document.getElementById(prefix + '-' + n);
+        const btn = document.getElementById(prefix + '-btn-' + n);
+        if (div.classList.contains('hidden')) { div.classList.remove('hidden'); btn.textContent = 'Hide'; }
+        else { div.classList.add('hidden'); btn.textContent = 'Show'; }
+    };
+
+    // ========== TVM CALCULATOR ==========
+    let calcMode = 'fv';
+    let tvmChart = null;
+    window.tvmChartInit = false;
+
+    function initCalcChart() {
+        const ctx = document.getElementById('tvmChart').getContext('2d');
+        tvmChart = new Chart(ctx, {
+            type: 'line',
+            data: { labels: [], datasets: [
+                { label: 'Compound Growth', data: [], borderColor: '#22d3ee', backgroundColor: 'rgba(34,211,238,0.1)', fill: true, tension: 0.3 },
+                { label: 'Simple Interest', data: [], borderColor: '#64748b', borderDash: [5,5], fill: false, tension: 0 }
+            ]},
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
+                scales: { x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#64748b', callback: v => '$' + v.toLocaleString() }, grid: { color: '#1e293b' } } }
+            }
+        });
+        window.tvmChartInit = true;
+    }
+
+    window.setCalcMode = function(mode) {
+        calcMode = mode;
+        document.querySelectorAll('.calc-mode').forEach(b => { b.className = 'calc-mode bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-medium'; });
+        document.getElementById('mode-' + mode).className = 'calc-mode bg-cyan-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium';
+        const std = document.getElementById('calc-standard');
+        const npvDiv = document.getElementById('calc-npv');
+        if (mode === 'npv') { std.classList.add('hidden'); npvDiv.classList.remove('hidden'); }
+        else { std.classList.remove('hidden'); npvDiv.classList.add('hidden'); }
+        // Show/hide inputs per mode
+        document.getElementById('row-pv').style.display = (mode === 'pv') ? 'none' : 'block';
+        document.getElementById('row-fv').style.display = (mode === 'fv') ? 'none' : 'block';
+        document.getElementById('row-pmt').style.display = (mode === 'fv' || mode === 'pv') ? 'none' : 'block';
+        document.getElementById('row-timing').style.display = (mode === 'pmt') ? 'block' : 'none';
+    };
+
+    window.addNPVYear = function() {
+        const rows = document.getElementById('npv-cf-rows');
+        const n = rows.children.length + 1;
+        const div = document.createElement('div');
+        div.className = 'flex gap-2 items-center';
+        div.innerHTML = '<span class="text-xs text-slate-500 w-12">Year ' + n + '</span><input type="number" class="npv-cf flex-1 bg-slate-900 border border-slate-600 rounded px-3 py-1.5 text-white text-sm" placeholder="Cash flow"><button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-rose-400 text-sm">\u00d7</button>';
+        rows.appendChild(div);
+    };
+
+    function fmtD(n) { return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+    window.calculate = function() {
+        const ansDiv = document.getElementById('calc-answer');
+        const stepsDiv = document.getElementById('calc-steps');
+        const stepsContent = document.getElementById('calc-steps-content');
+        const sensDiv = document.getElementById('calc-sensitivity');
+        const sensContent = document.getElementById('calc-sens-content');
+
+        if (calcMode === 'npv') {
+            const invest = parseFloat(document.getElementById('c-npv-invest').value) || 0;
+            const rate = (parseFloat(document.getElementById('c-npv-rate').value) || 0) / 100;
+            const cfs = [];
+            document.querySelectorAll('.npv-cf').forEach(inp => cfs.push(parseFloat(inp.value) || 0));
+            let pvSum = 0;
+            let stepsHTML = 'Initial Investment = ' + fmtD(invest) + '\n';
+            cfs.forEach((cf, i) => {
+                const pv = cf / Math.pow(1 + rate, i + 1);
+                pvSum += pv;
+                stepsHTML += 'Year ' + (i+1) + ': ' + fmtD(cf) + ' / (1+' + (rate*100).toFixed(1) + '%)^' + (i+1) + ' = ' + fmtD(pv) + '\n';
+            });
+            const npv = -invest + pvSum;
+            stepsHTML += 'PV of inflows = ' + fmtD(pvSum) + '\n';
+            stepsHTML += 'NPV = -' + fmtD(invest) + ' + ' + fmtD(pvSum) + ' = ' + fmtD(npv);
+            const color = npv >= 0 ? 'emerald' : 'rose';
+            ansDiv.innerHTML = '<p class="text-3xl font-bold text-' + color + '-400">' + fmtD(npv) + '</p><p class="text-sm text-' + color + '-300 mt-1">NPV is ' + (npv >= 0 ? 'positive \u2014 Accept' : 'negative \u2014 Reject') + '</p>';
+            stepsContent.textContent = stepsHTML;
+            stepsDiv.classList.remove('hidden');
+            sensDiv.classList.add('hidden');
+            // Update chart for NPV cumulative
+            if (tvmChart) {
+                const labels = ['0']; const cumData = [-invest]; let cum = -invest;
+                cfs.forEach((cf, i) => { cum += cf / Math.pow(1+rate, i+1); labels.push('Year ' + (i+1)); cumData.push(Math.round(cum * 100) / 100); });
+                tvmChart.data.labels = labels;
+                tvmChart.data.datasets[0].label = 'Cumulative NPV';
+                tvmChart.data.datasets[0].data = cumData;
+                tvmChart.data.datasets[1].data = [];
+                tvmChart.update();
+            }
+            return;
+        }
+
+        const rate = (parseFloat(document.getElementById('c-rate').value) || 0) / 100;
+        const years = parseFloat(document.getElementById('c-years').value) || 0;
+        const m = parseInt(document.getElementById('c-compound').value) || 1;
+        const rPer = rate / m;
+        const nPer = years * m;
+        const timing = document.querySelector('input[name="timing"]:checked').value;
+        let result, steps, label;
+
+        if (calcMode === 'fv') {
+            const pv = parseFloat(document.getElementById('c-pv').value) || 0;
+            const pmt = parseFloat(document.getElementById('c-pmt').value) || 0;
+            if (pmt === 0) {
+                result = pv * Math.pow(1 + rPer, nPer);
+                steps = 'FV = PV \u00d7 (1 + r/m)^(n\u00d7m)\nFV = ' + fmtD(pv) + ' \u00d7 (1 + ' + (rPer*100).toFixed(4) + '%)^' + nPer + '\nFV = ' + fmtD(result);
+            } else {
+                let fvAnn = pmt * (Math.pow(1+rPer, nPer) - 1) / rPer;
+                if (timing === 'begin') fvAnn *= (1 + rPer);
+                result = pv * Math.pow(1+rPer, nPer) + fvAnn;
+                steps = 'FV(lump) = ' + fmtD(pv) + ' \u00d7 (1+' + (rPer*100).toFixed(4) + '%)^' + nPer + ' = ' + fmtD(pv * Math.pow(1+rPer,nPer)) + '\nFV(annuity) = ' + fmtD(pmt) + ' \u00d7 [(1+r)^n - 1]/r = ' + fmtD(fvAnn) + '\nFV = ' + fmtD(result);
+            }
+            label = 'Future Value';
+        } else if (calcMode === 'pv') {
+            const fv = parseFloat(document.getElementById('c-fv').value) || 0;
+            const pmt = parseFloat(document.getElementById('c-pmt').value) || 0;
+            if (pmt === 0) {
+                result = fv / Math.pow(1 + rPer, nPer);
+                steps = 'PV = FV \u00f7 (1 + r/m)^(n\u00d7m)\nPV = ' + fmtD(fv) + ' \u00f7 (1 + ' + (rPer*100).toFixed(4) + '%)^' + nPer + '\nPV = ' + fmtD(result);
+            } else {
+                let pvAnn = pmt * (1 - Math.pow(1+rPer, -nPer)) / rPer;
+                if (timing === 'begin') pvAnn *= (1 + rPer);
+                const pvFv = fv / Math.pow(1+rPer, nPer);
+                result = pvAnn + pvFv;
+                steps = 'PV(annuity) = ' + fmtD(pmt) + ' \u00d7 [1-(1+r)^-n]/r = ' + fmtD(pvAnn) + '\nPV(lump) = ' + fmtD(fv) + ' / (1+r)^n = ' + fmtD(pvFv) + '\nPV = ' + fmtD(result);
+            }
+            label = 'Present Value';
+        } else { // pmt
+            const pv = parseFloat(document.getElementById('c-pv').value) || 0;
+            const fv = parseFloat(document.getElementById('c-fv').value) || 0;
+            let pmtCalc;
+            if (fv === 0) {
+                pmtCalc = pv * rPer / (1 - Math.pow(1+rPer, -nPer));
+                if (timing === 'begin') pmtCalc /= (1 + rPer);
+                steps = 'PMT = PV \u00d7 r / [1 - (1+r)^-n]\nPMT = ' + fmtD(pv) + ' \u00d7 ' + rPer.toFixed(6) + ' / [1 - (1+' + rPer.toFixed(6) + ')^-' + nPer + ']\nPMT = ' + fmtD(pmtCalc);
+            } else {
+                pmtCalc = (fv - pv * Math.pow(1+rPer, nPer)) * rPer / (Math.pow(1+rPer, nPer) - 1);
+                if (timing === 'begin') pmtCalc /= (1 + rPer);
+                steps = 'PMT = (FV - PV(1+r)^n) \u00d7 r / [(1+r)^n - 1]\nPMT = ' + fmtD(pmtCalc);
+            }
+            result = pmtCalc;
+            label = 'Payment';
+        }
+
+        ansDiv.innerHTML = '<p class="text-3xl font-bold text-cyan-400">' + fmtD(result) + '</p><p class="text-sm text-slate-400 mt-1">' + label + '</p>';
+        stepsContent.textContent = steps;
+        stepsDiv.classList.remove('hidden');
+
+        // Sensitivity table
+        const baseRate = rate * 100;
+        let sensHTML = '<table class="w-full text-sm"><thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Rate</th><th class="text-right py-1 px-2 text-slate-400">Result</th></tr></thead><tbody class="text-slate-300">';
+        for (let delta = -2; delta <= 2; delta++) {
+            const testRate = (baseRate + delta) / 100;
+            if (testRate <= 0) continue;
+            const tr = testRate / m;
+            let val;
+            if (calcMode === 'fv') { const pv = parseFloat(document.getElementById('c-pv').value)||0; val = pv * Math.pow(1+tr, nPer); }
+            else if (calcMode === 'pv') { const fv = parseFloat(document.getElementById('c-fv').value)||0; val = fv / Math.pow(1+tr, nPer); }
+            else { const pv = parseFloat(document.getElementById('c-pv').value)||0; val = pv * tr / (1 - Math.pow(1+tr, -nPer)); }
+            const bold = delta === 0 ? ' font-bold text-cyan-400' : '';
+            sensHTML += '<tr class="border-b border-slate-700/50' + bold + '"><td class="py-1 px-2">' + (baseRate+delta).toFixed(1) + '%' + (delta===0?' (current)':'') + '</td><td class="text-right py-1 px-2">' + fmtD(val) + '</td></tr>';
+        }
+        sensHTML += '</tbody></table>';
+        sensContent.innerHTML = sensHTML;
+        sensDiv.classList.remove('hidden');
+
+        // Update chart
+        if (tvmChart) {
+            const pv0 = (calcMode === 'fv') ? (parseFloat(document.getElementById('c-pv').value)||0) : result;
+            const labels = []; const compData = []; const simpData = [];
+            for (let yr = 0; yr <= years; yr++) {
+                labels.push(yr === 0 ? 'Now' : 'Year ' + yr);
+                compData.push(Math.round(pv0 * Math.pow(1+rate, yr) * 100)/100);
+                simpData.push(Math.round((pv0 + pv0 * rate * yr)*100)/100);
+            }
+            tvmChart.data.labels = labels;
+            tvmChart.data.datasets[0].label = 'Compound Growth';
+            tvmChart.data.datasets[0].data = compData;
+            tvmChart.data.datasets[1].data = simpData;
+            tvmChart.update();
+        }
+    };
+
+    // Init calc mode visibility
+    setCalcMode('fv');
+
+    // ========== PRACTICE QUESTION GENERATORS ==========
+    const { rand, pick, fmt } = QuizEngine;
+
+    // Numeric generators (14)
+    function genFVSingle() {
+        const pv = rand(1,50)*1000; const r = pick([4,5,6,7,8,9,10,12]); const n = rand(3,20);
+        const ans = Math.round(pv * Math.pow(1+r/100, n) * 100)/100;
+        return { question: 'You invest $' + fmt(pv) + ' at ' + r + '% compounded annually for ' + n + ' years.<br><br>What is the future value?', type: 'number', answer: Math.round(ans), explanation: 'FV = $' + fmt(pv) + ' \u00d7 (1.' + (r<10?'0':'') + r + ')<sup>' + n + '</sup> = <strong>$' + fmt(Math.round(ans)) + '</strong>' };
+    }
+    function genPVSingle() {
+        const fv = rand(5,100)*1000; const r = pick([4,5,6,7,8,10,12]); const n = rand(2,15);
+        const ans = Math.round(fv / Math.pow(1+r/100, n) * 100)/100;
+        return { question: 'You need $' + fmt(fv) + ' in ' + n + ' years. The discount rate is ' + r + '%.<br><br>How much must you invest today?', type: 'number', answer: Math.round(ans), explanation: 'PV = $' + fmt(fv) + ' \u00f7 (1.' + (r<10?'0':'') + r + ')<sup>' + n + '</sup> = <strong>$' + fmt(Math.round(ans)) + '</strong>' };
+    }
+    function genCompoundFrequency() {
+        const pv = rand(5,50)*1000; const r = pick([6,8,10,12]); const n = rand(3,10); const m = pick([2,4,12]);
+        const mName = m===2?'semi-annually':m===4?'quarterly':'monthly';
+        const ans = Math.round(pv * Math.pow(1+r/100/m, n*m)*100)/100;
+        return { question: 'Invest $' + fmt(pv) + ' at ' + r + '% compounded ' + mName + ' for ' + n + ' years.<br><br>What is the future value?', type: 'number', answer: Math.round(ans), explanation: 'FV = $' + fmt(pv) + ' \u00d7 (1 + ' + r + '%/' + m + ')<sup>' + n + '\u00d7' + m + '</sup> = <strong>$' + fmt(Math.round(ans)) + '</strong>' };
+    }
+    function genRule72() {
+        const r = pick([3,4,6,8,9,12,15,18]);
+        const ans = 72/r;
+        return { question: 'Using the Rule of 72, approximately how many years will it take for an investment to double at ' + r + '% per year?', type: 'number', answer: ans, tolerance: 0.5, explanation: '72 \u00f7 ' + r + ' = <strong>' + ans + ' years</strong>' };
+    }
+    function genPVAnnuityOrd() {
+        const pmt = rand(1,20)*1000; const r = pick([5,6,8,10,12]); const n = rand(3,15);
+        const factor = (1 - Math.pow(1+r/100, -n)) / (r/100);
+        const ans = Math.round(pmt * factor);
+        return { question: 'An ordinary annuity pays $' + fmt(pmt) + '/year for ' + n + ' years. The discount rate is ' + r + '%.<br><br>What is the present value?', type: 'number', answer: ans, explanation: 'PV = $' + fmt(pmt) + ' \u00d7 [1 \u2212 (1.' + (r<10?'0':'') + r + ')<sup>\u2212' + n + '</sup>] / ' + (r/100) + ' = <strong>$' + fmt(ans) + '</strong>' };
+    }
+    function genPVAnnuityDue() {
+        const pmt = rand(1,15)*1000; const r = pick([5,6,8,10,12]); const n = rand(3,12);
+        const ordFactor = (1 - Math.pow(1+r/100, -n)) / (r/100);
+        const ans = Math.round(pmt * ordFactor * (1+r/100));
+        return { question: 'An annuity due pays $' + fmt(pmt) + '/year for ' + n + ' years (payments at the beginning of each year). The discount rate is ' + r + '%.<br><br>What is the present value?', type: 'number', answer: ans, explanation: 'PV(ordinary) = $' + fmt(pmt) + ' \u00d7 annuity factor = $' + fmt(Math.round(pmt*ordFactor)) + '.<br>PV(due) = PV(ordinary) \u00d7 (1+r) = <strong>$' + fmt(ans) + '</strong>' };
+    }
+    function genPerpetuity() {
+        const pmt = rand(1,50)*1000; const r = pick([4,5,6,7,8,10,12,14]);
+        const ans = Math.round(pmt / (r/100));
+        return { question: 'A perpetuity pays $' + fmt(pmt) + '/year forever. The discount rate is ' + r + '%.<br><br>What is the present value?', type: 'number', answer: ans, explanation: 'PV = $' + fmt(pmt) + ' \u00f7 ' + (r/100) + ' = <strong>$' + fmt(ans) + '</strong>' };
+    }
+    function genFVAnnuity() {
+        const pmt = rand(1,10)*1000; const r = pick([5,6,7,8,9,10]); const n = rand(5,20);
+        const factor = (Math.pow(1+r/100,n)-1)/(r/100);
+        const ans = Math.round(pmt * factor);
+        return { question: 'You deposit $' + fmt(pmt) + '/year into a savings account earning ' + r + '% for ' + n + ' years (ordinary annuity).<br><br>What is the future value?', type: 'number', answer: ans, explanation: 'FV = $' + fmt(pmt) + ' \u00d7 [(1.' + (r<10?'0':'') + r + ')<sup>' + n + '</sup> \u2212 1] / ' + (r/100) + ' = <strong>$' + fmt(ans) + '</strong>' };
+    }
+    function genNPV() {
+        const invest = rand(100,500)*1000; const cf = rand(20,120)*1000; const n = rand(3,8); const r = pick([8,10,12,15]);
+        const pvCF = cf * (1 - Math.pow(1+r/100,-n))/(r/100);
+        const npv = Math.round(-invest + pvCF);
+        return { question: 'A project costs $' + fmt(invest) + ' and generates $' + fmt(cf) + '/year for ' + n + ' years. The cost of capital is ' + r + '%.<br><br>What is the NPV?', type: 'number', answer: npv, explanation: 'PV of inflows = $' + fmt(cf) + ' \u00d7 annuity factor = $' + fmt(Math.round(pvCF)) + '.<br>NPV = \u2212$' + fmt(invest) + ' + $' + fmt(Math.round(pvCF)) + ' = <strong>$' + fmt(npv) + '</strong>' };
+    }
+    function genSolveForN() {
+        const pv = rand(5,30)*1000; const fv = rand(Math.floor(pv/1000)+5, 100)*1000; const r = pick([5,6,7,8,10,12]);
+        const ans = Math.log(fv/pv) / Math.log(1+r/100);
+        return { question: 'You have $' + fmt(pv) + ' and need $' + fmt(fv) + '. Your investment earns ' + r + '% annually.<br><br>How many years will it take? (Round to 1 decimal)', type: 'number', answer: Math.round(ans*10)/10, tolerance: 0.5, explanation: 'n = ln(' + fmt(fv) + '/' + fmt(pv) + ') / ln(1.' + (r<10?'0':'') + r + ') = <strong>' + (Math.round(ans*10)/10) + ' years</strong>' };
+    }
+    function genInterestOnDiscount() {
+        const face = rand(50,200)*1000; const r = pick([5,6,7,8,10]); const n = rand(2,5);
+        const pv = Math.round(face / Math.pow(1+r/100, n));
+        const intExp = Math.round(pv * r/100);
+        return { question: 'A company issues a zero-coupon note with face value $' + fmt(face) + ', ' + n + '-year term, market rate ' + r + '%. The note is recorded at PV = $' + fmt(pv) + '.<br><br>What is the Year 1 interest expense?', type: 'number', answer: intExp, explanation: 'Interest Expense = Carrying Value \u00d7 Rate = $' + fmt(pv) + ' \u00d7 ' + r + '% = <strong>$' + fmt(intExp) + '</strong>' };
+    }
+    function genMonthlySavings() {
+        const pmt = pick([100,200,250,300,500]); const r = pick([6,7,8,9,10]); const yrs = pick([10,15,20,25,30]);
+        const rM = r/100/12; const nM = yrs*12;
+        const ans = Math.round(pmt * (Math.pow(1+rM, nM)-1)/rM);
+        return { question: 'You save $' + fmt(pmt) + '/month at ' + r + '% annual return for ' + yrs + ' years.<br><br>What is the future value?', type: 'number', answer: ans, explanation: 'r/month = ' + r + '%/12 = ' + (rM*100).toFixed(4) + '%, n = ' + nM + ' months.<br>FV = $' + fmt(pmt) + ' \u00d7 [(1+r)<sup>' + nM + '</sup> \u2212 1] / r = <strong>$' + fmt(ans) + '</strong>' };
+    }
+    function genLoanPayment() {
+        const loan = rand(10,100)*1000; const r = pick([4,5,6,7,8]); const yrs = pick([3,4,5,10,15]);
+        const rM = r/100/12; const nM = yrs*12;
+        const ans = Math.round(loan * rM / (1 - Math.pow(1+rM, -nM)) * 100)/100;
+        return { question: 'A $' + fmt(loan) + ' loan at ' + r + '% annual rate, ' + yrs + '-year term, monthly payments.<br><br>What is the monthly payment?', type: 'number', answer: Math.round(ans), tolerance: 1, explanation: 'r/month = ' + (rM*100).toFixed(4) + '%, n = ' + nM + '.<br>PMT = $' + fmt(loan) + ' \u00d7 r / [1 \u2212 (1+r)<sup>\u2212n</sup>] = <strong>$' + fmt(Math.round(ans)) + '/month</strong>' };
+    }
+    function genCFStream() {
+        const n = rand(3,4); const r = pick([8,10,12]); const cfs = [];
+        for (let i = 0; i < n; i++) cfs.push(rand(2,20)*1000);
+        let pvTotal = 0;
+        cfs.forEach((c,i) => pvTotal += c / Math.pow(1+r/100, i+1));
+        const ans = Math.round(pvTotal);
+        let cfStr = cfs.map((c,i) => 'Year ' + (i+1) + ': $' + fmt(c)).join(', ');
+        return { question: 'Find the PV of this uneven cash flow stream at ' + r + '%:<br>' + cfStr, type: 'number', answer: ans, explanation: 'Discount each CF individually and sum: PV = <strong>$' + fmt(ans) + '</strong>' };
+    }
+
+    // MC generators (8)
+    function genNPVDecision() {
+        const invest = rand(100,500)*1000; const cf = rand(20,120)*1000; const n = rand(3,8); const r = pick([8,10,12,15]);
+        const pvCF = cf*(1-Math.pow(1+r/100,-n))/(r/100);
+        const npv = Math.round(-invest + pvCF);
+        const accept = npv > 0 ? 0 : 1;
+        return { question: 'A project costs $' + fmt(invest) + ' and generates $' + fmt(cf) + '/year for ' + n + ' years at ' + r + '%. NPV = $' + fmt(npv) + '.<br><br>What should the firm do?', type: 'mc', options: ['Accept the project', 'Reject the project'], answer: accept, explanation: npv > 0 ? 'NPV > 0 means the project creates value \u2192 Accept.' : 'NPV < 0 means the project destroys value \u2192 Reject.' };
+    }
+    function genOrdinaryVsDue() {
+        return { question: 'Two annuities have the same PMT, rate, and number of periods. One is ordinary; the other is annuity due.<br><br>Which has the higher present value?', type: 'mc', options: ['Annuity due (payments at beginning)', 'Ordinary annuity (payments at end)', 'They are equal'], answer: 0, explanation: 'Annuity due payments arrive one period earlier, so each is discounted one fewer period \u2192 higher PV.' };
+    }
+    function genCompoundingEffect() {
+        return { question: 'All else equal, which compounding frequency produces the highest future value?', type: 'mc', options: ['Daily', 'Monthly', 'Quarterly', 'Annual'], answer: 0, explanation: 'More frequent compounding \u2192 more interest-on-interest \u2192 higher FV. Daily > monthly > quarterly > annual.' };
+    }
+    function genIdentifyAnnuityType() {
+        const scenarios = [
+            { text: 'A bond that pays $50 every six months, with the first payment in 6 months', answer: 0, explain: 'Bond coupons are ordinary annuities \u2014 payments at the end of each period.' },
+            { text: 'Rent of $1,500/month due on the first of each month', answer: 1, explain: 'Rent is paid at the beginning of each period \u2192 annuity due.' },
+            { text: 'A $200/year scholarship paid forever from an endowment', answer: 2, explain: 'A payment stream that continues forever is a perpetuity.' },
+            { text: 'Monthly car loan payments due at the end of each month', answer: 0, explain: 'Loan payments made at the end of each period \u2192 ordinary annuity.' },
+            { text: 'Insurance premiums paid at the start of each quarter', answer: 1, explain: 'Premiums paid at the beginning of each period \u2192 annuity due.' },
+            { text: 'A preferred stock that pays $3/share dividends indefinitely', answer: 2, explain: 'Dividends paid indefinitely \u2192 perpetuity.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text + '<br><br>What type of cash flow pattern is this?', type: 'mc', options: ['Ordinary annuity', 'Annuity due', 'Perpetuity'], answer: s.answer, explanation: s.explain };
+    }
+    function genSimpleVsCompound() {
+        const pv = rand(5,20)*1000; const r = pick([5,8,10]); const n = rand(5,15);
+        const simple = pv + pv*r/100*n;
+        const compound = Math.round(pv * Math.pow(1+r/100,n));
+        return { question: '$' + fmt(pv) + ' invested for ' + n + ' years at ' + r + '%. Which earns more?', type: 'mc', options: ['Compound interest ($' + fmt(compound) + ')', 'Simple interest ($' + fmt(Math.round(simple)) + ')', 'They earn the same'], answer: 0, explanation: 'Compound interest earns interest on interest: $' + fmt(compound) + ' vs $' + fmt(Math.round(simple)) + '. Compound always exceeds simple for n > 1.' };
+    }
+    function genPVIncreaseDecrease() {
+        const scenarios = [
+            { text: 'The discount rate increases', answer: 1, explain: 'Higher rate \u2192 more discounting \u2192 lower PV.' },
+            { text: 'The discount rate decreases', answer: 0, explain: 'Lower rate \u2192 less discounting \u2192 higher PV.' },
+            { text: 'The number of periods increases', answer: 1, explain: 'More periods \u2192 more discounting \u2192 lower PV.' },
+            { text: 'The number of periods decreases', answer: 0, explain: 'Fewer periods \u2192 less discounting \u2192 higher PV.' }
+        ];
+        const s = pick(scenarios);
+        return { question: 'What happens to the present value of a single future amount when ' + s.text + '?', type: 'mc', options: ['PV increases', 'PV decreases'], answer: s.answer, explanation: s.explain };
+    }
+    function genBondPriceBasic() {
+        const face = 1000; const couponRate = pick([4,6,8,10]); const mktRate = pick([5,7,9,11]); const n = pick([5,10]);
+        const coupon = face * couponRate/100;
+        const pvCoupons = coupon * (1 - Math.pow(1+mktRate/100,-n))/(mktRate/100);
+        const pvFace = face / Math.pow(1+mktRate/100, n);
+        const price = Math.round(pvCoupons + pvFace);
+        const label = price > face ? 'premium' : price < face ? 'discount' : 'par';
+        return { question: 'A $1,000 bond pays ' + couponRate + '% annual coupons for ' + n + ' years. Market rate = ' + mktRate + '%.<br>Price = PV of coupons + PV of face value.<br><br>What is the bond price? (Nearest dollar)', type: 'number', answer: price, explanation: 'PV of coupons = $' + coupon + ' \u00d7 annuity factor = $' + fmt(Math.round(pvCoupons)) + '.<br>PV of face = $1,000 \u00f7 (1+' + mktRate + '%)^' + n + ' = $' + fmt(Math.round(pvFace)) + '.<br>Price = <strong>$' + fmt(price) + '</strong> (at a ' + label + ').' };
+    }
+    function genEffectiveRate() {
+        const r = pick([6,8,10,12]); const m = pick([2,4,12]);
+        const mName = m===2?'semi-annually':m===4?'quarterly':'monthly';
+        const ear = Math.round(((Math.pow(1+r/100/m, m)-1)*100)*100)/100;
+        return { question: 'A bank offers ' + r + '% compounded ' + mName + '.<br><br>What is the effective annual rate (EAR)? (Enter as %, e.g., 8.24)', type: 'number', answer: ear, tolerance: 0.05, explanation: 'EAR = (1 + ' + r + '%/' + m + ')<sup>' + m + '</sup> \u2212 1 = <strong>' + ear + '%</strong>' };
+    }
+
+    // ========== JE GENERATORS (8) ==========
+    function jeGenNotePayableIssuance() {
+        const face = rand(50,200)*1000; const r = pick([5,6,7,8,10]); const n = rand(2,5);
+        const pv = Math.round(face / Math.pow(1+r/100, n));
+        return { prompt: 'Issue a ' + n + '-year zero-coupon note payable with face value $' + fmt(face) + ' at market rate ' + r + '%. PV = $' + fmt(pv) + '. Record the issuance.', answer: [{ acct: 'Cash', dr: pv, cr: 0 }, { acct: 'Notes Payable', dr: 0, cr: pv }] };
+    }
+    function jeGenInterestExpenseAccrual() {
+        const cv = rand(50,200)*1000; const r = pick([5,6,7,8,10]);
+        const intExp = Math.round(cv * r/100);
+        return { prompt: 'A note payable has a carrying value of $' + fmt(cv) + ' and a market rate of ' + r + '%. Record Year 1 interest accrual. Interest = $' + fmt(cv) + ' \u00d7 ' + r + '% = $' + fmt(intExp) + '.', answer: [{ acct: 'Interest Expense', dr: intExp, cr: 0 }, { acct: 'Notes Payable', dr: 0, cr: intExp }] };
+    }
+    function jeGenNoteReceivableIssuance() {
+        const face = rand(30,150)*1000; const r = pick([5,6,8,10]); const n = rand(2,4);
+        const pv = Math.round(face / Math.pow(1+r/100, n));
+        return { prompt: 'Lend money by accepting a ' + n + '-year zero-coupon note receivable with face value $' + fmt(face) + ' at ' + r + '%. PV = $' + fmt(pv) + '. Record the transaction.', answer: [{ acct: 'Notes Receivable', dr: pv, cr: 0 }, { acct: 'Cash', dr: 0, cr: pv }] };
+    }
+    function jeGenInterestRevenueAccrual() {
+        const cv = rand(30,150)*1000; const r = pick([5,6,8,10]);
+        const intRev = Math.round(cv * r/100);
+        return { prompt: 'A note receivable has a carrying value of $' + fmt(cv) + ' and an interest rate of ' + r + '%. Record Year 1 interest revenue. Interest = $' + fmt(intRev) + '.', answer: [{ acct: 'Notes Receivable', dr: intRev, cr: 0 }, { acct: 'Interest Revenue', dr: 0, cr: intRev }] };
+    }
+    function jeGenLeaseAtPV() {
+        const pmt = rand(5,30)*1000; const r = pick([5,6,8,10]); const n = rand(3,7);
+        const pv = Math.round(pmt * (1 - Math.pow(1+r/100,-n))/(r/100));
+        return { prompt: 'Sign a ' + n + '-year lease with annual payments of $' + fmt(pmt) + ' at ' + r + '%. PV of lease payments = $' + fmt(pv) + '. Record the lease at inception.', answer: [{ acct: 'Right-of-Use Asset', dr: pv, cr: 0 }, { acct: 'Lease Liability', dr: 0, cr: pv }] };
+    }
+    function jeGenLeasePayment() {
+        const cv = rand(50,200)*1000; const r = pick([5,6,8,10]); const pmt = rand(10,40)*1000;
+        const intExp = Math.round(cv * r/100);
+        const principal = pmt - intExp;
+        return { prompt: 'A lease liability has carrying value $' + fmt(cv) + ' at ' + r + '%. The annual payment is $' + fmt(pmt) + '. Interest = $' + fmt(intExp) + ', principal = $' + fmt(principal) + '. Record the lease payment.', answer: [{ acct: 'Lease Liability', dr: principal, cr: 0 }, { acct: 'Interest Expense', dr: intExp, cr: 0 }, { acct: 'Cash', dr: 0, cr: pmt }] };
+    }
+    function jeGenEquipmentPurchaseWithNote() {
+        const amt = rand(50,300)*1000;
+        return { prompt: 'Purchase equipment for $' + fmt(amt) + ' by issuing a note payable (at present value).', answer: [{ acct: 'Equipment', dr: amt, cr: 0 }, { acct: 'Notes Payable', dr: 0, cr: amt }] };
+    }
+    function jeGenBondIssuanceAtDiscount() {
+        const face = rand(100,500)*1000; const r = pick([6,8,10]); const n = pick([5,10]);
+        const coupon = Math.round(face * (r-2)/100);
+        const pvCoupons = Math.round(coupon * (1-Math.pow(1+r/100,-n))/(r/100));
+        const pvFace = Math.round(face / Math.pow(1+r/100, n));
+        const price = pvCoupons + pvFace;
+        return { prompt: 'Issue a $' + fmt(face) + ' face value, ' + n + '-year bond at market rate ' + r + '%. The bond sells at a discount for $' + fmt(price) + '. Record the issuance (simplified, record at PV).', answer: [{ acct: 'Cash', dr: price, cr: 0 }, { acct: 'Bonds Payable', dr: 0, cr: price }] };
+    }
+
+    const jeAccountsList = [
+        'Cash', 'Notes Receivable', 'Notes Payable', 'Equipment',
+        'Right-of-Use Asset', 'Lease Liability', 'Bonds Payable',
+        'Interest Expense', 'Interest Revenue'
+    ];
+
+    QuizEngine.init({
+        questionGenerators: [
+            genFVSingle, genPVSingle, genCompoundFrequency, genRule72,
+            genPVAnnuityOrd, genPVAnnuityDue, genPerpetuity, genFVAnnuity,
+            genNPV, genSolveForN, genInterestOnDiscount, genMonthlySavings,
+            genLoanPayment, genCFStream,
+            genNPVDecision, genOrdinaryVsDue, genCompoundingEffect,
+            genIdentifyAnnuityType, genSimpleVsCompound, genPVIncreaseDecrease,
+            genBondPriceBasic, genEffectiveRate
+        ],
+        jeGenerators: [
+            jeGenNotePayableIssuance, jeGenInterestExpenseAccrual,
+            jeGenNoteReceivableIssuance, jeGenInterestRevenueAccrual,
+            jeGenLeaseAtPV, jeGenLeasePayment,
+            jeGenEquipmentPurchaseWithNote, jeGenBondIssuanceAtDiscount,
+            jeGenNotePayableIssuance, jeGenInterestExpenseAccrual,
+            jeGenNoteReceivableIssuance, jeGenInterestRevenueAccrual,
+            jeGenLeaseAtPV, jeGenLeasePayment,
+            jeGenEquipmentPurchaseWithNote, jeGenBondIssuanceAtDiscount
+        ],
+        jeAccounts: jeAccountsList,
+        accentColor: 'cyan',
+        qCopies: 6,
+        jeCopies: 2
+    });
+</script>
+</body>
+</html>
