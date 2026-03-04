@@ -6,8 +6,14 @@
     <title>Inventory Accounting Methods | BUSI 305 Study Tool</title>
     <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
     <style>
+        :root { --accent: #f43f5e; --accent-bg: rgba(244,63,94,0.08); --accent-border-subtle: rgba(244,63,94,0.15); }
         html { scroll-behavior: smooth; }
         .tab-btn { transition: all 0.2s ease; }
         .tab-btn:hover { background: rgba(244,63,94,0.15); }
@@ -18,7 +24,7 @@
         input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
     <script>
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.borderColor = '#334155';
@@ -26,23 +32,19 @@
 
     <!-- Header -->
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-rose-400 transition-colors mb-6 group">
-            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
+        <a href="index.html" class="back-link" style="--accent: #f43f5e">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Back to Home
         </a>
-
-        <div class="flex items-center gap-4 mb-8">
-            <div class="w-12 h-12 bg-rose-500/20 rounded-xl flex items-center justify-center">
-                <svg class="w-7 h-7 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                </svg>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(244,63,94,0.1)">
+                <svg class="text-rose-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
             </div>
             <div>
-                <h1 class="text-3xl font-bold">Inventory Accounting Methods</h1>
-                <p class="text-slate-400">Lectures 8&ndash;9 &mdash; FIFO, LIFO &amp; Weighted Average</p>
+                <h1>Inventory Accounting Methods</h1>
+                <p class="subtitle">Lectures 8&ndash;9 &mdash; FIFO, LIFO &amp; Weighted Average</p>
             </div>
+            <span class="lec-badge" style="background: rgba(244,63,94,0.1); color: rgba(244,63,94,0.8); border: 1px solid rgba(244,63,94,0.1)">L 8&ndash;9</span>
         </div>
 
         <!-- Tab Navigation -->
@@ -1919,9 +1921,6 @@
     });
     </script>
 
-    <!-- Footer -->
-    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
-        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Inventory Methods Study Tool</p>
-    </div>
+    <div class="page-footer"><p>BUSI 305 &mdash; Inventory Accounting Methods &mdash; Rice University</p></div>
 </body>
 </html>

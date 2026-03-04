@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Diversification & Risk | BUSI 305</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Playfair Display', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --accent: #10b981;
+            --accent-bg: rgba(16,185,129,0.08);
+            --accent-border-subtle: rgba(16,185,129,0.15);
+        }
+
+        .stat-card {
+            background: rgba(15,17,23,0.8);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .stat-card:hover {
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .chart-container {
+            position: relative;
+            background: rgba(8,9,13,0.4);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 1rem;
+        }
+
+        .slider-track {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right, #f43f5e, #64748b 50%, #10b981 100%);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+        .slider-track::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #10b981;
+            box-shadow: 0 0 12px rgba(16,185,129,0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .slider-track::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(16,185,129,0.5);
+        }
+        .slider-track::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #10b981;
+            box-shadow: 0 0 12px rgba(16,185,129,0.3);
+            cursor: pointer;
+        }
+
+        .risk-bar {
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .math-block {
+            background: rgba(8,9,13,0.6);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.25rem;
+            font-family: 'Inter', monospace;
+        }
+
+        .insight-card {
+            background: rgba(15,17,23,0.6);
+            border-radius: 14px;
+            padding: 1.25rem;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
+        }
+        .insight-card:hover {
+            border-color: rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body class="themed text-white min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 py-6 relative z-10">
+
+        <!-- Back link -->
+        <a href="index.html" class="back-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+
+        <!-- Page header -->
+        <div class="page-header">
+            <div class="icon-wrap" style="background: var(--accent-bg); border-color: var(--accent-border-subtle);">
+                <svg style="color: var(--accent);" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
+                </svg>
+            </div>
+            <div>
+                <h1>Portfolio Diversification & Risk</h1>
+                <p class="subtitle">How combining uncorrelated assets reduces portfolio risk</p>
+            </div>
+            <span class="lec-badge" style="background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-border-subtle);">Interactive</span>
+        </div>
+
+        <!-- Key Insight -->
+        <div class="bg-slate-800/50 rounded-xl p-6 mb-8 border border-emerald-500/20" style="background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(15,17,23,0.8));">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--accent-bg);">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/>
+                    </svg>
+                </div>
+                <h2 class="text-lg font-semibold text-emerald-400 font-display">The Key Insight</h2>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                When you combine <span class="text-amber-400 font-semibold">uncorrelated</span> assets,
+                the expected return is the average of individual returns, but the risk (standard deviation)
+                decreases by a factor of <span class="text-emerald-400 font-mono font-semibold">1/&radic;n</span> where n is the number of assets.
+                This is because uncorrelated fluctuations tend to <span class="text-sky-400 font-semibold">cancel each other out</span>.
+            </p>
+        </div>
+
+        <!-- Section 1: Risk Reduction Curve -->
+        <div class="bg-slate-800/50 rounded-xl p-6 mb-8 border border-slate-700">
+            <div class="flex items-center gap-3 mb-1">
+                <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898M2.25 6l3 3m0 0l3-3m-3 3V2.25"/>
+                </svg>
+                <h2 class="text-xl font-semibold text-sky-400 font-display">Risk Reduction with More Assets</h2>
+            </div>
+            <p class="text-slate-500 mb-5 text-xs ml-8">
+                Portfolio risk decreases as you add more uncorrelated assets (each with equal weight and equal individual risk).
+            </p>
+
+            <div class="chart-container mb-6">
+                <canvas id="riskChart" height="280"></canvas>
+            </div>
+
+            <!-- Math table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700/50">
+                            <th class="py-2.5 px-4 text-left text-slate-500 text-xs font-semibold uppercase tracking-wider">Assets (n)</th>
+                            <th class="py-2.5 px-4 text-left text-slate-500 text-xs font-semibold uppercase tracking-wider">Formula</th>
+                            <th class="py-2.5 px-4 text-left text-slate-500 text-xs font-semibold uppercase tracking-wider">Risk Level</th>
+                            <th class="py-2.5 px-4 text-left text-slate-500 text-xs font-semibold uppercase tracking-wider">Reduction</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mathTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 2: Interactive Correlation Demo -->
+        <div class="bg-slate-800/50 rounded-xl p-6 mb-8 border border-slate-700">
+            <div class="flex items-center gap-3 mb-1">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
+                </svg>
+                <h2 class="text-xl font-semibold text-amber-400 font-display">See It In Action: Two Assets Combined</h2>
+            </div>
+            <p class="text-slate-500 mb-5 text-xs ml-8">
+                Drag the slider to change correlation and watch how portfolio risk changes in real time.
+            </p>
+
+            <!-- Correlation slider -->
+            <div class="mb-6 px-2">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="text-slate-400 text-sm">Correlation between assets</label>
+                    <span id="corrValue" class="text-emerald-400 font-mono font-semibold text-lg">0.00</span>
+                </div>
+                <input type="range" id="corrSlider" class="slider-track" min="-0.5" max="1" step="0.1" value="0">
+                <div class="flex justify-between text-xs text-slate-600 mt-1.5 px-1">
+                    <span>Negative (-0.5)</span>
+                    <span>Uncorrelated (0)</span>
+                    <span>Perfectly Correlated (1.0)</span>
+                </div>
+            </div>
+
+            <div class="chart-container mb-6">
+                <canvas id="returnsChart" height="280"></canvas>
+            </div>
+
+            <!-- Statistics cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                <div class="stat-card" style="border-left: 3px solid #f87171;">
+                    <h3 class="text-red-400 font-semibold text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-400"></span>Asset 1
+                    </h3>
+                    <div class="space-y-1.5">
+                        <p class="text-slate-400 text-xs">Mean Return <span id="stat-a1-mean" class="text-white font-mono float-right text-sm">—</span></p>
+                        <p class="text-slate-400 text-xs">Std Deviation <span id="stat-a1-std" class="text-white font-mono float-right text-sm">—</span></p>
+                    </div>
+                </div>
+                <div class="stat-card" style="border-left: 3px solid #60a5fa;">
+                    <h3 class="text-blue-400 font-semibold text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-blue-400"></span>Asset 2
+                    </h3>
+                    <div class="space-y-1.5">
+                        <p class="text-slate-400 text-xs">Mean Return <span id="stat-a2-mean" class="text-white font-mono float-right text-sm">—</span></p>
+                        <p class="text-slate-400 text-xs">Std Deviation <span id="stat-a2-std" class="text-white font-mono float-right text-sm">—</span></p>
+                    </div>
+                </div>
+                <div class="stat-card" style="border-left: 3px solid #10b981;">
+                    <h3 class="text-emerald-400 font-semibold text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>Portfolio (50/50)
+                    </h3>
+                    <div class="space-y-1.5">
+                        <p class="text-slate-400 text-xs">Mean Return <span id="stat-p-mean" class="text-white font-mono float-right text-sm">—</span></p>
+                        <p class="text-slate-400 text-xs">Std Deviation <span id="stat-p-std" class="text-emerald-400 font-mono font-bold float-right text-sm">—</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic insight -->
+            <div id="dynamicInsight" class="mt-5 p-4 rounded-xl text-sm text-slate-300 leading-relaxed" style="background: rgba(8,9,13,0.5); border: 1px solid rgba(255,255,255,0.04);">
+            </div>
+        </div>
+
+        <!-- Section 3: The Mathematics -->
+        <div class="bg-slate-800/50 rounded-xl p-6 mb-8 border border-slate-700">
+            <div class="flex items-center gap-3 mb-5">
+                <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 00-.491 6.347A48.62 48.62 0 0112 20.904a48.62 48.62 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.636 50.636 0 00-2.658-.813A59.906 59.906 0 0112 3.493a59.903 59.903 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0112 13.489a50.702 50.702 0 017.74-3.342"/>
+                </svg>
+                <h2 class="text-xl font-semibold text-purple-400 font-display">The Mathematics Behind It</h2>
+            </div>
+
+            <div class="math-block mb-6">
+                <p class="text-purple-300 text-sm mb-3 font-medium">For n uncorrelated assets with equal weights (1/n) and equal variance &sigma;&sup2;:</p>
+                <div class="space-y-2 text-sm">
+                    <p class="text-slate-300">Portfolio Variance = <span class="text-emerald-400">&Sigma;(1/n)&sup2; &times; &sigma;&sup2;</span> = <span class="text-emerald-400">n &times; (1/n&sup2;) &times; &sigma;&sup2;</span> = <span class="text-amber-400 font-semibold">&sigma;&sup2;/n</span></p>
+                    <p class="text-slate-300">Portfolio Std Dev = <span class="text-amber-400 font-semibold">&sigma;/&radic;n</span></p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-5">
+                <div class="insight-card" style="border-top: 2px solid #10b981;">
+                    <div class="flex items-center gap-2 mb-3">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <h3 class="text-emerald-400 font-semibold text-sm">Why Does This Work?</h3>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&bull;</span>When assets are uncorrelated, their random fluctuations are independent</li>
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&bull;</span>Positive surprises in one asset offset negative surprises in another</li>
+                        <li class="flex gap-2"><span class="text-emerald-500 mt-0.5">&bull;</span>The more independent sources of randomness, the more "averaging out" occurs</li>
+                    </ul>
+                </div>
+                <div class="insight-card" style="border-top: 2px solid #f59e0b;">
+                    <div class="flex items-center gap-2 mb-3">
+                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+                        </svg>
+                        <h3 class="text-amber-400 font-semibold text-sm">Important Caveats</h3>
+                    </div>
+                    <ul class="space-y-2 text-xs text-slate-400 leading-relaxed">
+                        <li class="flex gap-2"><span class="text-amber-500 mt-0.5">&bull;</span>Real assets are rarely perfectly uncorrelated</li>
+                        <li class="flex gap-2"><span class="text-amber-500 mt-0.5">&bull;</span>Correlations can increase during market stress</li>
+                        <li class="flex gap-2"><span class="text-amber-500 mt-0.5">&bull;</span>Diversification reduces risk, not expected return</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="insight-card" style="border-top: 2px solid #38bdf8;">
+                <div class="flex items-center gap-2 mb-3">
+                    <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/>
+                    </svg>
+                    <h3 class="text-sky-400 font-semibold text-sm">Intuition: The Law of Large Numbers</h3>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    This is the same principle behind why casinos are profitable even though individual bets are random.
+                    With many independent bets, the average outcome converges to the expected value.
+                    Similarly, with many uncorrelated investments, the portfolio return becomes more predictable
+                    (lower variance) while maintaining the same expected return.
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="page-footer">
+            <p>BUSI 305 &mdash; Intro to Financial Accounting &mdash; Portfolio Diversification Interactive</p>
+        </div>
+    </div>
+
+    <script>
+        // ── Chart.js defaults ──
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.borderColor = 'rgba(255,255,255,0.04)';
+
+        // ── Math table data ──
+        const mathData = [
+            { n: 1, formula: '&sigma;', value: 100 },
+            { n: 2, formula: '&sigma;/&radic;2', value: 70.7 },
+            { n: 4, formula: '&sigma;/&radic;4 = &sigma;/2', value: 50 },
+            { n: 9, formula: '&sigma;/&radic;9 = &sigma;/3', value: 33.3 },
+            { n: 16, formula: '&sigma;/&radic;16 = &sigma;/4', value: 25 },
+            { n: 25, formula: '&sigma;/&radic;25 = &sigma;/5', value: 20 },
+        ];
+
+        const tbody = document.getElementById('mathTable');
+        mathData.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-slate-800/50';
+            tr.innerHTML = `
+                <td class="py-2.5 px-4 text-emerald-400 font-mono font-semibold">${row.n}</td>
+                <td class="py-2.5 px-4 text-sky-400 font-mono text-sm">${row.formula}</td>
+                <td class="py-2.5 px-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 max-w-[120px] h-2 rounded-full" style="background: rgba(255,255,255,0.04);">
+                            <div class="risk-bar" style="width: ${row.value}%;"></div>
+                        </div>
+                        <span class="text-slate-300 text-sm font-mono">${row.value}%</span>
+                    </div>
+                </td>
+                <td class="py-2.5 px-4 text-amber-400 text-sm font-mono">${row.n === 1 ? '—' : '-' + (100 - row.value).toFixed(1) + '%'}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // ── Risk reduction chart ──
+        const riskData = [];
+        for (let n = 1; n <= 30; n++) {
+            riskData.push({ x: n, y: (1 / Math.sqrt(n)) * 100 });
+        }
+
+        const riskCtx = document.getElementById('riskChart').getContext('2d');
+        new Chart(riskCtx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Relative Risk (%)',
+                    data: riskData,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16,185,129,0.08)',
+                    borderWidth: 2.5,
+                    fill: true,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#10b981',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: { display: true, text: 'Number of Assets (n)', color: '#94a3b8', font: { size: 11 } },
+                        min: 1, max: 30,
+                        grid: { color: 'rgba(255,255,255,0.03)' },
+                        ticks: { color: '#64748b', font: { size: 10 } }
+                    },
+                    y: {
+                        title: { display: true, text: 'Risk (% of single asset)', color: '#94a3b8', font: { size: 11 } },
+                        min: 0, max: 100,
+                        grid: { color: 'rgba(255,255,255,0.03)' },
+                        ticks: { color: '#64748b', font: { size: 10 }, callback: v => v + '%' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15,17,23,0.95)',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        cornerRadius: 10,
+                        titleFont: { size: 11 },
+                        bodyFont: { size: 12 },
+                        callbacks: {
+                            title: ctx => ctx[0].raw.x + ' assets',
+                            label: ctx => 'Risk: ' + ctx.raw.y.toFixed(1) + '%'
+                        }
+                    },
+                    annotation: undefined
+                }
+            },
+            plugins: [{
+                // Draw 50% reference line
+                afterDraw(chart) {
+                    const ctx = chart.ctx;
+                    const yScale = chart.scales.y;
+                    const xScale = chart.scales.x;
+                    const y50 = yScale.getPixelForValue(50);
+                    ctx.save();
+                    ctx.setLineDash([6, 4]);
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(xScale.left, y50);
+                    ctx.lineTo(xScale.right, y50);
+                    ctx.stroke();
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.font = '10px Inter';
+                    ctx.fillText('50% risk (n=4)', xScale.right - 90, y50 - 6);
+                    ctx.restore();
+                }
+            }]
+        });
+
+        // ── Returns simulation ──
+        function pseudoRandom(seed) {
+            const x = Math.sin(seed * 9999) * 10000;
+            return x - Math.floor(x);
+        }
+
+        function generateReturns(correlation) {
+            const returns = [];
+            const n = 50;
+            const seed = 42;
+            for (let i = 0; i < n; i++) {
+                const r1 = (pseudoRandom(seed + i) - 0.5) * 20;
+                const independent = (pseudoRandom(seed + i + 1000) - 0.5) * 20;
+                const r2 = correlation * r1 + Math.sqrt(1 - correlation * correlation) * independent;
+                returns.push({
+                    period: i + 1,
+                    asset1: 8 + r1,
+                    asset2: 8 + r2,
+                    portfolio: 8 + (r1 + r2) / 2
+                });
+            }
+            return returns;
+        }
+
+        function calcStats(data, key) {
+            const values = data.map(d => d[key]);
+            const mean = values.reduce((a, b) => a + b, 0) / values.length;
+            const variance = values.reduce((a, b) => a + (b - mean) ** 2, 0) / values.length;
+            return { mean: mean.toFixed(1), stdDev: Math.sqrt(variance).toFixed(1) };
+        }
+
+        const returnsCtx = document.getElementById('returnsChart').getContext('2d');
+        let returnsData = generateReturns(0);
+
+        const returnsChart = new Chart(returnsCtx, {
+            type: 'line',
+            data: {
+                labels: returnsData.map(d => d.period),
+                datasets: [
+                    {
+                        label: 'Asset 1',
+                        data: returnsData.map(d => d.asset1),
+                        borderColor: '#f87171',
+                        borderWidth: 1.5,
+                        pointRadius: 0,
+                        tension: 0.3,
+                        borderDash: [],
+                        order: 2
+                    },
+                    {
+                        label: 'Asset 2',
+                        data: returnsData.map(d => d.asset2),
+                        borderColor: '#60a5fa',
+                        borderWidth: 1.5,
+                        pointRadius: 0,
+                        tension: 0.3,
+                        borderDash: [],
+                        order: 2
+                    },
+                    {
+                        label: '50/50 Portfolio',
+                        data: returnsData.map(d => d.portfolio),
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16,185,129,0.06)',
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        tension: 0.3,
+                        fill: true,
+                        order: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Time Period', color: '#94a3b8', font: { size: 11 } },
+                        grid: { color: 'rgba(255,255,255,0.03)' },
+                        ticks: { color: '#64748b', font: { size: 10 }, maxTicksLimit: 10 }
+                    },
+                    y: {
+                        title: { display: true, text: 'Return (%)', color: '#94a3b8', font: { size: 11 } },
+                        min: -15, max: 30,
+                        grid: { color: 'rgba(255,255,255,0.03)' },
+                        ticks: { color: '#64748b', font: { size: 10 }, callback: v => v + '%' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 20,
+                            font: { size: 11 }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15,17,23,0.95)',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        cornerRadius: 10,
+                        callbacks: {
+                            label: ctx => ctx.dataset.label + ': ' + ctx.raw.toFixed(1) + '%'
+                        }
+                    }
+                }
+            },
+            plugins: [{
+                // Draw expected return reference line at 8%
+                afterDraw(chart) {
+                    const ctx = chart.ctx;
+                    const yScale = chart.scales.y;
+                    const xScale = chart.scales.x;
+                    const y8 = yScale.getPixelForValue(8);
+                    ctx.save();
+                    ctx.setLineDash([4, 4]);
+                    ctx.strokeStyle = 'rgba(148,163,184,0.3)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(xScale.left, y8);
+                    ctx.lineTo(xScale.right, y8);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }]
+        });
+
+        function updateReturns(correlation) {
+            returnsData = generateReturns(correlation);
+            returnsChart.data.datasets[0].data = returnsData.map(d => d.asset1);
+            returnsChart.data.datasets[1].data = returnsData.map(d => d.asset2);
+            returnsChart.data.datasets[2].data = returnsData.map(d => d.portfolio);
+            returnsChart.update('none');
+
+            const a1 = calcStats(returnsData, 'asset1');
+            const a2 = calcStats(returnsData, 'asset2');
+            const p = calcStats(returnsData, 'portfolio');
+
+            document.getElementById('stat-a1-mean').textContent = a1.mean + '%';
+            document.getElementById('stat-a1-std').textContent = a1.stdDev + '%';
+            document.getElementById('stat-a2-mean').textContent = a2.mean + '%';
+            document.getElementById('stat-a2-std').textContent = a2.stdDev + '%';
+            document.getElementById('stat-p-mean').textContent = p.mean + '%';
+            document.getElementById('stat-p-std').textContent = p.stdDev + '%';
+
+            const insight = document.getElementById('dynamicInsight');
+            if (correlation < 0.5) {
+                insight.innerHTML = `<span class="text-emerald-400 font-semibold">Notice:</span> With correlation = ${correlation.toFixed(1)}, the portfolio's expected return stays near ${p.mean}% (average of both assets), but the standard deviation is ${p.stdDev}% &mdash; <span class="text-emerald-400 font-semibold">significantly lower than either individual asset!</span>`;
+            } else {
+                insight.innerHTML = `<span class="text-amber-400 font-semibold">Notice:</span> With correlation = ${correlation.toFixed(1)}, the portfolio's expected return stays near ${p.mean}%, but the standard deviation is ${p.stdDev}% &mdash; <span class="text-amber-400 font-semibold">less diversification benefit when assets move together.</span>`;
+            }
+        }
+
+        // Slider event
+        const slider = document.getElementById('corrSlider');
+        const corrLabel = document.getElementById('corrValue');
+        slider.addEventListener('input', function() {
+            const val = parseFloat(this.value);
+            corrLabel.textContent = val.toFixed(2);
+            // Color the label based on correlation
+            if (val < 0) {
+                corrLabel.style.color = '#f43f5e';
+            } else if (val < 0.5) {
+                corrLabel.style.color = '#10b981';
+            } else {
+                corrLabel.style.color = '#f59e0b';
+            }
+            updateReturns(val);
+        });
+
+        // Initial render
+        updateReturns(0);
+    </script>
+</body>
+</html>

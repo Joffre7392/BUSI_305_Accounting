@@ -1,0 +1,384 @@
+/* ================================================================
+   BUSI 305 Accounting Toolkit — Shared Theme
+   Loaded by all topic pages for consistent design language.
+   ================================================================ */
+
+/* ---- Noise texture ---- */
+body.themed::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.35;
+}
+
+/* ---- Grid background ---- */
+body.themed {
+    background: #08090d !important;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px) !important;
+    background-size: 80px 80px !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ---- Ambient orbs (added via JS) ---- */
+.ambient-orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(120px);
+}
+
+/* ---- Back link ---- */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(148,163,184,0.7);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+.back-link:hover { color: var(--accent, #10b981); }
+.back-link svg {
+    width: 14px; height: 14px;
+    transition: transform 0.3s ease;
+}
+.back-link:hover svg { transform: translateX(-3px); }
+
+/* ---- Page header ---- */
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+.page-header .icon-wrap {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+.page-header .icon-wrap svg {
+    width: 28px; height: 28px;
+}
+.page-header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+.page-header .subtitle {
+    color: rgba(148,163,184,0.7);
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin-top: 0.25rem;
+    letter-spacing: 0.01em;
+}
+.page-header .lec-badge {
+    margin-left: auto;
+    font-size: 0.6rem;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* ---- Tab navigation ---- */
+.tab-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Override existing tab-btn styles */
+.tab-btn {
+    padding: 0.5rem 1rem !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+    color: rgba(148,163,184,0.7) !important;
+    background: transparent !important;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
+    cursor: pointer;
+}
+.tab-btn:hover {
+    color: rgba(255,255,255,0.8) !important;
+    background: rgba(255,255,255,0.04) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+}
+.tab-btn.active {
+    color: var(--accent, #10b981) !important;
+    background: var(--accent-bg, rgba(16,185,129,0.08)) !important;
+    border-color: var(--accent-border-subtle, rgba(16,185,129,0.15)) !important;
+}
+
+/* ---- Content cards ---- */
+.bg-slate-800\/50,
+[class*="bg-slate-800"] {
+    background: rgba(15,17,23,0.8) !important;
+    border-color: rgba(255,255,255,0.06) !important;
+    border-radius: 16px !important;
+    backdrop-filter: blur(8px);
+}
+
+/* Nested darker cards */
+.bg-slate-900\/60,
+.bg-slate-900\/50,
+[class*="bg-slate-900\/6"],
+[class*="bg-slate-900\/5"] {
+    background: rgba(8,9,13,0.6) !important;
+    border-color: rgba(255,255,255,0.05) !important;
+    border-radius: 12px !important;
+}
+
+.bg-slate-700\/50,
+.bg-slate-700\/40,
+[class*="bg-slate-700\/5"],
+[class*="bg-slate-700\/4"] {
+    background: rgba(15,17,23,0.6) !important;
+    border-color: rgba(255,255,255,0.06) !important;
+    border-radius: 12px !important;
+}
+
+/* ---- Section headings ---- */
+.text-2xl.font-bold,
+h2.text-2xl {
+    font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.01em;
+}
+
+/* ---- Tables ---- */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+thead tr {
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+thead th {
+    color: rgba(148,163,184,0.6) !important;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    padding: 0.75rem !important;
+}
+tbody td {
+    padding: 0.625rem 0.75rem !important;
+    font-size: 0.8rem !important;
+}
+tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.03) !important;
+    transition: background 0.2s ease;
+}
+tbody tr:hover {
+    background: rgba(255,255,255,0.02);
+}
+/* Total / summary rows */
+tr.border-t,
+tr.border-t-2,
+tr[class*="border-t"] {
+    border-top: 1px solid rgba(255,255,255,0.08) !important;
+}
+/* Monospace cells */
+.font-mono, td.font-mono {
+    font-feature-settings: 'tnum';
+    letter-spacing: 0.02em;
+}
+
+/* ---- Equation / formula boxes ---- */
+[class*="-500/10"][class*="rounded-lg"][class*="border"][class*="text-center"] {
+    backdrop-filter: blur(4px);
+}
+
+/* ---- "Back to the Equation" callout ---- */
+[class*="from-emerald-500/10"] {
+    border-radius: 12px !important;
+    border-color: rgba(16,185,129,0.12) !important;
+    backdrop-filter: blur(4px);
+}
+
+/* ---- Key insight / warning boxes ---- */
+[class*="-500/10"][class*="border"][class*="rounded"] p strong {
+    font-weight: 600;
+}
+
+/* ---- Worked example reveal buttons ---- */
+button[onclick*="toggleStep"],
+button[onclick*="toggle"] {
+    border-radius: 8px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.03em !important;
+    padding: 0.5rem 1.25rem !important;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+/* ---- Practice question buttons ---- */
+button[onclick*="QuizEngine"],
+button[onclick*="pNew"],
+button[onclick*="pCheck"],
+button[onclick*="newQuestion"],
+button[onclick*="checkAnswer"],
+button[onclick*="jeNew"],
+button[onclick*="jeAdd"],
+button[onclick*="jeCheck"] {
+    border-radius: 10px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em !important;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+/* MC answer buttons */
+.qe-mc-btn,
+button[onclick*="checkMC"] {
+    background: rgba(15,17,23,0.6) !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+    border-radius: 12px !important;
+    padding: 0.875rem 1rem !important;
+    transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1) !important;
+    font-size: 0.8rem !important;
+}
+.qe-mc-btn:hover,
+button[onclick*="checkMC"]:hover {
+    background: rgba(255,255,255,0.04) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    transform: translateX(4px);
+}
+
+/* JE builder inputs */
+.je-acct, .je-dr, .je-cr,
+select[class*="je-"], input[class*="je-"] {
+    background: rgba(8,9,13,0.8) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 8px !important;
+    font-size: 0.8rem !important;
+    transition: border-color 0.2s ease !important;
+}
+.je-acct:focus, .je-dr:focus, .je-cr:focus {
+    border-color: var(--accent, rgba(16,185,129,0.4)) !important;
+    outline: none !important;
+}
+
+/* Numeric input */
+input[type="number"] {
+    background: rgba(8,9,13,0.8) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 8px !important;
+    transition: border-color 0.2s ease !important;
+}
+input[type="number"]:focus {
+    border-color: var(--accent, rgba(16,185,129,0.4)) !important;
+    outline: none !important;
+}
+
+/* ---- Score display ---- */
+#p-correct, #score-correct { color: #34d399; }
+#p-streak, #streak { color: #fbbf24; }
+
+/* ---- Feedback boxes ---- */
+[class*="bg-emerald-500/10"][class*="border-emerald-"],
+[class*="bg-rose-500/10"][class*="border-rose-"],
+[class*="bg-amber-500/10"][class*="border-amber-"] {
+    border-radius: 12px !important;
+    backdrop-filter: blur(4px);
+}
+
+/* ---- Footer ---- */
+.page-footer {
+    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 2.5rem 0 2rem;
+    margin-top: 4rem;
+    text-align: center;
+}
+.page-footer p {
+    color: rgba(100,116,139,0.6);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+/* ---- Chart.js canvas ---- */
+canvas {
+    border-radius: 12px;
+}
+
+/* ---- T-account styling (override per-page) ---- */
+.t-account {
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-top: 2px solid var(--accent, #10b981) !important;
+    border-radius: 0 0 12px 12px !important;
+    overflow: hidden;
+    background: rgba(15,17,23,0.4);
+}
+.t-account-title {
+    background: var(--accent-bg, rgba(16,185,129,0.08)) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.02em !important;
+}
+
+/* ---- Depreciation schedule / data table rows ---- */
+.border-b.border-slate-700\/50,
+[class*="border-slate-700\/50"] {
+    border-color: rgba(255,255,255,0.03) !important;
+}
+
+/* ---- Journal entry tables ---- */
+table.font-mono {
+    font-size: 0.8rem !important;
+}
+.bg-slate-800\/80 {
+    background: rgba(15,17,23,0.6) !important;
+    border-radius: 12px !important;
+}
+
+/* ---- List styling ---- */
+ul.list-disc li, ol li {
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+/* ---- Smooth scroll ---- */
+html { scroll-behavior: smooth; }
+
+/* ---- Selection color ---- */
+::selection {
+    background: var(--accent, rgba(16,185,129,0.3));
+    color: #fff;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .page-header h1 { font-size: 1.5rem; }
+    .page-header .icon-wrap { width: 44px; height: 44px; border-radius: 12px; }
+    .page-header .icon-wrap svg { width: 22px; height: 22px; }
+    .page-header .lec-badge { display: none; }
+}

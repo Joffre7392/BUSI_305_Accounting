@@ -6,7 +6,13 @@
     <title>T-Accounts, Closing &amp; Accruals | BUSI 305</title>
     <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
     <style>
+        :root { --accent: #a855f7; --accent-bg: rgba(168,85,247,0.08); --accent-border-subtle: rgba(168,85,247,0.15); }
         html { scroll-behavior: smooth; }
         .tab-btn { transition: all 0.2s ease; }
         .tab-btn:hover { background: rgba(168,85,247,0.15); }
@@ -18,20 +24,21 @@
         input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-purple-400 transition-colors mb-6 group">
-            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <a href="index.html" class="back-link" style="--accent: #a855f7">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Back to Home
         </a>
-
-        <div class="flex items-center gap-4 mb-8">
-            <div class="text-4xl">&#x1F4CA;</div>
-            <div>
-                <h1 class="text-3xl font-bold text-purple-400">T-Accounts, Closing &amp; Accruals</h1>
-                <p class="text-slate-400">Lectures 4&ndash;5 &mdash; The full accounting cycle</p>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(168,85,247,0.1)">
+                <svg class="text-purple-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
             </div>
-            <span class="ml-auto text-xs bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full font-semibold">Lectures 4-5</span>
+            <div>
+                <h1>T-Accounts, Closing &amp; Accruals</h1>
+                <p class="subtitle">Lectures 4&ndash;5 &mdash; The full accounting cycle</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(168,85,247,0.1); color: rgba(168,85,247,0.8); border: 1px solid rgba(168,85,247,0.1)">L 4&ndash;5</span>
         </div>
 
         <!-- Tab Navigation -->
@@ -1306,5 +1313,6 @@
         jeCopies: 2
     });
 </script>
+    <div class="page-footer"><p>BUSI 305 &mdash; T-Accounts, Closing &amp; Accruals &mdash; Rice University</p></div>
 </body>
 </html>

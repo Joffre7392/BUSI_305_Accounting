@@ -6,7 +6,13 @@
     <title>Revenue &amp; Accounts Receivable | BUSI 305 Study Tool</title>
     <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
     <style>
+        :root { --accent: #f59e0b; --accent-bg: rgba(245,158,11,0.08); --accent-border-subtle: rgba(245,158,11,0.15); }
         html { scroll-behavior: smooth; }
         .tab-btn { transition: all 0.2s ease; }
         .tab-btn:hover { background: rgba(245,158,11,0.15); }
@@ -16,27 +22,23 @@
         input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
 
     <!-- Header -->
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-amber-400 transition-colors mb-6 group">
-            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
+        <a href="index.html" class="back-link" style="--accent: #f59e0b">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Back to Home
         </a>
-
-        <div class="flex items-center gap-4 mb-8">
-            <div class="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center">
-                <svg class="w-7 h-7 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(245,158,11,0.1)">
+                <svg class="text-amber-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg>
             </div>
             <div>
-                <h1 class="text-3xl font-bold">Revenue &amp; Accounts Receivable</h1>
-                <p class="text-slate-400">Lectures 6&ndash;7 &mdash; Recognition, Bad Debts &amp; Ratios</p>
+                <h1>Revenue &amp; Accounts Receivable</h1>
+                <p class="subtitle">Lectures 6&ndash;7 &mdash; Recognition, bad debts &amp; ratios</p>
             </div>
+            <span class="lec-badge" style="background: rgba(245,158,11,0.1); color: rgba(245,158,11,0.8); border: 1px solid rgba(245,158,11,0.1)">L 6&ndash;7</span>
         </div>
 
         <!-- Tab Navigation -->
@@ -1297,5 +1299,6 @@
         jeCopies: 2
     });
     </script>
+    <div class="page-footer"><p>BUSI 305 &mdash; Revenue &amp; Accounts Receivable &mdash; Rice University</p></div>
 </body>
 </html>

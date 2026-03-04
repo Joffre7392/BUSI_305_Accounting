@@ -6,8 +6,14 @@
     <title>Fixed Assets &amp; Depreciation | BUSI 305</title>
     <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
     <style>
+        :root { --accent: #14b8a6; --accent-bg: rgba(20,184,166,0.08); --accent-border-subtle: rgba(20,184,166,0.15); }
         html { scroll-behavior: smooth; }
         .tab-btn { transition: all 0.2s ease; }
         .tab-btn:hover { background: rgba(20,184,166,0.15); }
@@ -17,20 +23,21 @@
         input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-teal-400 transition-colors mb-6 group">
-            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <a href="index.html" class="back-link" style="--accent: #14b8a6">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Back to Home
         </a>
-
-        <div class="flex items-center gap-4 mb-8">
-            <div class="text-4xl">&#x1F3ED;</div>
-            <div>
-                <h1 class="text-3xl font-bold text-teal-400">Fixed Assets &amp; Depreciation</h1>
-                <p class="text-slate-400">Lectures 10&ndash;11 &mdash; PP&amp;E, depreciation methods, impairments &amp; disposals</p>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(20,184,166,0.1)">
+                <svg class="text-teal-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"/></svg>
             </div>
-            <span class="ml-auto text-xs bg-teal-500/20 text-teal-400 px-3 py-1 rounded-full font-semibold">Lectures 10-11</span>
+            <div>
+                <h1>Fixed Assets &amp; Depreciation</h1>
+                <p class="subtitle">Lectures 10&ndash;11 &mdash; PP&amp;E, depreciation methods, impairments &amp; disposals</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(20,184,166,0.1); color: rgba(20,184,166,0.8); border: 1px solid rgba(20,184,166,0.1)">L 10&ndash;11</span>
         </div>
 
         <!-- Tab Navigation -->
@@ -912,5 +919,6 @@
         jeCopies: 2
     });
 </script>
+    <div class="page-footer"><p>BUSI 305 &mdash; Fixed Assets &amp; Depreciation &mdash; Rice University</p></div>
 </body>
 </html>

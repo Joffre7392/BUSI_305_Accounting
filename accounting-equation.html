@@ -6,8 +6,14 @@
     <title>The Accounting Equation &amp; Financial Statements | BUSI 305</title>
     <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
     <style>
-        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        :root { --accent: #10b981; --accent-bg: rgba(16,185,129,0.08); --accent-border-subtle: rgba(16,185,129,0.15); }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
         .tab-btn { transition: all 0.2s ease; cursor: pointer; }
         .tab-btn:hover { background-color: #334155; }
         .tab-btn.active { background-color: #10b981; color: white; }
@@ -29,18 +35,24 @@
         input[type="number"] { -moz-appearance: textfield; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
 
     <!-- Header -->
     <div class="max-w-6xl mx-auto px-4 py-6">
-        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-emerald-400 transition-colors mb-6 text-sm">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <a href="index.html" class="back-link" style="--accent: #10b981">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Back to Home
         </a>
-        <h1 class="text-3xl md:text-4xl font-bold mb-2">
-            <span class="text-emerald-400">The Accounting Equation</span> &amp; Financial Statements
-        </h1>
-        <p class="text-slate-400">Lecture 1 &mdash; Foundations of Financial Accounting</p>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(16,185,129,0.1)">
+                <svg class="text-emerald-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z"/></svg>
+            </div>
+            <div>
+                <h1>The Accounting Equation</h1>
+                <p class="subtitle">Lectures 1&ndash;2 &mdash; Foundations of Financial Accounting</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(16,185,129,0.1); color: rgba(16,185,129,0.8); border: 1px solid rgba(16,185,129,0.1)">L 1&ndash;2</span>
+        </div>
     </div>
 
     <!-- Tab Navigation -->
@@ -1902,5 +1914,6 @@
         jeCopies: 2
     });
     </script>
+    <div class="page-footer"><p>BUSI 305 &mdash; Accounting Equation &amp; Financial Statements &mdash; Rice University</p></div>
 </body>
 </html>

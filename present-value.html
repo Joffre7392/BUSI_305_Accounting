@@ -6,8 +6,14 @@
     <title>Present Value | BUSI 305</title>
     <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
     <style>
+        :root { --accent: #22d3ee; --accent-bg: rgba(34,211,238,0.08); --accent-border-subtle: rgba(34,211,238,0.15); }
         html { scroll-behavior: smooth; }
         .tab-btn { transition: all 0.2s ease; }
         .tab-btn:hover { background: rgba(34,211,238,0.15); }
@@ -25,24 +31,25 @@
         .tl-arrow { position: relative; z-index: 1; flex: 0 0 auto; color: #475569; font-size: 1.25rem; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
     <script>
         Chart.defaults.color = '#94a3b8';
         Chart.defaults.borderColor = '#334155';
     </script>
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-cyan-400 transition-colors mb-6 group">
-            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <a href="index.html" class="back-link" style="--accent: #22d3ee">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Back to Home
         </a>
-
-        <div class="flex items-center gap-4 mb-8">
-            <div class="text-4xl">&#x23F3;</div>
-            <div>
-                <h1 class="text-3xl font-bold text-cyan-400">Present Value</h1>
-                <p class="text-slate-400">Lectures 14&ndash;16 &mdash; Time value of money, annuities &amp; NPV</p>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(34,211,238,0.1)">
+                <svg class="text-cyan-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
-            <span class="ml-auto text-xs bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full font-semibold">Lectures 14-16</span>
+            <div>
+                <h1>Present Value</h1>
+                <p class="subtitle">Lectures 14&ndash;16 &mdash; Time value of money, annuities &amp; NPV</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(34,211,238,0.1); color: rgba(34,211,238,0.8); border: 1px solid rgba(34,211,238,0.1)">L 14&ndash;16</span>
         </div>
 
         <!-- Tab Navigation -->
@@ -195,6 +202,30 @@
                 </div>
             </div>
 
+            <!-- FV ↔ PV Relationship -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-amber-500/20 mb-6">
+                <h2 class="text-xl font-bold text-amber-400 mb-4">The FV &harr; PV Relationship</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-lg font-mono text-amber-300">FV = PV &times; (1 + r)<sup>n</sup> &nbsp;&nbsp;&hArr;&nbsp;&nbsp; PV = FV &divide; (1 + r)<sup>n</sup></p>
+                </div>
+                <p class="text-slate-300 text-sm mb-4">Future value and present value are <strong class="text-white">mirror images</strong> of the same operation. Compounding moves money <em>forward</em> in time; discounting moves it <em>backward</em>. This relationship holds for <strong class="text-white">any</strong> cash flow &mdash; single amounts or annuities.</p>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-amber-400 font-bold text-xs uppercase tracking-wider mb-2">Compounding (PV &rarr; FV)</p>
+                        <p class="text-slate-300">$1,000 today at 7% for 10 years</p>
+                        <p class="text-slate-300">FV = $1,000 &times; (1.07)<sup>10</sup> = <strong class="text-cyan-400">$1,967</strong></p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-amber-400 font-bold text-xs uppercase tracking-wider mb-2">Discounting (FV &rarr; PV)</p>
+                        <p class="text-slate-300">$1,000 received in 10 years at 6%</p>
+                        <p class="text-slate-300">PV = $1,000 &divide; (1.06)<sup>10</sup> = <strong class="text-cyan-400">$558</strong></p>
+                    </div>
+                </div>
+                <div class="bg-cyan-500/10 rounded-lg p-3 border border-cyan-500/30">
+                    <p class="text-sm text-cyan-300"><strong>For annuities too:</strong> FV<sub>annuity</sub> = PV<sub>annuity</sub> &times; (1 + r)<sup>n</sup>. You only need to memorize one annuity formula &mdash; you can always derive the other by compounding or discounting.</p>
+                </div>
+            </div>
+
             <!-- Sub-Period Compounding -->
             <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
                 <h2 class="text-xl font-bold text-cyan-400 mb-4">Sub-Period Compounding</h2>
@@ -243,6 +274,108 @@
                     </div>
                     <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
                         <p class="text-cyan-400 font-bold">12%</p><p class="text-slate-300 text-sm">6 years</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Handout A Quick Reference -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-cyan-500/20 mb-6" style="background: linear-gradient(135deg, rgba(34,211,238,0.04), rgba(15,17,23,0.8));">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-cyan-500/10 border border-cyan-500/20">
+                        <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25z"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-cyan-400">Core TVM Formulas &mdash; Summary</h2>
+                        <p class="text-xs text-slate-500">All five formulas with worked numerical examples</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Formula 1: FV of Single Amount -->
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full">Eq. 1</span>
+                            <h3 class="text-sm font-bold text-white">Future Value of a Single Amount</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2.5 mb-3 text-center">
+                            <p class="font-mono text-cyan-300">FV<sub>n</sub> = CF &times; (1 + r)<sup>n</sup></p>
+                        </div>
+                        <div class="text-xs text-slate-400 space-y-0.5 mb-2">
+                            <p>FV<sub>n</sub> = Future Value after n periods &nbsp;|&nbsp; CF = Cash Flow invested today &nbsp;|&nbsp; r = Interest rate per period &nbsp;|&nbsp; n = Number of periods</p>
+                        </div>
+                        <div class="bg-slate-800/60 rounded p-2.5 text-sm">
+                            <p class="text-slate-400"><strong class="text-white">Handout example:</strong> $1,000 at 7% for 10 years</p>
+                            <p class="text-slate-300">FV = $1,000 &times; (1.07)<sup>10</sup> = <strong class="text-cyan-400">$1,967</strong></p>
+                            <p class="text-slate-500 text-xs mt-1">Key assumption: <span class="text-amber-400">compound interest</span> &mdash; interest earned in one period earns interest in the next period.</p>
+                        </div>
+                    </div>
+
+                    <!-- Formula 2: PV of Single Amount -->
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full">Eq. 2</span>
+                            <h3 class="text-sm font-bold text-white">Present Value of a Single Amount</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2.5 mb-3 text-center">
+                            <p class="font-mono text-cyan-300">PV<sub>0</sub> = CF &divide; (1 + r)<sup>n</sup></p>
+                        </div>
+                        <div class="text-xs text-slate-400 space-y-0.5 mb-2">
+                            <p>PV<sub>0</sub> = Present Value today &nbsp;|&nbsp; CF = Cash Flow received n periods from today</p>
+                        </div>
+                        <div class="bg-slate-800/60 rounded p-2.5 text-sm">
+                            <p class="text-slate-400"><strong class="text-white">Handout example:</strong> Receive $1,000 in 10 years at 6%</p>
+                            <p class="text-slate-300">PV = $1,000 &divide; (1.06)<sup>10</sup> = <strong class="text-cyan-400">$558</strong></p>
+                            <p class="text-slate-500 text-xs mt-1">Discounting = the reverse of compounding. To receive $1,000 after year 10, you need $943 in year 9 ($943 &times; 1.06 = $1,000).</p>
+                        </div>
+                    </div>
+
+                    <!-- Formula 3: PV of Annuity -->
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full">Eq. 3</span>
+                            <h3 class="text-sm font-bold text-white">Present Value of an Annuity</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2.5 mb-3 text-center">
+                            <p class="font-mono text-cyan-300">PV<sub>0</sub> = CF &times; [(1 + r)<sup>n</sup> &minus; 1] &divide; [r(1 + r)<sup>n</sup>]</p>
+                        </div>
+                        <div class="bg-slate-800/60 rounded p-2.5 text-sm">
+                            <p class="text-slate-400"><strong class="text-white">Handout example:</strong> $1,000/year for 5 years at 5%</p>
+                            <p class="text-slate-300">The 1st payment is worth $1,000 &times; 1/1.05, the 2nd is $1,000 &times; 1/1.05&sup2;, &hellip;, the 5th is $1,000 &times; 1/1.05&sup5;</p>
+                            <p class="text-slate-300">PV = <strong class="text-cyan-400">$4,329</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Formula 4: FV of Annuity -->
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-700">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full">Eq. 4</span>
+                            <h3 class="text-sm font-bold text-white">Future Value of an Annuity</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2.5 mb-3 text-center">
+                            <p class="font-mono text-cyan-300">FV<sub>n</sub> = CF &times; [(1 + r)<sup>n</sup> &minus; 1] &divide; r</p>
+                        </div>
+                        <div class="bg-slate-800/60 rounded p-2.5 text-sm">
+                            <p class="text-slate-400"><strong class="text-white">Handout example:</strong> Save $1,000/year for 20 years at 8%</p>
+                            <p class="text-slate-300">The 1st $1,000 grows to $1,000 &times; 1.08<sup>19</sup>, the 2nd to $1,000 &times; 1.08<sup>18</sup>, and so on.</p>
+                            <p class="text-slate-300">FV = <strong class="text-cyan-400">$45,762</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Formula 5: Relationship -->
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-amber-500/20">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">Eq. 5</span>
+                            <h3 class="text-sm font-bold text-white">FV &ndash; PV Annuity Relationship</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2.5 mb-3 text-center">
+                            <p class="font-mono text-amber-300">FV<sub>n</sub> = PV<sub>0</sub> &times; (1 + r)<sup>n</sup></p>
+                        </div>
+                        <p class="text-xs text-slate-400">The future value of an annuity is simply the present value of that same annuity compounded forward n periods. This ties the PV and FV annuity formulas together &mdash; they are two sides of the same coin.</p>
+                        <div class="bg-slate-800/60 rounded p-2.5 text-sm mt-2">
+                            <p class="text-slate-400"><strong class="text-white">Verify:</strong> The 5-year annuity has PV = $4,329 at 5%</p>
+                            <p class="text-slate-300">FV = $4,329 &times; (1.05)<sup>5</sup> = $4,329 &times; 1.27628 = <strong class="text-amber-400">$5,526</strong></p>
+                            <p class="text-slate-300">Direct: FV = $1,000 &times; [(1.05)<sup>5</sup> &minus; 1] / 0.05 = $1,000 &times; 5.52563 = <strong class="text-amber-400">$5,526</strong> &check;</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -356,6 +489,29 @@
                         <p class="text-slate-300">FV = $200 &times; [(1.005833)<sup>360</sup> &minus; 1] / 0.005833</p>
                         <p class="text-cyan-400 font-bold">FV = $243,994</p>
                         <p class="text-slate-500 text-xs mt-1">Total deposited: $72,000. Interest earned: $171,994!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FV–PV Annuity Relationship -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-amber-400 mb-4">The FV &ndash; PV Annuity Relationship</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 mb-4 text-center">
+                    <p class="text-lg font-mono text-amber-300">FV<sub>n</sub> = PV<sub>0</sub> &times; (1 + r)<sup>n</sup></p>
+                </div>
+                <p class="text-slate-300 text-sm mb-3">The future value of an annuity is just the present value compounded forward n periods. This means you only need to memorize <strong class="text-white">one</strong> annuity formula &mdash; you can always derive the other.</p>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-slate-400 mb-1"><strong class="text-white">From PV to FV:</strong></p>
+                        <p class="text-slate-300">$1,000/yr, 5 years, 5%</p>
+                        <p class="text-slate-300">PV = $4,329</p>
+                        <p class="text-slate-300">FV = $4,329 &times; (1.05)<sup>5</sup> = <strong class="text-amber-400">$5,526</strong></p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-slate-400 mb-1"><strong class="text-white">From FV to PV:</strong></p>
+                        <p class="text-slate-300">$1,000/yr, 20 years, 8%</p>
+                        <p class="text-slate-300">FV = $45,762</p>
+                        <p class="text-slate-300">PV = $45,762 &divide; (1.08)<sup>20</sup> = <strong class="text-amber-400">$9,818</strong></p>
                     </div>
                 </div>
             </div>
@@ -1379,5 +1535,6 @@
         jeCopies: 2
     });
 </script>
+    <div class="page-footer"><p>BUSI 305 &mdash; Present Value &mdash; Rice University</p></div>
 </body>
 </html>

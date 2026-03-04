@@ -6,7 +6,13 @@
     <title>Intangible Assets | BUSI 305</title>
     <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
     <style>
+        :root { --accent: #818cf8; --accent-bg: rgba(129,140,248,0.08); --accent-border-subtle: rgba(129,140,248,0.15); }
         html { scroll-behavior: smooth; }
         .tab-btn { transition: all 0.2s ease; }
         .tab-btn:hover { background: rgba(99,102,241,0.15); }
@@ -18,20 +24,21 @@
         .t-account-title { background: rgba(99,102,241,0.2); border-bottom: 2px solid #64748b; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-indigo-400 transition-colors mb-6 group">
-            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <a href="index.html" class="back-link" style="--accent: #818cf8">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Back to Home
         </a>
-
-        <div class="flex items-center gap-4 mb-8">
-            <div class="text-4xl">&#x1F4A1;</div>
-            <div>
-                <h1 class="text-3xl font-bold text-indigo-400">Intangible Assets</h1>
-                <p class="text-slate-400">Lectures 12&ndash;13 &mdash; Patents, trademarks, goodwill &amp; impairment</p>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(129,140,248,0.1)">
+                <svg class="text-indigo-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>
             </div>
-            <span class="ml-auto text-xs bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full font-semibold">Lectures 12-13</span>
+            <div>
+                <h1>Intangible Assets</h1>
+                <p class="subtitle">Lectures 12&ndash;13 &mdash; Patents, trademarks, goodwill &amp; impairment</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(129,140,248,0.1); color: rgba(129,140,248,0.8); border: 1px solid rgba(129,140,248,0.1)">L 12&ndash;13</span>
         </div>
 
         <!-- Tab Navigation -->
@@ -1095,5 +1102,6 @@
         jeCopies: 2
     });
 </script>
+    <div class="page-footer"><p>BUSI 305 &mdash; Intangible Assets &mdash; Rice University</p></div>
 </body>
 </html>

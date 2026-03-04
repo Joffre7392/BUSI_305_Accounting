@@ -6,7 +6,13 @@
     <title>Transaction Analysis | BUSI 305 Accounting</title>
     <script src="quiz-engine.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
     <style>
+        :root { --accent: #38bdf8; --accent-bg: rgba(56,189,248,0.08); --accent-border-subtle: rgba(56,189,248,0.15); }
         .fade-in { animation: fadeIn 0.4s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .fset-table th, .fset-table td { padding: 6px 10px; text-align: center; font-size: 0.85rem; }
@@ -17,16 +23,24 @@
         select option { background: #1e293b; color: white; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
 
     <!-- Header -->
     <div class="max-w-7xl mx-auto px-4 py-6">
-        <a href="index.html" class="text-sky-400 hover:text-sky-300 text-sm flex items-center gap-1 mb-4 w-fit">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        <a href="index.html" class="back-link" style="--accent: #38bdf8">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             Back to Home
         </a>
-        <h1 class="text-3xl font-bold mb-1">Transaction Analysis</h1>
-        <p class="text-slate-400">Lectures 2&ndash;3 &mdash; The Financial Statement Effect Template (FSET) Approach</p>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(56,189,248,0.1)">
+                <svg class="text-sky-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+            </div>
+            <div>
+                <h1>Transaction Analysis</h1>
+                <p class="subtitle">Lectures 2&ndash;3 &mdash; FSET, debits &amp; credits, journal entries</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(56,189,248,0.1); color: rgba(56,189,248,0.8); border: 1px solid rgba(56,189,248,0.1)">L 2&ndash;3</span>
+        </div>
     </div>
 
     <!-- Tab Navigation -->
@@ -1670,5 +1684,6 @@ QuizEngine.init({
 // ==================== INIT ====================
 buildExamples();
 </script>
+    <div class="page-footer"><p>BUSI 305 &mdash; Transaction Analysis &mdash; Rice University</p></div>
 </body>
 </html>
