@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intangible Assets | BUSI 305</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(99,102,241,0.15); }
+        .tab-btn.active { border-color: #818cf8; color: #818cf8; background: rgba(99,102,241,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+        .t-account { border: 2px solid #64748b; border-top: 3px solid #818cf8; border-radius: 0 0 8px 8px; }
+        .t-account-title { background: rgba(99,102,241,0.2); border-bottom: 2px solid #64748b; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="inline-flex items-center text-slate-400 hover:text-indigo-400 transition-colors mb-6 group">
+            <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+
+        <div class="flex items-center gap-4 mb-8">
+            <div class="text-4xl">&#x1F4A1;</div>
+            <div>
+                <h1 class="text-3xl font-bold text-indigo-400">Intangible Assets</h1>
+                <p class="text-slate-400">Lectures 12&ndash;13 &mdash; Patents, trademarks, goodwill &amp; impairment</p>
+            </div>
+            <span class="ml-auto text-xs bg-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full font-semibold">Lectures 12-13</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('concepts')" id="tab-concepts" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Intangible Assets</button>
+            <button onclick="switchTab('goodwill')" id="tab-goodwill" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Goodwill &amp; Acquisitions</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: INTANGIBLE ASSETS ======================== -->
+        <div id="panel-concepts" class="tab-panel active">
+            <!-- What Are Intangible Assets -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-4">What Are Intangible Assets?</h2>
+                <p class="text-slate-300 mb-4"><span class="text-indigo-400 font-semibold">Intangible assets</span> are long-lived assets that <strong class="text-white">lack physical existence</strong> and are <strong class="text-white">not financial instruments</strong>. They represent legal rights or competitive advantages.</p>
+
+                <h3 class="text-lg font-bold text-indigo-400 mb-3">Categories</h3>
+                <div class="grid md:grid-cols-3 gap-3 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-indigo-300 font-semibold text-sm">Marketing-Related</p>
+                        <p class="text-xs text-slate-400 mt-1">Trademarks, brand names, internet domains</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-indigo-300 font-semibold text-sm">Consumer-Related</p>
+                        <p class="text-xs text-slate-400 mt-1">Customer lists, customer relationships</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-indigo-300 font-semibold text-sm">Artistic-Related</p>
+                        <p class="text-xs text-slate-400 mt-1">Copyrights, film rights, music</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-indigo-300 font-semibold text-sm">Contract-Related</p>
+                        <p class="text-xs text-slate-400 mt-1">Licensing agreements, franchise rights</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-indigo-300 font-semibold text-sm">Technology-Related</p>
+                        <p class="text-xs text-slate-400 mt-1">Patents, software, trade secrets</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-center">
+                        <p class="text-indigo-300 font-semibold text-sm">Goodwill</p>
+                        <p class="text-xs text-slate-400 mt-1">The &ldquo;ultimate&rdquo; intangible &mdash; arises only in acquisitions</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accounting Treatment Decision Tree -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Accounting Treatment</h2>
+                <p class="text-slate-300 mb-4">The key questions: <strong class="text-white">Do we have an accounting asset?</strong> and <strong class="text-white">Can we measure its value with reasonable precision?</strong></p>
+
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <!-- Externally Acquired -->
+                    <div class="bg-emerald-500/10 rounded-lg p-5 border border-emerald-500/20">
+                        <h3 class="font-bold text-emerald-400 mb-2">Acquired Externally &rarr; Capitalize</h3>
+                        <p class="text-sm text-slate-300 mb-3">Recognize at acquisition cost on the balance sheet.</p>
+                        <div class="space-y-2">
+                            <div class="bg-slate-900/60 rounded p-2 border border-slate-600">
+                                <p class="text-xs text-indigo-300 font-semibold">Finite Useful Life</p>
+                                <p class="text-xs text-slate-400">Amortize over useful life + annual impairment test</p>
+                                <p class="text-xs text-slate-500 mt-1">Examples: patents, copyrights, customer lists</p>
+                            </div>
+                            <div class="bg-slate-900/60 rounded p-2 border border-slate-600">
+                                <p class="text-xs text-indigo-300 font-semibold">Indefinite Useful Life</p>
+                                <p class="text-xs text-slate-400">Do NOT amortize &mdash; annual impairment test only</p>
+                                <p class="text-xs text-slate-500 mt-1">Examples: brand names, trademarks, goodwill</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Internally Developed -->
+                    <div class="bg-rose-500/10 rounded-lg p-5 border border-rose-500/20">
+                        <h3 class="font-bold text-rose-400 mb-2">Developed Internally &rarr; Expense</h3>
+                        <p class="text-sm text-slate-300 mb-3">General rule: expense when incurred (R&amp;D costs).</p>
+                        <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                            <p class="text-sm text-amber-300"><strong>Exceptions:</strong></p>
+                            <ul class="text-xs text-slate-300 list-disc ml-4 mt-1 space-y-1">
+                                <li><strong class="text-white">US GAAP:</strong> Software development costs (after technological feasibility)</li>
+                                <li><strong class="text-white">IFRS:</strong> Any development cost (once criteria are met; research is still expensed)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchased vs Developed Patent Example -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Example: Purchased vs. In-House Patent</h2>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-indigo-300 font-bold mb-2">Purchased Patent ($100,000, 2-year life)</p>
+                        <p class="text-xs text-slate-500 mb-2">At acquisition:</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm mb-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Patent (+A)</td><td class="text-right pl-4">100,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash (&minus;A)</td><td></td><td class="text-right pl-4">100,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-2">Annual amortization (Years 1 &amp; 2):</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Amortization Expense (+E)</td><td class="text-right pl-4">50,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Accumulated Amortization</td><td></td><td class="text-right pl-4">50,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">$100,000 &divide; 2 years = $50,000/year</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-rose-300 font-bold mb-2">In-House R&amp;D ($100,000 spent)</p>
+                        <p class="text-xs text-slate-500 mb-2">Entire cost expensed immediately:</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm mb-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">R&amp;D Expense (+E)</td><td class="text-right pl-4">100,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash (&minus;A)</td><td></td><td class="text-right pl-4">100,000</td></tr>
+                            </table>
+                        </div>
+                        <div class="bg-rose-500/10 rounded p-3 border border-rose-500/30">
+                            <p class="text-sm text-rose-300"><strong>No patent asset on the books!</strong> Even though the R&amp;D produced a valuable patent, US GAAP requires immediate expensing because the value cannot be measured with reasonable precision at the time of incurrence.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indefinite-Life Intangibles & Impairment -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Impairment of Identifiable Intangibles</h2>
+                <p class="text-slate-300 mb-4">Indefinite-life intangibles (like brand names) are <strong class="text-white">not amortized</strong> but must be <strong class="text-white">tested annually for impairment</strong>.</p>
+
+                <div class="bg-indigo-500/10 rounded-lg p-3 border border-indigo-500/30 mb-4">
+                    <p class="text-indigo-300 font-mono text-center"><strong>Impairment Charge</strong> = Book Value &minus; Fair Value</p>
+                    <p class="text-center text-sm text-slate-400 mt-1">FV &ge; BV = <span class="text-emerald-400">No impairment</span> &nbsp;|&nbsp; FV &lt; BV = <span class="text-rose-400">Impairment</span></p>
+                </div>
+
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                    <p class="text-sm text-indigo-300 font-bold mb-2">Example: SatCo Trademark Impairment</p>
+                    <p class="text-sm text-slate-300 mb-2">After 5 years, regulatory changes cause SatCo&rsquo;s $62,000 trademark to become permanently impaired. Fair value = $40,000.</p>
+                    <p class="text-sm text-slate-300 mb-3">Impairment = $62,000 &minus; $40,000 = <strong class="text-white">$22,000</strong></p>
+                    <div class="bg-slate-800/80 rounded p-3 text-sm">
+                        <table class="font-mono text-slate-300">
+                            <tr><td class="pr-4">Loss Due to Impairment (+E, &minus;SE)</td><td class="text-right pl-4">22,000</td><td></td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Trademark (&minus;A)</td><td></td><td class="text-right pl-4">22,000</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-indigo-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Purchased intangibles sit on the <strong class="text-white">left side</strong> of A = L + SE. Amortization gradually moves the cost to the income statement &mdash; reducing Assets (via Accumulated Amortization, a contra-asset) and SE (via lower Net Income &rarr; lower Retained Earnings). Internally developed intangibles bypass the balance sheet entirely &mdash; R&amp;D expense directly reduces SE through the income statement. Impairment write-downs reduce both <strong class="text-white">A&darr;</strong> and <strong class="text-white">SE&darr;</strong> in the same period.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 2: GOODWILL & ACQUISITIONS ======================== -->
+        <div id="panel-goodwill" class="tab-panel">
+            <!-- What Is Goodwill -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-4">Goodwill</h2>
+                <div class="bg-indigo-500/10 rounded-lg p-3 border border-indigo-500/30 mb-4">
+                    <p class="text-indigo-300 font-mono text-center text-lg"><strong>Goodwill</strong> = Acquisition Price &minus; Fair Value of Net Assets Acquired</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <h3 class="text-sm font-bold text-indigo-300 mb-2">What Goodwill Represents</h3>
+                        <ul class="text-sm text-slate-300 space-y-1 list-disc ml-4">
+                            <li>Non-identifiable assets: synergies, human capital, growth opportunities</li>
+                            <li>Or sometimes &hellip; <span class="text-amber-400">overpayment</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-indigo-300 mb-2">Key Rules</h3>
+                        <ul class="text-sm text-slate-300 space-y-1 list-disc ml-4">
+                            <li>Only recorded when a <strong class="text-white">business is acquired</strong></li>
+                            <li>Is <strong class="text-white">non-transferable</strong> &mdash; cannot be bought separately</li>
+                            <li>Has an <strong class="text-white">indefinite life</strong> &mdash; not amortized</li>
+                            <li>Annual impairment test (cannot be &ldquo;written up&rdquo;)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goodwill Example: Setup -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Goodwill Example: Acquiring a Company for $160 Cash</h2>
+
+                <div class="grid md:grid-cols-2 gap-5 mb-5">
+                    <!-- Target's Balance Sheet (Book Value) -->
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-indigo-300 font-bold mb-2 text-sm">Target&rsquo;s Balance Sheet (Book Value)</p>
+                        <table class="w-full text-sm text-slate-300">
+                            <tr><td class="p-1 font-bold text-emerald-400" colspan="2">Assets</td></tr>
+                            <tr><td class="p-1 pl-4">Current Assets</td><td class="text-right p-1">50</td></tr>
+                            <tr><td class="p-1 pl-4">PP&amp;E</td><td class="text-right p-1">140</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total Assets</td><td class="text-right p-1">190</td></tr>
+                            <tr><td class="p-1 font-bold text-sky-400 pt-3" colspan="2">Liabilities &amp; SE</td></tr>
+                            <tr><td class="p-1 pl-4">Current Liabilities</td><td class="text-right p-1">40</td></tr>
+                            <tr><td class="p-1 pl-4">Long-term Liabilities</td><td class="text-right p-1">130</td></tr>
+                            <tr class="border-t border-slate-600"><td class="p-1 pl-4">Total Liabilities</td><td class="text-right p-1">170</td></tr>
+                            <tr><td class="p-1 pl-4">Stockholders&rsquo; Equity</td><td class="text-right p-1 font-bold">20</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total L + SE</td><td class="text-right p-1">190</td></tr>
+                        </table>
+                    </div>
+                    <!-- Fair Value Assessment -->
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-indigo-300 font-bold mb-2 text-sm">Fair Value of Identifiable Assets &amp; Liabilities</p>
+                        <table class="w-full text-sm text-slate-300">
+                            <tr><td class="p-1 font-bold text-emerald-400" colspan="2">Assets (at FV)</td></tr>
+                            <tr><td class="p-1 pl-4">Current Assets</td><td class="text-right p-1">50</td></tr>
+                            <tr><td class="p-1 pl-4">PP&amp;E</td><td class="text-right p-1 text-amber-400">200</td></tr>
+                            <tr><td class="p-1 pl-4">Customer List</td><td class="text-right p-1 text-amber-400">30</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total FV Assets</td><td class="text-right p-1">280</td></tr>
+                            <tr><td class="p-1 font-bold text-sky-400 pt-3" colspan="2">Liabilities (at FV)</td></tr>
+                            <tr><td class="p-1 pl-4">Current Liabilities</td><td class="text-right p-1">40</td></tr>
+                            <tr><td class="p-1 pl-4">Long-term Liabilities</td><td class="text-right p-1 text-amber-400">150</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total FV Liabilities</td><td class="text-right p-1">190</td></tr>
+                        </table>
+                        <div class="mt-3 bg-indigo-500/10 rounded p-2 border border-indigo-500/30">
+                            <p class="text-sm text-indigo-300 font-mono text-center">FV Net Assets = 280 &minus; 190 = <strong>90</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-500/10 rounded-lg p-4 border border-indigo-500/30 mb-5">
+                    <p class="text-lg text-center text-indigo-300 font-mono">
+                        Goodwill = $160 (price) &minus; $90 (FV net assets) = <strong class="text-white text-xl">$70</strong>
+                    </p>
+                    <p class="text-xs text-center text-slate-400 mt-1">Why pay $160 for $90 in net assets? Synergies, brand value, talent &mdash; or overpayment.</p>
+                </div>
+            </div>
+
+            <!-- Acquisition Journal Entry -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Acquisition Journal Entry (All Cash)</h2>
+                <div class="bg-slate-800/80 rounded p-4 text-sm mb-4">
+                    <table class="font-mono text-slate-300 w-full">
+                        <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left pb-2">Account</th><th class="text-right pb-2 pl-4">Debit</th><th class="text-right pb-2 pl-4">Credit</th></tr></thead>
+                        <tbody>
+                            <tr><td class="pr-4 pt-2">Current Assets</td><td class="text-right pl-4 pt-2">50</td><td></td></tr>
+                            <tr><td class="pr-4">PP&amp;E</td><td class="text-right pl-4">200</td><td></td></tr>
+                            <tr><td class="pr-4">Customer List</td><td class="text-right pl-4">30</td><td></td></tr>
+                            <tr><td class="pr-4">Goodwill</td><td class="text-right pl-4">70</td><td></td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">160</td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Current Liabilities</td><td></td><td class="text-right pl-4">40</td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Long-term Liabilities</td><td></td><td class="text-right pl-4">150</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="pr-4 pt-2">Totals</td><td class="text-right pl-4 pt-2">350</td><td class="text-right pl-4 pt-2">350</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm text-slate-400">
+                    <strong class="text-white">Logic:</strong> Debit all acquired assets at fair value + goodwill as the plug. Credit cash paid + all assumed liabilities at fair value. Debits = Credits.
+                </div>
+            </div>
+
+            <!-- Post-Acquisition Balance Sheet -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Acquirer&rsquo;s Balance Sheet: Before vs. After</h2>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-indigo-300 font-bold mb-2 text-sm">Before Acquisition</p>
+                        <table class="w-full text-sm text-slate-300">
+                            <tr><td class="p-1 pl-4">Cash</td><td class="text-right p-1">200</td></tr>
+                            <tr><td class="p-1 pl-4">Current Assets</td><td class="text-right p-1">100</td></tr>
+                            <tr><td class="p-1 pl-4">PP&amp;E</td><td class="text-right p-1">100</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total Assets</td><td class="text-right p-1">400</td></tr>
+                            <tr><td class="p-1 pl-4">Current Liabilities</td><td class="text-right p-1">100</td></tr>
+                            <tr><td class="p-1 pl-4">Contributed Capital</td><td class="text-right p-1">200</td></tr>
+                            <tr><td class="p-1 pl-4">Retained Earnings</td><td class="text-right p-1">100</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total L + SE</td><td class="text-right p-1">400</td></tr>
+                        </table>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-indigo-300 font-bold mb-2 text-sm">After Acquisition (All Cash)</p>
+                        <table class="w-full text-sm text-slate-300">
+                            <tr><td class="p-1 pl-4">Cash</td><td class="text-right p-1">40 <span class="text-xs text-slate-500">(200&minus;160)</span></td></tr>
+                            <tr><td class="p-1 pl-4">Current Assets</td><td class="text-right p-1">150 <span class="text-xs text-slate-500">(100+50)</span></td></tr>
+                            <tr><td class="p-1 pl-4">PP&amp;E</td><td class="text-right p-1">300 <span class="text-xs text-slate-500">(100+200)</span></td></tr>
+                            <tr><td class="p-1 pl-4">Customer List</td><td class="text-right p-1 text-amber-400">30</td></tr>
+                            <tr><td class="p-1 pl-4">Goodwill</td><td class="text-right p-1 text-amber-400">70</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total Assets</td><td class="text-right p-1">590</td></tr>
+                            <tr><td class="p-1 pl-4">Current Liabilities</td><td class="text-right p-1">140 <span class="text-xs text-slate-500">(100+40)</span></td></tr>
+                            <tr><td class="p-1 pl-4">Long-term Liabilities</td><td class="text-right p-1">150</td></tr>
+                            <tr><td class="p-1 pl-4">Contributed Capital</td><td class="text-right p-1">200</td></tr>
+                            <tr><td class="p-1 pl-4">Retained Earnings</td><td class="text-right p-1">100</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="p-1">Total L + SE</td><td class="text-right p-1">590</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Variant: Cash + Stock -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Variant: Paying with Cash + Stock</h2>
+                <p class="text-slate-300 mb-3 text-sm">Same deal, but pay <strong class="text-white">$100 cash + $60 in stock</strong> (total = $160). Goodwill is still $70.</p>
+                <div class="bg-slate-800/80 rounded p-4 text-sm mb-4">
+                    <table class="font-mono text-slate-300 w-full">
+                        <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left pb-2">Account</th><th class="text-right pb-2 pl-4">Debit</th><th class="text-right pb-2 pl-4">Credit</th></tr></thead>
+                        <tbody>
+                            <tr><td class="pr-4 pt-2">Current Assets</td><td class="text-right pl-4 pt-2">50</td><td></td></tr>
+                            <tr><td class="pr-4">PP&amp;E</td><td class="text-right pl-4">200</td><td></td></tr>
+                            <tr><td class="pr-4">Customer List</td><td class="text-right pl-4">30</td><td></td></tr>
+                            <tr><td class="pr-4">Goodwill</td><td class="text-right pl-4">70</td><td></td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">100</td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Contributed Capital</td><td></td><td class="text-right pl-4 text-amber-400">60</td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Current Liabilities</td><td></td><td class="text-right pl-4">40</td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Long-term Liabilities</td><td></td><td class="text-right pl-4">150</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="pr-4 pt-2">Totals</td><td class="text-right pl-4 pt-2">350</td><td class="text-right pl-4 pt-2">350</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-indigo-500/10 rounded p-3 border border-indigo-500/30 text-sm text-slate-300">
+                    <strong class="text-indigo-300">Key difference:</strong> Cash only drops by $100 (not $160). Contributed Capital increases by $60 to reflect the stock issued. Post-acquisition total assets = $650 (vs. $590 in the all-cash version) because more cash stays on the books.
+                </div>
+            </div>
+
+            <!-- Variant: Partial Acquisition -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Variant: 75% Acquisition (Non-Controlling Interest)</h2>
+                <p class="text-slate-300 mb-3 text-sm">Acquire <strong class="text-white">75% of the company for $120 cash</strong>. You still record 100% of the target&rsquo;s assets and liabilities, but give the remaining 25% stake to a &ldquo;new shareholder&rdquo; on your balance sheet.</p>
+
+                <div class="bg-slate-800/80 rounded p-4 text-sm mb-4">
+                    <table class="font-mono text-slate-300 w-full">
+                        <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left pb-2">Account</th><th class="text-right pb-2 pl-4">Debit</th><th class="text-right pb-2 pl-4">Credit</th></tr></thead>
+                        <tbody>
+                            <tr><td class="pr-4 pt-2">Current Assets</td><td class="text-right pl-4 pt-2">50</td><td></td></tr>
+                            <tr><td class="pr-4">PP&amp;E</td><td class="text-right pl-4">200</td><td></td></tr>
+                            <tr><td class="pr-4">Customer List</td><td class="text-right pl-4">30</td><td></td></tr>
+                            <tr><td class="pr-4">Goodwill</td><td class="text-right pl-4">70</td><td></td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">120</td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Non-Controlling Interest</td><td></td><td class="text-right pl-4 text-amber-400">40</td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Current Liabilities</td><td></td><td class="text-right pl-4">40</td></tr>
+                            <tr><td class="pr-4 pl-6 text-slate-500">Long-term Liabilities</td><td></td><td class="text-right pl-4">150</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="pr-4 pt-2">Totals</td><td class="text-right pl-4 pt-2">350</td><td class="text-right pl-4 pt-2">350</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-indigo-300 font-bold mb-1">How is NCI = $40?</p>
+                        <p class="text-slate-400">Implied total value = $120 &divide; 75% = $160. NCI = 25% &times; $160 = <strong class="text-white">$40</strong></p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600 text-sm">
+                        <p class="text-indigo-300 font-bold mb-1">Where does NCI go?</p>
+                        <p class="text-slate-400">Non-Controlling Interest is reported within <strong class="text-white">Stockholders&rsquo; Equity</strong>, separate from the parent&rsquo;s equity.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-indigo-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Acquisitions increase <strong class="text-white">Assets</strong> (all acquired assets at FV + goodwill) and <strong class="text-white">Liabilities</strong> (all assumed liabilities at FV). Cash decreases, keeping A = L + SE. When stock is issued, Contributed Capital (SE) increases. When only a partial acquisition, Non-Controlling Interest (also in SE) accounts for the minority stake. The equation always balances.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 3: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
+            <!-- Worked Example 1: Patent Amortization -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-2">Example 1: Patent Purchase &amp; Amortization</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-indigo-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">TechFlow Inc. purchases a patent from another company for $180,000 on January 1, 2026. The patent has a remaining legal life of 12 years, but TechFlow expects it to provide economic benefits for only 6 years. No salvage value.</p>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-indigo-400 font-bold">Step 1:</span> <span class="text-slate-300">Record the Purchase</span></div>
+                        <button onclick="revealStep('w1',1)" id="w1-btn-1" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w1-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <div class="bg-slate-800/80 rounded p-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Patent</td><td class="text-right pl-4">180,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">180,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-slate-500 mt-2">Capitalize at acquisition cost. Use the shorter of legal life (12 yrs) or economic life (6 yrs) for amortization.</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-indigo-400 font-bold">Step 2:</span> <span class="text-slate-300">Calculate Annual Amortization</span></div>
+                        <button onclick="revealStep('w1',2)" id="w1-btn-2" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w1-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300 mb-2">Annual amortization = $180,000 &divide; 6 years = <strong class="text-white">$30,000/year</strong></p>
+                        <div class="bg-slate-800/80 rounded p-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Amortization Expense</td><td class="text-right pl-4">30,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Accumulated Amortization</td><td></td><td class="text-right pl-4">30,000</td></tr>
+                            </table>
+                        </div>
+                        <div class="overflow-x-auto mt-3">
+                            <table class="w-full text-sm">
+                                <thead><tr class="border-b border-slate-600 text-slate-400"><th class="p-2 text-left">Year</th><th class="p-2 text-right">Amort. Exp.</th><th class="p-2 text-right">Accum. Amort.</th><th class="p-2 text-right">Net BV</th></tr></thead>
+                                <tbody class="text-slate-300">
+                                    <tr class="border-b border-slate-700"><td class="p-2">1</td><td class="text-right p-2">$30,000</td><td class="text-right p-2">$30,000</td><td class="text-right p-2">$150,000</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">2</td><td class="text-right p-2">$30,000</td><td class="text-right p-2">$60,000</td><td class="text-right p-2">$120,000</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">3</td><td class="text-right p-2">$30,000</td><td class="text-right p-2">$90,000</td><td class="text-right p-2">$90,000</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">4</td><td class="text-right p-2">$30,000</td><td class="text-right p-2">$120,000</td><td class="text-right p-2">$60,000</td></tr>
+                                    <tr class="border-b border-slate-700"><td class="p-2">5</td><td class="text-right p-2">$30,000</td><td class="text-right p-2">$150,000</td><td class="text-right p-2">$30,000</td></tr>
+                                    <tr><td class="p-2">6</td><td class="text-right p-2">$30,000</td><td class="text-right p-2">$180,000</td><td class="text-right p-2 font-bold text-indigo-400">$0</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Worked Example 2: Full Acquisition -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-2">Example 2: Business Acquisition with Goodwill</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-indigo-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">Apex Corp. acquires all of Beta Inc. for <strong class="text-white">$500,000 cash</strong>. Beta&rsquo;s book values and fair values:</p>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="w-full text-sm">
+                            <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left p-2">Item</th><th class="text-right p-2">Book Value</th><th class="text-right p-2">Fair Value</th></tr></thead>
+                            <tbody class="text-slate-300">
+                                <tr class="border-b border-slate-700"><td class="p-2">Cash &amp; Receivables</td><td class="text-right p-2">80,000</td><td class="text-right p-2">80,000</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">Inventory</td><td class="text-right p-2">60,000</td><td class="text-right p-2">75,000</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">PP&amp;E</td><td class="text-right p-2">200,000</td><td class="text-right p-2">280,000</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">Trade Name (not on books)</td><td class="text-right p-2">&mdash;</td><td class="text-right p-2">50,000</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">Accounts Payable</td><td class="text-right p-2">(45,000)</td><td class="text-right p-2">(45,000)</td></tr>
+                                <tr class="border-b border-slate-700"><td class="p-2">Notes Payable</td><td class="text-right p-2">(120,000)</td><td class="text-right p-2">(130,000)</td></tr>
+                                <tr class="font-bold border-t-2 border-slate-500"><td class="p-2">Net</td><td class="text-right p-2">175,000</td><td class="text-right p-2 text-indigo-400">310,000</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-indigo-400 font-bold">Step 1:</span> <span class="text-slate-300">Calculate Goodwill</span></div>
+                        <button onclick="revealStep('w2',1)" id="w2-btn-1" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w2-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">Goodwill = $500,000 &minus; $310,000 = <strong class="text-white">$190,000</strong></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-indigo-400 font-bold">Step 2:</span> <span class="text-slate-300">Journal Entry</span></div>
+                        <button onclick="revealStep('w2',2)" id="w2-btn-2" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w2-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <div class="bg-slate-800/80 rounded p-3">
+                            <table class="font-mono text-slate-300 w-full">
+                                <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left pb-2">Account</th><th class="text-right pb-2 pl-4">Debit</th><th class="text-right pb-2 pl-4">Credit</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="pr-4 pt-2">Cash &amp; Receivables</td><td class="text-right pl-4 pt-2">80,000</td><td></td></tr>
+                                    <tr><td class="pr-4">Inventory</td><td class="text-right pl-4">75,000</td><td></td></tr>
+                                    <tr><td class="pr-4">PP&amp;E</td><td class="text-right pl-4">280,000</td><td></td></tr>
+                                    <tr><td class="pr-4">Trade Name</td><td class="text-right pl-4">50,000</td><td></td></tr>
+                                    <tr><td class="pr-4">Goodwill</td><td class="text-right pl-4">190,000</td><td></td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">500,000</td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Accounts Payable</td><td></td><td class="text-right pl-4">45,000</td></tr>
+                                    <tr><td class="pr-4 pl-6 text-slate-500">Notes Payable</td><td></td><td class="text-right pl-4">130,000</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td class="pr-4 pt-2">Totals</td><td class="text-right pl-4 pt-2">675,000</td><td class="text-right pl-4 pt-2">675,000</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-slate-500 mt-2">All assets at FV (including intangibles not previously on Beta&rsquo;s books) + goodwill. All liabilities at FV. Cash paid credited.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Worked Example 3: Impairment -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-indigo-400 mb-2">Example 3: Trademark Impairment</h2>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 mb-5">
+                    <p class="text-sm text-indigo-300 font-bold mb-2">Setup</p>
+                    <p class="text-sm text-slate-300">NovaBrand acquired a trademark 3 years ago for $95,000 (indefinite life &mdash; no amortization). Due to a competitor&rsquo;s product launch, management estimates the trademark&rsquo;s fair value is now $58,000.</p>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-indigo-400 font-bold">Step 1:</span> <span class="text-slate-300">Test for Impairment</span></div>
+                        <button onclick="revealStep('w3',1)" id="w3-btn-1" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w3-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300">Book Value = $95,000 &nbsp;|&nbsp; Fair Value = $58,000</p>
+                        <p class="text-amber-400 mt-1">FV ($58,000) &lt; BV ($95,000) &rarr; <strong>Impaired!</strong></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-indigo-400 font-bold">Step 2:</span> <span class="text-slate-300">Record Impairment</span></div>
+                        <button onclick="revealStep('w3',2)" id="w3-btn-2" class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="w3-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700 text-sm">
+                        <p class="text-slate-300 mb-2">Impairment = $95,000 &minus; $58,000 = <strong class="text-white">$37,000</strong></p>
+                        <div class="bg-slate-800/80 rounded p-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Loss Due to Impairment</td><td class="text-right pl-4">37,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Trademark</td><td></td><td class="text-right pl-4">37,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-slate-500 mt-2">New carrying value = $58,000. This loss hits the income statement immediately. The trademark <strong>cannot be written back up</strong> if the fair value later recovers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 4: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-indigo-400">Practice Questions</h2>
+                    <div class="flex items-center gap-4">
+                        <div class="text-right"><p class="text-xs text-slate-500">Score</p><p class="text-lg font-bold text-emerald-400"><span id="p-correct">0</span>/<span id="p-total">0</span></p></div>
+                        <div class="text-right"><p class="text-xs text-slate-500">Streak</p><p class="text-lg font-bold text-amber-400" id="p-streak">0</p></div>
+                    </div>
+                </div>
+                <div id="p-question" class="mb-4"><p class="text-slate-400">Click &ldquo;New Question&rdquo; to start.</p></div>
+                <div id="p-answer" class="mb-4 hidden"></div>
+                <div id="p-feedback" class="mb-4 hidden"></div>
+                <div class="flex gap-3">
+                    <button onclick="pNew()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Journal Entry Practice -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4">Journal Entry Practice</h2>
+                <div id="je-prompt" class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4"><p class="text-slate-400">Click &ldquo;New Entry&rdquo; to start.</p></div>
+                <div id="je-lines" class="space-y-2 mb-4"></div>
+                <div class="flex gap-3 mb-4">
+                    <button onclick="jeAdd()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Add Line</button>
+                    <button onclick="jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium">Check</button>
+                    <button onclick="jeNew()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium">New Entry</button>
+                </div>
+                <div id="je-feedback" class="hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Intangible Assets Study Tool</p>
+    </div>
+
+<script>
+    // Tab switching
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    };
+
+    // Worked example reveals (generic: prefix + step number)
+    window.revealStep = function(prefix, n) {
+        const div = document.getElementById(prefix + '-' + n);
+        const btn = document.getElementById(prefix + '-btn-' + n);
+        if (div.classList.contains('hidden')) {
+            div.classList.remove('hidden'); btn.textContent = 'Hide';
+        } else {
+            div.classList.add('hidden'); btn.textContent = 'Show';
+        }
+    };
+
+    // ========== PRACTICE QUESTIONS ==========
+    let pCorrect = 0, pTotal = 0, pStreak = 0, curQ = null;
+    function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+    function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+    // Q1: Amortization calculation
+    function genAmort() {
+        const cost = rand(50, 300) * 1000;
+        const life = rand(3, 15);
+        const ans = Math.round(cost / life);
+        return { question: 'A company purchases a patent for $' + cost.toLocaleString() + ' with a useful life of ' + life + ' years (no salvage value).<br><br>What is the annual amortization expense?', type: 'number', answer: ans, explanation: '$' + cost.toLocaleString() + ' &divide; ' + life + ' = $' + ans.toLocaleString() + '/year' };
+    }
+
+    // Q2: Goodwill calculation
+    function genGoodwill() {
+        const fvAssets = rand(200, 600) * 1000;
+        const fvLiab = rand(50, Math.floor(fvAssets/1000) - 50) * 1000;
+        const fvNet = fvAssets - fvLiab;
+        const premium = rand(20, 150) * 1000;
+        const price = fvNet + premium;
+        return { question: 'A company pays $' + price.toLocaleString() + ' to acquire a target. The fair value of identifiable assets is $' + fvAssets.toLocaleString() + ' and fair value of liabilities assumed is $' + fvLiab.toLocaleString() + '.<br><br>What is goodwill?', type: 'number', answer: premium, explanation: 'FV Net Assets = $' + fvAssets.toLocaleString() + ' &minus; $' + fvLiab.toLocaleString() + ' = $' + fvNet.toLocaleString() + '. Goodwill = $' + price.toLocaleString() + ' &minus; $' + fvNet.toLocaleString() + ' = $' + premium.toLocaleString() };
+    }
+
+    // Q3: Impairment calculation
+    function genImpairment() {
+        const bv = rand(30, 120) * 1000;
+        const fv = rand(10, Math.floor(bv/1000) - 5) * 1000;
+        const charge = bv - fv;
+        return { question: 'A trademark has a book value of $' + bv.toLocaleString() + '. Annual impairment testing determines its fair value is $' + fv.toLocaleString() + '.<br><br>What is the impairment charge?', type: 'number', answer: charge, explanation: 'Impairment = BV &minus; FV = $' + bv.toLocaleString() + ' &minus; $' + fv.toLocaleString() + ' = $' + charge.toLocaleString() };
+    }
+
+    // Q4: Capitalize vs Expense (R&D)
+    function genCapVsExp() {
+        const scenarios = [
+            { text: 'A company spends $200,000 on in-house R&D that results in a new technology', answer: 1, explain: 'Under US GAAP, internally developed intangibles (R&D) are expensed immediately.' },
+            { text: 'A company purchases a customer list from another firm for $75,000', answer: 0, explain: 'Externally acquired intangibles are capitalized at acquisition cost.' },
+            { text: 'A company pays $50,000 to renew a trademark registration', answer: 0, explain: 'Costs to renew or extend an intangible asset are capitalized.' },
+            { text: 'A pharmaceutical company spends $5M on drug research with uncertain outcomes', answer: 1, explain: 'R&D is expensed when incurred under US GAAP, regardless of the amount.' },
+            { text: 'A company buys a patent from a competitor for $120,000', answer: 0, explain: 'Externally acquired intangibles are capitalized at acquisition cost.' },
+            { text: 'A tech company pays developers $300,000 to create proprietary software (before technological feasibility)', answer: 1, explain: 'Software development costs before technological feasibility are expensed as R&D under US GAAP.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text + '<br><br>Should this be capitalized or expensed?', type: 'mc', options: ['Capitalize (recognize as asset)', 'Expense immediately'], answer: s.answer, explanation: s.explain };
+    }
+
+    // Q5: Finite vs Indefinite life
+    function genFiniteIndef() {
+        const scenarios = [
+            { text: 'A patent with 8 years remaining', answer: 0, explain: 'Patents have a finite legal life and are amortized over their useful life.' },
+            { text: 'A well-known brand name (e.g., Coca-Cola)', answer: 1, explain: 'Brand names are considered indefinite-life intangibles &mdash; not amortized, but tested annually for impairment.' },
+            { text: 'A licensing agreement for 5 years', answer: 0, explain: 'Contract-based intangibles with a set term have a finite life and are amortized.' },
+            { text: 'Goodwill from an acquisition', answer: 1, explain: 'Goodwill has an indefinite life &mdash; it is not amortized but tested annually for impairment.' },
+            { text: 'A copyright on a textbook with 20 years remaining', answer: 0, explain: 'Copyrights have a finite life and are amortized over the remaining useful period.' },
+            { text: 'A trademark that has been in use for 50 years with no expiration', answer: 1, explain: 'Trademarks with no foreseeable end to their useful life are indefinite-life intangibles.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text + '<br><br>Is this a finite-life or indefinite-life intangible?', type: 'mc', options: ['Finite life (amortize)', 'Indefinite life (impairment test only)'], answer: s.answer, explanation: s.explain };
+    }
+
+    // Q6: NCI calculation
+    function genNCI() {
+        const pct = pick([60, 70, 75, 80]);
+        const price = rand(100, 500) * 1000;
+        const implied = Math.round(price / (pct / 100));
+        const nci = implied - price;
+        return { question: 'A company acquires ' + pct + '% of a target for $' + price.toLocaleString() + '.<br><br>What is the Non-Controlling Interest (NCI)?', type: 'number', answer: nci, explanation: 'Implied total value = $' + price.toLocaleString() + ' &divide; ' + pct + '% = $' + implied.toLocaleString() + '. NCI = ' + (100 - pct) + '% &times; $' + implied.toLocaleString() + ' = $' + nci.toLocaleString() };
+    }
+
+    // Q7: Net book value after amortization
+    function genNBV() {
+        const cost = rand(60, 250) * 1000;
+        const life = rand(4, 12);
+        const yearsUsed = rand(1, life - 1);
+        const annual = Math.round(cost / life);
+        const accum = annual * yearsUsed;
+        const nbv = cost - accum;
+        return { question: 'A patent was purchased for $' + cost.toLocaleString() + ' with a ' + life + '-year useful life (no salvage). After ' + yearsUsed + ' year' + (yearsUsed > 1 ? 's' : '') + ' of straight-line amortization, what is the net book value?', type: 'number', answer: nbv, explanation: 'Annual amort = $' + cost.toLocaleString() + ' &divide; ' + life + ' = $' + annual.toLocaleString() + '. After ' + yearsUsed + ' years: Accum Amort = $' + accum.toLocaleString() + '. NBV = $' + cost.toLocaleString() + ' &minus; $' + accum.toLocaleString() + ' = $' + nbv.toLocaleString() };
+    }
+
+    // Q8: US GAAP vs IFRS
+    function genGAAPvsIFRS() {
+        const scenarios = [
+            { text: 'Under US GAAP, can a company capitalize software development costs?', answer: 0, explain: 'Yes, but only AFTER technological feasibility has been established. Costs before that point are expensed as R&D.' },
+            { text: 'Under IFRS, can a company capitalize development costs?', answer: 0, explain: 'Yes, IFRS allows capitalization of development costs once certain criteria are met (technical feasibility, intent to complete, ability to use/sell, probable future economic benefits, etc.). Research costs are still expensed.' },
+            { text: 'Under US GAAP, can internally generated goodwill be recorded on the balance sheet?', answer: 1, explain: 'No. Goodwill can ONLY be recorded when a business is acquired. Internally generated goodwill cannot be capitalized under either US GAAP or IFRS.' },
+            { text: 'Under US GAAP, can you write goodwill back up after an impairment?', answer: 1, explain: 'No. Once goodwill is written down, it cannot be reversed (written back up) under US GAAP.' }
+        ];
+        const s = pick(scenarios);
+        return { question: s.text, type: 'mc', options: ['Yes', 'No'], answer: s.answer, explanation: s.explain };
+    }
+
+    const qGens = [genAmort, genGoodwill, genImpairment, genCapVsExp, genFiniteIndef, genNCI, genNBV, genGAAPvsIFRS];
+
+    window.pNew = function() {
+        curQ = pick(qGens)();
+        document.getElementById('p-question').innerHTML = '<p class="text-slate-300 text-sm">' + curQ.question + '</p>';
+        document.getElementById('p-feedback').classList.add('hidden');
+        const ans = document.getElementById('p-answer');
+        ans.classList.remove('hidden');
+        if (curQ.type === 'mc') {
+            ans.innerHTML = curQ.options.map((o,i) => '<button onclick="checkMC(' + i + ')" class="w-full text-left bg-slate-900/60 hover:bg-slate-700/60 border border-slate-600 rounded-lg p-3 transition-colors text-sm mb-2"><span class="font-semibold text-slate-400 mr-2">' + String.fromCharCode(65+i) + '.</span>' + o + '</button>').join('');
+            document.getElementById('p-check-btn').classList.add('hidden');
+        } else {
+            ans.innerHTML = '<input type="number" id="p-num" class="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white w-48" placeholder="Enter amount">';
+            document.getElementById('p-check-btn').classList.remove('hidden');
+        }
+    };
+
+    window.checkMC = function(idx) {
+        if (!curQ) return;
+        const ok = idx === curQ.answer;
+        pTotal++; if (ok) { pCorrect++; pStreak++; } else { pStreak = 0; }
+        updateScore();
+        showFeedback(ok);
+    };
+
+    window.pCheck = function() {
+        if (!curQ) return;
+        const inp = document.getElementById('p-num');
+        if (!inp || !inp.value) return;
+        const userAns = parseFloat(inp.value);
+        const ok = Math.abs(userAns - curQ.answer) < 2;
+        pTotal++; if (ok) { pCorrect++; pStreak++; } else { pStreak = 0; }
+        updateScore();
+        showFeedback(ok);
+    };
+
+    function updateScore() {
+        document.getElementById('p-correct').textContent = pCorrect;
+        document.getElementById('p-total').textContent = pTotal;
+        document.getElementById('p-streak').textContent = pStreak;
+    }
+
+    function showFeedback(ok) {
+        const fb = document.getElementById('p-feedback'); fb.classList.remove('hidden');
+        const c = ok ? 'emerald' : 'rose';
+        fb.innerHTML = '<div class="bg-' + c + '-500/10 border border-' + c + '-500/30 rounded-lg p-4"><p class="font-bold text-' + c + '-400 mb-1">' + (ok ? 'Correct!' : 'Not quite.') + '</p><p class="text-sm text-slate-300">' + curQ.explanation + '</p></div>';
+        document.getElementById('p-check-btn').classList.add('hidden');
+    }
+
+    // ========== JOURNAL ENTRY PRACTICE ==========
+    const jeAccts = ['Cash','Patent','Trademark','Goodwill','Customer List','PP&E','Inventory','Accumulated Amortization','Accounts Payable','Notes Payable','Current Liabilities','Long-term Liabilities','Contributed Capital','Non-Controlling Interest','Amortization Expense','R&D Expense','Loss Due to Impairment'];
+    let curJE = null;
+
+    const jeScenarios = [
+        { prompt: 'Purchase a patent from another company for $150,000 cash.', answer: [{acct:'Patent',dr:150000,cr:0},{acct:'Cash',dr:0,cr:150000}] },
+        { prompt: 'Record annual amortization of $25,000 on a patent.', answer: [{acct:'Amortization Expense',dr:25000,cr:0},{acct:'Accumulated Amortization',dr:0,cr:25000}] },
+        { prompt: 'Expense $80,000 of in-house R&D costs.', answer: [{acct:'R&D Expense',dr:80000,cr:0},{acct:'Cash',dr:0,cr:80000}] },
+        { prompt: 'Record a $35,000 impairment loss on a trademark.', answer: [{acct:'Loss Due to Impairment',dr:35000,cr:0},{acct:'Trademark',dr:0,cr:35000}] },
+        { prompt: 'Acquire a company for $200,000 cash. FV of acquired assets: Inventory $40,000, PP&E $120,000, Customer List $30,000. FV of liabilities assumed: Accounts Payable $50,000. Record the full acquisition entry.', answer: [{acct:'Inventory',dr:40000,cr:0},{acct:'PP&E',dr:120000,cr:0},{acct:'Customer List',dr:30000,cr:0},{acct:'Goodwill',dr:60000,cr:0},{acct:'Cash',dr:0,cr:200000},{acct:'Accounts Payable',dr:0,cr:50000}] },
+    ];
+
+    function makeJELine() {
+        const div = document.createElement('div');
+        div.className = 'flex gap-2 items-center';
+        div.innerHTML = '<select class="je-acct bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm flex-1"><option value="">-- Account --</option>' + jeAccts.map(a => '<option value="' + a + '">' + a + '</option>').join('') + '</select><input type="number" class="je-dr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Debit"><input type="number" class="je-cr bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-white text-sm w-28" placeholder="Credit"><button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-rose-400 text-sm">&times;</button>';
+        return div;
+    }
+
+    window.jeAdd = function() { document.getElementById('je-lines').appendChild(makeJELine()); };
+
+    window.jeNew = function() {
+        curJE = pick(jeScenarios);
+        document.getElementById('je-prompt').innerHTML = '<p class="text-slate-300 text-sm">' + curJE.prompt + '</p>';
+        document.getElementById('je-lines').innerHTML = '';
+        document.getElementById('je-feedback').classList.add('hidden');
+        jeAdd(); jeAdd();
+    };
+
+    window.jeCheck = function() {
+        if (!curJE) return;
+        const lines = document.getElementById('je-lines').children;
+        let tDr = 0, tCr = 0, entries = [];
+        for (let l of lines) {
+            const a = l.querySelector('.je-acct').value;
+            const d = parseFloat(l.querySelector('.je-dr').value) || 0;
+            const c = parseFloat(l.querySelector('.je-cr').value) || 0;
+            if (a && (d || c)) { entries.push({acct:a,dr:d,cr:c}); tDr += d; tCr += c; }
+        }
+        const fb = document.getElementById('je-feedback'); fb.classList.remove('hidden');
+        if (Math.abs(tDr - tCr) > 0.01) {
+            fb.innerHTML = '<div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-4"><p class="text-rose-400 font-bold">Debits ($' + tDr.toLocaleString() + ') &ne; Credits ($' + tCr.toLocaleString() + ')</p></div>';
+            return;
+        }
+        const ansStr = curJE.answer.map(a => a.acct+':'+a.dr+':'+a.cr).sort().join('|');
+        const userStr = entries.map(a => a.acct+':'+a.dr+':'+a.cr).sort().join('|');
+        if (ansStr === userStr) {
+            fb.innerHTML = '<div class="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4"><p class="text-emerald-400 font-bold">Correct!</p></div>';
+        } else {
+            const correctHTML = curJE.answer.map(a => (a.dr ? 'Dr ' + a.acct + ' ' + a.dr.toLocaleString() : 'Cr ' + a.acct + ' ' + a.cr.toLocaleString())).join('<br>');
+            fb.innerHTML = '<div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4"><p class="text-amber-400 font-bold">Not quite.</p><p class="text-sm text-slate-300 mt-2">Expected:<br><span class="font-mono text-xs">' + correctHTML + '</span></p></div>';
+        }
+    };
+</script>
+</body>
+</html>
