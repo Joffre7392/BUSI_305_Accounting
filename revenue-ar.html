@@ -968,10 +968,10 @@
         const askFor = pick(['A/R Turnover', 'Days Sales Outstanding']);
         if (askFor === 'A/R Turnover') {
             const ans = Math.round(art * 100) / 100;
-            return { question: 'Net Credit Sales = $' + fmt(creditSales) + ', Beginning A/R = $' + fmt(begAR) + ', Ending A/R = $' + fmt(endAR) + '.<br><br>What is the A/R Turnover ratio? (Round to 2 decimals)', type: 'number', answer: ans, explanation: 'Avg A/R = ($' + fmt(begAR) + ' + $' + fmt(endAR) + ') / 2 = $' + fmt(avgAR) + '. Turnover = $' + fmt(creditSales) + ' \u00f7 $' + fmt(avgAR) + ' = ' + ans.toFixed(2) + 'x' };
+            return { question: 'Net Credit Sales = $' + fmt(creditSales) + ', Beginning A/R = $' + fmt(begAR) + ', Ending A/R = $' + fmt(endAR) + '.<br><br>What is the A/R Turnover ratio? (Round to 2 decimals)', type: 'number', answer: ans, tolerance: 0.05, explanation: 'Avg A/R = ($' + fmt(begAR) + ' + $' + fmt(endAR) + ') / 2 = $' + fmt(avgAR) + '. Turnover = $' + fmt(creditSales) + ' \u00f7 $' + fmt(avgAR) + ' = ' + ans.toFixed(2) + 'x' };
         } else {
             const ans = Math.round(dso * 10) / 10;
-            return { question: 'Net Credit Sales = $' + fmt(creditSales) + ', Beginning A/R = $' + fmt(begAR) + ', Ending A/R = $' + fmt(endAR) + '.<br><br>What is the Days Sales Outstanding (DSO)? (Round to 1 decimal)', type: 'number', answer: ans, explanation: 'Avg A/R = $' + fmt(avgAR) + '. Turnover = ' + art.toFixed(2) + 'x. DSO = 365 \u00f7 ' + art.toFixed(2) + ' = ' + ans.toFixed(1) + ' days' };
+            return { question: 'Net Credit Sales = $' + fmt(creditSales) + ', Beginning A/R = $' + fmt(begAR) + ', Ending A/R = $' + fmt(endAR) + '.<br><br>What is the Days Sales Outstanding (DSO)? (Round to 1 decimal)', type: 'number', answer: ans, tolerance: 1, explanation: 'Avg A/R = $' + fmt(avgAR) + '. Turnover = ' + art.toFixed(2) + 'x. DSO = 365 \u00f7 ' + art.toFixed(2) + ' = ' + ans.toFixed(1) + ' days' };
         }
     }
 

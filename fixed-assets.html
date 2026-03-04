@@ -707,7 +707,7 @@
         const life = rand(3, 12);
         const method = pick(['SL', 'DDB']);
         const rate = method === 'SL' ? (1 / life) * 100 : (2 / life) * 100;
-        return { question: 'What is the ' + (method === 'SL' ? 'straight-line' : 'double-declining balance') + ' depreciation rate for an asset with a ' + life + '-year useful life?<br><br>Enter as a percentage (e.g., 25 for 25%).', type: 'number', answer: Math.round(rate * 100) / 100, explanation: method === 'SL' ? 'SL rate = 1/' + life + ' = ' + rate.toFixed(2) + '%' : 'DDB rate = 2/' + life + ' = ' + rate.toFixed(2) + '%' };
+        return { question: 'What is the ' + (method === 'SL' ? 'straight-line' : 'double-declining balance') + ' depreciation rate for an asset with a ' + life + '-year useful life?<br><br>Enter as a percentage (e.g., 25 for 25%).', type: 'number', answer: Math.round(rate * 100) / 100, tolerance: 0.5, explanation: method === 'SL' ? 'SL rate = 1/' + life + ' = ' + rate.toFixed(2) + '%' : 'DDB rate = 2/' + life + ' = ' + rate.toFixed(2) + '%' };
     }
     // --- Q10: Units-of-production depreciation ---
     function genUnits() {
@@ -729,7 +729,7 @@
     function genPctDepreciated() {
         const cost = rand(50, 200) * 1000, accumDepr = rand(10, Math.floor(cost / 1000) - 5) * 1000;
         const pct = Math.round(accumDepr / cost * 100 * 10) / 10;
-        return { question: 'An asset has gross cost of $' + fmt(cost) + ' and accumulated depreciation of $' + fmt(accumDepr) + '.<br><br>What percentage of the asset has been depreciated? (Enter as a number, e.g. 25 for 25%)', type: 'number', answer: pct, explanation: '$' + fmt(accumDepr) + ' \u00f7 $' + fmt(cost) + ' \u00d7 100 = ' + pct + '%' };
+        return { question: 'An asset has gross cost of $' + fmt(cost) + ' and accumulated depreciation of $' + fmt(accumDepr) + '.<br><br>What percentage of the asset has been depreciated? (Enter as a number, e.g. 25 for 25%)', type: 'number', answer: pct, tolerance: 0.5, explanation: '$' + fmt(accumDepr) + ' \u00f7 $' + fmt(cost) + ' \u00d7 100 = ' + pct + '%' };
     }
     // --- Q13: Partial-year SL depreciation ---
     function genPartialYear() {
@@ -792,13 +792,13 @@
         const begPPE = rand(80, 300) * 1000, endPPE = rand(80, 300) * 1000;
         const avgPPE = (begPPE + endPPE) / 2;
         const ratio = Math.round(rev / avgPPE * 100) / 100;
-        return { question: 'Revenue = $' + fmt(rev) + '. Beginning Net PP&E = $' + fmt(begPPE) + ', Ending Net PP&E = $' + fmt(endPPE) + '.<br><br>What is the Fixed Asset Turnover ratio? (Round to 2 decimal places)', type: 'number', answer: ratio, explanation: 'Avg Net PP&E = ($' + fmt(begPPE) + ' + $' + fmt(endPPE) + ') / 2 = $' + fmt(avgPPE) + '. FA Turnover = $' + fmt(rev) + ' / $' + fmt(avgPPE) + ' = ' + ratio };
+        return { question: 'Revenue = $' + fmt(rev) + '. Beginning Net PP&E = $' + fmt(begPPE) + ', Ending Net PP&E = $' + fmt(endPPE) + '.<br><br>What is the Fixed Asset Turnover ratio? (Round to 2 decimal places)', type: 'number', answer: ratio, tolerance: 0.05, explanation: 'Avg Net PP&E = ($' + fmt(begPPE) + ' + $' + fmt(endPPE) + ') / 2 = $' + fmt(avgPPE) + '. FA Turnover = $' + fmt(rev) + ' / $' + fmt(avgPPE) + ' = ' + ratio };
     }
     // --- Q19: Average age of assets ---
     function genAvgAge() {
         const accumDepr = rand(20, 150) * 1000, deprExp = rand(5, 30) * 1000;
         const age = Math.round(accumDepr / deprExp * 10) / 10;
-        return { question: 'A company has Accumulated Depreciation of $' + fmt(accumDepr) + ' and annual Depreciation Expense of $' + fmt(deprExp) + '.<br><br>What is the average age of assets (in years, round to 1 decimal)?', type: 'number', answer: age, explanation: 'Average Age = Accum Depr / Depr Expense = $' + fmt(accumDepr) + ' / $' + fmt(deprExp) + ' = ' + age + ' years' };
+        return { question: 'A company has Accumulated Depreciation of $' + fmt(accumDepr) + ' and annual Depreciation Expense of $' + fmt(deprExp) + '.<br><br>What is the average age of assets (in years, round to 1 decimal)?', type: 'number', answer: age, tolerance: 0.2, explanation: 'Average Age = Accum Depr / Depr Expense = $' + fmt(accumDepr) + ' / $' + fmt(deprExp) + ' = ' + age + ' years' };
     }
 
     // ========== JE GENERATORS (50+ via parametric templates) ==========

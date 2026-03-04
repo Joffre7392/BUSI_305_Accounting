@@ -152,8 +152,8 @@ const QuizEngine = (() => {
         const inp = document.getElementById('p-num');
         if (!inp || !inp.value) return;
         const userAns = parseFloat(inp.value);
-        const tolerance = Math.max(2, Math.abs(curQ.answer) * 0.01);
-        const correct = Math.abs(userAns - curQ.answer) < tolerance;
+        const tolerance = curQ.tolerance != null ? curQ.tolerance : Math.max(2, Math.abs(curQ.answer) * 0.01);
+        const correct = Math.abs(userAns - curQ.answer) <= tolerance;
         recordAnswer(correct);
         showFeedback('p-feedback', correct, curQ.explanation);
         document.getElementById('p-check-btn').classList.add('hidden');

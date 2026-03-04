@@ -1624,7 +1624,7 @@
         if (ask === 'gross profit') {
             return { question: 'Revenue = $' + qfmt(rev) + ', COGS = $' + qfmt(cogsAmt) + '. Calculate <strong>Gross Profit</strong>.', type: 'number', answer: gp, explanation: 'Gross Profit = Revenue \u2212 COGS = $' + qfmt(rev) + ' \u2212 $' + qfmt(cogsAmt) + ' = <strong>$' + qfmt(gp) + '</strong>' };
         } else {
-            return { question: 'Revenue = $' + qfmt(rev) + ', COGS = $' + qfmt(cogsAmt) + '. Calculate the <strong>Gross Margin %</strong> (enter as a whole number, e.g. 35 for 35%).', type: 'number', answer: gmPct, explanation: 'Gross Margin = (Revenue \u2212 COGS) \u00f7 Revenue = ($' + qfmt(rev) + ' \u2212 $' + qfmt(cogsAmt) + ') \u00f7 $' + qfmt(rev) + ' = <strong>' + gmPct + '%</strong>' };
+            return { question: 'Revenue = $' + qfmt(rev) + ', COGS = $' + qfmt(cogsAmt) + '. Calculate the <strong>Gross Margin %</strong> (enter as a whole number, e.g. 35 for 35%).', type: 'number', answer: gmPct, tolerance: 0.5, explanation: 'Gross Margin = (Revenue \u2212 COGS) \u00f7 Revenue = ($' + qfmt(rev) + ' \u2212 $' + qfmt(cogsAmt) + ') \u00f7 $' + qfmt(rev) + ' = <strong>' + gmPct + '%</strong>' };
         }
     }
 
@@ -1647,9 +1647,9 @@
         const dio = Math.round(365 / turnover);
         const ask = pick(['inventory turnover', 'days inventory outstanding']);
         if (ask === 'inventory turnover') {
-            return { question: 'COGS = $' + qfmt(cogsAmt) + ', Average Inventory = $' + qfmt(avgInv) + '. Calculate <strong>Inventory Turnover</strong> (round to 2 decimal places).', type: 'number', answer: turnover, explanation: 'Inventory Turnover = COGS \u00f7 Average Inventory = $' + qfmt(cogsAmt) + ' \u00f7 $' + qfmt(avgInv) + ' = <strong>' + turnover.toFixed(2) + '\u00d7</strong>' };
+            return { question: 'COGS = $' + qfmt(cogsAmt) + ', Average Inventory = $' + qfmt(avgInv) + '. Calculate <strong>Inventory Turnover</strong> (round to 2 decimal places).', type: 'number', answer: turnover, tolerance: 0.05, explanation: 'Inventory Turnover = COGS \u00f7 Average Inventory = $' + qfmt(cogsAmt) + ' \u00f7 $' + qfmt(avgInv) + ' = <strong>' + turnover.toFixed(2) + '\u00d7</strong>' };
         } else {
-            return { question: 'COGS = $' + qfmt(cogsAmt) + ', Average Inventory = $' + qfmt(avgInv) + '. Calculate <strong>Days Inventory Outstanding</strong> (round to nearest day).', type: 'number', answer: dio, explanation: 'Inventory Turnover = $' + qfmt(cogsAmt) + ' \u00f7 $' + qfmt(avgInv) + ' = ' + turnover.toFixed(2) + '\u00d7<br>DIO = 365 \u00f7 ' + turnover.toFixed(2) + ' = <strong>' + dio + ' days</strong>' };
+            return { question: 'COGS = $' + qfmt(cogsAmt) + ', Average Inventory = $' + qfmt(avgInv) + '. Calculate <strong>Days Inventory Outstanding</strong> (round to nearest day).', type: 'number', answer: dio, tolerance: 1, explanation: 'Inventory Turnover = $' + qfmt(cogsAmt) + ' \u00f7 $' + qfmt(avgInv) + ' = ' + turnover.toFixed(2) + '\u00d7<br>DIO = 365 \u00f7 ' + turnover.toFixed(2) + ' = <strong>' + dio + ' days</strong>' };
         }
     }
 
