@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loans &amp; Bonds | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="animations.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        :root { --accent: #fb923c; --accent-bg: rgba(251,146,60,0.08); --accent-border-subtle: rgba(251,146,60,0.15); }
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(251,146,60,0.15); }
+        .tab-btn.active { border-color: #fb923c; color: #fb923c; background: rgba(251,146,60,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
+    <script>
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+    </script>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="back-link" style="--accent: #fb923c">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(251,146,60,0.1)">
+                <svg class="text-orange-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg>
+            </div>
+            <div>
+                <h1>Loans &amp; Bonds</h1>
+                <p class="subtitle">Lecture 17 &mdash; Installment loans, bond pricing &amp; amortization</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(251,146,60,0.1); color: rgba(251,146,60,0.8); border: 1px solid rgba(251,146,60,0.1)">L 17</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('loans')" id="tab-loans" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Loans &amp; Debt</button>
+            <button onclick="switchTab('fundamentals')" id="tab-fundamentals" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Bond Fundamentals</button>
+            <button onclick="switchTab('discount')" id="tab-discount" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Discount Bonds</button>
+            <button onclick="switchTab('premium')" id="tab-premium" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Premium Bonds</button>
+            <button onclick="switchTab('calculators')" id="tab-calculators" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Calculators</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: LOANS & DEBT ======================== -->
+        <div id="panel-loans" class="tab-panel active">
+
+            <!-- How to Finance a Company -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">How to Finance a Company</h2>
+                <p class="text-slate-300 mb-4">Every company needs capital. There are two fundamental ways to raise it:</p>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-orange-500/20">
+                        <h3 class="font-bold text-orange-400 mb-2">Equity</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-orange-400 font-semibold">Residual claim</span> &mdash; equity holders are last in line, making it riskier for them</li>
+                            <li>Can be <span class="text-orange-400 font-semibold">relatively expensive</span> because investors demand higher returns for bearing more risk</li>
+                            <li>No obligation to repay &mdash; but owners share in upside and downside</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-orange-500/20">
+                        <h3 class="font-bold text-orange-400 mb-2">Debt</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-orange-400 font-semibold">More senior claims</span> &mdash; debt holders are paid before equity holders</li>
+                            <li>Can be <span class="text-orange-400 font-semibold">long-term or short-term</span> depending on the company's needs</li>
+                            <li><span class="text-orange-400 font-semibold">Cash flow matching</span> &mdash; companies match the duration of debt to the assets being financed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Types of Financial Liabilities -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">Types of Financial Liabilities</h2>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-orange-500/20">
+                        <h3 class="font-bold text-orange-400 mb-2">Private (Bank Loans)</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-orange-400 font-semibold">Relationship lending</span> &mdash; bank knows the borrower</li>
+                            <li>Potential <span class="text-orange-400 font-semibold">borrowing limits</span> based on the bank's capacity</li>
+                            <li>Negotiated terms, covenants, and flexibility</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-orange-500/20">
+                        <h3 class="font-bold text-orange-400 mb-2">Public (Bonds)</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-orange-400 font-semibold">More standardized</span> terms for broad investor base</li>
+                            <li>Enables <span class="text-orange-400 font-semibold">large borrowings</span> beyond what any single bank could provide</li>
+                            <li><span class="text-orange-400 font-semibold">Cost efficient</span> &mdash; competitive markets drive down borrowing costs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Installment Loans -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">Installment Loans</h2>
+                <p class="text-slate-300 mb-4">Key features of installment loans:</p>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="text-orange-400 font-semibold">Equal periodic payments</span>, each comprising interest + principal repayment</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-slate-300">The <span class="text-orange-400 font-semibold">ratio changes each period</span>: interest shrinks, principal grows</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 md:col-span-2">
+                        <p class="text-sm text-slate-300"><span class="text-orange-400 font-semibold">PV of all payments</span> (annuity) = loan amount</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amortization Example -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">Amortization Example</h2>
+                <p class="text-slate-300 mb-4">$500,000 loan, 9% annual interest, 5-year term with equal annual payments.</p>
+
+                <div class="bg-orange-500/10 rounded-lg p-4 border border-orange-500/30 mb-4 text-center">
+                    <p class="text-lg font-mono text-orange-300">PV = PMT &times; [(1 &minus; (1.09)<sup>&minus;5</sup>) / 0.09]</p>
+                    <p class="text-lg font-mono text-orange-300 mt-2">PMT = <span class="text-white font-bold">$128,546</span></p>
+                </div>
+
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-6">
+                    <p class="text-sm text-orange-300 font-semibold mb-2">How each row works:</p>
+                    <ul class="text-sm text-slate-300 space-y-1">
+                        <li><span class="font-mono text-orange-400">Opening &times; Rate</span> = Interest</li>
+                        <li><span class="font-mono text-orange-400">Payment &minus; Interest</span> = Principal</li>
+                        <li><span class="font-mono text-orange-400">Opening &minus; Principal</span> = Closing</li>
+                    </ul>
+                </div>
+
+                <h3 class="text-lg font-bold text-orange-400 mb-3">Full 5-Year Amortization Schedule</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Year</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Opening</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Payment</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Interest</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Principal</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Closing</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">1</td>
+                                <td class="text-right py-2 px-3">$500,000</td>
+                                <td class="text-right py-2 px-3">$128,546</td>
+                                <td class="text-right py-2 px-3">$45,000</td>
+                                <td class="text-right py-2 px-3">$83,546</td>
+                                <td class="text-right py-2 px-3">$416,454</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">2</td>
+                                <td class="text-right py-2 px-3">$416,454</td>
+                                <td class="text-right py-2 px-3">$128,546</td>
+                                <td class="text-right py-2 px-3">$37,481</td>
+                                <td class="text-right py-2 px-3">$91,065</td>
+                                <td class="text-right py-2 px-3">$325,388</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">3</td>
+                                <td class="text-right py-2 px-3">$325,388</td>
+                                <td class="text-right py-2 px-3">$128,546</td>
+                                <td class="text-right py-2 px-3">$29,285</td>
+                                <td class="text-right py-2 px-3">$99,261</td>
+                                <td class="text-right py-2 px-3">$226,127</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">4</td>
+                                <td class="text-right py-2 px-3">$226,127</td>
+                                <td class="text-right py-2 px-3">$128,546</td>
+                                <td class="text-right py-2 px-3">$20,351</td>
+                                <td class="text-right py-2 px-3">$108,195</td>
+                                <td class="text-right py-2 px-3">$117,932</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">5</td>
+                                <td class="text-right py-2 px-3">$117,932</td>
+                                <td class="text-right py-2 px-3">$128,546</td>
+                                <td class="text-right py-2 px-3">$10,614</td>
+                                <td class="text-right py-2 px-3">$117,932</td>
+                                <td class="text-right py-2 px-3">$0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Journal Entries -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Journal Entries</h2>
+
+                <p class="text-slate-500 text-xs mb-1">Issuance of Loan:</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Cash</td>
+                            <td class="text-right pl-4">500,000</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Loans Outstanding</td>
+                            <td></td>
+                            <td class="text-right pl-4">500,000</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <p class="text-slate-500 text-xs mb-1">Year 1 Payment:</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Interest Expense</td>
+                            <td class="text-right pl-4">45,000</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4">Loans Outstanding</td>
+                            <td class="text-right pl-4">83,546</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Cash</td>
+                            <td></td>
+                            <td class="text-right pl-4">128,546</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-orange-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Loans Payable is a <strong class="text-white">liability (L increases)</strong> when issued. Interest Expense reduces net income, which reduces <strong class="text-white">Retained Earnings (SE decreases)</strong>. Each payment reduces <strong class="text-white">Cash (A decreases)</strong> and <strong class="text-white">Loans Outstanding (L decreases)</strong>. The equation stays balanced: <strong class="text-white">A = L + SE</strong>.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 2: BOND FUNDAMENTALS ======================== -->
+        <div id="panel-fundamentals" class="tab-panel">
+
+            <!-- What Are Debt Securities? -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">What Are Debt Securities?</h2>
+                <p class="text-slate-300 mb-4">Bonds and notes are <span class="text-orange-400 font-semibold">debt securities</span> that trade in bond markets. They allow risk-sharing among a large pool of investors and enable companies to borrow very large amounts.</p>
+                <div class="bg-orange-500/10 rounded-lg p-3 border border-orange-500/30">
+                    <p class="text-sm text-orange-300"><strong>Key insight:</strong> Issuing a bond is equivalent to borrowing money. The company receives cash today and promises to make future payments (coupons + face value) to bondholders.</p>
+                </div>
+            </div>
+
+            <!-- Key Features of a Bond -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Key Features of a Bond</h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-orange-500/20">
+                        <p class="text-orange-400 font-bold mb-1">Face Value (Par Value)</p>
+                        <p class="text-sm text-slate-300">The amount printed on the bond, repaid at maturity. This is the principal amount the issuer promises to return.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-orange-500/20">
+                        <p class="text-orange-400 font-bold mb-1">Coupon Rate</p>
+                        <p class="text-sm text-slate-300">The interest rate stated on the bond. Determines the periodic cash payments to bondholders.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-orange-500/20">
+                        <p class="text-orange-400 font-bold mb-1">Maturity Date</p>
+                        <p class="text-sm text-slate-300">When the principal (face value) is repaid to bondholders.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-orange-500/20">
+                        <p class="text-orange-400 font-bold mb-1">Issuer</p>
+                        <p class="text-sm text-slate-300">The company (or government) borrowing the money by selling the bonds.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Types of Cash Flows -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Two Types of Cash Flows</h2>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-orange-500/20 text-center">
+                        <p class="text-orange-400 font-bold text-lg mb-2">Periodic Coupon Payments</p>
+                        <p class="text-sm text-slate-300 mb-1">An <span class="text-orange-400 font-semibold">annuity</span> &mdash; usually semiannual</p>
+                        <p class="text-sm font-mono text-orange-300">Coupon Rate &times; Face Value</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-orange-500/20 text-center">
+                        <p class="text-orange-400 font-bold text-lg mb-2">Face Value at Maturity</p>
+                        <p class="text-sm text-slate-300 mb-1">A <span class="text-orange-400 font-semibold">lump sum</span> &mdash; returned at the end</p>
+                        <p class="text-sm font-mono text-orange-300">Par Value</p>
+                    </div>
+                </div>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>Zero-coupon bonds</strong> have no coupon payments &mdash; investors earn their return entirely from the discount between purchase price and face value at maturity.</p>
+                </div>
+            </div>
+
+            <!-- A Tale of Two Interest Rates -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">A Tale of Two Interest Rates</h2>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-orange-500/20">
+                        <h3 class="font-bold text-orange-400 mb-2">Coupon Rate</h3>
+                        <p class="text-sm text-slate-300">Stated in the bond contract. Determines the <span class="text-orange-400 font-semibold">cash paid</span> to bondholders each period.</p>
+                        <p class="text-xs text-slate-500 mt-2 font-mono">Cash Coupon = Face Value &times; Coupon Rate</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-orange-500/20">
+                        <h3 class="font-bold text-orange-400 mb-2">Market Rate</h3>
+                        <p class="text-sm text-slate-300">The rate investors expect to earn. Determines the <span class="text-orange-400 font-semibold">bond&rsquo;s price</span>.</p>
+                        <p class="text-xs text-slate-500 mt-2 font-mono">Price = PV of coupons + PV of face value</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Par, Premium, and Discount -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Par, Premium, and Discount</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/30 text-center">
+                        <p class="text-emerald-400 font-bold text-lg mb-2">At Par</p>
+                        <p class="text-sm text-slate-300 mb-2">Market Rate <span class="font-mono">=</span> Coupon Rate</p>
+                        <p class="text-sm text-emerald-300 font-semibold">Price = Face Value</p>
+                    </div>
+                    <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/30 text-center">
+                        <p class="text-sky-400 font-bold text-lg mb-2">At a Premium</p>
+                        <p class="text-sm text-slate-300 mb-2">Market Rate <span class="font-mono">&lt;</span> Coupon Rate</p>
+                        <p class="text-sm text-sky-300 font-semibold">Price &gt; Face Value</p>
+                        <p class="text-xs text-slate-400 mt-1">Investors pay MORE because the coupon is generous</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-4 border border-rose-500/30 text-center">
+                        <p class="text-rose-400 font-bold text-lg mb-2">At a Discount</p>
+                        <p class="text-sm text-slate-300 mb-2">Market Rate <span class="font-mono">&gt;</span> Coupon Rate</p>
+                        <p class="text-sm text-rose-300 font-semibold">Price &lt; Face Value</p>
+                        <p class="text-xs text-slate-400 mt-1">Investors pay LESS because the coupon is stingy</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bond Pricing -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Bond Pricing</h2>
+                <p class="text-slate-300 mb-4">Running example: <span class="text-orange-400 font-semibold">$400,000 face</span>, 8% coupon, 5 years, semiannual payments. Semiannual coupon = $400,000 &times; 4% = <span class="font-mono text-orange-400">$16,000</span>, n = 10 periods.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Scenario</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Market Rate</th>
+                                <th class="text-center py-2 px-3 text-slate-400">vs</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Coupon Rate</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Issue Price</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-emerald-400 font-sans">At Par</td>
+                                <td class="text-right py-2 px-3">8%</td>
+                                <td class="text-center py-2 px-3">=</td>
+                                <td class="text-right py-2 px-3">8%</td>
+                                <td class="text-right py-2 px-3">$400,000</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 text-rose-400 font-sans">At Discount</td>
+                                <td class="text-right py-2 px-3">10%</td>
+                                <td class="text-center py-2 px-3">&gt;</td>
+                                <td class="text-right py-2 px-3">8%</td>
+                                <td class="text-right py-2 px-3">$369,113</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-sky-400 font-sans">At Premium</td>
+                                <td class="text-right py-2 px-3">6%</td>
+                                <td class="text-center py-2 px-3">&lt;</td>
+                                <td class="text-right py-2 px-3">8%</td>
+                                <td class="text-right py-2 px-3">$434,121</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Effective Cost of Debt -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Effective Cost of Debt</h2>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400"></th>
+                                <th class="text-right py-2 px-3 text-slate-400">Issue Price</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Interest Pmts</th>
+                                <th class="text-right py-2 px-3 text-slate-400">&plusmn; Disc/Prem</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-sans text-emerald-400">Par</td>
+                                <td class="text-right py-2 px-3">$400,000</td>
+                                <td class="text-right py-2 px-3">$160,000</td>
+                                <td class="text-right py-2 px-3">$0</td>
+                                <td class="text-right py-2 px-3">$160,000</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 font-sans text-rose-400">Discount</td>
+                                <td class="text-right py-2 px-3">$369,113</td>
+                                <td class="text-right py-2 px-3">$160,000</td>
+                                <td class="text-right py-2 px-3">+$30,887</td>
+                                <td class="text-right py-2 px-3">$190,887</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-sans text-sky-400">Premium</td>
+                                <td class="text-right py-2 px-3">$434,121</td>
+                                <td class="text-right py-2 px-3">$160,000</td>
+                                <td class="text-right py-2 px-3">&minus;$34,121</td>
+                                <td class="text-right py-2 px-3">$125,879</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-orange-500/10 rounded-lg p-3 border border-orange-500/30">
+                    <p class="text-sm text-orange-300"><strong>Key insight:</strong> A discount increases the effective cost of debt; a premium reduces it.</p>
+                </div>
+            </div>
+
+            <!-- Balance Sheet Reporting -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Balance Sheet Reporting</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-emerald-400 font-bold text-sm mb-2">At Par</p>
+                        <table class="w-full text-xs text-slate-300 font-mono">
+                            <tr><td>Bonds Payable</td><td class="text-right">$400,000</td></tr>
+                        </table>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-rose-400 font-bold text-sm mb-2">At Discount</p>
+                        <table class="w-full text-xs text-slate-300 font-mono">
+                            <tr><td>Bonds Payable</td><td class="text-right">$400,000</td></tr>
+                            <tr><td class="text-rose-400">Less: Discount</td><td class="text-right text-rose-400">(30,887)</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td>Net</td><td class="text-right">$369,113</td></tr>
+                        </table>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sky-400 font-bold text-sm mb-2">At Premium</p>
+                        <table class="w-full text-xs text-slate-300 font-mono">
+                            <tr><td>Bonds Payable</td><td class="text-right">$400,000</td></tr>
+                            <tr><td class="text-sky-400">Plus: Premium</td><td class="text-right text-sky-400">34,121</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td>Net</td><td class="text-right">$434,121</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Issuing Bonds Journal Entries -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Issuing Bonds &mdash; Journal Entries</h2>
+
+                <p class="text-slate-500 text-xs mb-1">At Par:</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr><td class="pr-4">Cash</td><td class="text-right pl-4">400,000</td><td></td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Bonds Payable</td><td></td><td class="text-right pl-4">400,000</td></tr>
+                    </table>
+                </div>
+
+                <p class="text-slate-500 text-xs mb-1">At a Discount:</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr><td class="pr-4">Cash</td><td class="text-right pl-4">369,113</td><td></td></tr>
+                        <tr><td class="pr-4">Bond Discount</td><td class="text-right pl-4">30,887</td><td></td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Bonds Payable</td><td></td><td class="text-right pl-4">400,000</td></tr>
+                    </table>
+                </div>
+
+                <p class="text-slate-500 text-xs mb-1">At a Premium:</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm">
+                    <table class="font-mono text-slate-300">
+                        <tr><td class="pr-4">Cash</td><td class="text-right pl-4">434,121</td><td></td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Bonds Payable</td><td></td><td class="text-right pl-4">400,000</td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Bond Premium</td><td></td><td class="text-right pl-4">34,121</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-orange-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Issuing bonds increases <strong class="text-white">Cash (A)</strong> and <strong class="text-white">Bonds Payable (L)</strong>. Bond Discount is a <strong class="text-white">contra-liability</strong> (reduces L). Bond Premium <strong class="text-white">increases L</strong> further. In all cases, <strong class="text-white">A = L + SE</strong> stays balanced.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 3: DISCOUNT BONDS ======================== -->
+        <div id="panel-discount" class="tab-panel">
+
+            <!-- Interest Expense Formula -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">Discount Bond Interest</h2>
+                <div class="bg-orange-500/10 rounded-lg p-4 border border-orange-500/30 mb-4 text-center">
+                    <p class="text-lg font-mono text-orange-300">Cash Interest Paid + Amortization of Discount = Interest Expense</p>
+                </div>
+                <p class="text-slate-300 text-sm">The discount is an <span class="text-orange-400 font-semibold">additional cost</span> to the issuer &mdash; you received less cash but must repay the full face value.</p>
+            </div>
+
+            <!-- Amortization Logic -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Effective Interest Amortization</h2>
+                <div class="space-y-3">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="font-mono text-orange-400">Interest Expense</span> = Net Book Value &times; Market Rate per period</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="font-mono text-orange-400">Cash Paid</span> = Face Value &times; Coupon Rate per period</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="font-mono text-orange-400">Discount Amortization</span> = Interest Expense &minus; Cash Paid</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="font-mono text-orange-400">New Net</span> = Old Net + Amortization <span class="text-slate-500">(net liability GROWS toward face value)</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Discount Amortization Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Full Discount Amortization Schedule</h2>
+                <p class="text-slate-300 text-sm mb-4">$400,000 face, 8% coupon (4% per period), 10% market (5% per period), issue price $369,113</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-2 text-slate-400">Per</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Int Exp (5%)</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Cash (4%)</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Disc Amort</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Disc Bal</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Net</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">0</td><td class="text-right py-2 px-2"></td><td class="text-right py-2 px-2"></td><td class="text-right py-2 px-2"></td>
+                                <td class="text-right py-2 px-2">$30,887</td><td class="text-right py-2 px-2">$369,113</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">1</td><td class="text-right py-2 px-2">$18,456</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$2,456</td>
+                                <td class="text-right py-2 px-2">$28,431</td><td class="text-right py-2 px-2">$371,569</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">2</td><td class="text-right py-2 px-2">$18,578</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$2,578</td>
+                                <td class="text-right py-2 px-2">$25,853</td><td class="text-right py-2 px-2">$374,147</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">3</td><td class="text-right py-2 px-2">$18,707</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$2,707</td>
+                                <td class="text-right py-2 px-2">$23,146</td><td class="text-right py-2 px-2">$376,854</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">4</td><td class="text-right py-2 px-2">$18,843</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$2,843</td>
+                                <td class="text-right py-2 px-2">$20,303</td><td class="text-right py-2 px-2">$379,697</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">5</td><td class="text-right py-2 px-2">$18,985</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$2,985</td>
+                                <td class="text-right py-2 px-2">$17,318</td><td class="text-right py-2 px-2">$382,682</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">6</td><td class="text-right py-2 px-2">$19,134</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,134</td>
+                                <td class="text-right py-2 px-2">$14,184</td><td class="text-right py-2 px-2">$385,816</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">7</td><td class="text-right py-2 px-2">$19,291</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,291</td>
+                                <td class="text-right py-2 px-2">$10,893</td><td class="text-right py-2 px-2">$389,107</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">8</td><td class="text-right py-2 px-2">$19,455</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,455</td>
+                                <td class="text-right py-2 px-2">$7,438</td><td class="text-right py-2 px-2">$392,562</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">9</td><td class="text-right py-2 px-2">$19,628</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,628</td>
+                                <td class="text-right py-2 px-2">$3,810</td><td class="text-right py-2 px-2">$396,190</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">10</td><td class="text-right py-2 px-2">$19,810</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,810</td>
+                                <td class="text-right py-2 px-2">$0</td><td class="text-right py-2 px-2">$400,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recording Interest JE -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Recording Interest &mdash; Period 1</h2>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr><td class="pr-4">Interest Expense</td><td class="text-right pl-4">18,456</td><td></td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Bond Discount</td><td></td><td class="text-right pl-4">2,456</td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">16,000</td></tr>
+                    </table>
+                </div>
+                <div class="bg-orange-500/10 rounded-lg p-3 border border-orange-500/30">
+                    <p class="text-sm text-orange-300"><strong>Convergence:</strong> Each period, the discount shrinks and the net book value rises, converging to the $400,000 face value at maturity.</p>
+                </div>
+            </div>
+
+            <!-- Bond Retirement (Discount) -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Bond Retirement (Discount)</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4">
+                    <p class="text-sm text-slate-300 mb-2"><span class="font-mono text-orange-400">Gain/Loss</span> = Bonds Payable (net) &minus; Repurchase Payment</p>
+                    <ul class="text-sm text-slate-300 space-y-1 ml-4">
+                        <li>If repurchase price <span class="font-mono">&lt;</span> net book value &rarr; <span class="text-emerald-400">Gain</span></li>
+                        <li>If repurchase price <span class="font-mono">&gt;</span> net book value &rarr; <span class="text-rose-400">Loss</span></li>
+                    </ul>
+                </div>
+
+                <p class="text-slate-300 text-sm mb-3"><strong class="text-white">Example:</strong> After Period 4, net = $379,697. Company calls bonds at 98 ($392,000).</p>
+                <p class="text-sm text-slate-300 mb-3 font-mono">Loss = $379,697 &minus; $392,000 = &minus;$12,303</p>
+
+                <p class="text-slate-500 text-xs mb-1">Journal Entry:</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr><td class="pr-4">Bonds Payable</td><td class="text-right pl-4">400,000</td><td></td></tr>
+                        <tr><td class="pr-4">Loss on Retirement</td><td class="text-right pl-4">12,303</td><td></td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Bond Discount</td><td></td><td class="text-right pl-4">20,303</td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">392,000</td></tr>
+                    </table>
+                </div>
+
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>GAAP:</strong> Part of ordinary income. <strong>Analysis:</strong> Omit from NOPAT (nonoperating).</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-orange-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Discount amortization increases the <strong class="text-white">net liability (L increases)</strong> and increases <strong class="text-white">Interest Expense (reducing SE)</strong>. At retirement, a gain increases SE; a loss decreases SE. <strong class="text-white">A = L + SE</strong> always holds.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 4: PREMIUM BONDS ======================== -->
+        <div id="panel-premium" class="tab-panel">
+
+            <!-- Interest Expense Formula -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">Premium Bond Interest</h2>
+                <div class="bg-orange-500/10 rounded-lg p-4 border border-orange-500/30 mb-4 text-center">
+                    <p class="text-lg font-mono text-orange-300">Cash Interest Paid &minus; Amortization of Premium = Interest Expense</p>
+                </div>
+                <p class="text-slate-300 text-sm">The premium is a <span class="text-orange-400 font-semibold">benefit</span> to the issuer &mdash; you received extra cash upfront.</p>
+            </div>
+
+            <!-- Amortization Logic -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Effective Interest Amortization</h2>
+                <div class="space-y-3">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="font-mono text-orange-400">Interest Expense</span> = Net Book Value &times; Market Rate per period</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="font-mono text-orange-400">Cash Paid</span> = Face Value &times; Coupon Rate per period</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="font-mono text-orange-400">Premium Amortization</span> = Cash Paid &minus; Interest Expense</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <p class="text-sm text-slate-300"><span class="font-mono text-orange-400">New Net</span> = Old Net &minus; Amortization <span class="text-slate-500">(net liability SHRINKS toward face value)</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Premium Amortization Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Full Premium Amortization Schedule</h2>
+                <p class="text-slate-300 text-sm mb-4">$400,000 face, 8% coupon (4% per period), 6% market (3% per period), issue price $434,121</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-2 text-slate-400">Per</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Int Exp (3%)</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Cash (4%)</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Prem Amort</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Prem Bal</th>
+                                <th class="text-right py-2 px-2 text-slate-400">Net</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">0</td><td class="text-right py-2 px-2"></td><td class="text-right py-2 px-2"></td><td class="text-right py-2 px-2"></td>
+                                <td class="text-right py-2 px-2">$34,121</td><td class="text-right py-2 px-2">$434,121</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">1</td><td class="text-right py-2 px-2">$13,024</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$2,976</td>
+                                <td class="text-right py-2 px-2">$31,145</td><td class="text-right py-2 px-2">$431,145</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">2</td><td class="text-right py-2 px-2">$12,934</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,066</td>
+                                <td class="text-right py-2 px-2">$28,079</td><td class="text-right py-2 px-2">$428,079</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">3</td><td class="text-right py-2 px-2">$12,842</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,158</td>
+                                <td class="text-right py-2 px-2">$24,921</td><td class="text-right py-2 px-2">$424,921</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">4</td><td class="text-right py-2 px-2">$12,748</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,252</td>
+                                <td class="text-right py-2 px-2">$21,669</td><td class="text-right py-2 px-2">$421,669</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">5</td><td class="text-right py-2 px-2">$12,650</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,350</td>
+                                <td class="text-right py-2 px-2">$18,319</td><td class="text-right py-2 px-2">$418,319</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">6</td><td class="text-right py-2 px-2">$12,550</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,450</td>
+                                <td class="text-right py-2 px-2">$14,869</td><td class="text-right py-2 px-2">$414,869</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">7</td><td class="text-right py-2 px-2">$12,446</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,554</td>
+                                <td class="text-right py-2 px-2">$11,315</td><td class="text-right py-2 px-2">$411,315</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">8</td><td class="text-right py-2 px-2">$12,339</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,661</td>
+                                <td class="text-right py-2 px-2">$7,654</td><td class="text-right py-2 px-2">$407,654</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-2">9</td><td class="text-right py-2 px-2">$12,230</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,770</td>
+                                <td class="text-right py-2 px-2">$3,884</td><td class="text-right py-2 px-2">$403,884</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-2">10</td><td class="text-right py-2 px-2">$12,117</td><td class="text-right py-2 px-2">$16,000</td><td class="text-right py-2 px-2">$3,883</td>
+                                <td class="text-right py-2 px-2">$0</td><td class="text-right py-2 px-2">$400,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recording Interest JE -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Recording Interest &mdash; Period 1</h2>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr><td class="pr-4">Interest Expense</td><td class="text-right pl-4">13,024</td><td></td></tr>
+                        <tr><td class="pr-4">Bond Premium</td><td class="text-right pl-4">2,976</td><td></td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">16,000</td></tr>
+                    </table>
+                </div>
+                <div class="bg-orange-500/10 rounded-lg p-3 border border-orange-500/30">
+                    <p class="text-sm text-orange-300"><strong>Convergence:</strong> Each period, the premium shrinks and the net book value falls, converging to the $400,000 face value at maturity.</p>
+                </div>
+            </div>
+
+            <!-- Bond Retirement (Premium) -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-xl font-bold text-orange-400 mb-4">Bond Retirement (Premium)</h2>
+                <p class="text-slate-300 text-sm mb-3"><strong class="text-white">ABC Company Example:</strong> $500,000 face, 8%, 20-year bonds issued at 106 ($30,000 premium). Premium amortized through Jan 1, 2016 = $5,000. Bonds retired at 103.</p>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-slate-400">Premium remaining:</p>
+                        <p class="font-mono text-orange-400">$30,000 &minus; $5,000 = $25,000</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-slate-400">Book value:</p>
+                        <p class="font-mono text-orange-400">$500,000 + $25,000 = $525,000</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-slate-400">Repurchase price:</p>
+                        <p class="font-mono text-orange-400">$500,000 &times; 103% = $515,000</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-sm text-slate-400">Gain:</p>
+                        <p class="font-mono text-emerald-400">$525,000 &minus; $515,000 = $10,000</p>
+                    </div>
+                </div>
+
+                <p class="text-slate-500 text-xs mb-1">Journal Entry:</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm">
+                    <table class="font-mono text-slate-300">
+                        <tr><td class="pr-4">Bonds Payable</td><td class="text-right pl-4">500,000</td><td></td></tr>
+                        <tr><td class="pr-4">Bond Premium</td><td class="text-right pl-4">25,000</td><td></td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Gain on Retirement</td><td></td><td class="text-right pl-4">10,000</td></tr>
+                        <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">515,000</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-orange-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Premium amortization decreases the <strong class="text-white">net liability (L decreases)</strong> and decreases <strong class="text-white">Interest Expense (increasing SE relative to cash paid)</strong>. A retirement gain increases SE; a loss decreases SE. <strong class="text-white">A = L + SE</strong> always holds.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 5: CALCULATORS ======================== -->
+        <div id="panel-calculators" class="tab-panel">
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Installment Loan Calculator -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-2xl font-bold text-orange-400 mb-4">Installment Loan Calculator</h2>
+                    <div class="space-y-4 mb-4">
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Loan Amount ($)</label>
+                            <input type="number" id="loan-amount" value="500000" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Annual Rate (%)</label>
+                            <input type="number" id="loan-rate" value="9" step="0.5" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Number of Years</label>
+                            <input type="number" id="loan-years" value="5" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <button onclick="calcLoan()" class="w-full bg-orange-600 hover:bg-orange-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Calculate</button>
+                    </div>
+                    <div id="loan-result" class="hidden">
+                        <div id="loan-payment" class="text-center mb-4"></div>
+                        <div id="loan-table" class="overflow-x-auto mb-4"></div>
+                        <div class="relative" style="height: 300px;"><canvas id="loan-chart"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Bond Amortization Calculator -->
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h2 class="text-2xl font-bold text-orange-400 mb-4">Bond Amortization Calculator</h2>
+                    <div class="space-y-4 mb-4">
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Face Value ($)</label>
+                            <input type="number" id="bond-face" value="400000" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Coupon Rate (%)</label>
+                            <input type="number" id="bond-coupon" value="8" step="0.5" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Market Rate (%)</label>
+                            <input type="number" id="bond-market" value="10" step="0.5" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Years</label>
+                            <input type="number" id="bond-years" value="5" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Frequency</label>
+                            <select id="bond-freq" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm">
+                                <option value="semi">Semiannual</option>
+                                <option value="annual">Annual</option>
+                            </select>
+                        </div>
+                        <button onclick="calcBond()" class="w-full bg-orange-600 hover:bg-orange-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Calculate</button>
+                    </div>
+                    <div id="bond-result" class="hidden">
+                        <div id="bond-price" class="text-center mb-4"></div>
+                        <div id="bond-table" class="overflow-x-auto mb-4"></div>
+                        <div class="relative" style="height: 300px;"><canvas id="bond-chart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-orange-500/10 rounded-lg p-4 border border-emerald-500/30 mt-6">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Use these calculators to see how <strong class="text-white">A = L + SE</strong> plays out over time. Each loan payment reduces both Cash (A) and Loans Payable (L). Bond amortization adjusts the net liability toward face value each period.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 6: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
+
+            <!-- Example 1: Installment Loan Lifecycle -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-2">Example 1: Installment Loan Lifecycle</h2>
+                <p class="text-slate-300 text-sm mb-4">A company borrows <span class="text-orange-400 font-semibold">$200,000</span> at <span class="text-orange-400 font-semibold">8%</span> for <span class="text-orange-400 font-semibold">4 years</span>, with equal annual payments.</p>
+
+                <!-- Step 1 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 1:</span> <span class="text-slate-300">Compute the annual payment</span></div>
+                        <button onclick="toggleStep('ex1', 1)" id="ex1-btn-1" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300 font-mono mb-2">PMT = $200,000 &times; 0.08 / (1 &minus; 1.08<sup>&minus;4</sup>)</p>
+                        <p class="text-lg font-bold text-orange-400 font-mono">PMT = $60,384</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 2:</span> <span class="text-slate-300">Build Year 1 amortization row</span></div>
+                        <button onclick="toggleStep('ex1', 2)" id="ex1-btn-2" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm font-mono text-slate-300">
+                                <thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Year</th><th class="text-right py-1 px-2 text-slate-400">Opening</th><th class="text-right py-1 px-2 text-slate-400">Payment</th><th class="text-right py-1 px-2 text-slate-400">Interest</th><th class="text-right py-1 px-2 text-slate-400">Principal</th><th class="text-right py-1 px-2 text-slate-400">Closing</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="py-1 px-2">1</td><td class="text-right py-1 px-2">$200,000</td><td class="text-right py-1 px-2">$60,384</td><td class="text-right py-1 px-2">$16,000</td><td class="text-right py-1 px-2">$44,384</td><td class="text-right py-1 px-2">$155,616</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Interest = $200,000 &times; 8% = $16,000. Principal = $60,384 &minus; $16,000 = $44,384. Closing = $200,000 &minus; $44,384 = $155,616.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 3:</span> <span class="text-slate-300">Record Year 1 journal entry</span></div>
+                        <button onclick="toggleStep('ex1', 3)" id="ex1-btn-3" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Interest Expense</td><td class="text-right pl-4">16,000</td><td></td></tr>
+                                <tr><td class="pr-4">Loans Payable</td><td class="text-right pl-4">44,384</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">60,384</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Dr total = 16,000 + 44,384 = 60,384 = Cr total. Entry balances.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2: Discount Bond Issuance + Interest -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-2">Example 2: Discount Bond Issuance + Interest</h2>
+                <p class="text-slate-300 text-sm mb-4"><span class="text-orange-400 font-semibold">$500,000</span> face, <span class="text-orange-400 font-semibold">6%</span> coupon, <span class="text-orange-400 font-semibold">10%</span> market, 5-year, semiannual payments.</p>
+
+                <!-- Step 1 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 1:</span> <span class="text-slate-300">Compute the issue price</span></div>
+                        <button onclick="toggleStep('ex2', 1)" id="ex2-btn-1" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300 mb-2">Coupon per period = $500,000 &times; 3% = <span class="font-mono text-orange-400">$15,000</span>, n = 10, market rate per period = 5%</p>
+                        <p class="text-sm text-slate-300 font-mono mb-1">PV of coupons = $15,000 &times; (1 &minus; 1.05<sup>&minus;10</sup>) / 0.05 = $115,826</p>
+                        <p class="text-sm text-slate-300 font-mono mb-1">PV of face = $500,000 / 1.05<sup>10</sup> = $306,957</p>
+                        <p class="text-lg font-bold text-orange-400 font-mono">Price = $115,826 + $306,957 = $422,783</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 2:</span> <span class="text-slate-300">Record issuance journal entry</span></div>
+                        <button onclick="toggleStep('ex2', 2)" id="ex2-btn-2" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Cash</td><td class="text-right pl-4">422,783</td><td></td></tr>
+                                <tr><td class="pr-4">Bond Discount</td><td class="text-right pl-4">77,217</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Bonds Payable</td><td></td><td class="text-right pl-4">500,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Dr = 422,783 + 77,217 = 500,000 = Cr. Entry balances.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 3:</span> <span class="text-slate-300">Record Period 1 interest</span></div>
+                        <button onclick="toggleStep('ex2', 3)" id="ex2-btn-3" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300 mb-2">Interest Expense = $422,783 &times; 5% = <span class="font-mono text-orange-400">$21,139</span></p>
+                        <p class="text-sm text-slate-300 mb-2">Cash coupon = <span class="font-mono text-orange-400">$15,000</span></p>
+                        <p class="text-sm text-slate-300 mb-3">Discount amortization = $21,139 &minus; $15,000 = <span class="font-mono text-orange-400">$6,139</span></p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Interest Expense</td><td class="text-right pl-4">21,139</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Bond Discount</td><td></td><td class="text-right pl-4">6,139</td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">15,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Dr = 21,139. Cr = 6,139 + 15,000 = 21,139. Entry balances.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 3: Bond Retirement -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-2">Example 3: Bond Retirement</h2>
+                <p class="text-slate-300 text-sm mb-4"><span class="text-orange-400 font-semibold">$1,000,000</span> face, 7% coupon, issued at 103. Premium amortized so far = $8,000. Bonds retired at 98.</p>
+
+                <!-- Step 1 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 1:</span> <span class="text-slate-300">Compute book value</span></div>
+                        <button onclick="toggleStep('ex3', 1)" id="ex3-btn-1" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex3-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300 mb-1">Premium at issue = $1,000,000 &times; 3% = <span class="font-mono text-orange-400">$30,000</span></p>
+                        <p class="text-sm text-slate-300 mb-1">Premium remaining = $30,000 &minus; $8,000 = <span class="font-mono text-orange-400">$22,000</span></p>
+                        <p class="text-lg font-bold text-orange-400 font-mono">Book Value = $1,000,000 + $22,000 = $1,022,000</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 2:</span> <span class="text-slate-300">Compute repurchase price</span></div>
+                        <button onclick="toggleStep('ex3', 2)" id="ex3-btn-2" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex3-step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-lg font-bold text-orange-400 font-mono">Repurchase = $1,000,000 &times; 98% = $980,000</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 3:</span> <span class="text-slate-300">Compute gain or loss</span></div>
+                        <button onclick="toggleStep('ex3', 3)" id="ex3-btn-3" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex3-step-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300 font-mono mb-1">Gain = Book Value &minus; Repurchase Price</p>
+                        <p class="text-lg font-bold text-emerald-400 font-mono">Gain = $1,022,000 &minus; $980,000 = $42,000</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-orange-400 font-bold">Step 4:</span> <span class="text-slate-300">Record journal entry</span></div>
+                        <button onclick="toggleStep('ex3', 4)" id="ex3-btn-4" class="bg-orange-600 hover:bg-orange-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex3-step-4" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Bonds Payable</td><td class="text-right pl-4">1,000,000</td><td></td></tr>
+                                <tr><td class="pr-4">Bond Premium</td><td class="text-right pl-4">22,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Gain on Retirement</td><td></td><td class="text-right pl-4">42,000</td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">980,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Dr = 1,000,000 + 22,000 = 1,022,000. Cr = 42,000 + 980,000 = 1,022,000. Entry balances.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 7: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
+
+            <!-- Practice Questions Section -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-orange-400">Practice Questions</h2>
+                    <div class="flex items-center gap-6 text-sm">
+                        <div><span class="text-slate-500">Score:</span> <span class="text-emerald-400 font-bold"><span id="p-correct">0</span>/<span id="p-total">0</span></span></div>
+                        <div><span class="text-slate-500">Streak:</span> <span class="text-amber-400 font-bold" id="p-streak">0</span></div>
+                        <div class="text-slate-500" id="p-progress"></div>
+                    </div>
+                </div>
+                <div id="p-question" class="mb-4 text-slate-300">Click "New Question" to begin.</div>
+                <div id="p-answer" class="mb-4"></div>
+                <div id="p-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.pNew()" class="bg-orange-600 hover:bg-orange-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+            <!-- Journal Entry Builder -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">Journal Entry Practice</h2>
+                <div class="flex items-center gap-6 text-sm mb-4">
+                    <div class="text-slate-500" id="je-progress"></div>
+                </div>
+                <div id="je-prompt" class="mb-4 text-slate-300">Click "New Entry" to begin.</div>
+                <div id="je-lines" class="space-y-2 mb-4"></div>
+                <div id="je-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.jeNew()" class="bg-orange-600 hover:bg-orange-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Entry</button>
+                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-600 hover:bg-slate-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">+ Add Line</button>
+                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Entry</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Loans &amp; Bonds Study Tool</p>
+    </div>
+
+<script>
+    // ========== TAB SWITCHING ==========
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    };
+
+    // ========== TOGGLE STEP (Worked Examples) ==========
+    window.toggleStep = function(ex, n) {
+        const div = document.getElementById(ex + '-step-' + n);
+        const btn = document.getElementById(ex + '-btn-' + n);
+        if (div.classList.contains('hidden')) {
+            div.classList.remove('hidden');
+            btn.textContent = 'Hide';
+        } else {
+            div.classList.add('hidden');
+            btn.textContent = 'Show';
+        }
+    };
+
+    // ========== FORMAT HELPER ==========
+    function fmtCalc(n) {
+        return '$' + Math.round(n).toLocaleString();
+    }
+
+    // ========== INSTALLMENT LOAN CALCULATOR ==========
+    let loanChart = null;
+    window.calcLoan = function() {
+        const pv = parseFloat(document.getElementById('loan-amount').value);
+        const r = parseFloat(document.getElementById('loan-rate').value) / 100;
+        const n = parseInt(document.getElementById('loan-years').value);
+        if (!pv || !r || !n) return;
+
+        const pmt = pv * r / (1 - Math.pow(1 + r, -n));
+        document.getElementById('loan-result').classList.remove('hidden');
+        document.getElementById('loan-payment').innerHTML = '<p class="text-3xl font-bold text-orange-400">' + fmtCalc(pmt) + '</p><p class="text-sm text-slate-400">Annual Payment</p>';
+
+        // Build schedule
+        let balance = pv;
+        let rows = '';
+        const interests = [];
+        const principals = [];
+        const labels = [];
+        for (let i = 1; i <= n; i++) {
+            const interest = Math.round(balance * r);
+            const principal = (i === n) ? balance : Math.round(pmt) - interest;
+            const payment = interest + principal;
+            const closing = Math.round(balance - principal);
+            const shade = i % 2 === 0 ? ' class="bg-slate-900/30"' : '';
+            rows += '<tr' + shade + '><td class="py-1 px-2">' + i + '</td><td class="text-right py-1 px-2">' + fmtCalc(balance) + '</td><td class="text-right py-1 px-2">' + fmtCalc(payment) + '</td><td class="text-right py-1 px-2">' + fmtCalc(interest) + '</td><td class="text-right py-1 px-2">' + fmtCalc(principal) + '</td><td class="text-right py-1 px-2">' + fmtCalc(closing < 0 ? 0 : closing) + '</td></tr>';
+            interests.push(interest);
+            principals.push(principal);
+            labels.push('Year ' + i);
+            balance = closing < 0 ? 0 : closing;
+        }
+        document.getElementById('loan-table').innerHTML = '<table class="w-full text-xs font-mono text-slate-300"><thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Yr</th><th class="text-right py-1 px-2 text-slate-400">Opening</th><th class="text-right py-1 px-2 text-slate-400">Payment</th><th class="text-right py-1 px-2 text-slate-400">Interest</th><th class="text-right py-1 px-2 text-slate-400">Principal</th><th class="text-right py-1 px-2 text-slate-400">Closing</th></tr></thead><tbody>' + rows + '</tbody></table>';
+
+        // Chart
+        if (loanChart) loanChart.destroy();
+        loanChart = new Chart(document.getElementById('loan-chart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Interest', data: interests, backgroundColor: 'rgba(251,146,60,0.7)' },
+                    { label: 'Principal', data: principals, backgroundColor: 'rgba(56,189,248,0.7)' }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#94a3b8' } } },
+                scales: {
+                    x: { stacked: true, ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+                    y: { stacked: true, ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }
+                }
+            }
+        });
+    };
+
+    // ========== BOND AMORTIZATION CALCULATOR ==========
+    let bondChart = null;
+    window.calcBond = function() {
+        const face = parseFloat(document.getElementById('bond-face').value);
+        const coupon = parseFloat(document.getElementById('bond-coupon').value) / 100;
+        const market = parseFloat(document.getElementById('bond-market').value) / 100;
+        const years = parseInt(document.getElementById('bond-years').value);
+        const freq = document.getElementById('bond-freq').value === 'semi' ? 2 : 1;
+        if (!face || !coupon || !market || !years) return;
+
+        const n = years * freq;
+        const cr = coupon / freq;
+        const mr = market / freq;
+        const cashPmt = face * cr;
+        const pvCoupons = cashPmt * (1 - Math.pow(1 + mr, -n)) / mr;
+        const pvFace = face / Math.pow(1 + mr, n);
+        const price = pvCoupons + pvFace;
+
+        const type = Math.abs(price - face) < 0.5 ? 'At Par' : (price < face ? 'At a Discount' : 'At a Premium');
+        const typeColor = type === 'At Par' ? 'text-emerald-400' : (type.includes('Discount') ? 'text-rose-400' : 'text-sky-400');
+
+        document.getElementById('bond-result').classList.remove('hidden');
+        document.getElementById('bond-price').innerHTML = '<p class="text-3xl font-bold text-orange-400">' + fmtCalc(price) + '</p><p class="text-sm ' + typeColor + '">' + type + '</p>';
+
+        // Build schedule
+        let net = price;
+        let discPrem = Math.abs(face - price);
+        const isDiscount = price < face;
+        let rows = '<tr><td class="py-1 px-2">0</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2">' + fmtCalc(discPrem) + '</td><td class="text-right py-1 px-2">' + fmtCalc(net) + '</td></tr>';
+        const netValues = [Math.round(net)];
+        const periodLabels = ['0'];
+
+        for (let i = 1; i <= n; i++) {
+            const intExp = net * mr;
+            const amort = isDiscount ? (intExp - cashPmt) : (cashPmt - intExp);
+            discPrem -= amort;
+            net = isDiscount ? (net + amort) : (net - amort);
+            // Force last period to land exactly on face
+            if (i === n) { discPrem = 0; net = face; }
+            const shade = i % 2 === 0 ? ' class="bg-slate-900/30"' : '';
+            rows += '<tr' + shade + '><td class="py-1 px-2">' + i + '</td><td class="text-right py-1 px-2">' + fmtCalc(intExp) + '</td><td class="text-right py-1 px-2">' + fmtCalc(cashPmt) + '</td><td class="text-right py-1 px-2">' + fmtCalc(amort) + '</td><td class="text-right py-1 px-2">' + fmtCalc(discPrem < 0 ? 0 : discPrem) + '</td><td class="text-right py-1 px-2">' + fmtCalc(net) + '</td></tr>';
+            netValues.push(Math.round(net));
+            periodLabels.push('' + i);
+        }
+
+        const colLabel = isDiscount ? 'Disc' : 'Prem';
+        document.getElementById('bond-table').innerHTML = '<table class="w-full text-xs font-mono text-slate-300"><thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Per</th><th class="text-right py-1 px-2 text-slate-400">Int Exp</th><th class="text-right py-1 px-2 text-slate-400">Cash</th><th class="text-right py-1 px-2 text-slate-400">' + colLabel + ' Amort</th><th class="text-right py-1 px-2 text-slate-400">' + colLabel + ' Bal</th><th class="text-right py-1 px-2 text-slate-400">Net</th></tr></thead><tbody>' + rows + '</tbody></table>';
+
+        // Chart
+        if (bondChart) bondChart.destroy();
+        bondChart = new Chart(document.getElementById('bond-chart'), {
+            type: 'line',
+            data: {
+                labels: periodLabels,
+                datasets: [
+                    { label: 'Net Book Value', data: netValues, borderColor: '#fb923c', backgroundColor: 'rgba(251,146,60,0.1)', fill: true, tension: 0.3 },
+                    { label: 'Face Value', data: Array(netValues.length).fill(face), borderColor: '#64748b', borderDash: [5, 5], pointRadius: 0 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#94a3b8' } } },
+                scales: {
+                    x: { title: { display: true, text: 'Period', color: '#94a3b8' }, ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+                    y: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }
+                }
+            }
+        });
+    };
+
+    // ========== PRACTICE QUESTION GENERATORS ==========
+    const { rand, pick, fmt } = QuizEngine;
+
+    // 1. Installment loan payment
+    function genLoanPayment() {
+        const pv = pick([100000, 200000, 300000, 500000, 750000]);
+        const r = pick([0.06, 0.07, 0.08, 0.09, 0.10]);
+        const n = pick([3, 4, 5, 6, 8, 10]);
+        const pmt = pv * r / (1 - Math.pow(1+r, -n));
+        return { question: 'A company borrows ' + fmt(pv) + ' at ' + (r*100) + '% annual interest with ' + n + ' equal annual payments. What is the annual payment?', type: 'number', answer: Math.round(pmt), explanation: 'PMT = ' + fmt(pv) + ' \u00d7 ' + r + ' / (1 \u2212 (1+' + r + ')^\u2212' + n + ') = ' + fmt(Math.round(pmt)) };
+    }
+
+    // 2. Interest portion of installment payment
+    function genLoanInterest() {
+        const balance = pick([500000, 400000, 300000, 250000, 200000]);
+        const r = pick([0.06, 0.08, 0.09, 0.10]);
+        const interest = Math.round(balance * r);
+        return { question: 'An installment loan has an outstanding balance of ' + fmt(balance) + ' and an annual rate of ' + (r*100) + '%. What is the interest expense for this period?', type: 'number', answer: interest, explanation: 'Interest = ' + fmt(balance) + ' \u00d7 ' + (r*100) + '% = ' + fmt(interest) };
+    }
+
+    // 3. Principal portion
+    function genLoanPrincipal() {
+        const balance = pick([500000, 416454, 325388]);
+        const pmt = 128546;
+        const r = 0.09;
+        const interest = Math.round(balance * r);
+        const principal = pmt - interest;
+        return { question: 'An installment loan has balance ' + fmt(balance) + ', annual payment ' + fmt(pmt) + ', rate 9%. What is the principal repayment?', type: 'number', answer: principal, explanation: 'Interest = ' + fmt(balance) + ' \u00d7 9% = ' + fmt(interest) + '. Principal = ' + fmt(pmt) + ' \u2212 ' + fmt(interest) + ' = ' + fmt(principal) };
+    }
+
+    // 4. Bond issue price identification (MC)
+    function genBondType() {
+        const scenarios = [
+            { mr: '8%', cr: '8%', ans: 0, type: 'at par' },
+            { mr: '10%', cr: '8%', ans: 1, type: 'at a discount' },
+            { mr: '6%', cr: '8%', ans: 2, type: 'at a premium' },
+            { mr: '5%', cr: '7%', ans: 2, type: 'at a premium' },
+            { mr: '9%', cr: '6%', ans: 1, type: 'at a discount' },
+        ];
+        const s = pick(scenarios);
+        return { question: 'A bond has a coupon rate of ' + s.cr + ' and a market rate of ' + s.mr + '. It will be issued:', type: 'mc', answer: s.ans, options: ['At par', 'At a discount', 'At a premium'], explanation: 'Market rate ' + s.mr + ' ' + (s.ans===0?'=':s.ans===1?'>':'<') + ' coupon rate ' + s.cr + ', so the bond is issued ' + s.type + '.' };
+    }
+
+    // 5. Bond issue price calculation
+    function genBondPrice() {
+        const face = pick([100000, 200000, 400000, 500000]);
+        const cr = pick([0.06, 0.08, 0.10]);
+        const mr = pick([0.04, 0.06, 0.08, 0.10, 0.12].filter(function(r) { return r !== cr; }));
+        const n = pick([6, 8, 10, 12, 20]);
+        const freq = 2;
+        const crp = cr/freq, mrp = mr/freq, periods = n;
+        const cashPmt = face * crp;
+        const pvC = cashPmt * (1 - Math.pow(1+mrp, -periods)) / mrp;
+        const pvF = face / Math.pow(1+mrp, periods);
+        const price = Math.round(pvC + pvF);
+        return { question: 'A ' + fmt(face) + ' bond with ' + (cr*100) + '% coupon (semiannual) and ' + (mr*100) + '% market rate has ' + periods + ' periods remaining. What is the issue price?', type: 'number', answer: price, explanation: 'PV of coupons (' + fmt(Math.round(cashPmt)) + ' \u00d7 annuity factor) + PV of face = ' + fmt(price) };
+    }
+
+    // 6. Interest expense from amortization table
+    function genIntExpense() {
+        const net = pick([369113, 371569, 374147, 434121, 431145, 428079]);
+        const mr = net > 400000 ? 0.03 : 0.05;
+        const exp = Math.round(net * mr);
+        return { question: 'A bond has a net book value of ' + fmt(net) + '. The market rate per period is ' + (mr*100) + '%. What is the interest expense for this period?', type: 'number', answer: exp, explanation: 'Interest Expense = ' + fmt(net) + ' \u00d7 ' + (mr*100) + '% = ' + fmt(exp) };
+    }
+
+    // 7. Discount amortization amount
+    function genDiscAmort() {
+        const net = pick([369113, 371569, 374147, 376854]);
+        const exp = Math.round(net * 0.05);
+        const cash = 16000;
+        const amort = exp - cash;
+        return { question: 'A discount bond has net book value ' + fmt(net) + ', market rate 5% per period, and cash coupon of ' + fmt(cash) + '. What is the discount amortization?', type: 'number', answer: amort, explanation: 'Interest Expense = ' + fmt(net) + ' \u00d7 5% = ' + fmt(exp) + '. Amortization = ' + fmt(exp) + ' \u2212 ' + fmt(cash) + ' = ' + fmt(amort) };
+    }
+
+    // 8. Premium amortization amount
+    function genPremAmort() {
+        const net = pick([434121, 431145, 428079, 424921]);
+        const exp = Math.round(net * 0.03);
+        const cash = 16000;
+        const amort = cash - exp;
+        return { question: 'A premium bond has net book value ' + fmt(net) + ', market rate 3% per period, and cash coupon of ' + fmt(cash) + '. What is the premium amortization?', type: 'number', answer: amort, explanation: 'Interest Expense = ' + fmt(net) + ' \u00d7 3% = ' + fmt(exp) + '. Amortization = ' + fmt(cash) + ' \u2212 ' + fmt(exp) + ' = ' + fmt(amort) };
+    }
+
+    // 9. Net book value after amortization
+    function genNetBV() {
+        const scenarios = [
+            { net: 369113, amort: 2456, type: 'discount', newNet: 371569 },
+            { net: 371569, amort: 2578, type: 'discount', newNet: 374147 },
+            { net: 434121, amort: 2976, type: 'premium', newNet: 431145 },
+            { net: 431145, amort: 3066, type: 'premium', newNet: 428079 },
+        ];
+        const s = pick(scenarios);
+        const op = s.type === 'discount' ? '+' : '\u2212';
+        return { question: 'A ' + s.type + ' bond has net book value ' + fmt(s.net) + ' and ' + s.type + ' amortization of ' + fmt(s.amort) + '. What is the new net book value?', type: 'number', answer: s.newNet, explanation: 'New Net = ' + fmt(s.net) + ' ' + op + ' ' + fmt(s.amort) + ' = ' + fmt(s.newNet) };
+    }
+
+    // 10. Gain/loss on retirement
+    function genRetirement() {
+        const face = pick([500000, 1000000]);
+        const premDisc = pick([-20000, -15000, 25000, 30000]);
+        const bv = face + premDisc;
+        const callPct = pick([97, 98, 101, 103, 105]);
+        const callPrice = face * callPct / 100;
+        const gainLoss = bv - callPrice;
+        const label = gainLoss > 0 ? 'gain' : 'loss';
+        return { question: 'Bonds with face value ' + fmt(face) + ' and net book value ' + fmt(bv) + ' are retired at ' + callPct + '% of par. What is the ' + label + ' on retirement?', type: 'number', answer: Math.abs(Math.round(gainLoss)), explanation: 'Repurchase = ' + fmt(face) + ' \u00d7 ' + callPct + '% = ' + fmt(Math.round(callPrice)) + '. ' + label.charAt(0).toUpperCase() + label.slice(1) + ' = |' + fmt(bv) + ' \u2212 ' + fmt(Math.round(callPrice)) + '| = ' + fmt(Math.abs(Math.round(gainLoss))) };
+    }
+
+    // 11. Effective cost of debt (MC)
+    function genEffCost() {
+        return { question: 'Which bond has the highest effective cost of debt?', type: 'mc', answer: 1, options: ['A bond issued at par', 'A bond issued at a discount', 'A bond issued at a premium'], explanation: 'A discount bond has the highest effective cost because the issuer received less cash but still pays the same coupon payments plus must repay the full face value.' };
+    }
+
+    // 12. What increases/decreases interest expense (MC)
+    function genIntExpMC() {
+        return { question: 'For a bond issued at a premium, how does amortization affect interest expense?', type: 'mc', answer: 1, options: ['Increases interest expense above cash paid', 'Decreases interest expense below cash paid', 'Has no effect on interest expense'], explanation: 'Premium amortization is subtracted from cash interest paid, so interest expense is LESS than cash paid.' };
+    }
+
+    // 13. Coupon vs market rate (MC)
+    function genRatesMC() {
+        const q = pick([
+            { q: 'The coupon rate determines:', ans: 0, opts: ['The cash interest paid to bondholders', 'The price of the bond', 'The interest expense on the income statement'] },
+            { q: 'The market rate determines:', ans: 1, opts: ['The cash interest paid to bondholders', 'The price of the bond', 'The face value of the bond'] },
+            { q: 'When market rate > coupon rate, the bond is issued:', ans: 0, opts: ['At a discount', 'At a premium', 'At par'] },
+        ]);
+        return { question: q.q, type: 'mc', answer: q.ans, options: q.opts, explanation: 'The coupon rate determines cash flows; the market rate determines pricing.' };
+    }
+
+    // 14. Balance sheet classification (MC)
+    function genBSClass() {
+        return { question: 'Bond Discount is classified as:', type: 'mc', answer: 2, options: ['A liability', 'An asset', 'A contra-liability', 'An expense'], explanation: 'Bond Discount is a contra-liability \u2014 it reduces the net carrying value of Bonds Payable on the balance sheet.' };
+    }
+
+    // 15. Convergence concept (MC)
+    function genConvergence() {
+        return { question: 'As a discount bond approaches maturity, its net book value:', type: 'mc', answer: 1, options: ['Decreases toward zero', 'Increases toward face value', 'Stays constant', 'Decreases toward face value'], explanation: 'Discount amortization increases the net book value each period until it equals the face value at maturity.' };
+    }
+
+    // ========== JOURNAL ENTRY GENERATORS ==========
+
+    // 1. Loan issuance
+    function genJELoanIssue() {
+        const amt = pick([100000, 200000, 500000, 750000]);
+        return { prompt: 'A company borrows ' + fmt(amt) + ' via an installment loan from a bank.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Loans Payable', dr: 0, cr: amt }] };
+    }
+
+    // 2. Loan payment
+    function genJELoanPmt() {
+        const interest = pick([16000, 20000, 37481, 45000]);
+        const principal = pick([44384, 60000, 83546, 91065]);
+        const total = interest + principal;
+        return { prompt: 'Record an installment loan payment of ' + fmt(total) + '. Interest portion is ' + fmt(interest) + '.', answer: [{ acct: 'Interest Expense', dr: interest, cr: 0 }, { acct: 'Loans Payable', dr: principal, cr: 0 }, { acct: 'Cash', dr: 0, cr: total }] };
+    }
+
+    // 3. Bond at par
+    function genJEBondPar() {
+        const face = pick([100000, 400000, 500000, 1000000]);
+        return { prompt: 'A company issues ' + fmt(face) + ' of bonds at par.', answer: [{ acct: 'Cash', dr: face, cr: 0 }, { acct: 'Bonds Payable', dr: 0, cr: face }] };
+    }
+
+    // 4. Bond at discount
+    function genJEBondDisc() {
+        const face = pick([400000, 500000, 1000000]);
+        const disc = pick([20000, 30887, 50000, 77217]);
+        const cash = face - disc;
+        return { prompt: 'A company issues ' + fmt(face) + ' of bonds at a discount. Cash received is ' + fmt(cash) + '.', answer: [{ acct: 'Cash', dr: cash, cr: 0 }, { acct: 'Bond Discount', dr: disc, cr: 0 }, { acct: 'Bonds Payable', dr: 0, cr: face }] };
+    }
+
+    // 5. Bond at premium
+    function genJEBondPrem() {
+        const face = pick([400000, 500000, 1000000]);
+        const prem = pick([20000, 30000, 34121, 50000]);
+        const cash = face + prem;
+        return { prompt: 'A company issues ' + fmt(face) + ' of bonds at a premium. Cash received is ' + fmt(cash) + '.', answer: [{ acct: 'Cash', dr: cash, cr: 0 }, { acct: 'Bonds Payable', dr: 0, cr: face }, { acct: 'Bond Premium', dr: 0, cr: prem }] };
+    }
+
+    // 6. Interest - discount bond
+    function genJEIntDisc() {
+        const expense = pick([18456, 18578, 18707, 21139]);
+        const amort = pick([2456, 2578, 2707, 6139]);
+        const cash = expense - amort;
+        return { prompt: 'Record the interest payment on a discount bond. Interest expense is ' + fmt(expense) + ' and cash coupon is ' + fmt(cash) + '.', answer: [{ acct: 'Interest Expense', dr: expense, cr: 0 }, { acct: 'Bond Discount', dr: 0, cr: amort }, { acct: 'Cash', dr: 0, cr: cash }] };
+    }
+
+    // 7. Interest - premium bond
+    function genJEIntPrem() {
+        const expense = pick([13024, 12934, 12842]);
+        const cash = 16000;
+        const amort = cash - expense;
+        return { prompt: 'Record the interest payment on a premium bond. Interest expense is ' + fmt(expense) + ' and cash coupon is ' + fmt(cash) + '.', answer: [{ acct: 'Interest Expense', dr: expense, cr: 0 }, { acct: 'Bond Premium', dr: amort, cr: 0 }, { acct: 'Cash', dr: 0, cr: cash }] };
+    }
+
+    // 8. Retirement at gain (premium bond)
+    function genJERetireGain() {
+        const face = 500000;
+        const prem = 25000;
+        const cash = 515000;
+        const gain = face + prem - cash;
+        return { prompt: 'Retire ' + fmt(face) + ' bonds with remaining premium of ' + fmt(prem) + ' at a price of ' + fmt(cash) + '.', answer: [{ acct: 'Bonds Payable', dr: face, cr: 0 }, { acct: 'Bond Premium', dr: prem, cr: 0 }, { acct: 'Gain on Bond Retirement', dr: 0, cr: gain }, { acct: 'Cash', dr: 0, cr: cash }] };
+    }
+
+    // 9. Retirement at loss (discount bond)
+    function genJERetireLoss() {
+        const face = 400000;
+        const disc = 20303;
+        const cash = 392000;
+        const bv = face - disc;
+        const loss = cash - bv;
+        return { prompt: 'Retire ' + fmt(face) + ' bonds with remaining discount of ' + fmt(disc) + ' at ' + fmt(cash) + '.', answer: [{ acct: 'Bonds Payable', dr: face, cr: 0 }, { acct: 'Loss on Bond Retirement', dr: loss, cr: 0 }, { acct: 'Bond Discount', dr: 0, cr: disc }, { acct: 'Cash', dr: 0, cr: cash }] };
+    }
+
+    // ========== QUIZ ENGINE INIT ==========
+    QuizEngine.init({
+        questionGenerators: [genLoanPayment, genLoanInterest, genLoanPrincipal, genBondType, genBondPrice, genIntExpense, genDiscAmort, genPremAmort, genNetBV, genRetirement, genEffCost, genIntExpMC, genRatesMC, genBSClass, genConvergence],
+        jeGenerators: [genJELoanIssue, genJELoanPmt, genJEBondPar, genJEBondDisc, genJEBondPrem, genJEIntDisc, genJEIntPrem, genJERetireGain, genJERetireLoss],
+        jeAccounts: ['Cash', 'Loans Payable', 'Interest Expense', 'Bonds Payable', 'Bond Discount', 'Bond Premium', 'Gain on Bond Retirement', 'Loss on Bond Retirement'],
+        accentColor: 'orange',
+        qCopies: 6,
+        jeCopies: 2
+    });
+</script>
+    <script src="cursor.js"></script>
+</body>
+</html>
