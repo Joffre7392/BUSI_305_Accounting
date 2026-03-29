@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leases | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="animations.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        :root { --accent: #a3e635; --accent-bg: rgba(163,230,53,0.08); --accent-border-subtle: rgba(163,230,53,0.15); }
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(163,230,53,0.15); }
+        .tab-btn.active { border-color: #a3e635; color: #a3e635; background: rgba(163,230,53,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
+    <script>
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+    </script>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="back-link" style="--accent: #a3e635">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(163,230,53,0.1)">
+                <svg class="text-lime-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+            </div>
+            <div>
+                <h1>Leases</h1>
+                <p class="subtitle">Lecture 18 &mdash; Operating vs. finance leases &amp; their financial statement effects</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(163,230,53,0.1); color: rgba(163,230,53,0.8); border: 1px solid rgba(163,230,53,0.1)">L 18</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('concepts')" id="tab-concepts" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Lease Concepts</button>
+            <button onclick="switchTab('finance')" id="tab-finance" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Finance Leases</button>
+            <button onclick="switchTab('operating')" id="tab-operating" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Operating Leases</button>
+            <button onclick="switchTab('comparison')" id="tab-comparison" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Comparison</button>
+            <button onclick="switchTab('calculator')" id="tab-calculator" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Calculator</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: LEASE CONCEPTS ======================== -->
+        <div id="panel-concepts" class="tab-panel active">
+
+            <!-- Card 1: What Is a Lease? -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">What Is a Lease?</h2>
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-lime-500/20 mb-4">
+                    <p class="text-slate-300 text-sm italic">"A lease is a contract that gives the lessee the <span class="text-lime-400 font-semibold">right to use</span> an identified asset for a period of time in exchange for periodic payments."</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-lime-500/20">
+                        <h3 class="font-bold text-lime-400 mb-2">Lease</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-lime-400 font-semibold">Pay to use</span> the asset</li>
+                            <li>Owner retains <span class="text-lime-400 font-semibold">legal title</span></li>
+                            <li>Fixed term and fixed payments</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-lime-500/20">
+                        <h3 class="font-bold text-lime-400 mb-2">Purchase</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-lime-400 font-semibold">Pay to own</span> the asset</li>
+                            <li>Title <span class="text-lime-400 font-semibold">transfers to you</span></li>
+                            <li>One-time cost (or financed)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> Think renting an apartment vs. buying a house &mdash; same roof over your head, very different economics.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Leases Are Everywhere -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Leases Are Everywhere</h2>
+                <div class="grid md:grid-cols-3 gap-4 mb-5">
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center border border-slate-600">
+                        <p class="text-3xl font-bold text-lime-400">$3T+</p>
+                        <p class="text-xs text-slate-400 mt-1">in lease obligations on US balance sheets</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center border border-slate-600">
+                        <p class="text-3xl font-bold text-lime-400">80%+</p>
+                        <p class="text-xs text-slate-400 mt-1">of companies use operating leases</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center border border-slate-600">
+                        <p class="text-3xl font-bold text-lime-400">Airlines</p>
+                        <p class="text-xs text-slate-400 mt-1">lease most of their fleet</p>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-400 mb-3 font-semibold">Common leased assets:</p>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Office space</li>
+                            <li>Retail stores</li>
+                            <li>Warehouses</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Airplanes</li>
+                            <li>Delivery trucks</li>
+                            <li>Heavy equipment</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>IT equipment</li>
+                            <li>Copiers/printers</li>
+                            <li>Medical devices</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: The Accounting Question -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">The Accounting Question</h2>
+                <p class="text-slate-300 mb-4">Before 2019, most leases were <span class="text-lime-400 font-semibold">off-balance-sheet</span> &mdash; invisible to investors. ASC 842 changed that: <span class="text-lime-400 font-semibold">all leases now appear on the balance sheet</span>.</p>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> Two types remain: <strong>Finance Lease</strong> (more like buying) vs. <strong>Operating Lease</strong> (more like renting).</p>
+                </div>
+            </div>
+
+            <!-- Card 4: The Five Tests (ASC 842) -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">The Five Tests (ASC 842)</h2>
+                <p class="text-slate-300 mb-4">A lease is a <span class="text-lime-400 font-semibold">finance lease</span> if it meets <span class="text-lime-400 font-semibold">any one</span> of these criteria:</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">#</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Test</th>
+                                <th class="text-left py-2 px-3 text-slate-400">What It Means</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-lime-400 font-bold">1</td>
+                                <td class="py-2 px-3 font-semibold">Ownership transfer</td>
+                                <td class="py-2 px-3">Title passes to lessee at end of lease</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 text-lime-400 font-bold">2</td>
+                                <td class="py-2 px-3 font-semibold">Purchase option</td>
+                                <td class="py-2 px-3">Lessee has option to buy at bargain price</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-lime-400 font-bold">3</td>
+                                <td class="py-2 px-3 font-semibold">Lease term &ge; 75% of useful life</td>
+                                <td class="py-2 px-3">Lessee uses asset for most of its life</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 text-lime-400 font-bold">4</td>
+                                <td class="py-2 px-3 font-semibold">PV of payments &ge; 90% of fair value</td>
+                                <td class="py-2 px-3">Lessee pays for nearly all of the asset's value</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-lime-400 font-bold">5</td>
+                                <td class="py-2 px-3 font-semibold">Specialized asset</td>
+                                <td class="py-2 px-3">Asset has no alternative use to lessor</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30 mb-4">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> If the lessee gets substantially all the benefits and bears substantially all the risks &mdash; it's a purchase in disguise.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-lime-500/20 text-center">
+                        <p class="text-lime-400 font-bold mb-1">Meets ANY test</p>
+                        <p class="text-slate-300 text-sm">&rarr; Finance Lease</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-slate-400 font-bold mb-1">Meets NONE</p>
+                        <p class="text-slate-300 text-sm">&rarr; Operating Lease</p>
+                    </div>
+                </div>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> Both types go on the balance sheet as an ROU Asset and Lease Liability. The difference is how expense hits the income statement.</p>
+                </div>
+            </div>
+
+            <!-- Card 5: Initial Recognition (Both Types) -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Initial Recognition (Both Types)</h2>
+                <div class="bg-lime-500/10 rounded-lg p-4 border border-lime-500/30 mb-4 text-center">
+                    <p class="text-lg font-mono text-lime-300">ROU Asset = Lease Liability = PV(Lease Payments)</p>
+                </div>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Dr Right-of-Use Asset (+A)</td>
+                            <td class="text-right pl-4">PV of payments</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Cr Lease Liability (+L)</td>
+                            <td></td>
+                            <td class="text-right pl-4">PV of payments</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-lime-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">When a lease is signed, a new asset (<strong class="text-white">ROU Asset</strong>) and a new liability (<strong class="text-white">Lease Liability</strong>) appear on the balance sheet for the same amount. <strong class="text-white">A increases, L increases</strong> by the same amount &mdash; <strong class="text-white">A = L + SE</strong> still holds. No expense is recognized on Day 1.</p>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 2: FINANCE LEASES ======================== -->
+        <div id="panel-finance" class="tab-panel">
+
+            <!-- Card 1: Finance Lease Example Setup -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Finance Lease Example Setup</h2>
+                <p class="text-slate-300 mb-2">A company leases a delivery van for <span class="text-lime-400 font-semibold">3 years</span>. Payments of <span class="text-lime-400 font-semibold">$10,000</span> due at year-end. Discount rate: <span class="text-lime-400 font-semibold">3%</span>. Useful life: 3 years, reverts to lessor.</p>
+                <p class="text-slate-400 text-sm italic mb-4">Finance lease &mdash; lease term = 100% of useful life (Test 3).</p>
+                <div class="bg-lime-500/10 rounded-lg p-4 border border-lime-500/30 mb-4 text-center">
+                    <p class="text-lg font-mono text-lime-300">PV = 10,000 &times; (1 &minus; 1.03<sup>&minus;3</sup>) / 0.03 = 10,000 &times; 2.8286</p>
+                </div>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> Lease Liability = ROU Asset = <strong>$28,286</strong></p>
+                </div>
+            </div>
+
+            <!-- Card 2: Day 1 Journal Entry -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Day 1 Journal Entry</h2>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Dr Right-of-Use Asset</td>
+                            <td class="text-right pl-4">28,286</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Cr Lease Liability</td>
+                            <td></td>
+                            <td class="text-right pl-4">28,286</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-lime-400 font-bold text-sm mb-2">Balance Sheet Effect</p>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Assets <span class="text-lime-400">+28,286</span></li>
+                            <li>Liabilities <span class="text-lime-400">+28,286</span></li>
+                            <li>Equity <span class="text-slate-500">unchanged</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-lime-400 font-bold text-sm mb-2">Key Point</p>
+                        <p class="text-sm text-slate-300">No cash changes hands yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Lease Liability Amortization Logic -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Lease Liability Amortization Logic</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-lime-500/10 rounded-lg p-4 border border-lime-500/30 text-center">
+                        <p class="text-lime-300 font-mono text-sm font-bold">Opening &times; 3%</p>
+                        <p class="text-slate-400 text-xs mt-1">= Interest</p>
+                    </div>
+                    <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/30 text-center">
+                        <p class="text-sky-300 font-mono text-sm font-bold">Payment &minus; Interest</p>
+                        <p class="text-slate-400 text-xs mt-1">= Principal</p>
+                    </div>
+                    <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/30 text-center">
+                        <p class="text-amber-300 font-mono text-sm font-bold">Opening &minus; Principal</p>
+                        <p class="text-slate-400 text-xs mt-1">= Closing</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Full Amortization Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Full Amortization Table</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Year</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Opening</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Payment</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Interest</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Principal</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Closing</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">1</td>
+                                <td class="text-right py-2 px-3">$28,286</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">$849</td>
+                                <td class="text-right py-2 px-3">$9,151</td>
+                                <td class="text-right py-2 px-3">$19,135</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">2</td>
+                                <td class="text-right py-2 px-3">$19,135</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">$574</td>
+                                <td class="text-right py-2 px-3">$9,426</td>
+                                <td class="text-right py-2 px-3">$9,709</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">3</td>
+                                <td class="text-right py-2 px-3">$9,709</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">$291</td>
+                                <td class="text-right py-2 px-3">$9,709</td>
+                                <td class="text-right py-2 px-3">$0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Card 5: Two Expenses -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Two Expenses Each Period</h2>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-lime-500/20">
+                        <h3 class="font-bold text-lime-400 mb-2">Interest Expense</h3>
+                        <p class="text-xs text-slate-400 mb-2">From lease liability</p>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Effective interest method</li>
+                            <li>Decreases over time</li>
+                            <li>Y1: $849 &rarr; Y3: $291</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-lime-500/20">
+                        <h3 class="font-bold text-lime-400 mb-2">Amortization Expense</h3>
+                        <p class="text-xs text-slate-400 mb-2">From ROU asset</p>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Straight-line over lease term</li>
+                            <li>Constant each period</li>
+                            <li>$28,286 &divide; 3 = $9,429/yr</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> Front-loaded: Year 1 = $10,278 vs. Year 3 = $9,719 &mdash; just like a mortgage.</p>
+                </div>
+            </div>
+
+            <!-- Card 6: Year 1 Journal Entries -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Year 1 Journal Entries</h2>
+                <p class="text-slate-500 text-xs mb-1">Lease Payment (Year 1):</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Dr Interest Expense</td>
+                            <td class="text-right pl-4">849</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4">Dr Lease Liability</td>
+                            <td class="text-right pl-4">9,151</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Cr Cash</td>
+                            <td></td>
+                            <td class="text-right pl-4">10,000</td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="text-slate-500 text-xs mb-1">ROU Amortization (Year 1):</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Dr Amortization Expense</td>
+                            <td class="text-right pl-4">9,429</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Cr Accum Amort &mdash; ROU</td>
+                            <td></td>
+                            <td class="text-right pl-4">9,429</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-lime-500/20 text-center">
+                    <p class="text-sm text-slate-300"><span class="text-lime-400 font-semibold">Total Year 1 Expense:</span> Interest $849 + Amortization $9,429 = <span class="text-white font-bold">$10,278</span></p>
+                </div>
+            </div>
+
+            <!-- Card 7: Finance Lease Summary Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Finance Lease Summary Table</h2>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Year</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Interest</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Amort.</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Total Exp.</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Lease Liab.</th>
+                                <th class="text-right py-2 px-3 text-slate-400">ROU (net)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">1</td>
+                                <td class="text-right py-2 px-3">$849</td>
+                                <td class="text-right py-2 px-3">$9,429</td>
+                                <td class="text-right py-2 px-3">$10,278</td>
+                                <td class="text-right py-2 px-3">$19,135</td>
+                                <td class="text-right py-2 px-3">$18,857</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">2</td>
+                                <td class="text-right py-2 px-3">$574</td>
+                                <td class="text-right py-2 px-3">$9,429</td>
+                                <td class="text-right py-2 px-3">$10,003</td>
+                                <td class="text-right py-2 px-3">$9,709</td>
+                                <td class="text-right py-2 px-3">$9,428</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">3</td>
+                                <td class="text-right py-2 px-3">$291</td>
+                                <td class="text-right py-2 px-3">$9,428</td>
+                                <td class="text-right py-2 px-3">$9,719</td>
+                                <td class="text-right py-2 px-3">$0</td>
+                                <td class="text-right py-2 px-3">$0</td>
+                            </tr>
+                            <tr class="border-t-2 border-slate-500 font-bold">
+                                <td class="py-2 px-3">Total</td>
+                                <td class="text-right py-2 px-3">$1,714</td>
+                                <td class="text-right py-2 px-3">$28,286</td>
+                                <td class="text-right py-2 px-3 text-lime-400">$30,000</td>
+                                <td class="text-right py-2 px-3"></td>
+                                <td class="text-right py-2 px-3"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>Important:</strong> Total expense over the lease term always equals total cash paid ($30,000). The only question is when it hits the income statement. Finance leases push more expense to earlier years.</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-lime-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Each year has two effects: (1) the lease payment splits into <strong class="text-white">Interest Expense (reducing SE)</strong> and principal (<strong class="text-white">reducing L</strong>), funded by <strong class="text-white">Cash (reducing A)</strong>. (2) Amortization reduces the <strong class="text-white">ROU Asset (A decreases)</strong> and <strong class="text-white">SE (expense)</strong>. Over time, both the asset and liability wind down to zero.</p>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 3: OPERATING LEASES ======================== -->
+        <div id="panel-operating" class="tab-panel">
+
+            <!-- Card 1: Operating Lease Example -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Operating Lease Example</h2>
+                <p class="text-slate-300">Same delivery van. Same <span class="text-lime-400 font-semibold">$10,000</span> annual payments. Same <span class="text-lime-400 font-semibold">3%</span> rate. Same <span class="text-lime-400 font-semibold">3-year</span> term. But now the van has a useful life of <span class="text-lime-400 font-semibold">6 years</span> (lease term = 50% of useful life). None of the five tests are met &rarr; <span class="text-lime-400 font-semibold">operating lease</span>.</p>
+            </div>
+
+            <!-- Card 2: Initial Recognition — Same as Finance -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Initial Recognition &mdash; Same as Finance</h2>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Dr Right-of-Use Asset</td>
+                            <td class="text-right pl-4">28,286</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Cr Lease Liability</td>
+                            <td></td>
+                            <td class="text-right pl-4">28,286</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> Day 1 is identical. The difference is entirely about how expense is recognized going forward.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Straight-Line Expense -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Straight-Line Expense</h2>
+                <div class="bg-lime-500/10 rounded-lg p-4 border border-lime-500/30 mb-4 text-center">
+                    <p class="text-lg font-mono text-lime-300">Annual Lease Expense = Total Payments / Lease Term = $30,000 / 3 = <span class="text-white font-bold">$10,000/year</span></p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-lime-500/20">
+                        <h3 class="font-bold text-lime-400 mb-2">Income Statement</h3>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Single line &mdash; <span class="text-lime-400 font-semibold">Lease Expense</span></li>
+                            <li>$10,000/yr</li>
+                            <li>Flat and simple</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-lime-500/20">
+                        <h3 class="font-bold text-lime-400 mb-2">Balance Sheet</h3>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>ROU Asset and Lease Liability both decline</li>
+                            <li>They stay equal</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> Operating lease expense works like rent: same amount, same line, every period.</p>
+                </div>
+            </div>
+
+            <!-- Card 4: Year 1 Journal Entry (Simplified) -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Year 1 Journal Entry (Simplified)</h2>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Dr Lease Expense</td>
+                            <td class="text-right pl-4">10,000</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Cr Cash</td>
+                            <td></td>
+                            <td class="text-right pl-4">10,000</td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="text-sm text-slate-400 mb-3 font-semibold">Behind the scenes:</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400"></th>
+                                <th class="text-right py-2 px-3 text-slate-400">Lease Liability</th>
+                                <th class="text-right py-2 px-3 text-slate-400">ROU Asset</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono text-sm">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-slate-400">Start</td>
+                                <td class="text-right py-2 px-3">$28,286</td>
+                                <td class="text-right py-2 px-3">$28,286</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 text-slate-400">After Y1</td>
+                                <td class="text-right py-2 px-3">$19,135</td>
+                                <td class="text-right py-2 px-3">$19,135</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-slate-400">After Y2</td>
+                                <td class="text-right py-2 px-3">$9,709</td>
+                                <td class="text-right py-2 px-3">$9,709</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-slate-500 italic">Technical note: Interest accrues on liability; ROU amortizes by a "plug" &mdash; but you record one entry.</p>
+            </div>
+
+            <!-- Card 5: Operating Lease Summary Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Operating Lease Summary Table</h2>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Year</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Lease Expense</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Lease Liab.</th>
+                                <th class="text-right py-2 px-3 text-slate-400">ROU Asset</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">1</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">$19,135</td>
+                                <td class="text-right py-2 px-3">$19,135</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">2</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">$9,709</td>
+                                <td class="text-right py-2 px-3">$9,709</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">3</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">$0</td>
+                                <td class="text-right py-2 px-3">$0</td>
+                            </tr>
+                            <tr class="border-t-2 border-slate-500 font-bold">
+                                <td class="py-2 px-3">Total</td>
+                                <td class="text-right py-2 px-3 text-lime-400">$30,000</td>
+                                <td class="text-right py-2 px-3"></td>
+                                <td class="text-right py-2 px-3"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30">
+                    <p class="text-sm text-lime-300"><strong>Key insight:</strong> Same total expense ($30,000). Same cash paid ($30,000). The only difference is the timing pattern on the income statement.</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-lime-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Each operating lease payment is a single expense that reduces <strong class="text-white">Cash (A decreases)</strong> and <strong class="text-white">Retained Earnings via Lease Expense (SE decreases)</strong>. The ROU Asset and Lease Liability decline by equal amounts each period, keeping <strong class="text-white">A = L + SE</strong> in balance.</p>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 4: COMPARISON ======================== -->
+        <div id="panel-comparison" class="tab-panel">
+
+            <!-- Card 1: Head-to-Head Expense Table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Head-to-Head: Expense Comparison</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Year</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Finance</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Operating</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300 font-mono">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">1</td>
+                                <td class="text-right py-2 px-3">$10,278</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">$278</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">2</td>
+                                <td class="text-right py-2 px-3">$10,003</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">$3</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">3</td>
+                                <td class="text-right py-2 px-3">$9,719</td>
+                                <td class="text-right py-2 px-3">$10,000</td>
+                                <td class="text-right py-2 px-3">($281)</td>
+                            </tr>
+                            <tr class="border-t-2 border-slate-500 font-bold">
+                                <td class="py-2 px-3">Total</td>
+                                <td class="text-right py-2 px-3">$30,000</td>
+                                <td class="text-right py-2 px-3">$30,000</td>
+                                <td class="text-right py-2 px-3 text-lime-400 font-bold">$0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Card 2: Side-by-Side Cards -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Key Differences</h2>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-lime-500/20">
+                        <h3 class="font-bold text-lime-400 mb-2">Finance Lease</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-lime-400 font-semibold">Two I/S lines</span> (interest + amortization)</li>
+                            <li><span class="text-lime-400 font-semibold">Front-loaded</span> expense</li>
+                            <li>Interest appears <span class="text-lime-400 font-semibold">below</span> operating income</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                        <h3 class="font-bold text-slate-300 mb-2">Operating Lease</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-slate-400 font-semibold">One I/S line</span> (lease expense)</li>
+                            <li><span class="text-slate-400 font-semibold">Flat</span> expense pattern</li>
+                            <li>All expense is <span class="text-slate-400 font-semibold">"operating"</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Lessee Accounting Summary -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Lessee Accounting Summary</h2>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-lime-500/30">
+                        <h3 class="font-bold text-lime-400 mb-3">Finance Lease</h3>
+                        <div class="space-y-2 text-sm text-slate-300">
+                            <p><span class="text-lime-400 font-semibold">B/S:</span> ROU asset + Lease liability</p>
+                            <p><span class="text-lime-400 font-semibold">I/S:</span> Amortization expense (straight-line) + Interest expense (effective interest)</p>
+                            <p><span class="text-lime-400 font-semibold">Cash Flows:</span> Interest &rarr; operating, Principal &rarr; financing</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-amber-500/30">
+                        <h3 class="font-bold text-amber-400 mb-3">Operating Lease</h3>
+                        <div class="space-y-2 text-sm text-slate-300">
+                            <p><span class="text-amber-400 font-semibold">B/S:</span> ROU asset + Lease liability</p>
+                            <p><span class="text-amber-400 font-semibold">I/S:</span> Single lease expense (straight-line)</p>
+                            <p><span class="text-amber-400 font-semibold">Cash Flows:</span> Entire lease payment &rarr; operating</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Expense Pattern Chart -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Expense Pattern</h2>
+                <div class="relative" style="height: 300px;">
+                    <canvas id="expense-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-lime-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Both lease types produce the same total expense (<strong class="text-white">$30,000</strong>) and same total cash outflow (<strong class="text-white">$30,000</strong>). The difference is timing: finance leases recognize more expense early, operating leases spread it evenly. Analysts adjust for this when comparing companies.</p>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 5: CALCULATOR ======================== -->
+        <div id="panel-calculator" class="tab-panel">
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Lease Calculator</h2>
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <label class="text-sm text-slate-400 block mb-1">Annual Payment ($)</label>
+                        <input type="number" id="lease-payment" value="10000" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                    </div>
+                    <div>
+                        <label class="text-sm text-slate-400 block mb-1">Discount Rate (%)</label>
+                        <input type="number" id="lease-rate" value="3" step="0.5" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                    </div>
+                    <div>
+                        <label class="text-sm text-slate-400 block mb-1">Lease Term (years)</label>
+                        <input type="number" id="lease-term" value="3" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                    </div>
+                    <div>
+                        <label class="text-sm text-slate-400 block mb-1">Lease Type</label>
+                        <select id="lease-type" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm">
+                            <option value="finance">Finance</option>
+                            <option value="operating">Operating</option>
+                        </select>
+                    </div>
+                    <button onclick="calcLease()" class="w-full bg-lime-600 hover:bg-lime-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Calculate</button>
+                </div>
+                <div id="lease-result" class="hidden">
+                    <div id="lease-pv" class="text-center mb-4"></div>
+                    <div id="lease-table" class="overflow-x-auto mb-4"></div>
+                    <div class="relative" style="height: 300px;"><canvas id="lease-chart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-lime-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Try different rates and terms to see how the lease liability changes. A higher rate or shorter term means a smaller PV &mdash; and a smaller Day 1 balance sheet impact on <strong class="text-white">A = L + SE</strong>.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 6: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
+
+            <!-- Example 1: Finance Lease Full Lifecycle -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-2">Example 1: Finance Lease Full Lifecycle</h2>
+                <p class="text-slate-300 text-sm mb-4">A company leases equipment for <span class="text-lime-400 font-semibold">4 years</span>. Annual payments of <span class="text-lime-400 font-semibold">$15,000</span> at year-end. Rate: <span class="text-lime-400 font-semibold">5%</span>. Useful life: 4 years (Test 3 met &rarr; finance lease).</p>
+
+                <!-- Step 1: Compute PV -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 1:</span> <span class="text-slate-300">Compute the present value of lease payments</span></div>
+                        <button onclick="toggleStep('ex1', 1)" id="ex1-btn-1" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300 font-mono mb-1">PV = 15,000 &times; (1 &minus; 1.05<sup>&minus;4</sup>) / 0.05</p>
+                        <p class="text-sm text-slate-300 font-mono mb-1">1.05<sup>&minus;4</sup> = 0.82270</p>
+                        <p class="text-sm text-slate-300 font-mono mb-1">Factor = (1 &minus; 0.82270) / 0.05 = 3.5460</p>
+                        <p class="text-lg font-bold text-lime-400 font-mono">PV = 15,000 &times; 3.5460 = $53,189</p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Day 1 Entry -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 2:</span> <span class="text-slate-300">Record Day 1 journal entry</span></div>
+                        <button onclick="toggleStep('ex1', 2)" id="ex1-btn-2" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Right-of-Use Asset</td><td class="text-right pl-4">53,189</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Lease Liability</td><td></td><td class="text-right pl-4">53,189</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Both the ROU Asset and Lease Liability begin at the present value of lease payments.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: Year 1 Amortization Row -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 3:</span> <span class="text-slate-300">Build Year 1 amortization row</span></div>
+                        <button onclick="toggleStep('ex1', 3)" id="ex1-btn-3" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm font-mono text-slate-300">
+                                <thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Year</th><th class="text-right py-1 px-2 text-slate-400">Opening</th><th class="text-right py-1 px-2 text-slate-400">Payment</th><th class="text-right py-1 px-2 text-slate-400">Interest</th><th class="text-right py-1 px-2 text-slate-400">Principal</th><th class="text-right py-1 px-2 text-slate-400">Closing</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="py-1 px-2">1</td><td class="text-right py-1 px-2">$53,189</td><td class="text-right py-1 px-2">$15,000</td><td class="text-right py-1 px-2">$2,659</td><td class="text-right py-1 px-2">$12,341</td><td class="text-right py-1 px-2">$40,848</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Interest = $53,189 &times; 5% = $2,659. Principal = $15,000 &minus; $2,659 = $12,341. Closing = $53,189 &minus; $12,341 = $40,848.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4: Year 1 Journal Entries -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 4:</span> <span class="text-slate-300">Record Year 1 journal entries</span></div>
+                        <button onclick="toggleStep('ex1', 4)" id="ex1-btn-4" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-4" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-slate-500 text-xs mb-1">Payment entry:</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm mb-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Interest Expense</td><td class="text-right pl-4">2,659</td><td></td></tr>
+                                <tr><td class="pr-4">Lease Liability</td><td class="text-right pl-4">12,341</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">15,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-slate-500 text-xs mb-1">Amortization entry:</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm mb-3">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Amortization Expense</td><td class="text-right pl-4">13,297</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Accumulated Amort &mdash; ROU Asset</td><td></td><td class="text-right pl-4">13,297</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500">ROU amortization = $53,189 / 4 = $13,297 per year (straight-line).</p>
+                        <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30 mt-3">
+                            <p class="text-sm text-lime-300"><strong>Total Year 1 expense</strong> = $2,659 (interest) + $13,297 (amortization) = <strong>$15,956</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Full Schedule -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 5:</span> <span class="text-slate-300">Full 4-year schedule verification</span></div>
+                        <button onclick="toggleStep('ex1', 5)" id="ex1-btn-5" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-5" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm font-mono text-slate-300">
+                                <thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Yr</th><th class="text-right py-1 px-2 text-slate-400">Opening</th><th class="text-right py-1 px-2 text-slate-400">Payment</th><th class="text-right py-1 px-2 text-slate-400">Interest</th><th class="text-right py-1 px-2 text-slate-400">Principal</th><th class="text-right py-1 px-2 text-slate-400">Closing</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="py-1 px-2">1</td><td class="text-right py-1 px-2">$53,189</td><td class="text-right py-1 px-2">$15,000</td><td class="text-right py-1 px-2">$2,659</td><td class="text-right py-1 px-2">$12,341</td><td class="text-right py-1 px-2">$40,848</td></tr>
+                                    <tr class="bg-slate-900/30"><td class="py-1 px-2">2</td><td class="text-right py-1 px-2">$40,848</td><td class="text-right py-1 px-2">$15,000</td><td class="text-right py-1 px-2">$2,042</td><td class="text-right py-1 px-2">$12,958</td><td class="text-right py-1 px-2">$27,890</td></tr>
+                                    <tr><td class="py-1 px-2">3</td><td class="text-right py-1 px-2">$27,890</td><td class="text-right py-1 px-2">$15,000</td><td class="text-right py-1 px-2">$1,395</td><td class="text-right py-1 px-2">$13,605</td><td class="text-right py-1 px-2">$14,285</td></tr>
+                                    <tr class="bg-slate-900/30"><td class="py-1 px-2">4</td><td class="text-right py-1 px-2">$14,285</td><td class="text-right py-1 px-2">$15,000</td><td class="text-right py-1 px-2">$715</td><td class="text-right py-1 px-2">$14,285</td><td class="text-right py-1 px-2">$0</td></tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="border-t-2 border-slate-500 font-bold"><td class="py-1 px-2">Total</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2">$60,000</td><td class="text-right py-1 px-2 text-lime-400">$6,811</td><td class="text-right py-1 px-2">$53,189</td><td class="text-right py-1 px-2"></td></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Y4 interest = $14,285 &times; 5% = $714.25 &rarr; rounded to $715 so the schedule closes to zero. Total interest: $6,811. Total cash: $60,000. Total expense (interest + amortization): $6,811 + $53,189 = $60,000. &#10003;</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2: Operating Lease -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-lime-400 mb-2">Example 2: Operating Lease</h2>
+                <p class="text-slate-300 text-sm mb-4">Same equipment, same terms. But useful life is <span class="text-lime-400 font-semibold">10 years</span> (lease term = 40% of useful life). No tests met &rarr; <span class="text-lime-400 font-semibold">operating lease</span>.</p>
+
+                <!-- Step 1: Compute PV -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 1:</span> <span class="text-slate-300">Compute the present value (same calculation)</span></div>
+                        <button onclick="toggleStep('ex2', 1)" id="ex2-btn-1" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300 font-mono mb-1">PV = 15,000 &times; (1 &minus; 1.05<sup>&minus;4</sup>) / 0.05 = 15,000 &times; 3.5460</p>
+                        <p class="text-lg font-bold text-lime-400 font-mono">PV = $53,189</p>
+                        <p class="text-xs text-slate-500 mt-1">The PV calculation is identical regardless of lease classification.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Day 1 Entry -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 2:</span> <span class="text-slate-300">Record Day 1 journal entry (same)</span></div>
+                        <button onclick="toggleStep('ex2', 2)" id="ex2-btn-2" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Right-of-Use Asset</td><td class="text-right pl-4">53,189</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Lease Liability</td><td></td><td class="text-right pl-4">53,189</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Day 1 entry is identical for both lease types under ASC 842.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: Year 1 Entry -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 3:</span> <span class="text-slate-300">Record Year 1 operating lease entry</span></div>
+                        <button onclick="toggleStep('ex2', 3)" id="ex2-btn-3" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <p class="text-sm text-slate-300 mb-2">Lease Expense = Total payments / Lease term = $60,000 / 4 = <span class="font-mono text-lime-400">$15,000</span> per year</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr><td class="pr-4">Lease Expense</td><td class="text-right pl-4">15,000</td><td></td></tr>
+                                <tr><td class="pr-4 pl-6 text-slate-500">Cash</td><td></td><td class="text-right pl-4">15,000</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">Operating leases recognize a single, straight-line lease expense each period. No separate interest or amortization line items.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4: Compare -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div><span class="text-lime-400 font-bold">Step 4:</span> <span class="text-slate-300">Compare to finance lease expense</span></div>
+                        <button onclick="toggleStep('ex2', 4)" id="ex2-btn-4" class="bg-lime-600 hover:bg-lime-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-4" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm font-mono text-slate-300">
+                                <thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Year</th><th class="text-right py-1 px-2 text-slate-400">Finance Expense</th><th class="text-right py-1 px-2 text-slate-400">Operating Expense</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="py-1 px-2">1</td><td class="text-right py-1 px-2">$15,956</td><td class="text-right py-1 px-2">$15,000</td></tr>
+                                    <tr class="bg-slate-900/30"><td class="py-1 px-2">2</td><td class="text-right py-1 px-2">$15,339</td><td class="text-right py-1 px-2">$15,000</td></tr>
+                                    <tr><td class="py-1 px-2">3</td><td class="text-right py-1 px-2">$14,692</td><td class="text-right py-1 px-2">$15,000</td></tr>
+                                    <tr class="bg-slate-900/30"><td class="py-1 px-2">4</td><td class="text-right py-1 px-2">$14,013</td><td class="text-right py-1 px-2">$15,000</td></tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="border-t-2 border-slate-500 font-bold"><td class="py-1 px-2">Total</td><td class="text-right py-1 px-2 text-lime-400">$60,000</td><td class="text-right py-1 px-2 text-lime-400">$60,000</td></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="bg-lime-500/10 rounded-lg p-3 border border-lime-500/30 mt-3">
+                            <p class="text-sm text-lime-300"><strong>Key insight:</strong> Finance lease expense is <strong>front-loaded</strong> (higher in early years due to larger interest on the declining balance). Operating lease expense is <strong>flat</strong>. Over the full term, both total $60,000 &mdash; the same total cash paid.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 7: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-lime-400">Practice Questions</h2>
+                    <div class="flex items-center gap-6 text-sm">
+                        <div><span class="text-slate-500">Score:</span> <span class="text-emerald-400 font-bold"><span id="p-correct">0</span>/<span id="p-total">0</span></span></div>
+                        <div><span class="text-slate-500">Streak:</span> <span class="text-amber-400 font-bold" id="p-streak">0</span></div>
+                        <div class="text-slate-500" id="p-progress"></div>
+                    </div>
+                </div>
+                <div id="p-question" class="mb-4 text-slate-300">Click "New Question" to begin.</div>
+                <div id="p-answer" class="mb-4"></div>
+                <div id="p-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.pNew()" class="bg-lime-600 hover:bg-lime-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-2xl font-bold text-lime-400 mb-4">Journal Entry Practice</h2>
+                <div class="flex items-center gap-6 text-sm mb-4">
+                    <div class="text-slate-500" id="je-progress"></div>
+                </div>
+                <div id="je-prompt" class="mb-4 text-slate-300">Click "New Entry" to begin.</div>
+                <div id="je-lines" class="space-y-2 mb-4"></div>
+                <div id="je-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.jeNew()" class="bg-lime-600 hover:bg-lime-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Entry</button>
+                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-600 hover:bg-slate-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">+ Add Line</button>
+                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Entry</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Leases Study Tool</p>
+    </div>
+
+<script>
+    // ========== TAB SWITCHING ==========
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+        if (tab === 'comparison') { setTimeout(initExpenseChart, 50); }
+    };
+
+    // ========== EXPENSE COMPARISON CHART ==========
+    let expenseChartCreated = false;
+    function initExpenseChart() {
+        if (expenseChartCreated) return;
+        const expCtx = document.getElementById('expense-chart');
+        if (expCtx) {
+            new Chart(expCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Year 1', 'Year 2', 'Year 3'],
+                    datasets: [
+                        { label: 'Finance Lease', data: [10278, 10003, 9719], backgroundColor: 'rgba(163,230,53,0.7)' },
+                        { label: 'Operating Lease', data: [10000, 10000, 10000], backgroundColor: 'rgba(148,163,184,0.5)' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+                        y: { beginAtZero: true, ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+            expenseChartCreated = true;
+        }
+    }
+
+    // ========== LEASE CALCULATOR ==========
+    let leaseChart = null;
+    window.calcLease = function() {
+        const pmt = parseFloat(document.getElementById('lease-payment').value);
+        const r = parseFloat(document.getElementById('lease-rate').value) / 100;
+        const n = parseInt(document.getElementById('lease-term').value);
+        const type = document.getElementById('lease-type').value;
+        if (!pmt || !r || !n) return;
+
+        // PV of ordinary annuity
+        const pv = pmt * (1 - Math.pow(1 + r, -n)) / r;
+
+        document.getElementById('lease-result').classList.remove('hidden');
+        document.getElementById('lease-pv').innerHTML = '<p class="text-3xl font-bold text-lime-400">$' + Math.round(pv).toLocaleString() + '</p><p class="text-sm text-slate-400">Present Value (Lease Liability = ROU Asset)</p>';
+
+        // Build amortization schedule
+        let balance = pv;
+        let rows = '';
+        const expData = [];
+        const labels = [];
+        const rouAmort = Math.round(pv / n);
+
+        for (let i = 1; i <= n; i++) {
+            const interest = Math.round(balance * r);
+            const principal = (i === n) ? Math.round(balance) : Math.round(pmt) - interest;
+            const closing = (i === n) ? 0 : Math.round(balance - principal);
+            const shade = i % 2 === 0 ? ' class="bg-slate-900/30"' : '';
+
+            if (type === 'finance') {
+                const amortExp = (i === n) ? Math.round(pv) - rouAmort * (n - 1) : rouAmort;
+                const totalExp = interest + amortExp;
+                rows += '<tr' + shade + '><td class="py-1 px-2">' + i + '</td><td class="text-right py-1 px-2">$' + Math.round(balance).toLocaleString() + '</td><td class="text-right py-1 px-2">$' + Math.round(pmt).toLocaleString() + '</td><td class="text-right py-1 px-2">$' + interest.toLocaleString() + '</td><td class="text-right py-1 px-2">$' + principal.toLocaleString() + '</td><td class="text-right py-1 px-2">$' + closing.toLocaleString() + '</td><td class="text-right py-1 px-2">$' + amortExp.toLocaleString() + '</td><td class="text-right py-1 px-2 font-bold text-lime-400">$' + totalExp.toLocaleString() + '</td></tr>';
+                expData.push({ interest, amort: amortExp });
+            } else {
+                const leaseExp = Math.round(pmt * n / n);
+                rows += '<tr' + shade + '><td class="py-1 px-2">' + i + '</td><td class="text-right py-1 px-2">$' + Math.round(balance).toLocaleString() + '</td><td class="text-right py-1 px-2">$' + Math.round(pmt).toLocaleString() + '</td><td class="text-right py-1 px-2">$' + interest.toLocaleString() + '</td><td class="text-right py-1 px-2">$' + principal.toLocaleString() + '</td><td class="text-right py-1 px-2">$' + closing.toLocaleString() + '</td><td class="text-right py-1 px-2 font-bold text-lime-400">$' + leaseExp.toLocaleString() + '</td></tr>';
+                expData.push({ expense: leaseExp });
+            }
+            labels.push('Year ' + i);
+            balance = closing;
+        }
+
+        // Render table
+        if (type === 'finance') {
+            document.getElementById('lease-table').innerHTML = '<table class="w-full text-xs font-mono text-slate-300"><thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Yr</th><th class="text-right py-1 px-2 text-slate-400">Opening</th><th class="text-right py-1 px-2 text-slate-400">Payment</th><th class="text-right py-1 px-2 text-slate-400">Interest</th><th class="text-right py-1 px-2 text-slate-400">Principal</th><th class="text-right py-1 px-2 text-slate-400">Closing</th><th class="text-right py-1 px-2 text-slate-400">ROU Amort</th><th class="text-right py-1 px-2 text-lime-400">Total Exp</th></tr></thead><tbody>' + rows + '</tbody></table>';
+        } else {
+            document.getElementById('lease-table').innerHTML = '<table class="w-full text-xs font-mono text-slate-300"><thead><tr class="border-b border-slate-600"><th class="text-left py-1 px-2 text-slate-400">Yr</th><th class="text-right py-1 px-2 text-slate-400">Opening</th><th class="text-right py-1 px-2 text-slate-400">Payment</th><th class="text-right py-1 px-2 text-slate-400">Interest</th><th class="text-right py-1 px-2 text-slate-400">Principal</th><th class="text-right py-1 px-2 text-slate-400">Closing</th><th class="text-right py-1 px-2 text-lime-400">Lease Exp</th></tr></thead><tbody>' + rows + '</tbody></table>';
+        }
+
+        // Chart
+        if (leaseChart) leaseChart.destroy();
+        if (type === 'finance') {
+            leaseChart = new Chart(document.getElementById('lease-chart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Interest Expense', data: expData.map(d => d.interest), backgroundColor: 'rgba(163,230,53,0.7)' },
+                        { label: 'Amortization Expense', data: expData.map(d => d.amort), backgroundColor: 'rgba(20,184,166,0.6)' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        x: { stacked: true, ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+                        y: { stacked: true, ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+        } else {
+            leaseChart = new Chart(document.getElementById('lease-chart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Lease Expense', data: expData.map(d => d.expense), backgroundColor: 'rgba(163,230,53,0.7)' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        x: { ticks: { color: '#64748b' }, grid: { color: '#1e293b' } },
+                        y: { beginAtZero: true, ticks: { color: '#64748b' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+        }
+    };
+
+    // ========== TOGGLE STEP (Worked Examples) ==========
+    window.toggleStep = function(ex, n) {
+        const div = document.getElementById(ex + '-step-' + n);
+        const btn = document.getElementById(ex + '-btn-' + n);
+        if (div.classList.contains('hidden')) {
+            div.classList.remove('hidden');
+            btn.textContent = 'Hide';
+        } else {
+            div.classList.add('hidden');
+            btn.textContent = 'Show';
+        }
+    };
+</script>
+
+<script>
+// ========== PRACTICE QUESTION GENERATORS ==========
+const { rand, pick, fmt } = QuizEngine;
+
+// 1. PV of lease payments
+function genPVLease() {
+    const pmt = pick([8000, 10000, 12000, 15000, 18000, 20000]);
+    const r = pick([0.03, 0.04, 0.05, 0.06, 0.08]);
+    const n = pick([3, 4, 5, 6]);
+    const pv = pmt * (1 - Math.pow(1 + r, -n)) / r;
+    return { question: 'A lease requires annual payments of ' + fmt(pmt) + ' for ' + n + ' years. The discount rate is ' + (r*100) + '%. What is the present value of the lease payments?', type: 'number', answer: Math.round(pv), explanation: 'PV = ' + fmt(pmt) + ' \u00d7 (1 \u2212 (1+' + r + ')\u207b' + n + ') / ' + r + ' = ' + fmt(Math.round(pv)) };
+}
+
+// 2. Finance lease interest expense
+function genFinanceInterest() {
+    const opening = pick([28286, 19135, 9709, 53189, 40848, 27890]);
+    const r = opening > 30000 ? 0.05 : 0.03;
+    const interest = Math.round(opening * r);
+    return { question: 'A finance lease has an opening lease liability of ' + fmt(opening) + '. The discount rate is ' + (r*100) + '%. What is the interest expense for this period?', type: 'number', answer: interest, explanation: 'Interest = ' + fmt(opening) + ' \u00d7 ' + (r*100) + '% = ' + fmt(interest) };
+}
+
+// 3. Finance lease principal reduction
+function genFinancePrincipal() {
+    const scenarios = [
+        { opening: 28286, r: 0.03, pmt: 10000 },
+        { opening: 19135, r: 0.03, pmt: 10000 },
+        { opening: 9709, r: 0.03, pmt: 10000 },
+        { opening: 53189, r: 0.05, pmt: 15000 },
+        { opening: 40848, r: 0.05, pmt: 15000 },
+    ];
+    const s = pick(scenarios);
+    const interest = Math.round(s.opening * s.r);
+    const principal = s.pmt - interest;
+    return { question: 'A finance lease has opening liability ' + fmt(s.opening) + ', annual payment ' + fmt(s.pmt) + ', rate ' + (s.r*100) + '%. What is the principal reduction?', type: 'number', answer: principal, explanation: 'Interest = ' + fmt(s.opening) + ' \u00d7 ' + (s.r*100) + '% = ' + fmt(interest) + '. Principal = ' + fmt(s.pmt) + ' \u2212 ' + fmt(interest) + ' = ' + fmt(principal) };
+}
+
+// 4. Finance lease ROU amortization expense
+function genFinanceAmortExp() {
+    const scenarios = [
+        { pv: 28286, n: 3 },
+        { pv: 53189, n: 4 },
+        { pv: 47100, n: 5 },
+        { pv: 36000, n: 3 },
+    ];
+    const s = pick(scenarios);
+    const amort = Math.round(s.pv / s.n);
+    return { question: 'A finance lease has an ROU Asset of ' + fmt(s.pv) + ' and a lease term of ' + s.n + ' years. What is the annual amortization expense (straight-line)?', type: 'number', answer: amort, explanation: 'Amortization = ' + fmt(s.pv) + ' \u00f7 ' + s.n + ' = ' + fmt(amort) };
+}
+
+// 5. Finance lease total expense
+function genFinanceTotalExp() {
+    const scenarios = [
+        { interest: 849, amort: 9429, year: 1 },
+        { interest: 574, amort: 9429, year: 2 },
+        { interest: 291, amort: 9428, year: 3 },
+    ];
+    const s = pick(scenarios);
+    const total = s.interest + s.amort;
+    return { question: 'A finance lease has Year ' + s.year + ' interest expense of ' + fmt(s.interest) + ' and amortization expense of ' + fmt(s.amort) + '. What is the total expense for Year ' + s.year + '?', type: 'number', answer: total, explanation: 'Total = ' + fmt(s.interest) + ' + ' + fmt(s.amort) + ' = ' + fmt(total) };
+}
+
+// 6. Operating lease expense
+function genOperatingExp() {
+    const pmt = pick([8000, 10000, 12000, 15000, 20000]);
+    const n = pick([3, 4, 5, 6]);
+    const total = pmt * n;
+    const expense = Math.round(total / n);
+    return { question: 'An operating lease requires annual payments of ' + fmt(pmt) + ' over ' + n + ' years. What is the annual lease expense?', type: 'number', answer: expense, explanation: 'Lease Expense = Total Payments / Term = ' + fmt(total) + ' / ' + n + ' = ' + fmt(expense) + '/year (straight-line)' };
+}
+
+// 7. Classification (MC)
+function genClassification() {
+    const scenarios = [
+        { desc: 'The lease term is 8 years and the asset\u2019s useful life is 10 years (80%)', ans: 0, why: 'Lease term (8 yr) \u2265 75% of useful life (10 yr), so Test 3 is met.' },
+        { desc: 'The lease term is 3 years and the asset\u2019s useful life is 10 years (30%)', ans: 1, why: 'Lease term (3 yr) is only 30% of useful life. None of the five tests are met.' },
+        { desc: 'Title transfers to the lessee at the end of the lease', ans: 0, why: 'Ownership transfer (Test 1) is met.' },
+        { desc: 'The PV of lease payments is $92,000 and the asset\u2019s fair value is $100,000 (92%)', ans: 0, why: 'PV of payments (92%) \u2265 90% of fair value, so Test 4 is met.' },
+        { desc: 'The lease is for 2 years on an asset with a 12-year useful life. No purchase option, no ownership transfer, PV is 15% of fair value', ans: 1, why: 'None of the five tests are met: term is 17% of life, PV is 15% of fair value, no transfer, no option, not specialized.' },
+        { desc: 'The lessee has a bargain purchase option at lease end', ans: 0, why: 'Bargain purchase option (Test 2) is met.' },
+    ];
+    const s = pick(scenarios);
+    return { question: s.desc + '. How should this lease be classified?', type: 'mc', answer: s.ans, options: ['Finance lease', 'Operating lease'], explanation: s.why };
+}
+
+// 8. Five tests knowledge (MC)
+function genFiveTests() {
+    const questions = [
+        { q: 'Which of the following is one of the five finance lease tests under ASC 842?', ans: 2, opts: ['The asset must be new', 'The lease must be for at least 5 years', 'The PV of payments \u2265 90% of fair value', 'The lessee must pay above-market rent'], why: 'Test 4: PV of lease payments \u2265 90% of the asset\u2019s fair value.' },
+        { q: 'How many of the five tests must be met to classify a lease as a finance lease?', ans: 0, opts: ['Any one', 'At least two', 'At least three', 'All five'], why: 'A lease is a finance lease if it meets ANY ONE of the five tests.' },
+        { q: 'Under ASC 842, if none of the five tests are met, the lease is classified as:', ans: 1, opts: ['A finance lease', 'An operating lease', 'Not recorded on the balance sheet', 'A capital lease'], why: 'If none of the five tests are met, it is an operating lease. Note: both types still go on the balance sheet under ASC 842.' },
+    ];
+    const s = pick(questions);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 9. Front-loaded expense (MC)
+function genFrontLoaded() {
+    return { question: 'Which lease type recognizes higher total expense in the early years of the lease?', type: 'mc', answer: 0, options: ['Finance lease', 'Operating lease', 'Both are the same every year'], explanation: 'Finance leases have front-loaded expense because interest expense (calculated on a declining balance) is highest in Year 1 and decreases, while amortization is constant.' };
+}
+
+// 10. Total expense same (MC)
+function genTotalExpense() {
+    return { question: 'Over the full lease term, how does total expense compare between finance and operating leases (same terms)?', type: 'mc', answer: 1, options: ['Finance lease has higher total expense', 'Total expense is the same for both', 'Operating lease has higher total expense'], explanation: 'Total expense always equals total cash paid for both types. The only difference is the timing pattern.' };
+}
+
+// 11. Balance sheet effect (MC)
+function genBSEffect() {
+    return { question: 'At lease commencement under ASC 842, what appears on the lessee\u2019s balance sheet?', type: 'mc', answer: 2, options: ['Only a liability (Lease Liability)', 'Only an asset (ROU Asset)', 'Both an ROU Asset and a Lease Liability', 'Nothing \u2014 leases are off-balance-sheet'], explanation: 'Under ASC 842, BOTH types of leases create an ROU Asset and a Lease Liability on the balance sheet at commencement.' };
+}
+
+// 12. Cash flow classification (MC)
+function genCashFlowClass() {
+    const questions = [
+        { q: 'How is a finance lease payment classified on the statement of cash flows?', ans: 1, opts: ['Entirely as operating', 'Interest portion as operating, principal as financing', 'Entirely as financing', 'Entirely as investing'], why: 'For finance leases: interest \u2192 operating activities, principal \u2192 financing activities.' },
+        { q: 'How is an operating lease payment classified on the statement of cash flows?', ans: 0, opts: ['Entirely as operating', 'Interest as operating, principal as financing', 'Entirely as financing'], why: 'For operating leases: the entire lease payment is classified as an operating activity.' },
+    ];
+    const s = pick(questions);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 13. ROU Asset balance (numeric)
+function genROUBalance() {
+    const scenarios = [
+        { pv: 28286, n: 3, years: 1, label: 'after Year 1' },
+        { pv: 28286, n: 3, years: 2, label: 'after Year 2' },
+        { pv: 53189, n: 4, years: 1, label: 'after Year 1' },
+        { pv: 53189, n: 4, years: 2, label: 'after Year 2' },
+    ];
+    const s = pick(scenarios);
+    const annualAmort = Math.round(s.pv / s.n);
+    const netROU = s.pv - annualAmort * s.years;
+    return { question: 'A finance lease has an ROU Asset of ' + fmt(s.pv) + ' and a ' + s.n + '-year term (straight-line amortization). What is the net ROU Asset ' + s.label + '?', type: 'number', answer: netROU, explanation: 'Annual amortization = ' + fmt(s.pv) + ' / ' + s.n + ' = ' + fmt(annualAmort) + '. After ' + s.years + ' year(s): ' + fmt(s.pv) + ' \u2212 ' + s.years + ' \u00d7 ' + fmt(annualAmort) + ' = ' + fmt(netROU) };
+}
+
+// 14. Lease liability balance (numeric)
+function genLiabilityBalance() {
+    const scenarios = [
+        { opening: 28286, r: 0.03, pmt: 10000, label: 'Year 1' },
+        { opening: 19135, r: 0.03, pmt: 10000, label: 'Year 2' },
+        { opening: 53189, r: 0.05, pmt: 15000, label: 'Year 1' },
+        { opening: 40848, r: 0.05, pmt: 15000, label: 'Year 2' },
+    ];
+    const s = pick(scenarios);
+    const interest = Math.round(s.opening * s.r);
+    const principal = s.pmt - interest;
+    const closing = s.opening - principal;
+    return { question: 'A finance lease has an opening liability of ' + fmt(s.opening) + ', annual payment ' + fmt(s.pmt) + ', rate ' + (s.r*100) + '%. What is the lease liability after the ' + s.label + ' payment?', type: 'number', answer: closing, explanation: 'Interest = ' + fmt(interest) + '. Principal = ' + fmt(s.pmt) + ' \u2212 ' + fmt(interest) + ' = ' + fmt(principal) + '. Closing = ' + fmt(s.opening) + ' \u2212 ' + fmt(principal) + ' = ' + fmt(closing) };
+}
+
+// 15. Operating lease entries (MC)
+function genOperatingJEType() {
+    return { question: 'How many journal entries does a lessee record each period for an operating lease payment?', type: 'mc', answer: 0, options: ['One (Dr Lease Expense, Cr Cash)', 'Two (payment + amortization)', 'Three (interest + principal + amortization)'], explanation: 'Operating leases use a single entry: Dr Lease Expense, Cr Cash. The interest accrual and ROU amortization happen behind the scenes.' };
+}
+
+// ========== JOURNAL ENTRY GENERATORS ==========
+
+// 1. Initial recognition (random PV)
+function genJEInitial() {
+    const pv = pick([28286, 42000, 53189, 65000, 78500]);
+    return { prompt: 'A company signs a lease. The present value of lease payments is ' + fmt(pv) + '. Record the initial recognition.', answer: [{ acct: 'Right-of-Use Asset', dr: pv, cr: 0 }, { acct: 'Lease Liability', dr: 0, cr: pv }] };
+}
+
+// 2. Finance lease payment (random split)
+function genJEFinancePayment() {
+    const scenarios = [
+        { interest: 849, principal: 9151, pmt: 10000 },
+        { interest: 574, principal: 9426, pmt: 10000 },
+        { interest: 2659, principal: 12341, pmt: 15000 },
+        { interest: 2042, principal: 12958, pmt: 15000 },
+    ];
+    const s = pick(scenarios);
+    return { prompt: 'Record a finance lease payment of ' + fmt(s.pmt) + '. Interest expense is ' + fmt(s.interest) + '.', answer: [{ acct: 'Interest Expense', dr: s.interest, cr: 0 }, { acct: 'Lease Liability', dr: s.principal, cr: 0 }, { acct: 'Cash', dr: 0, cr: s.pmt }] };
+}
+
+// 3. Finance lease ROU amortization
+function genJEFinanceAmort() {
+    const amort = pick([9429, 9428, 13297, 13298]);
+    return { prompt: 'Record the annual ROU Asset amortization of ' + fmt(amort) + ' for a finance lease.', answer: [{ acct: 'Amortization Expense', dr: amort, cr: 0 }, { acct: 'Accumulated Amortization - ROU', dr: 0, cr: amort }] };
+}
+
+// 4. Operating lease payment
+function genJEOperating() {
+    const pmt = pick([10000, 12000, 15000, 18000, 20000]);
+    return { prompt: 'Record a ' + fmt(pmt) + ' operating lease payment.', answer: [{ acct: 'Lease Expense', dr: pmt, cr: 0 }, { acct: 'Cash', dr: 0, cr: pmt }] };
+}
+
+// 5. Finance Y1 (lecture numbers)
+function genJEFinanceY1() {
+    return { prompt: 'Record the Year 1 finance lease payment. Opening liability: $28,286. Rate: 3%. Annual payment: $10,000.', answer: [{ acct: 'Interest Expense', dr: 849, cr: 0 }, { acct: 'Lease Liability', dr: 9151, cr: 0 }, { acct: 'Cash', dr: 0, cr: 10000 }] };
+}
+
+// 6. Finance Y2
+function genJEFinanceY2() {
+    return { prompt: 'Record the Year 2 finance lease payment. Opening liability: $19,135. Rate: 3%. Annual payment: $10,000.', answer: [{ acct: 'Interest Expense', dr: 574, cr: 0 }, { acct: 'Lease Liability', dr: 9426, cr: 0 }, { acct: 'Cash', dr: 0, cr: 10000 }] };
+}
+
+// 7. Finance Y3
+function genJEFinanceY3() {
+    return { prompt: 'Record the Year 3 (final) finance lease payment. Opening liability: $9,709. Rate: 3%. Annual payment: $10,000.', answer: [{ acct: 'Interest Expense', dr: 291, cr: 0 }, { acct: 'Lease Liability', dr: 9709, cr: 0 }, { acct: 'Cash', dr: 0, cr: 10000 }] };
+}
+
+// 8. ROU amort Y1
+function genJEAmortY1() {
+    return { prompt: 'Record Year 1 ROU Asset amortization for a 3-year finance lease. ROU Asset: $28,286.', answer: [{ acct: 'Amortization Expense', dr: 9429, cr: 0 }, { acct: 'Accumulated Amortization - ROU', dr: 0, cr: 9429 }] };
+}
+
+// 9. ROU amort Y3 (rounding adjustment)
+function genJEAmortY3() {
+    return { prompt: 'Record Year 3 (final) ROU Asset amortization for a 3-year finance lease. ROU Asset: $28,286. Prior amortization: $18,858.', answer: [{ acct: 'Amortization Expense', dr: 9428, cr: 0 }, { acct: 'Accumulated Amortization - ROU', dr: 0, cr: 9428 }] };
+}
+
+// 10. Initial recognition (large)
+function genJEInitialLarge() {
+    const pv = pick([125000, 250000, 375000, 500000]);
+    return { prompt: 'A company signs a lease with PV of payments = ' + fmt(pv) + '. Record the initial recognition.', answer: [{ acct: 'Right-of-Use Asset', dr: pv, cr: 0 }, { acct: 'Lease Liability', dr: 0, cr: pv }] };
+}
+
+// ========== QUIZ ENGINE INIT ==========
+QuizEngine.init({
+    questionGenerators: [genPVLease, genFinanceInterest, genFinancePrincipal, genFinanceAmortExp, genFinanceTotalExp, genOperatingExp, genClassification, genFiveTests, genFrontLoaded, genTotalExpense, genBSEffect, genCashFlowClass, genROUBalance, genLiabilityBalance, genOperatingJEType],
+    jeGenerators: [genJEInitial, genJEFinancePayment, genJEFinanceAmort, genJEOperating, genJEFinanceY1, genJEFinanceY2, genJEFinanceY3, genJEAmortY1, genJEAmortY3, genJEInitialLarge],
+    jeAccounts: ['Cash', 'Right-of-Use Asset', 'Lease Liability', 'Interest Expense', 'Amortization Expense', 'Accumulated Amortization - ROU', 'Lease Expense'],
+    accentColor: 'lime',
+    qCopies: 6,
+    jeCopies: 2
+});
+</script>
+
+    <script src="cursor.js"></script>
+</body>
+</html>
