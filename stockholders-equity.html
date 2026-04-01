@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stockholders' Equity | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="animations.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        :root { --accent: #e879f9; --accent-bg: rgba(232,121,249,0.08); --accent-border-subtle: rgba(232,121,249,0.15); }
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(232,121,249,0.15); }
+        .tab-btn.active { border-color: #e879f9; color: #e879f9; background: rgba(232,121,249,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
+    <script>
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+    </script>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="back-link" style="--accent: #e879f9">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(232,121,249,0.1)">
+                <svg class="text-fuchsia-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"/></svg>
+            </div>
+            <div>
+                <h1>Stockholders' Equity</h1>
+                <p class="subtitle">Lectures 19&ndash;20 &mdash; Equity components, dividends, buybacks &amp; real company analysis</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(232,121,249,0.1); color: rgba(232,121,249,0.8); border: 1px solid rgba(232,121,249,0.1)">L 19-20</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('components')" id="tab-components" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Equity Components</button>
+            <button onclick="switchTab('issuance')" id="tab-issuance" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Stock Issuance</button>
+            <button onclick="switchTab('dividends')" id="tab-dividends" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Dividends &amp; Splits</button>
+            <button onclick="switchTab('repurchases')" id="tab-repurchases" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Share Repurchases</button>
+            <button onclick="switchTab('companies')" id="tab-companies" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Real Companies</button>
+            <button onclick="switchTab('calculator')" id="tab-calculator" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Calculator</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: EQUITY COMPONENTS ======================== -->
+        <div id="panel-components" class="tab-panel active">
+
+            <!-- Card 1: What Is Stockholders' Equity? -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">What Is Stockholders' Equity?</h2>
+                <p class="text-slate-300 mb-4">Stockholders' equity is the <span class="text-fuchsia-400 font-semibold">residual claim</span> on a company's assets after all liabilities have been settled. It represents what shareholders would theoretically receive if the company liquidated all assets and paid all debts.</p>
+                <div class="bg-fuchsia-500/10 rounded-lg p-4 border border-fuchsia-500/20 text-center mb-4">
+                    <p class="text-lg font-mono font-bold text-slate-200"><span class="text-emerald-400">Assets</span> = <span class="text-sky-400">Liabilities</span> + <span class="text-fuchsia-400">Stockholders' Equity</span></p>
+                </div>
+                <p class="text-slate-300 text-sm">Rearranged: <span class="font-mono text-fuchsia-400">SE = A &minus; L</span>. Equity is not a pile of cash &mdash; it is a <span class="text-fuchsia-400 font-semibold">residual</span>, the net of everything the company owns minus everything it owes.</p>
+            </div>
+
+            <!-- Card 2: The Five Components -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">The Five Components</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Component</th>
+                                <th class="text-left py-2 px-3 text-slate-400">What It Represents</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Normal Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-fuchsia-400 font-semibold">Common Stock</td>
+                                <td class="py-2 px-3">Par value &times; shares issued</td>
+                                <td class="py-2 px-3">Credit</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 text-fuchsia-400 font-semibold">APIC</td>
+                                <td class="py-2 px-3">Excess over par received from shareholders</td>
+                                <td class="py-2 px-3">Credit</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-fuchsia-400 font-semibold">Retained Earnings</td>
+                                <td class="py-2 px-3">Cumulative net income minus cumulative dividends</td>
+                                <td class="py-2 px-3">Credit</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 text-fuchsia-400 font-semibold">AOCI</td>
+                                <td class="py-2 px-3">Unrealized gains/losses that bypass the income statement</td>
+                                <td class="py-2 px-3">Credit (or Debit)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-fuchsia-400 font-semibold">Treasury Stock</td>
+                                <td class="py-2 px-3">Shares repurchased &mdash; contra equity (reduces SE)</td>
+                                <td class="py-2 px-3">Debit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Card 3: Capital Transactions vs Operations -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Capital Transactions vs Operations</h2>
+                <p class="text-slate-300 mb-4">Changes in equity come from two fundamentally different sources:</p>
+                <div class="grid md:grid-cols-2 gap-5">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-3">Capital Transactions</h3>
+                        <p class="text-xs text-slate-500 mb-3 uppercase tracking-wider font-semibold">Transactions with owners</p>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-fuchsia-400 font-semibold">Issue shares</span> &rarr; increases Common Stock &amp; APIC</li>
+                            <li><span class="text-fuchsia-400 font-semibold">Pay dividends</span> &rarr; decreases Retained Earnings</li>
+                            <li><span class="text-fuchsia-400 font-semibold">Repurchase shares</span> &rarr; increases Treasury Stock (or reduces paid-in capital)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-3">Operations</h3>
+                        <p class="text-xs text-slate-500 mb-3 uppercase tracking-wider font-semibold">Business activities</p>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-fuchsia-400 font-semibold">Net Income</span> &rarr; increases Retained Earnings</li>
+                            <li><span class="text-fuchsia-400 font-semibold">Net Loss</span> &rarr; decreases Retained Earnings</li>
+                            <li><span class="text-fuchsia-400 font-semibold">OCI items</span> &rarr; flow into AOCI</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Retained Earnings — The Bridge -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Retained Earnings &mdash; The Bridge</h2>
+                <div class="bg-fuchsia-500/10 rounded-lg p-4 border border-fuchsia-500/20 text-center mb-4">
+                    <p class="text-lg font-mono font-bold text-slate-200">Ending R/E = Beginning R/E + Net Income &minus; Dividends</p>
+                </div>
+                <p class="text-slate-300 mb-4 text-sm">Retained Earnings is the account that <span class="text-fuchsia-400 font-semibold">bridges the income statement and the balance sheet</span>. Net income from the I/S flows into R/E on the B/S each period, and dividends declared flow out.</p>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>Important:</strong> R/E &ne; Cash. A company can have $10B in Retained Earnings and very little cash &mdash; the earnings were reinvested in equipment, inventory, acquisitions. R/E tells you how much profit was kept in the business, not where it went.</p>
+                </div>
+            </div>
+
+            <!-- Card 5: OCI and AOCI -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">OCI and AOCI</h2>
+                <p class="text-slate-300 mb-4">Other Comprehensive Income (OCI) captures gains and losses that <span class="text-fuchsia-400 font-semibold">bypass the income statement</span> under GAAP. These items are considered too volatile or unrealized to include in net income.</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">OCI Item</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Example</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">Unrealized gains/losses on AFS securities</td>
+                                <td class="py-2 px-3">Bond portfolio value rises but not yet sold</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 font-semibold">Foreign currency translation adjustments</td>
+                                <td class="py-2 px-3">Translating a foreign subsidiary's financials</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">Pension adjustments</td>
+                                <td class="py-2 px-3">Changes in projected benefit obligation</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 font-semibold">Cash flow hedge gains/losses</td>
+                                <td class="py-2 px-3">Effective portion of qualifying hedges</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> AOCI accumulates OCI over time, just like Retained Earnings accumulates Net Income. OCI is a flow (this period); AOCI is a stock (cumulative).</p>
+                </div>
+            </div>
+
+            <!-- Card 6: Authorized vs Issued vs Outstanding -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Authorized vs Issued vs Outstanding</h2>
+                <div class="bg-fuchsia-500/10 rounded-lg p-4 border border-fuchsia-500/20 text-center mb-4">
+                    <p class="text-lg font-mono font-bold text-slate-200">Authorized &ge; Issued = Outstanding + Treasury</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-fuchsia-400 font-bold mb-1">Authorized</p>
+                        <p class="text-slate-300 text-sm">Maximum shares the company <em>can</em> issue (set in charter)</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-fuchsia-400 font-bold mb-1">Issued</p>
+                        <p class="text-slate-300 text-sm">Shares actually sold to investors at some point</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-fuchsia-400 font-bold mb-1">Outstanding</p>
+                        <p class="text-slate-300 text-sm">Issued shares currently in investors' hands</p>
+                    </div>
+                </div>
+                <p class="text-slate-300 text-sm mb-3">Only <span class="text-fuchsia-400 font-semibold">outstanding shares</span> vote and receive dividends. Treasury shares have been repurchased and sit with the company &mdash; they have no voting or dividend rights.</p>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> Under the retirement method, repurchased shares are cancelled, so Issued = Outstanding. Under the cost (treasury) method, Issued &gt; Outstanding by the number of treasury shares.</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-fuchsia-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <div class="text-sm text-slate-300 space-y-2">
+                    <p><strong class="text-white">Stock issuance</strong> increases both A (+Cash) and SE (+Common Stock, +APIC). The equation grows on both sides.</p>
+                    <p><strong class="text-white">Dividends</strong> decrease A (&minus;Cash) and SE (&minus;R/E). The equation shrinks on both sides.</p>
+                    <p><strong class="text-white">Buybacks</strong> decrease A (&minus;Cash) and SE (&minus;Treasury Stock or &minus;Common Stock/APIC/R/E). Same shrinkage.</p>
+                    <p><strong class="text-white">Net Income</strong> increases A (through revenue) and SE (through R/E). <strong class="text-white">A = L + SE</strong> always holds.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 2: STOCK ISSUANCE ======================== -->
+        <div id="panel-issuance" class="tab-panel">
+
+            <!-- Card 1: Par Value vs No-Par Issuance -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Par Value vs No-Par Issuance</h2>
+                <p class="text-slate-300 mb-4">Example: A company issues <span class="text-fuchsia-400 font-semibold">1,000 shares at $25/share</span>. Total cash received: $25,000.</p>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-3">Par Value ($1/share)</h3>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Cash</td>
+                                    <td class="text-right pl-4">25,000</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Common Stock</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">1,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">APIC</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">24,000</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">Par absorbs $1 &times; 1,000 = $1,000. The remaining $24,000 goes to APIC.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-3">No-Par Value</h3>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Cash</td>
+                                    <td class="text-right pl-4">25,000</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Common Stock</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">25,000</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">Everything goes into Common Stock. No APIC needed.</p>
+                    </div>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> Par value splits proceeds into two buckets. No-par puts everything in one. Total equity is the same either way &mdash; $25,000.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Why Does Par Value Still Exist? -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Why Does Par Value Still Exist?</h2>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-3">Historical Purpose</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li><span class="text-fuchsia-400 font-semibold">Legal capital</span> &mdash; minimum equity cushion for creditors</li>
+                            <li><span class="text-fuchsia-400 font-semibold">Creditor protection</span> &mdash; dividends cannot reduce equity below legal capital</li>
+                            <li><span class="text-fuchsia-400 font-semibold">Minimum issue price</span> &mdash; shares could not be sold below par</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-3">Modern Reality</h3>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li>Apple's par value: <span class="text-fuchsia-400 font-semibold">$0.00001</span></li>
+                            <li>Most companies: <span class="text-fuchsia-400 font-semibold">$0.01 or less</span></li>
+                            <li>Some states still require it; others don't</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> Par value is an accounting and legal artifact, not a measure of what the stock is worth. Market price and par value are completely unrelated.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Stock Issued for Non-Cash Consideration -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Stock Issued for Non-Cash Consideration</h2>
+                <p class="text-slate-300 mb-4">When stock is issued in exchange for assets or services instead of cash, record the transaction at the <span class="text-fuchsia-400 font-semibold">fair value of the consideration received</span> (or the fair value of the stock issued, if more readily determinable).</p>
+                <p class="text-slate-400 text-xs mb-2">Example: Issue 2,000 shares ($1 par) for equipment worth $50,000:</p>
+                <div class="bg-slate-800/80 rounded p-3 text-sm mb-4">
+                    <table class="font-mono text-slate-300">
+                        <tr>
+                            <td class="pr-4">Equipment</td>
+                            <td class="text-right pl-4">50,000</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">Common Stock</td>
+                            <td></td>
+                            <td class="text-right pl-4">2,000</td>
+                        </tr>
+                        <tr>
+                            <td class="pr-4 pl-6 text-slate-500">APIC</td>
+                            <td></td>
+                            <td class="text-right pl-4">48,000</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> The asset side gets Equipment instead of Cash, but the equity side works exactly the same way &mdash; par goes to Common Stock, excess to APIC.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 3: DIVIDENDS & SPLITS ======================== -->
+        <div id="panel-dividends" class="tab-panel">
+
+            <!-- Card 1: Cash vs Stock Dividends -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Cash vs Stock Dividends</h2>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Question</th>
+                                <th class="text-center py-2 px-3 text-slate-400">Cash Dividend</th>
+                                <th class="text-center py-2 px-3 text-slate-400">Stock Dividend</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">Does an asset leave?</td>
+                                <td class="py-2 px-3 text-center text-emerald-400">Yes (cash exits)</td>
+                                <td class="py-2 px-3 text-center text-slate-400">No</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 font-semibold">Total equity changes?</td>
+                                <td class="py-2 px-3 text-center text-rose-400">Decreases</td>
+                                <td class="py-2 px-3 text-center text-slate-400">No change</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">Retained Earnings?</td>
+                                <td class="py-2 px-3 text-center text-rose-400">Decreases</td>
+                                <td class="py-2 px-3 text-center text-rose-400">Decreases</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 font-semibold">Creates a liability?</td>
+                                <td class="py-2 px-3 text-center text-emerald-400">Yes (Div Payable)</td>
+                                <td class="py-2 px-3 text-center text-slate-400">No (Stock Div Distributable is equity)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">Shares outstanding?</td>
+                                <td class="py-2 px-3 text-center text-slate-400">No change</td>
+                                <td class="py-2 px-3 text-center text-emerald-400">Increases</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> Cash dividend = a transfer between the company and shareholders. Stock dividend = a transfer within equity accounts &mdash; nothing leaves the company.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Cash Dividend — Three Key Dates -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Cash Dividend &mdash; Three Key Dates</h2>
+                <p class="text-slate-400 text-xs mb-4">Example: $2/share on 5,000 outstanding shares = $10,000 total dividend.</p>
+                <div class="space-y-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">1. Declaration Date</h3>
+                        <p class="text-sm text-slate-300 mb-2">The board declares the dividend. A liability is created.</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Retained Earnings</td>
+                                    <td class="text-right pl-4">10,000</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Dividends Payable</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">10,000</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">2. Record Date</h3>
+                        <p class="text-sm text-slate-300"><span class="text-fuchsia-400 font-semibold">No journal entry.</span> This date determines which shareholders of record receive the dividend.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">3. Payment Date</h3>
+                        <p class="text-sm text-slate-300 mb-2">Cash is paid to shareholders. The liability is settled.</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Dividends Payable</td>
+                                    <td class="text-right pl-4">10,000</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Cash</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">10,000</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Stock Dividends — Large vs Small -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Stock Dividends &mdash; Large vs Small</h2>
+                <p class="text-slate-400 text-xs mb-4">Setup: 10 shares outstanding, $1 par, $2 market price.</p>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Large Stock Dividend (&gt;20&ndash;25%)</h3>
+                        <p class="text-sm text-slate-300 mb-3">100% dividend = 10 new shares. Recorded at <span class="text-fuchsia-400 font-semibold">par value</span>.</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Retained Earnings</td>
+                                    <td class="text-right pl-4">10</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Common Stock</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">10</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">10 new shares &times; $1 par = $10</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Small Stock Dividend (&lt;20&ndash;25%)</h3>
+                        <p class="text-sm text-slate-300 mb-3">10% dividend = 1 new share. Recorded at <span class="text-fuchsia-400 font-semibold">market value</span>.</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Retained Earnings</td>
+                                    <td class="text-right pl-4">2</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Common Stock</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">APIC</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">1</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">1 new share &times; $2 market = $2. Par ($1) &rarr; CS, excess ($1) &rarr; APIC.</p>
+                    </div>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> Both rearrange equity &mdash; R/E shrinks, paid-in capital grows. Neither changes total equity. The difference is the measurement basis: par (large) vs market (small).</p>
+                </div>
+            </div>
+
+            <!-- Card 4: Stock Splits vs Stock Dividends -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Stock Splits vs Stock Dividends</h2>
+                <p class="text-slate-400 text-xs mb-4">Starting point: 10 shares, $1 par, $2 market. Both result in 20 shares.</p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400"></th>
+                                <th class="text-center py-2 px-3 text-slate-400">2-for-1 Split</th>
+                                <th class="text-center py-2 px-3 text-slate-400">100% Stock Dividend</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">Shares outstanding</td>
+                                <td class="py-2 px-3 text-center">20</td>
+                                <td class="py-2 px-3 text-center">20</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 font-semibold">Par value/share</td>
+                                <td class="py-2 px-3 text-center text-fuchsia-400">$0.50</td>
+                                <td class="py-2 px-3 text-center">$1.00</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">Total par</td>
+                                <td class="py-2 px-3 text-center">$10</td>
+                                <td class="py-2 px-3 text-center text-fuchsia-400">$20</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 font-semibold">Retained Earnings</td>
+                                <td class="py-2 px-3 text-center">No change</td>
+                                <td class="py-2 px-3 text-center text-rose-400">&minus;$10</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">APIC</td>
+                                <td class="py-2 px-3 text-center">No change</td>
+                                <td class="py-2 px-3 text-center">No change</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 font-semibold">Total Equity</td>
+                                <td class="py-2 px-3 text-center">No change</td>
+                                <td class="py-2 px-3 text-center">No change</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold">Journal entry?</td>
+                                <td class="py-2 px-3 text-center text-slate-400">None (memo only)</td>
+                                <td class="py-2 px-3 text-center text-emerald-400">Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> A split re-slices the pie &mdash; par adjusts, nothing moves between accounts. A stock dividend permanently locks R/E into legal capital. Both leave total equity unchanged.</p>
+                </div>
+            </div>
+
+            <!-- Card 5: Real World: Amazon vs Tesla -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Real World: Amazon vs Tesla</h2>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Amazon (2022)</h3>
+                        <p class="text-sm text-slate-300 mb-2"><span class="text-fuchsia-400 font-semibold">20-for-1 stock split</span></p>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Par value adjusted: $0.01 &rarr; $0.01 (already minimal)</li>
+                            <li>Contributed capital: unchanged</li>
+                            <li>No journal entry &mdash; memo only</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Tesla (2022)</h3>
+                        <p class="text-sm text-slate-300 mb-2"><span class="text-fuchsia-400 font-semibold">3-for-1 stock dividend</span></p>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Par value: unchanged at $0.001</li>
+                            <li>Contributed capital: increased by ~$2M</li>
+                            <li>R/E decreased by ~$2M</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> Same economic result &mdash; more shares, lower price per share. Different books. Amazon moved nothing between accounts; Tesla shifted a small amount from R/E to Common Stock.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 4: SHARE REPURCHASES ======================== -->
+        <div id="panel-repurchases" class="tab-panel">
+
+            <!-- Card 1: Why Companies Buy Back Stock -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Why Companies Buy Back Stock</h2>
+                <ul class="text-sm text-slate-300 space-y-3">
+                    <li><span class="text-fuchsia-400 font-semibold">Return capital to shareholders</span> &mdash; alternative to dividends, often more tax-efficient</li>
+                    <li><span class="text-fuchsia-400 font-semibold">Signal undervaluation</span> &mdash; management believes the stock is worth more than the market price</li>
+                    <li><span class="text-fuchsia-400 font-semibold">Boost EPS</span> &mdash; fewer shares outstanding means higher earnings per share</li>
+                    <li><span class="text-fuchsia-400 font-semibold">Offset dilution</span> &mdash; absorb shares created by employee stock option exercises</li>
+                    <li><span class="text-fuchsia-400 font-semibold">Flexibility</span> &mdash; no implied commitment to continue, unlike dividends which markets treat as a promise</li>
+                </ul>
+            </div>
+
+            <!-- Card 2: Treasury (Cost) vs Retirement — Side by Side -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Treasury (Cost) vs Retirement &mdash; Side by Side</h2>
+                <p class="text-slate-400 text-xs mb-4">Example: Originally issued 10 shares at $1 par. Now repurchase 4 shares at $1.50 each ($6 total).</p>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Cost (Treasury) Method</h3>
+                        <p class="text-sm text-slate-300 mb-3">"We're parking these shares."</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Treasury Stock</td>
+                                    <td class="text-right pl-4">6</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Cash</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">6</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">One contra-equity line at cost. Shares remain "issued" but not "outstanding."</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Retirement Method</h3>
+                        <p class="text-sm text-slate-300 mb-3">"These shares are gone forever."</p>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Common Stock</td>
+                                    <td class="text-right pl-4">4</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4">Retained Earnings</td>
+                                    <td class="text-right pl-4">2</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Cash</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">6</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">Unwinds original issuance. Par ($1 &times; 4 = $4) removed from CS. Excess cost ($2) hits R/E.</p>
+                    </div>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> Same cash out ($6). Treasury defers the settlement &mdash; shares sit in the company's pocket. Retirement settles immediately &mdash; shares are cancelled. Both reduce total equity by $6. Neither touches the income statement.</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Reissuing Treasury Shares -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Reissuing Treasury Shares</h2>
+                <p class="text-slate-400 text-xs mb-4">Reissue 1 treasury share (originally repurchased at $1.50).</p>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Reissue Above Cost ($2.00)</h3>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Cash</td>
+                                    <td class="text-right pl-4">2.00</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Treasury Stock</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">1.50</td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">APIC &mdash; Treasury</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">0.50</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">Excess over cost goes to APIC &mdash; Treasury Stock.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Reissue Below Cost ($1.00)</h3>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300">
+                                <tr>
+                                    <td class="pr-4">Cash</td>
+                                    <td class="text-right pl-4">1.00</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4">APIC &mdash; Treasury</td>
+                                    <td class="text-right pl-4">0.50</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="pr-4 pl-6 text-slate-500">Treasury Stock</td>
+                                    <td></td>
+                                    <td class="text-right pl-4">1.50</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">Shortfall hits APIC &mdash; Treasury first. If exhausted, the remainder goes to R/E.</p>
+                    </div>
+                </div>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>Important:</strong> Never debit a "loss" to the income statement from stock transactions. All differences go through equity accounts only (APIC or R/E).</p>
+                </div>
+            </div>
+
+            <!-- Card 4: The Golden Rule -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">The Golden Rule</h2>
+                <div class="bg-fuchsia-500/10 rounded-lg p-4 border border-fuchsia-500/20 text-center mb-4">
+                    <p class="text-lg font-bold text-fuchsia-300">GAAP prohibits recognizing gains or losses on the income statement from transactions in a company's own stock.</p>
+                </div>
+                <p class="text-slate-300 mb-4 text-sm">All differences between what the company pays and what it receives for its own shares go through <span class="text-fuchsia-400 font-semibold">equity accounts only</span> &mdash; APIC or Retained Earnings. Never the income statement.</p>
+                <p class="text-slate-300 mb-4 text-sm"><strong class="text-white">Why?</strong> Buying or selling your own stock is a <span class="text-fuchsia-400 font-semibold">capital transaction with owners</span>, not a profit-generating activity. You can't "earn" money by trading in your own shares.</p>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Key insight:</strong> This applies to ALL stock transactions: issuance, repurchase, reissuance, and retirement. The income statement is reserved for business operations, not capital transactions.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 5: REAL COMPANIES (placeholder) ======================== -->
+        <div id="panel-companies" class="tab-panel">
+
+            <!-- Apple Inc. -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Apple Inc. (FY2025)</h2>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Component</th>
+                                <th class="text-right py-2 px-3 text-slate-400">FY2025</th>
+                                <th class="text-right py-2 px-3 text-slate-400">FY2024</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">Common Stock &amp; APIC ($0.00001 par)</td>
+                                <td class="text-right py-2 px-3">$93,568M</td>
+                                <td class="text-right py-2 px-3">$83,276M</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">Retained Earnings</td>
+                                <td class="text-right py-2 px-3">$14,264M</td>
+                                <td class="text-right py-2 px-3 text-rose-400">($19,154M)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">AOCI</td>
+                                <td class="text-right py-2 px-3">$5,571M</td>
+                                <td class="text-right py-2 px-3 text-rose-400">($11,109M)</td>
+                            </tr>
+                            <tr class="border-t-2 border-slate-500 font-bold">
+                                <td class="py-2 px-3">Total Stockholders' Equity</td>
+                                <td class="text-right py-2 px-3 text-fuchsia-400">$73,733M</td>
+                                <td class="text-right py-2 px-3 text-fuchsia-400">$57,013M</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Key Observations</p>
+                        <ul class="text-sm text-slate-300 space-y-1.5">
+                            <li>&bull; Par value is $0.00001 per share &mdash; essentially nominal</li>
+                            <li>&bull; Common Stock and APIC are <span class="text-fuchsia-400 font-semibold">combined</span> into one line</li>
+                            <li>&bull; Retained Earnings swung from negative ($19.2B deficit) to positive ($14.3B) in one year</li>
+                            <li>&bull; No Treasury Stock line on the balance sheet</li>
+                        </ul>
+                    </div>
+                    <div class="bg-fuchsia-500/10 rounded-lg p-4 border border-fuchsia-500/30">
+                        <p class="text-xs text-fuchsia-300 uppercase tracking-wider font-semibold mb-2">Retirement Method</p>
+                        <p class="text-sm text-slate-300">Apple uses the <span class="text-fuchsia-400 font-semibold">retirement method</span> &mdash; shares are canceled on repurchase, and buyback cost reduces Common Stock/APIC and Retained Earnings directly. That is why there is no Treasury Stock line.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center border border-slate-600">
+                        <p class="text-2xl font-bold text-fuchsia-400">$700B+</p>
+                        <p class="text-xs text-slate-400 mt-1">Cumulative buybacks (estimated)</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center border border-slate-600">
+                        <p class="text-2xl font-bold text-fuchsia-400">$90B</p>
+                        <p class="text-xs text-slate-400 mt-1">Repurchased in FY2025</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 text-center border border-slate-600">
+                        <p class="text-2xl font-bold text-fuchsia-400">26B &rarr; 14.8B</p>
+                        <p class="text-xs text-slate-400 mt-1">Shares outstanding (peak to current)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Starbucks -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Starbucks (FY2025)</h2>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Component</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">Common Stock ($0.001 par)</td>
+                                <td class="text-right py-2 px-3">$1.1M</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">APIC</td>
+                                <td class="text-right py-2 px-3">$634.1M</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">Retained Earnings (Deficit)</td>
+                                <td class="text-right py-2 px-3 text-rose-400">($8,272.5M)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">AOCI</td>
+                                <td class="text-right py-2 px-3 text-rose-400">($459.3M)</td>
+                            </tr>
+                            <tr class="border-t-2 border-slate-500 font-bold">
+                                <td class="py-2 px-3">Total Stockholders' Equity</td>
+                                <td class="text-right py-2 px-3 text-rose-400 text-lg">($8,096.6M)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Balance Sheet Context</p>
+                        <ul class="text-sm text-slate-300 space-y-1.5">
+                            <li>&bull; Total Assets: <span class="font-mono">$32,019.7M</span></li>
+                            <li>&bull; Total Liabilities: <span class="font-mono">$40,108.9M</span></li>
+                            <li>&bull; Liabilities exceed assets &mdash; equity is <span class="text-rose-400 font-semibold">negative</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-fuchsia-500/10 rounded-lg p-4 border border-fuchsia-500/30">
+                        <p class="text-xs text-fuchsia-300 uppercase tracking-wider font-semibold mb-2">Retirement Method</p>
+                        <p class="text-sm text-slate-300">Starbucks also uses the <span class="text-fuchsia-400 font-semibold">retirement method</span> &mdash; buyback cost flows through Retained Earnings, creating an accumulated deficit. No Treasury Stock line.</p>
+                    </div>
+                </div>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>Key insight:</strong> Negative equity does not mean insolvent &mdash; Starbucks has strong cash flows, it has simply returned more capital to shareholders than it has retained.</p>
+                </div>
+            </div>
+
+            <!-- Comparison Card -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Apple vs Starbucks &mdash; Same Method, Different Stage</h2>
+                <p class="text-slate-300 mb-4">Both companies use the <span class="text-fuchsia-400 font-semibold">retirement method</span> for share repurchases &mdash; no Treasury Stock line, buyback cost reduces paid-in capital and Retained Earnings directly.</p>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Apple</h3>
+                        <p class="text-sm text-slate-300">R/E has <span class="text-emerald-400 font-semibold">recovered</span> &mdash; FY2025 R/E is positive ($14.3B) despite $700B+ in cumulative buybacks (estimated). Massive earnings power replenishes retained earnings faster than buybacks deplete them.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-fuchsia-500/20">
+                        <h3 class="font-bold text-fuchsia-400 mb-2">Starbucks</h3>
+                        <p class="text-sm text-slate-300">R/E is still <span class="text-rose-400 font-semibold">deeply negative</span> ($8.3B deficit). Same retirement method, but Starbucks is at a different point in the capital return cycle where cumulative buybacks and dividends far exceed cumulative earnings.</p>
+                    </div>
+                </div>
+                <div class="bg-fuchsia-500/10 rounded-lg p-3 border border-fuchsia-500/30">
+                    <p class="text-sm text-fuchsia-300"><strong>Takeaway:</strong> The accounting method is the same. The difference is purely about scale of earnings relative to capital returned. Same method, different stages of the capital return cycle.</p>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-500 italic">All data from SEC EDGAR, FY2025 10-K filings. Apple cumulative buyback figure is an estimate.</p>
+
+        </div>
+
+        <!-- ======================== TAB 6: CALCULATOR (placeholder) ======================== -->
+        <div id="panel-calculator" class="tab-panel">
+
+            <!-- Equity Section Builder -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Equity Section Builder</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Par Value per Share ($)</label>
+                            <input type="number" id="eq-par" value="1" step="0.01" min="0" oninput="calcEquity()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Shares Issued</label>
+                            <input type="number" id="eq-shares" value="100000" step="1" min="0" oninput="calcEquity()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Additional Paid-In Capital ($)</label>
+                            <input type="number" id="eq-apic" value="500000" step="1" oninput="calcEquity()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Retained Earnings ($ &mdash; negative allowed)</label>
+                            <input type="number" id="eq-re" value="250000" step="1" oninput="calcEquity()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">AOCI ($ &mdash; negative allowed)</label>
+                            <input type="number" id="eq-aoci" value="0" step="1" oninput="calcEquity()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Treasury Stock ($ &mdash; enter as positive, displayed as negative)</label>
+                            <input type="number" id="eq-treasury" value="0" step="1" min="0" oninput="calcEquity()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div class="flex gap-3 pt-2">
+                            <button onclick="loadApple()" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Load Apple FY2025</button>
+                            <button onclick="loadStarbucks()" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Load Starbucks FY2025</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                            <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-3">Computed Equity Section</p>
+                            <table class="w-full text-sm text-slate-300">
+                                <tr class="border-b border-slate-700/50"><td class="py-2">Common Stock</td><td class="text-right py-2 font-mono" id="eq-out-cs">$100,000</td></tr>
+                                <tr class="border-b border-slate-700/50 bg-slate-900/30"><td class="py-2">APIC</td><td class="text-right py-2 font-mono" id="eq-out-apic">$500,000</td></tr>
+                                <tr class="border-b border-slate-700/50"><td class="py-2">Retained Earnings</td><td class="text-right py-2 font-mono" id="eq-out-re">$250,000</td></tr>
+                                <tr class="border-b border-slate-700/50 bg-slate-900/30"><td class="py-2">AOCI</td><td class="text-right py-2 font-mono" id="eq-out-aoci">$0</td></tr>
+                                <tr class="border-b border-slate-700/50"><td class="py-2">Treasury Stock</td><td class="text-right py-2 font-mono" id="eq-out-treasury">$0</td></tr>
+                                <tr class="border-t-2 border-slate-500 font-bold"><td class="py-2">Total Stockholders' Equity</td><td class="text-right py-2 font-mono text-lg" id="eq-out-total">$850,000</td></tr>
+                            </table>
+                        </div>
+                        <div class="mt-4 rounded-lg p-4 border" id="eq-indicator" style="background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.3);">
+                            <p class="text-sm font-semibold" id="eq-indicator-text" style="color: #34d399;">Positive equity: $850,000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dividend Impact Calculator -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Dividend Impact Calculator</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Current Retained Earnings ($)</label>
+                            <input type="number" id="div-re" value="500000" step="1" oninput="calcDividend()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Dividend per Share ($)</label>
+                            <input type="number" id="div-dps" value="2.00" step="0.01" min="0" oninput="calcDividend()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="text-sm text-slate-400 block mb-1">Shares Outstanding</label>
+                            <input type="number" id="div-shares" value="50000" step="1" min="0" oninput="calcDividend()" class="w-full bg-slate-900/60 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm font-mono">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                            <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-3">Dividend Impact</p>
+                            <table class="w-full text-sm text-slate-300">
+                                <tr class="border-b border-slate-700/50"><td class="py-2">Total Dividend</td><td class="text-right py-2 font-mono text-rose-400" id="div-out-total">$100,000</td></tr>
+                                <tr class="border-b border-slate-700/50 bg-slate-900/30"><td class="py-2">New Retained Earnings</td><td class="text-right py-2 font-mono" id="div-out-re">$400,000</td></tr>
+                                <tr class="border-t-2 border-slate-500 font-bold"><td class="py-2">Change in Total Equity</td><td class="text-right py-2 font-mono text-rose-400" id="div-out-change">&minus;$100,000</td></tr>
+                            </table>
+                        </div>
+                        <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30 mt-4">
+                            <p class="text-sm text-amber-300"><strong>Note:</strong> Cash dividends reduce both R/E and total equity. Stock dividends reduce R/E but total equity stays the same (equity is reclassified, not reduced).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-fuchsia-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Use the calculator to see how each component flows into <strong class="text-white">A = L + SE</strong>. A cash dividend reduces both SE and Assets (cash). A stock buyback also reduces SE and Assets. Load real company data to see how massive buybacks can push equity negative.</p>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 7: PRACTICE QUESTIONS (placeholder) ======================== -->
+        <div id="panel-practice" class="tab-panel">
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-fuchsia-400">Practice Questions</h2>
+                    <div class="flex items-center gap-6 text-sm">
+                        <div><span class="text-slate-500">Score:</span> <span class="text-emerald-400 font-bold"><span id="p-correct">0</span>/<span id="p-total">0</span></span></div>
+                        <div><span class="text-slate-500">Streak:</span> <span class="text-amber-400 font-bold" id="p-streak">0</span></div>
+                        <div class="text-slate-500" id="p-progress"></div>
+                    </div>
+                </div>
+                <div id="p-question" class="mb-4 text-slate-300">Click "New Question" to begin.</div>
+                <div id="p-answer" class="mb-4"></div>
+                <div id="p-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.pNew()" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-2xl font-bold text-fuchsia-400 mb-4">Journal Entry Practice</h2>
+                <div class="flex items-center gap-6 text-sm mb-4">
+                    <div class="text-slate-500" id="je-progress"></div>
+                </div>
+                <div id="je-prompt" class="mb-4 text-slate-300">Click "New Entry" to begin.</div>
+                <div id="je-lines" class="space-y-2 mb-4"></div>
+                <div id="je-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.jeNew()" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Entry</button>
+                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-600 hover:bg-slate-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">+ Add Line</button>
+                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Entry</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Stockholders' Equity Study Tool</p>
+    </div>
+
+<script>
+    // ========== TAB SWITCHING ==========
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    };
+
+    // ========== CALCULATOR: EQUITY SECTION BUILDER ==========
+    function fmtCalc(n) {
+        if (n === 0) return '$0';
+        var neg = n < 0;
+        var abs = Math.abs(n);
+        var s = '$' + abs.toLocaleString('en-US', {maximumFractionDigits: 0});
+        return neg ? '(' + s + ')' : s;
+    }
+
+    window.calcEquity = function() {
+        var par = parseFloat(document.getElementById('eq-par').value) || 0;
+        var shares = parseFloat(document.getElementById('eq-shares').value) || 0;
+        var apic = parseFloat(document.getElementById('eq-apic').value) || 0;
+        var re = parseFloat(document.getElementById('eq-re').value) || 0;
+        var aoci = parseFloat(document.getElementById('eq-aoci').value) || 0;
+        var treasury = parseFloat(document.getElementById('eq-treasury').value) || 0;
+
+        var cs = par * shares;
+        var total = cs + apic + re + aoci - treasury;
+
+        document.getElementById('eq-out-cs').textContent = fmtCalc(cs);
+        document.getElementById('eq-out-apic').textContent = fmtCalc(apic);
+        document.getElementById('eq-out-re').textContent = fmtCalc(re);
+        document.getElementById('eq-out-aoci').textContent = fmtCalc(aoci);
+        document.getElementById('eq-out-treasury').textContent = treasury > 0 ? '(' + fmtCalc(treasury).replace('(','').replace(')','') + ')' : '$0';
+        document.getElementById('eq-out-total').textContent = fmtCalc(total);
+
+        var ind = document.getElementById('eq-indicator');
+        var indText = document.getElementById('eq-indicator-text');
+        if (total >= 0) {
+            ind.style.background = 'rgba(16,185,129,0.1)';
+            ind.style.borderColor = 'rgba(16,185,129,0.3)';
+            indText.style.color = '#34d399';
+            indText.textContent = 'Positive equity: ' + fmtCalc(total);
+        } else {
+            ind.style.background = 'rgba(244,63,94,0.1)';
+            ind.style.borderColor = 'rgba(244,63,94,0.3)';
+            indText.style.color = '#fb7185';
+            indText.textContent = 'Negative equity: ' + fmtCalc(total);
+        }
+    };
+
+    window.loadApple = function() {
+        document.getElementById('eq-par').value = 0.00001;
+        document.getElementById('eq-shares').value = 14800000000;
+        document.getElementById('eq-apic').value = 93568000000;
+        document.getElementById('eq-re').value = 14264000000;
+        document.getElementById('eq-aoci').value = 5571000000;
+        document.getElementById('eq-treasury').value = 0;
+        calcEquity();
+    };
+
+    window.loadStarbucks = function() {
+        document.getElementById('eq-par').value = 0.001;
+        document.getElementById('eq-shares').value = 1131000000;
+        document.getElementById('eq-apic').value = 634100000;
+        document.getElementById('eq-re').value = -8272500000;
+        document.getElementById('eq-aoci').value = -459300000;
+        document.getElementById('eq-treasury').value = 0;
+        calcEquity();
+    };
+
+    // ========== CALCULATOR: DIVIDEND IMPACT ==========
+    window.calcDividend = function() {
+        var re = parseFloat(document.getElementById('div-re').value) || 0;
+        var dps = parseFloat(document.getElementById('div-dps').value) || 0;
+        var shares = parseFloat(document.getElementById('div-shares').value) || 0;
+
+        var totalDiv = dps * shares;
+        var newRe = re - totalDiv;
+        var change = -totalDiv;
+
+        document.getElementById('div-out-total').textContent = fmtCalc(totalDiv);
+        document.getElementById('div-out-re').textContent = fmtCalc(newRe);
+        document.getElementById('div-out-change').innerHTML = totalDiv > 0 ? '&minus;' + fmtCalc(totalDiv) : '$0';
+    };
+</script>
+
+<script>
+// ========== PRACTICE QUESTION GENERATORS ==========
+const { rand, pick, fmt } = QuizEngine;
+
+// 1. Stock issuance with par — ask for APIC
+function genStockIssuancePar() {
+    var shares = rand(1, 100) * 100;
+    var par = pick([0.01, 0.10, 0.50, 1, 2, 5]);
+    var price = pick([10, 15, 20, 25, 30, 40, 50, 60, 75, 100]);
+    var apic = shares * (price - par);
+    return { question: 'A company issues ' + fmt(shares) + ' shares of $' + par + ' par common stock at $' + fmt(price) + ' per share. What is the amount credited to APIC?', type: 'number', answer: Math.round(apic), explanation: 'APIC = ' + fmt(shares) + ' shares \u00d7 ($' + fmt(price) + ' \u2212 $' + par + ') = ' + fmt(Math.round(apic)) };
+}
+
+// 2. Stock issuance no-par — ask what is credited to Common Stock
+function genStockIssuanceNoPar() {
+    var shares = rand(1, 100) * 100;
+    var price = pick([10, 15, 20, 25, 30, 40, 50, 60, 75, 100]);
+    var total = shares * price;
+    return { question: 'A company issues ' + fmt(shares) + ' shares of no-par common stock at $' + fmt(price) + ' per share. What amount is credited to Common Stock?', type: 'number', answer: total, explanation: 'With no-par stock, the entire proceeds go to Common Stock: ' + fmt(shares) + ' \u00d7 $' + fmt(price) + ' = ' + fmt(total) };
+}
+
+// 3. Cash dividend total
+function genCashDivTotal() {
+    var dps = pick([0.50, 1.00, 1.25, 1.50, 2.00, 2.50, 3.00, 4.00, 5.00]);
+    var shares = rand(1, 50) * 1000;
+    var total = Math.round(dps * shares);
+    return { question: 'A company declares a cash dividend of $' + dps.toFixed(2) + ' per share. There are ' + fmt(shares) + ' shares outstanding. What is the total dividend?', type: 'number', answer: total, explanation: 'Total dividend = $' + dps.toFixed(2) + ' \u00d7 ' + fmt(shares) + ' = ' + fmt(total) };
+}
+
+// 4. Cash dividend effect on total equity (MC)
+function genCashDivEffect() {
+    return { question: 'When a company declares a cash dividend, what is the effect on total stockholders\u2019 equity?', type: 'mc', answer: 1, options: ['Increase', 'Decrease', 'No change'], explanation: 'Declaring a cash dividend decreases R/E (debit) and creates a liability (Dividends Payable, credit). Total equity decreases.' };
+}
+
+// 5. Stock dividend effect on total equity (MC)
+function genStockDivEffect() {
+    return { question: 'What is the effect of a stock dividend on total stockholders\u2019 equity?', type: 'mc', answer: 2, options: ['Increase', 'Decrease', 'No change'], explanation: 'A stock dividend reclassifies equity from R/E to Common Stock (and APIC for small dividends), but total equity is unchanged.' };
+}
+
+// 6. Large stock dividend (>25%) — R/E decrease = new shares x par
+function genLargeStockDiv() {
+    var sharesOut = rand(10, 100) * 1000;
+    var pct = pick([30, 40, 50]);
+    var par = pick([1, 2, 5]);
+    var market = pick([20, 25, 30, 40, 50]);
+    var newShares = Math.round(sharesOut * pct / 100);
+    var reDecrease = newShares * par;
+    return { question: 'A company has ' + fmt(sharesOut) + ' shares outstanding (par $' + par + ', market $' + fmt(market) + '). It declares a ' + pct + '% stock dividend (large). What is the decrease in Retained Earnings?', type: 'number', answer: reDecrease, explanation: 'Large stock dividend (>25%): R/E decreases by new shares \u00d7 par. New shares = ' + fmt(sharesOut) + ' \u00d7 ' + pct + '% = ' + fmt(newShares) + '. R/E decrease = ' + fmt(newShares) + ' \u00d7 $' + par + ' = ' + fmt(reDecrease) };
+}
+
+// 7. Small stock dividend (<25%) — R/E decrease = new shares x market
+function genSmallStockDiv() {
+    var sharesOut = rand(10, 100) * 1000;
+    var pct = pick([5, 10, 15, 20]);
+    var par = pick([1, 2, 5]);
+    var market = pick([20, 25, 30, 40, 50]);
+    var newShares = Math.round(sharesOut * pct / 100);
+    var reDecrease = newShares * market;
+    return { question: 'A company has ' + fmt(sharesOut) + ' shares outstanding (par $' + par + ', market $' + fmt(market) + '). It declares a ' + pct + '% stock dividend (small). What is the decrease in Retained Earnings?', type: 'number', answer: reDecrease, explanation: 'Small stock dividend (\u226425%): R/E decreases by new shares \u00d7 market price. New shares = ' + fmt(sharesOut) + ' \u00d7 ' + pct + '% = ' + fmt(newShares) + '. R/E decrease = ' + fmt(newShares) + ' \u00d7 $' + fmt(market) + ' = ' + fmt(reDecrease) };
+}
+
+// 8. Stock split effect (MC)
+function genSplitEffect() {
+    return { question: 'A company declares a 3-for-1 stock split. Which of the following changes as a result?', type: 'mc', answer: 3, options: ['Total par value of all shares', 'Retained Earnings', 'APIC', 'None of these'], explanation: 'A stock split changes the number of shares and par per share, but total par value, R/E, APIC, and total equity all remain unchanged. It is a memo entry only.' };
+}
+
+// 9. Split vs dividend — which reduces R/E (MC)
+function genSplitVsDiv() {
+    return { question: 'Which permanently reduces Retained Earnings \u2014 a stock split or a stock dividend?', type: 'mc', answer: 1, options: ['Stock split', 'Stock dividend', 'Both', 'Neither'], explanation: 'A stock dividend transfers value from R/E to Common Stock (and APIC if small). A stock split is just a memo entry \u2014 no change to any account.' };
+}
+
+// 10. Treasury stock debit (cost method)
+function genTreasuryCost() {
+    var shares = rand(1, 50) * 100;
+    var price = pick([15, 20, 25, 30, 40, 50, 60, 75]);
+    var cost = shares * price;
+    return { question: 'A company repurchases ' + fmt(shares) + ' shares at $' + fmt(price) + ' per share using the cost method. What is the debit to Treasury Stock?', type: 'number', answer: cost, explanation: 'Treasury Stock is debited for the total cost of repurchase: ' + fmt(shares) + ' \u00d7 $' + fmt(price) + ' = ' + fmt(cost) };
+}
+
+// 11. Retirement method — excess to R/E
+function genRetirementExcess() {
+    var shares = rand(1, 50) * 100;
+    var par = pick([1, 2, 5]);
+    var issuePrice = pick([15, 20, 25, 30]);
+    var repurchasePrice = issuePrice + pick([5, 10, 15, 20]);
+    var apicPerShare = issuePrice - par;
+    var excessPerShare = repurchasePrice - issuePrice;
+    var reDecrease = shares * excessPerShare;
+    return { question: 'A company retires ' + fmt(shares) + ' shares (par $' + par + ', originally issued at $' + fmt(issuePrice) + ') by repurchasing them at $' + fmt(repurchasePrice) + '. What is the decrease in Retained Earnings?', type: 'number', answer: reDecrease, explanation: 'Retirement: Common Stock debited for par (' + fmt(shares * par) + '), APIC debited for original excess (' + fmt(shares * apicPerShare) + '), R/E absorbs the remaining cost. R/E decrease = ' + fmt(shares) + ' \u00d7 ($' + fmt(repurchasePrice) + ' \u2212 $' + fmt(issuePrice) + ') = ' + fmt(reDecrease) };
+}
+
+// 12. Reissue above cost — APIC-Treasury credit
+function genReissueAbove() {
+    var cost = pick([20, 25, 30, 40, 50]) * pick([100, 200, 500]);
+    var reissue = cost + pick([500, 1000, 2000, 3000, 5000]);
+    var apicCredit = reissue - cost;
+    return { question: 'Treasury stock that cost ' + fmt(cost) + ' is reissued for ' + fmt(reissue) + '. What is the credit to APIC\u2014Treasury Stock?', type: 'number', answer: apicCredit, explanation: 'When treasury stock is reissued above cost, the excess is credited to APIC\u2014Treasury Stock: ' + fmt(reissue) + ' \u2212 ' + fmt(cost) + ' = ' + fmt(apicCredit) };
+}
+
+// 13. Reissue below cost — APIC-Treasury debit
+function genReissueBelow() {
+    var cost = pick([25, 30, 40, 50, 60]) * pick([100, 200, 500]);
+    var reissue = cost - pick([500, 1000, 1500, 2000]);
+    if (reissue < 0) reissue = cost - 500;
+    var apicDebit = cost - reissue;
+    return { question: 'Treasury stock that cost ' + fmt(cost) + ' is reissued for ' + fmt(reissue) + '. What is the debit to APIC\u2014Treasury Stock (assuming sufficient balance)?', type: 'number', answer: apicDebit, explanation: 'When treasury stock is reissued below cost, the shortfall is debited to APIC\u2014Treasury Stock (then R/E if APIC\u2014TS is exhausted): ' + fmt(cost) + ' \u2212 ' + fmt(reissue) + ' = ' + fmt(apicDebit) };
+}
+
+// 14. R/E bridge: beginning R/E + NI - Dividends = ending R/E
+function genREBridge() {
+    var begRE = rand(50, 500) * 1000;
+    var ni = rand(10, 200) * 1000;
+    var div = rand(5, 50) * 1000;
+    var endRE = begRE + ni - div;
+    return { question: 'Beginning Retained Earnings: ' + fmt(begRE) + '. Net Income: ' + fmt(ni) + '. Dividends declared: ' + fmt(div) + '. What is ending Retained Earnings?', type: 'number', answer: endRE, explanation: 'Ending R/E = Beginning R/E + NI \u2212 Dividends = ' + fmt(begRE) + ' + ' + fmt(ni) + ' \u2212 ' + fmt(div) + ' = ' + fmt(endRE) };
+}
+
+// 15. Equity change from transaction (MC)
+function genEquityChange() {
+    var scenarios = [
+        { desc: 'Issue common stock for cash', ans: 0, why: 'Issuing stock increases both Assets (cash) and SE (Common Stock + APIC).' },
+        { desc: 'Declare a cash dividend', ans: 1, why: 'Declaring a cash dividend debits R/E and credits Dividends Payable. SE decreases, Liabilities increase.' },
+        { desc: 'Pay a previously declared cash dividend', ans: 2, why: 'Payment reduces Cash (asset) and Dividends Payable (liability). SE is unchanged \u2014 the decrease happened at declaration.' },
+        { desc: 'Distribute a stock dividend', ans: 2, why: 'A stock dividend reclassifies amounts within equity (R/E to Common Stock/APIC). Total SE is unchanged.' },
+        { desc: 'Execute a stock split', ans: 2, why: 'A stock split is a memo entry. No accounts change. Total SE is unchanged.' },
+        { desc: 'Repurchase shares as treasury stock', ans: 1, why: 'Repurchasing stock reduces Cash (asset) and increases Treasury Stock (contra-equity). Total SE decreases.' },
+    ];
+    var s = pick(scenarios);
+    return { question: 'Transaction: ' + s.desc + '. What is the effect on total stockholders\u2019 equity?', type: 'mc', answer: s.ans, options: ['Increase', 'Decrease', 'No change'], explanation: s.why };
+}
+
+// ========== JOURNAL ENTRY GENERATORS ==========
+
+// JE1: Stock issuance with par
+function genJEIssuancePar() {
+    var shares = rand(1, 100) * 100;
+    var par = pick([0.50, 1, 2, 5]);
+    var price = pick([15, 20, 25, 30, 40, 50]);
+    var cs = Math.round(shares * par);
+    var apic = Math.round(shares * (price - par));
+    var cash = Math.round(shares * price);
+    return { prompt: 'A company issues ' + fmt(shares) + ' shares of $' + par + ' par common stock at $' + fmt(price) + ' per share. Record the journal entry.', answer: [{ acct: 'Cash', dr: cash, cr: 0 }, { acct: 'Common Stock', dr: 0, cr: cs }, { acct: 'APIC', dr: 0, cr: apic }] };
+}
+
+// JE2: Stock issuance no-par
+function genJEIssuanceNoPar() {
+    var shares = rand(1, 100) * 100;
+    var price = pick([15, 20, 25, 30, 40, 50]);
+    var cash = shares * price;
+    return { prompt: 'A company issues ' + fmt(shares) + ' shares of no-par common stock at $' + fmt(price) + ' per share. Record the journal entry.', answer: [{ acct: 'Cash', dr: cash, cr: 0 }, { acct: 'Common Stock', dr: 0, cr: cash }] };
+}
+
+// JE3: Cash dividend declaration
+function genJEDivDeclare() {
+    var dps = pick([0.50, 1.00, 1.50, 2.00, 3.00]);
+    var shares = rand(5, 50) * 1000;
+    var total = Math.round(dps * shares);
+    return { prompt: 'A company declares a cash dividend of $' + dps.toFixed(2) + ' per share on ' + fmt(shares) + ' shares outstanding. Record the declaration.', answer: [{ acct: 'Retained Earnings', dr: total, cr: 0 }, { acct: 'Dividends Payable', dr: 0, cr: total }] };
+}
+
+// JE4: Cash dividend payment
+function genJEDivPay() {
+    var total = pick([25000, 50000, 75000, 100000, 150000, 200000]);
+    return { prompt: 'A company pays a previously declared cash dividend of ' + fmt(total) + '. Record the payment.', answer: [{ acct: 'Dividends Payable', dr: total, cr: 0 }, { acct: 'Cash', dr: 0, cr: total }] };
+}
+
+// JE5: Large stock dividend (>25%)
+function genJELargeStockDiv() {
+    var sharesOut = rand(10, 50) * 1000;
+    var pct = pick([30, 40, 50]);
+    var par = pick([1, 2, 5]);
+    var newShares = Math.round(sharesOut * pct / 100);
+    var reDebit = newShares * par;
+    return { prompt: 'A company has ' + fmt(sharesOut) + ' shares outstanding (par $' + par + ') and declares a ' + pct + '% stock dividend (large). Record the journal entry.', answer: [{ acct: 'Retained Earnings', dr: reDebit, cr: 0 }, { acct: 'Common Stock Dividends Distributable', dr: 0, cr: reDebit }] };
+}
+
+// JE6: Small stock dividend (<25%)
+function genJESmallStockDiv() {
+    var sharesOut = rand(10, 50) * 1000;
+    var pct = pick([5, 10, 15, 20]);
+    var par = pick([1, 2, 5]);
+    var market = pick([20, 25, 30, 40, 50]);
+    var newShares = Math.round(sharesOut * pct / 100);
+    var reDebit = newShares * market;
+    var csCredit = newShares * par;
+    var apicCredit = reDebit - csCredit;
+    return { prompt: 'A company has ' + fmt(sharesOut) + ' shares outstanding (par $' + par + ', market $' + fmt(market) + ') and declares a ' + pct + '% stock dividend (small). Record the journal entry.', answer: [{ acct: 'Retained Earnings', dr: reDebit, cr: 0 }, { acct: 'Common Stock Dividends Distributable', dr: 0, cr: csCredit }, { acct: 'APIC', dr: 0, cr: apicCredit }] };
+}
+
+// JE7: Treasury stock repurchase (cost method)
+function genJETreasuryRepurchase() {
+    var shares = rand(1, 30) * 100;
+    var price = pick([20, 25, 30, 40, 50, 60]);
+    var cost = shares * price;
+    return { prompt: 'A company repurchases ' + fmt(shares) + ' shares at $' + fmt(price) + ' per share using the cost method. Record the journal entry.', answer: [{ acct: 'Treasury Stock', dr: cost, cr: 0 }, { acct: 'Cash', dr: 0, cr: cost }] };
+}
+
+// JE8: Retirement method repurchase
+function genJERetirementRepurchase() {
+    var shares = rand(1, 30) * 100;
+    var par = pick([1, 2, 5]);
+    var issuePrice = pick([15, 20, 25, 30]);
+    var repurchasePrice = issuePrice + pick([5, 10, 15]);
+    var csDebit = shares * par;
+    var apicDebit = shares * (issuePrice - par);
+    var reDebit = shares * (repurchasePrice - issuePrice);
+    var cashCredit = shares * repurchasePrice;
+    return { prompt: 'A company retires ' + fmt(shares) + ' shares (par $' + par + ', originally issued at $' + fmt(issuePrice) + ') by repurchasing at $' + fmt(repurchasePrice) + '. Record the journal entry (retirement method).', answer: [{ acct: 'Common Stock', dr: csDebit, cr: 0 }, { acct: 'APIC', dr: apicDebit, cr: 0 }, { acct: 'Retained Earnings', dr: reDebit, cr: 0 }, { acct: 'Cash', dr: 0, cr: cashCredit }] };
+}
+
+// ========== QUIZ ENGINE INIT ==========
+QuizEngine.init({
+    questionGenerators: [genStockIssuancePar, genStockIssuanceNoPar, genCashDivTotal, genCashDivEffect, genStockDivEffect, genLargeStockDiv, genSmallStockDiv, genSplitEffect, genSplitVsDiv, genTreasuryCost, genRetirementExcess, genReissueAbove, genReissueBelow, genREBridge, genEquityChange],
+    jeGenerators: [genJEIssuancePar, genJEIssuancePar, genJEIssuanceNoPar, genJEDivDeclare, genJEDivDeclare, genJEDivPay, genJELargeStockDiv, genJESmallStockDiv, genJETreasuryRepurchase, genJERetirementRepurchase],
+    jeAccounts: ['Cash', 'Common Stock', 'APIC', 'Retained Earnings', 'Dividends Payable', 'Common Stock Dividends Distributable', 'Treasury Stock', 'APIC-Treasury Stock', 'Equipment', 'AOCI'],
+    accentColor: 'fuchsia',
+    qCopies: 5,
+    jeCopies: 2
+});
+</script>
+
+    <script src="cursor.js"></script>
+</body>
+</html>
