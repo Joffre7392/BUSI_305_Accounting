@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intercompany Investments | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <script src="animations.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        :root { --accent: #a78bfa; --accent-bg: rgba(167,139,250,0.08); --accent-border-subtle: rgba(167,139,250,0.15); --cursor-glow: rgba(167,139,250,0.05); }
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(167,139,250,0.15); }
+        .tab-btn.active { border-color: #a78bfa; color: #a78bfa; background: rgba(167,139,250,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+        /* FSET table styling */
+        .fset-table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+        .fset-table th { font-size: 0.65rem; padding: 0.375rem 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .fset-table td { font-size: 0.78rem; padding: 0.375rem 0.5rem; font-family: 'Inter', monospace; }
+        .fset-table .section-header { font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .fset-row-highlight { background: rgba(167,139,250,0.12) !important; }
+        .fset-row-alt { background: rgba(255,255,255,0.02); }
+        .fset-separator { border-left: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="back-link" style="--accent: #a78bfa">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(167,139,250,0.1)">
+                <svg class="text-violet-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"/></svg>
+            </div>
+            <div>
+                <h1>Intercompany Investments</h1>
+                <p class="subtitle">Lectures 21&ndash;22 &mdash; HTM, FV-NI, AFS, Equity Method &amp; OCI</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(167,139,250,0.1); color: rgba(167,139,250,0.8); border: 1px solid rgba(167,139,250,0.1)">L 21-22</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('classification')" id="tab-classification" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Classification</button>
+            <button onclick="switchTab('passive')" id="tab-passive" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Passive Methods</button>
+            <button onclick="switchTab('oci')" id="tab-oci" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">OCI &amp; Recycling</button>
+            <button onclick="switchTab('equity')" id="tab-equity" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Equity Method</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: CLASSIFICATION ======================== -->
+        <div id="panel-classification" class="tab-panel active">
+
+            <!-- The Big Idea -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-violet-400 mb-4">The Big Idea</h2>
+                <div class="bg-violet-500/10 rounded-lg p-4 border border-violet-500/20 text-center mb-4">
+                    <p class="text-lg font-bold text-slate-200">More influence over the investee &rarr; more of their results show up in YOUR financial statements.</p>
+                </div>
+                <p class="text-slate-300 mb-4">When Company A buys shares of Company B, the accounting depends on <span class="text-violet-400 font-semibold">how much influence</span> A has over B. GAAP defines three levels based on ownership percentage and other factors.</p>
+            </div>
+
+            <!-- Three Levels of Influence -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-violet-400 mb-4">Three Levels of Influence</h2>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-emerald-500/20 text-center">
+                        <p class="text-emerald-400 font-bold text-lg mb-1">Passive</p>
+                        <p class="text-slate-400 text-xs uppercase tracking-wider mb-3">&lt;20% ownership</p>
+                        <p class="text-sm text-slate-300">No influence. You watch the stock price and collect dividends. Multiple methods depending on security type and intent.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-amber-500/20 text-center">
+                        <p class="text-amber-400 font-bold text-lg mb-1">Significant Influence</p>
+                        <p class="text-slate-400 text-xs uppercase tracking-wider mb-3">20&ndash;50% ownership</p>
+                        <p class="text-sm text-slate-300">Board seats, JVs, strategic partnerships. One method: the <span class="text-amber-400 font-semibold">Equity Method</span>.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600 text-center">
+                        <p class="text-slate-500 font-bold text-lg mb-1">Control</p>
+                        <p class="text-slate-500 text-xs uppercase tracking-wider mb-3">&gt;50% ownership</p>
+                        <p class="text-sm text-slate-500">Full consolidation &mdash; out of scope for this class.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decision Tree -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-violet-400 mb-4">Which Method Do I Use?</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Security Type</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Ownership</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Intent</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Method</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">Debt</td>
+                                <td class="py-2 px-3">&lt;20%</td>
+                                <td class="py-2 px-3">Hold to maturity</td>
+                                <td class="py-2 px-3 text-emerald-400 font-semibold">HTM</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">Debt</td>
+                                <td class="py-2 px-3">&lt;20%</td>
+                                <td class="py-2 px-3">Might sell</td>
+                                <td class="py-2 px-3 text-teal-400 font-semibold">AFS</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">Debt</td>
+                                <td class="py-2 px-3">&lt;20%</td>
+                                <td class="py-2 px-3">Trading</td>
+                                <td class="py-2 px-3 text-sky-400 font-semibold">FV through NI</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">Equity</td>
+                                <td class="py-2 px-3">&lt;20%</td>
+                                <td class="py-2 px-3">Any</td>
+                                <td class="py-2 px-3 text-sky-400 font-semibold">FV through NI (required since 2018)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3">Equity</td>
+                                <td class="py-2 px-3">20&ndash;50%</td>
+                                <td class="py-2 px-3">Significant influence</td>
+                                <td class="py-2 px-3 text-amber-400 font-semibold">Equity Method</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3">Equity</td>
+                                <td class="py-2 px-3">&gt;50%</td>
+                                <td class="py-2 px-3">Control</td>
+                                <td class="py-2 px-3 text-slate-500">Consolidation (not covered)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-violet-500/10 rounded-lg p-3 border border-violet-500/30 mt-4">
+                    <p class="text-sm text-violet-300"><strong>Key insight:</strong> For equity securities, there is <strong>no choice</strong> at &lt;20%: FV through NI is required since ASU 2016-01 (2018). For debt, classification depends on your intent and ability.</p>
+                </div>
+            </div>
+
+            <!-- Four Methods at a Glance -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-violet-400 mb-4">Four Methods at a Glance</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Method</th>
+                                <th class="text-left py-2 px-3 text-slate-400">B/S Value</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Unrealized G/L</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Dividends</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Applies To</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-emerald-400 font-semibold">HTM</td>
+                                <td class="py-2 px-3">Historical cost</td>
+                                <td class="py-2 px-3">Ignored</td>
+                                <td class="py-2 px-3">Income</td>
+                                <td class="py-2 px-3">Debt (hold to maturity)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 text-sky-400 font-semibold">FV-NI</td>
+                                <td class="py-2 px-3">Fair value</td>
+                                <td class="py-2 px-3">Net Income</td>
+                                <td class="py-2 px-3">Income</td>
+                                <td class="py-2 px-3">Equity; debt (trading)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 text-teal-400 font-semibold">AFS</td>
+                                <td class="py-2 px-3">Fair value</td>
+                                <td class="py-2 px-3">OCI &rarr; AOCI</td>
+                                <td class="py-2 px-3">Income</td>
+                                <td class="py-2 px-3">Debt (might sell)</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50 bg-slate-900/30">
+                                <td class="py-2 px-3 text-amber-400 font-semibold">Equity</td>
+                                <td class="py-2 px-3">Adjusted cost</td>
+                                <td class="py-2 px-3">Tracks book value</td>
+                                <td class="py-2 px-3 text-rose-400 font-semibold">Reduce investment</td>
+                                <td class="py-2 px-3">20&ndash;50% equity</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30 mt-4">
+                    <p class="text-sm text-amber-300"><strong>Important:</strong> Under the Equity Method, dividends are <strong>not</strong> income &mdash; they reduce the investment balance. This is the #1 exam trap.</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-violet-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <div class="text-sm text-slate-300 space-y-2">
+                    <p><strong class="text-white">Purchase</strong>: swap one asset for another (Cash &darr;, Investment &uarr;). Total A unchanged. <strong class="text-white">A = L + SE</strong> holds.</p>
+                    <p><strong class="text-white">Fair value changes</strong>: under FV-NI, Investment changes with a matching R/E change (through NI). Under AFS, Investment changes with a matching AOCI change. Either way, A = L + SE.</p>
+                    <p><strong class="text-white">Equity Method earnings</strong>: Investment &uarr; and R/E &uarr; (through equity income). Dividends: Cash &uarr;, Investment &darr; &mdash; asset swap, no income.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 2: PASSIVE METHODS ======================== -->
+        <div id="panel-passive" class="tab-panel">
+
+            <!-- HTM -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Held-to-Maturity (HTM)</h2>
+                <p class="text-slate-300 mb-4">You buy a bond and promise to hold it until maturity. Since you're never going to sell, market price fluctuations are irrelevant. Keep the investment at <span class="text-emerald-400 font-semibold">historical cost</span>.</p>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-emerald-400 font-bold mb-1">B/S Value</p>
+                        <p class="text-sm text-slate-300">Historical cost</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-emerald-400 font-bold mb-1">Unrealized G/L</p>
+                        <p class="text-sm text-slate-300">Ignored completely</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-emerald-400 font-bold mb-1">Income Recognition</p>
+                        <p class="text-sm text-slate-300">Interest + gain/loss on sale only</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/30">
+                    <p class="text-sm text-emerald-300"><strong>Intuition:</strong> The bond will pay face value at maturity no matter what the market does in between. Temporary price swings don't affect your cash flows, so why would they affect your financial statements?</p>
+                </div>
+            </div>
+
+            <!-- FV-NI -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Fair Value through Net Income (FV-NI)</h2>
+                <p class="text-slate-300 mb-4">You own a small piece (&lt;20%) of a company's stock, or you're actively trading debt. Every period, update to <span class="text-sky-400 font-semibold">fair value</span>. Gains and losses hit income <strong>immediately</strong> &mdash; even if unrealized.</p>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-sky-400 font-bold mb-1">B/S Value</p>
+                        <p class="text-sm text-slate-300">Fair value (updated every period)</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-sky-400 font-bold mb-1">Unrealized G/L</p>
+                        <p class="text-sm text-slate-300">Net Income &mdash; immediately</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-sky-400 font-bold mb-1">Income Recognition</p>
+                        <p class="text-sm text-slate-300">Every period (volatile)</p>
+                    </div>
+                </div>
+                <div class="bg-sky-500/10 rounded-lg p-3 border border-sky-500/30">
+                    <p class="text-sm text-sky-300"><strong>Real-world impact:</strong> After ASU 2016-01 (2018), all equity securities must use FV-NI. Berkshire Hathaway's quarterly earnings now swing billions based on stock market moves. Buffett calls it &ldquo;meaningless in terms of understanding our economic performance.&rdquo;</p>
+                </div>
+            </div>
+
+            <!-- AFS -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-teal-400 mb-4">Available-for-Sale (AFS)</h2>
+                <p class="text-slate-300 mb-4">The middle ground. Balance sheet shows <span class="text-teal-400 font-semibold">fair value</span> (investors see real value), but unrealized gains/losses go to <span class="text-teal-400 font-semibold">OCI</span> instead of net income (income statement is protected from volatility).</p>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-teal-400 font-bold mb-1">B/S Value</p>
+                        <p class="text-sm text-slate-300">Fair value</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-teal-400 font-bold mb-1">Unrealized G/L</p>
+                        <p class="text-sm text-slate-300">OCI &rarr; AOCI (parked)</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 text-center">
+                        <p class="text-teal-400 font-bold mb-1">On Sale</p>
+                        <p class="text-sm text-slate-300">AOCI &ldquo;recycles&rdquo; into NI</p>
+                    </div>
+                </div>
+                <div class="bg-teal-500/10 rounded-lg p-3 border border-teal-500/30">
+                    <p class="text-sm text-teal-300"><strong>Key insight:</strong> AFS is <strong>only available for debt securities</strong> since 2018. Equity must go through NI. Banks pushed for this compromise because $50B bond portfolios create massive earnings volatility when rates move.</p>
+                </div>
+            </div>
+
+            <!-- Same Total Income Comparison -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-violet-400 mb-4">Same Total, Different Timing</h2>
+                <p class="text-slate-300 mb-4">All three passive methods produce the <span class="text-violet-400 font-semibold">same total income</span> over the investment's life. The difference is <em>when</em> income is recognized.</p>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-emerald-500/20">
+                        <p class="text-emerald-400 font-bold text-sm mb-3 text-center">HTM</p>
+                        <table class="w-full text-sm text-slate-300 font-mono">
+                            <tr><td>Interest</td><td class="text-right">+3</td></tr>
+                            <tr><td>Period 1</td><td class="text-right">0</td></tr>
+                            <tr><td>Period 2</td><td class="text-right">0</td></tr>
+                            <tr><td>Sale</td><td class="text-right">+10</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td>Total</td><td class="text-right text-emerald-400">$13</td></tr>
+                        </table>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-sky-500/20">
+                        <p class="text-sky-400 font-bold text-sm mb-3 text-center">FV-NI</p>
+                        <table class="w-full text-sm text-slate-300 font-mono">
+                            <tr><td>Dividend</td><td class="text-right">+3</td></tr>
+                            <tr><td>Period 1</td><td class="text-right text-rose-400">&minus;10</td></tr>
+                            <tr><td>Period 2</td><td class="text-right text-emerald-400">+30</td></tr>
+                            <tr><td>Sale</td><td class="text-right text-rose-400">&minus;10</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td>Total</td><td class="text-right text-sky-400">$13</td></tr>
+                        </table>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-teal-500/20">
+                        <p class="text-teal-400 font-bold text-sm mb-3 text-center">AFS</p>
+                        <table class="w-full text-sm text-slate-300 font-mono">
+                            <tr><td>Interest</td><td class="text-right">+3</td></tr>
+                            <tr><td>Period 1</td><td class="text-right">0</td></tr>
+                            <tr><td>Period 2</td><td class="text-right">0</td></tr>
+                            <tr><td>Sale</td><td class="text-right text-emerald-400">+10</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td>Total</td><td class="text-right text-teal-400">$13</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="bg-violet-500/10 rounded-lg p-3 border border-violet-500/30">
+                    <p class="text-sm text-violet-300"><strong>Key insight:</strong> FV-NI is volatile: income swings every period. HTM and AFS are stable &mdash; all gain appears at sale. Same total, radically different patterns.</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-violet-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <div class="text-sm text-slate-300 space-y-2">
+                    <p><strong class="text-white">HTM</strong>: Investment stays at cost. Only interest (Cash &uarr;, R/E &uarr;) and sale (Cash &uarr;, Investment &darr;, R/E change) affect the equation.</p>
+                    <p><strong class="text-white">FV-NI</strong>: Investment adjusts to fair value each period. The offsetting entry goes to R/E (through unrealized gain/loss in NI).</p>
+                    <p><strong class="text-white">AFS</strong>: Investment adjusts to fair value, but the offset goes to AOCI (in SE, but not R/E). On sale, AOCI recycles to R/E through NI.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 3: OCI & RECYCLING ======================== -->
+        <div id="panel-oci" class="tab-panel">
+
+            <!-- What is OCI -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-teal-400 mb-4">What Is OCI?</h2>
+                <p class="text-slate-300 mb-4"><span class="text-teal-400 font-semibold">Other Comprehensive Income</span> is a parking lot for certain gains and losses that GAAP doesn't want in net income <em>yet</em>.</p>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-sky-500/20">
+                        <h3 class="font-bold text-sky-400 mb-3">Net Income &rarr; Retained Earnings</h3>
+                        <p class="text-sm text-slate-300">NI = this period's earnings.<br>R/E = <strong>running total</strong> of all NI.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-teal-500/20">
+                        <h3 class="font-bold text-teal-400 mb-3">OCI &rarr; AOCI</h3>
+                        <p class="text-sm text-slate-300">OCI = this period's parked G/L.<br>AOCI = <strong>running total</strong> of all OCI.</p>
+                    </div>
+                </div>
+                <div class="bg-teal-500/10 rounded-lg p-3 border border-teal-500/30">
+                    <p class="text-sm text-teal-300"><strong>Key insight:</strong> AOCI accumulates OCI over time, just like R/E accumulates NI. OCI is a flow (this period); AOCI is a stock (cumulative). Both live in Stockholders' Equity.</p>
+                </div>
+            </div>
+
+            <!-- The Parking Lot Metaphor -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-teal-400 mb-4">The Parking Lot Metaphor</h2>
+                <p class="text-slate-300 mb-4">Under AFS, unrealized gains and losses are &ldquo;parked&rdquo; in AOCI. They sit there, accumulating, until you sell the investment.</p>
+                <div class="bg-slate-900/60 rounded-lg p-5 border border-teal-500/20 mb-4">
+                    <div class="flex items-center justify-center gap-4 flex-wrap">
+                        <div class="bg-amber-500/10 rounded-lg px-4 py-2 border border-amber-500/20 text-center">
+                            <p class="text-xs text-slate-400">Unrealized G/L</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-sky-400">&rarr;</span>
+                            <span class="text-xs text-sky-300 font-semibold">FV-NI: straight to NI</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-4 flex-wrap mt-3">
+                        <div class="bg-amber-500/10 rounded-lg px-4 py-2 border border-amber-500/20 text-center">
+                            <p class="text-xs text-slate-400">Unrealized G/L</p>
+                        </div>
+                        <span class="text-teal-400">&rarr;</span>
+                        <div class="bg-teal-500/10 rounded-lg px-4 py-2 border border-teal-500/20 text-center">
+                            <p class="text-xs text-teal-300 font-semibold">OCI &rarr; AOCI</p>
+                        </div>
+                        <span class="text-amber-400">&rarr;</span>
+                        <span class="text-xs text-amber-300">on sale: recycle to NI</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How Recycling Works -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-teal-400 mb-4">How Recycling Works</h2>
+                <p class="text-slate-300 mb-4">When you sell an AFS security, the &ldquo;parking lot&rdquo; empties. Three things happen simultaneously:</p>
+                <div class="space-y-3 mb-4">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-teal-500/20 text-teal-400 font-bold text-xs rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+                        <p class="text-sm text-slate-300"><strong class="text-white">AOCI zeroes out.</strong> Whatever accumulated in AOCI gets reversed with an offsetting OCI entry.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-teal-500/20 text-teal-400 font-bold text-xs rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+                        <p class="text-sm text-slate-300"><strong class="text-white">Real gain/loss goes to NI.</strong> Sale price minus original cost = the real economic gain or loss.</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-teal-500/20 text-teal-400 font-bold text-xs rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+                        <p class="text-sm text-slate-300"><strong class="text-white">Investment removed from B/S.</strong> Carrying value (fair value) is derecognized.</p>
+                    </div>
+                </div>
+                <div class="bg-violet-500/10 rounded-lg p-3 border border-violet-500/30">
+                    <p class="text-sm text-violet-300"><strong>Why recycle?</strong> If we left gains in AOCI forever, net income would <em>never</em> reflect the real economic result. Over the full life, NI must equal the true gain. Recycling ensures that.</p>
+                </div>
+            </div>
+
+            <!-- AFS Debt-Only Rule -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-teal-400 mb-4">AFS: Debt Securities Only (Since 2018)</h2>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-sky-500/20">
+                        <h3 class="font-bold text-sky-400 mb-3">Equity Securities</h3>
+                        <p class="text-sm text-slate-300">Must go through NI. No exceptions. No sheltering in OCI. This is what Buffett was upset about.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-teal-500/20">
+                        <h3 class="font-bold text-teal-400 mb-3">Debt Securities</h3>
+                        <p class="text-sm text-slate-300">Your choice: HTM (cost), AFS (FV through OCI), or Trading (FV through NI).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-violet-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Under AFS, unrealized gains increase both Assets (Investment &uarr;) and SE (AOCI &uarr;). On sale, AOCI resets to zero and R/E captures the real gain through NI. Total SE stays the same; it just shifts from AOCI to R/E. <strong class="text-white">A = L + SE</strong> always holds.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 4: EQUITY METHOD ======================== -->
+        <div id="panel-equity" class="tab-panel">
+
+            <!-- The Gear Change -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">A Fundamentally Different Relationship</h2>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-slate-600">
+                        <h3 class="font-bold text-slate-400 mb-3">Passive (All Prior Methods)</h3>
+                        <p class="text-sm text-slate-300">You watched market prices, collected dividends, and reported gains or losses. You had no say in how the company was run.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-amber-500/20">
+                        <h3 class="font-bold text-amber-400 mb-3">Equity Method (20&ndash;50%)</h3>
+                        <p class="text-sm text-slate-300">You might have a board seat. You participate in strategy. This isn't a stock in your portfolio &mdash; it's a <span class="text-amber-400 font-semibold">relationship</span>. GAAP says: stop tracking market price. Track your share of what the company actually <strong>earns</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Idea -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">The Core Idea</h2>
+                <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20 text-center mb-4">
+                    <p class="text-lg font-bold text-slate-200">Your investment balance tracks your share of the investee's <span class="text-amber-400">book value</span>.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-emerald-500/20">
+                        <p class="text-emerald-400 font-bold mb-1">When they earn money</p>
+                        <p class="text-sm text-slate-300">Your investment goes <strong>up</strong> by your % &times; their NI. You record equity income.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-rose-500/20">
+                        <p class="text-rose-400 font-bold mb-1">When they pay dividends</p>
+                        <p class="text-sm text-slate-300">Your investment goes <strong>down</strong>. Cash left the company. This is NOT income.</p>
+                    </div>
+                </div>
+                <div class="bg-amber-500/10 rounded-lg p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>One-line consolidation:</strong> Instead of combining every asset and liability, collapse the investee into one B/S line (Investment) and one I/S line (Equity Income).</p>
+                </div>
+            </div>
+
+            <!-- WHY dividends ≠ income -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-rose-400 mb-4">Why Aren't Dividends Income?</h2>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-sky-500/20">
+                        <h3 class="font-bold text-sky-400 mb-3">Passive Investor</h3>
+                        <p class="text-sm text-slate-300">Company sends me $2. <strong class="text-sky-400">That's income!</strong> I have no other way to see their earnings. I just watch the stock price and cash dividend checks.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-5 border border-amber-500/20">
+                        <h3 class="font-bold text-amber-400 mb-3">Equity Method Investor</h3>
+                        <p class="text-sm text-slate-300">I already booked $4 when S earned it. <strong class="text-rose-400">This $2 is not new.</strong> S is converting retained earnings into cash. My investment shrinks because S's equity shrinks. No new income.</p>
+                    </div>
+                </div>
+                <div class="bg-rose-500/10 rounded p-3 border border-rose-500/30">
+                    <p class="text-sm text-rose-300"><strong>Exam trap:</strong> In every passive method, dividends = income. Under the equity method, dividends = return OF capital, not return ON capital. Double-counting is the danger.</p>
+                </div>
+            </div>
+
+            <!-- T-Account -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-amber-400 mb-4">The Investment T-Account</h2>
+                <p class="text-slate-300 mb-4">The T-account tells the entire story of your relationship with the investee:</p>
+                <div class="t-account max-w-lg mx-auto" style="--accent: #fbbf24">
+                    <div class="t-account-title text-center py-1.5 font-bold text-amber-300 text-sm" style="background: rgba(251,191,36,0.1); border-bottom: 1px solid rgba(255,255,255,0.06);">Investment in Company S</div>
+                    <div class="grid grid-cols-2 divide-x divide-slate-600">
+                        <div class="p-3 text-xs text-slate-300 space-y-1.5 font-mono">
+                            <p class="font-semibold text-slate-400">Debit (Increases)</p>
+                            <p>Cost <span class="float-right text-sky-400">$100</span></p>
+                            <p>Share of NI <span class="float-right text-emerald-400">$4</span></p>
+                            <p class="text-slate-500 text-[0.6rem]">(40% &times; $10)</p>
+                        </div>
+                        <div class="p-3 text-xs text-slate-300 space-y-1.5 font-mono">
+                            <p class="font-semibold text-slate-400">Credit (Decreases)</p>
+                            <p>Dividends <span class="float-right text-rose-400">$2</span></p>
+                            <p>Removed on sale <span class="float-right text-rose-400">$102</span></p>
+                        </div>
+                    </div>
+                    <div class="border-t-2 border-slate-600 p-2 text-center text-sm font-bold text-amber-400 font-mono">
+                        Balance: $102
+                    </div>
+                </div>
+                <p class="text-sm text-slate-400 text-center mt-3">Cost + Share of Earnings &minus; Dividends = Balance. The balance tracks your share of S's book value.</p>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-violet-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <div class="text-sm text-slate-300 space-y-2">
+                    <p><strong class="text-white">S earns $10</strong>: Investment &uarr; $4, R/E &uarr; $4 (through equity income). Assets and SE both rise.</p>
+                    <p><strong class="text-white">S pays dividend</strong>: Cash &uarr; $2, Investment &darr; $2. Asset swap &mdash; total A unchanged, SE unchanged. No income.</p>
+                    <p><strong class="text-white">Sale at $110</strong>: Cash &uarr; $110, Investment &darr; $102. Gain of $8 goes to R/E through NI.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 5: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-violet-400 mb-4">Parallel Example: One Investment, Four Methods</h2>
+                <div class="bg-violet-500/10 rounded-lg p-4 border border-violet-500/20 mb-4">
+                    <p class="text-sm text-slate-300"><strong class="text-violet-400">Setup (Passive Methods):</strong> Buy a $100 security. Market value drops to $90, then rises to $120. Receive $3 interest/dividend. Sell for $110. Ignore taxes.</p>
+                    <p class="text-sm text-slate-300 mt-2"><strong class="text-amber-400">Setup (Equity Method):</strong> Buy 40% of Company S for $100. S earns NI of $10. S pays $5 dividend (your 40% = $2). Sell for $110.</p>
+                </div>
+            </div>
+
+            <!-- HTM Worked -->
+            <div class="mb-4">
+                <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                    <div><span class="text-emerald-400 font-bold">HTM:</span> <span class="text-slate-300">Historical cost, interest income, gain on sale</span></div>
+                    <button onclick="toggleStep('htm')" id="step-btn-htm" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                </div>
+                <div id="step-htm" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-slate-300 font-mono">
+                            <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left py-1 px-2">Event</th><th class="text-right py-1 px-2">Cash</th><th class="text-right py-1 px-2">Invest.</th><th class="py-1 px-2">=</th><th class="text-right py-1 px-2">R/E</th><th class="text-right py-1 px-2 fset-separator">Rev</th><th class="text-right py-1 px-2">NI</th></tr></thead>
+                            <tbody>
+                                <tr><td class="py-1 px-2">Purchase</td><td class="text-right py-1 px-2">&minus;100</td><td class="text-right py-1 px-2">+100</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 fset-separator"></td><td class="text-right py-1 px-2"></td></tr>
+                                <tr class="fset-row-alt"><td class="py-1 px-2">MV &rarr; $90</td><td class="text-right py-1 px-2">&mdash;</td><td class="text-right py-1 px-2">&mdash;</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2">&mdash;</td><td class="text-right py-1 px-2 fset-separator">&mdash;</td><td class="text-right py-1 px-2">&mdash;</td></tr>
+                                <tr><td class="py-1 px-2">MV &rarr; $120</td><td class="text-right py-1 px-2">&mdash;</td><td class="text-right py-1 px-2">&mdash;</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2">&mdash;</td><td class="text-right py-1 px-2 fset-separator">&mdash;</td><td class="text-right py-1 px-2">&mdash;</td></tr>
+                                <tr class="fset-row-alt"><td class="py-1 px-2">Interest</td><td class="text-right py-1 px-2 text-emerald-400">+3</td><td class="text-right py-1 px-2"></td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-emerald-400">+3</td><td class="text-right py-1 px-2 fset-separator text-emerald-400">+3</td><td class="text-right py-1 px-2 text-emerald-400">+3</td></tr>
+                                <tr class="fset-row-highlight"><td class="py-1 px-2">Sale $110</td><td class="text-right py-1 px-2 text-sky-400">+110</td><td class="text-right py-1 px-2 text-sky-400">&minus;100</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-sky-400">+10</td><td class="text-right py-1 px-2 fset-separator text-sky-400">+10</td><td class="text-right py-1 px-2 text-sky-400">+10</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-slate-400 mt-3">Total income: $3 interest + $10 gain = <strong class="text-emerald-400">$13</strong>. All gain recognized at sale.</p>
+                </div>
+            </div>
+
+            <!-- FV-NI Worked -->
+            <div class="mb-4">
+                <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                    <div><span class="text-sky-400 font-bold">FV-NI:</span> <span class="text-slate-300">Fair value every period, unrealized G/L to income</span></div>
+                    <button onclick="toggleStep('fvni')" id="step-btn-fvni" class="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                </div>
+                <div id="step-fvni" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-slate-300 font-mono">
+                            <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left py-1 px-2">Event</th><th class="text-right py-1 px-2">Cash</th><th class="text-right py-1 px-2">Invest.</th><th class="py-1 px-2">=</th><th class="text-right py-1 px-2">R/E</th><th class="text-right py-1 px-2 fset-separator">Rev</th><th class="text-right py-1 px-2">NI</th></tr></thead>
+                            <tbody>
+                                <tr><td class="py-1 px-2">Purchase</td><td class="text-right py-1 px-2">&minus;100</td><td class="text-right py-1 px-2">+100</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 fset-separator"></td><td class="text-right py-1 px-2"></td></tr>
+                                <tr class="fset-row-alt"><td class="py-1 px-2">Dividend</td><td class="text-right py-1 px-2 text-emerald-400">+3</td><td class="text-right py-1 px-2"></td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-emerald-400">+3</td><td class="text-right py-1 px-2 fset-separator text-emerald-400">+3</td><td class="text-right py-1 px-2 text-emerald-400">+3</td></tr>
+                                <tr><td class="py-1 px-2">MV &rarr; $90</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 text-rose-400">&minus;10</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-rose-400">&minus;10</td><td class="text-right py-1 px-2 fset-separator text-rose-400">&minus;10</td><td class="text-right py-1 px-2 text-rose-400">&minus;10</td></tr>
+                                <tr class="fset-row-alt"><td class="py-1 px-2">MV &rarr; $120</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 text-emerald-400">+30</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-emerald-400">+30</td><td class="text-right py-1 px-2 fset-separator text-emerald-400">+30</td><td class="text-right py-1 px-2 text-emerald-400">+30</td></tr>
+                                <tr class="fset-row-highlight"><td class="py-1 px-2">Sale $110</td><td class="text-right py-1 px-2 text-sky-400">+110</td><td class="text-right py-1 px-2 text-sky-400">&minus;120</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-rose-400">&minus;10</td><td class="text-right py-1 px-2 fset-separator text-rose-400">&minus;10</td><td class="text-right py-1 px-2 text-rose-400">&minus;10</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-slate-400 mt-3">Total: $3 &minus; $10 + $30 &minus; $10 = <strong class="text-sky-400">$13</strong>. Same total, but income is volatile every period.</p>
+                </div>
+            </div>
+
+            <!-- AFS Worked -->
+            <div class="mb-4">
+                <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                    <div><span class="text-teal-400 font-bold">AFS:</span> <span class="text-slate-300">Fair value on B/S, unrealized G/L parked in OCI</span></div>
+                    <button onclick="toggleStep('afs')" id="step-btn-afs" class="bg-teal-600 hover:bg-teal-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                </div>
+                <div id="step-afs" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-slate-300 font-mono">
+                            <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left py-1 px-2">Event</th><th class="text-right py-1 px-2">Cash</th><th class="text-right py-1 px-2">Invest.</th><th class="py-1 px-2">=</th><th class="text-right py-1 px-2">R/E</th><th class="text-right py-1 px-2">AOCI</th><th class="text-right py-1 px-2 fset-separator">NI</th><th class="text-right py-1 px-2">OCI</th></tr></thead>
+                            <tbody>
+                                <tr><td class="py-1 px-2">Purchase</td><td class="text-right py-1 px-2">&minus;100</td><td class="text-right py-1 px-2">+100</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 fset-separator"></td><td class="text-right py-1 px-2"></td></tr>
+                                <tr class="fset-row-alt"><td class="py-1 px-2">Interest</td><td class="text-right py-1 px-2 text-emerald-400">+3</td><td class="text-right py-1 px-2"></td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-emerald-400">+3</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 fset-separator text-emerald-400">+3</td><td class="text-right py-1 px-2"></td></tr>
+                                <tr><td class="py-1 px-2">MV &rarr; $90</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 text-rose-400">&minus;10</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 text-rose-400">&minus;10</td><td class="text-right py-1 px-2 fset-separator">&mdash;</td><td class="text-right py-1 px-2 text-rose-400">&minus;10</td></tr>
+                                <tr class="fset-row-alt"><td class="py-1 px-2">MV &rarr; $120</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 text-emerald-400">+30</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 text-emerald-400">+30</td><td class="text-right py-1 px-2 fset-separator">&mdash;</td><td class="text-right py-1 px-2 text-emerald-400">+30</td></tr>
+                                <tr class="fset-row-highlight"><td class="py-1 px-2">Sale $110</td><td class="text-right py-1 px-2 text-sky-400">+110</td><td class="text-right py-1 px-2 text-sky-400">&minus;120</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-sky-400">+10</td><td class="text-right py-1 px-2 text-sky-400">&minus;20</td><td class="text-right py-1 px-2 fset-separator text-sky-400">+10</td><td class="text-right py-1 px-2 text-sky-400">&minus;20</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-slate-400 mt-3">NI total: $3 + $10 = <strong class="text-teal-400">$13</strong>. Same total. Income statement was quiet until sale &mdash; AOCI absorbed the volatility.</p>
+                </div>
+            </div>
+
+            <!-- Equity Method Worked -->
+            <div class="mb-4">
+                <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                    <div><span class="text-amber-400 font-bold">Equity Method:</span> <span class="text-slate-300">Track share of investee's book value</span></div>
+                    <button onclick="toggleStep('em')" id="step-btn-em" class="bg-amber-600 hover:bg-amber-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                </div>
+                <div id="step-em" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-slate-300 font-mono">
+                            <thead><tr class="border-b border-slate-600 text-slate-400"><th class="text-left py-1 px-2">Event</th><th class="text-right py-1 px-2">Cash</th><th class="text-right py-1 px-2">Invest.</th><th class="py-1 px-2">=</th><th class="text-right py-1 px-2">R/E</th><th class="text-right py-1 px-2 fset-separator">Eq. Inc.</th><th class="text-right py-1 px-2">NI</th></tr></thead>
+                            <tbody>
+                                <tr><td class="py-1 px-2">Purchase</td><td class="text-right py-1 px-2">&minus;100</td><td class="text-right py-1 px-2">+100</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 fset-separator"></td><td class="text-right py-1 px-2"></td></tr>
+                                <tr class="fset-row-alt"><td class="py-1 px-2">S earns $10</td><td class="text-right py-1 px-2"></td><td class="text-right py-1 px-2 text-amber-400">+4</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-amber-400">+4</td><td class="text-right py-1 px-2 fset-separator text-amber-400">+4</td><td class="text-right py-1 px-2 text-amber-400">+4</td></tr>
+                                <tr><td class="py-1 px-2">S pays div</td><td class="text-right py-1 px-2 text-emerald-400">+2</td><td class="text-right py-1 px-2 text-rose-400">&minus;2</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2">&mdash;</td><td class="text-right py-1 px-2 fset-separator">&mdash;</td><td class="text-right py-1 px-2">&mdash;</td></tr>
+                                <tr class="fset-row-highlight"><td class="py-1 px-2">Sale $110</td><td class="text-right py-1 px-2 text-sky-400">+110</td><td class="text-right py-1 px-2 text-sky-400">&minus;102</td><td class="py-1 px-2">=</td><td class="text-right py-1 px-2 text-sky-400">+8</td><td class="text-right py-1 px-2 fset-separator text-sky-400">+8</td><td class="text-right py-1 px-2 text-sky-400">+8</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-slate-400 mt-3">Total: $4 equity income + $8 gain = <strong class="text-amber-400">$12</strong>. Different total because this is a different investment (40% of a company, not a security).</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ======================== TAB 6: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-violet-400">Practice Questions</h2>
+                    <div class="flex items-center gap-6 text-sm">
+                        <div><span class="text-slate-500">Score:</span> <span class="text-emerald-400 font-bold"><span id="p-correct">0</span>/<span id="p-total">0</span></span></div>
+                        <div><span class="text-slate-500">Streak:</span> <span class="text-amber-400 font-bold" id="p-streak">0</span></div>
+                        <div class="text-slate-500" id="p-progress"></div>
+                    </div>
+                </div>
+                <div id="p-question" class="mb-4 text-slate-300">Click "New Question" to begin.</div>
+                <div id="p-answer" class="mb-4"></div>
+                <div id="p-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.pNew()" class="bg-violet-600 hover:bg-violet-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Intercompany Investments Study Tool</p>
+    </div>
+
+    <script src="cursor.js"></script>
+    <script>
+        // Tab switching
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('panel-' + tab).classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        };
+
+        // Worked example toggles
+        window.toggleStep = function(id) {
+            const el = document.getElementById('step-' + id);
+            const btn = document.getElementById('step-btn-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                btn.textContent = 'Hide';
+            } else {
+                el.classList.add('hidden');
+                btn.textContent = 'Show';
+            }
+        };
+
+        // Quiz Engine
+        const { rand, pick, fmt } = QuizEngine;
+
+        function genClassification() {
+            // options: 0=HTM, 1=FV through NI, 2=AFS, 3=Equity Method
+            const scenarios = [
+                { desc: 'You buy 5% of a publicly traded company\'s common stock.', answer: 1, explain: 'Equity security at <20% ownership requires FV through NI since ASU 2016-01.' },
+                { desc: 'You buy corporate bonds and intend to hold them until they mature.', answer: 0, explain: 'Debt security with intent and ability to hold to maturity = HTM.' },
+                { desc: 'You purchase 30% of a company\'s shares and gain a board seat.', answer: 3, explain: '20-50% ownership with significant influence = Equity Method.' },
+                { desc: 'You buy government bonds that you may sell if interest rates change.', answer: 2, explain: 'Debt security you might sell = Available-for-Sale.' },
+                { desc: 'You buy corporate bonds for short-term trading profits.', answer: 1, explain: 'Debt securities held for trading = FV through NI.' },
+                { desc: 'You purchase 15% of a company\'s stock. No significant influence.', answer: 1, explain: 'Equity security at <20% = FV through NI (required since 2018).' },
+                { desc: 'You buy 45% of a company and have influence over operating decisions.', answer: 3, explain: '20-50% with significant influence = Equity Method.' },
+            ];
+            const s = pick(scenarios);
+            return { question: s.desc + ' Which method?', type: 'mc', answer: s.answer, explanation: s.explain, options: ['HTM', 'FV through NI', 'AFS', 'Equity Method'] };
+        }
+
+        function genDividendTreatment() {
+            // options: 0=Income, 1=Reduces investment, 2=Goes to OCI, 3=Ignored
+            const methods = [
+                { method: 'HTM', ans: 0 },
+                { method: 'FV through NI', ans: 0 },
+                { method: 'AFS', ans: 0 },
+                { method: 'Equity Method', ans: 1 },
+            ];
+            const m = pick(methods);
+            return { question: `Under the ${m.method}, how are dividends received treated?`, type: 'mc', answer: m.ans,
+                explanation: m.ans === 0 ? 'Under all passive methods, dividends/interest are recorded as income.' : 'Under the equity method, you already booked income when the investee earned it. Dividends are a return OF capital, not ON capital.',
+                options: ['Income (increases NI)', 'Reduces the investment balance (NOT income)', 'Goes to OCI', 'Ignored'] };
+        }
+
+        function genUnrealizedGL() {
+            // options: 0=Ignored, 1=Net Income, 2=OCI, 3=Reduces investment
+            const methods = [
+                { method: 'HTM', ans: 0 },
+                { method: 'FV through NI', ans: 1 },
+                { method: 'AFS', ans: 2 },
+            ];
+            const m = pick(methods);
+            return { question: `Under ${m.method}, where do unrealized gains and losses go?`, type: 'mc', answer: m.ans,
+                explanation: `${m.method}: ${['Ignored completely', 'Recognized in Net Income immediately', 'Recognized in OCI (parked in AOCI)'][m.ans]}.`,
+                options: ['Ignored completely', 'Recognized in Net Income immediately', 'Recognized in OCI (parked in AOCI)', 'Reduces the investment balance'] };
+        }
+
+        function genGainOnSale() {
+            const cost = pick([80, 90, 100, 120, 150]);
+            const sale = cost + pick([-20, -10, 10, 15, 20, 30]);
+            const gain = sale - cost;
+            return { question: `You purchased an HTM bond for $${cost}. You sell it for $${sale}. What is the gain or loss on sale?`, type: 'numeric', answer: gain,
+                explanation: `Gain/Loss = Sale price - Cost = $${sale} - $${cost} = $${gain}.` };
+        }
+
+        function genEquityIncome() {
+            const pct = pick([20, 25, 30, 35, 40]);
+            const ni = pick([50, 80, 100, 120, 200]) * 1000;
+            const income = ni * pct / 100;
+            return { question: `You own ${pct}% of Company X. X reports net income of $${fmt(ni)}. How much equity income do you record?`, type: 'numeric', answer: income,
+                explanation: `Equity income = ${pct}% × $${fmt(ni)} = $${fmt(income)}.` };
+        }
+
+        function genEquityBalance() {
+            const cost = pick([100, 200, 500]) * 1000;
+            const pct = pick([20, 25, 30, 40]);
+            const ni = pick([40, 60, 80, 100]) * 1000;
+            const divTotal = pick([10, 15, 20, 25]) * 1000;
+            const shareNI = ni * pct / 100;
+            const shareDIV = divTotal * pct / 100;
+            const balance = cost + shareNI - shareDIV;
+            return { question: `You buy ${pct}% of S for $${fmt(cost)}. S reports NI of $${fmt(ni)} and pays total dividends of $${fmt(divTotal)}. What is your investment balance?`, type: 'numeric', answer: balance,
+                explanation: `Balance = Cost + Share of NI - Share of Div = $${fmt(cost)} + ${pct}% × $${fmt(ni)} - ${pct}% × $${fmt(divTotal)} = $${fmt(cost)} + $${fmt(shareNI)} - $${fmt(shareDIV)} = $${fmt(balance)}.` };
+        }
+
+        function genFVNIUnrealized() {
+            const cost = 100;
+            const newFV = pick([80, 85, 90, 95, 105, 110, 115, 120]);
+            const gl = newFV - cost;
+            const type = gl >= 0 ? 'gain' : 'loss';
+            return { question: `You hold an equity investment (FV-NI) purchased at $${cost}. Fair value is now $${newFV}. What unrealized ${type} do you report in net income?`, type: 'numeric', answer: gl,
+                explanation: `Unrealized ${type} = $${newFV} - $${cost} = $${gl}. Under FV-NI, this goes directly to net income.` };
+        }
+
+        function genAFSRecycling() {
+            const aociBalance = pick([5, 10, 15, 20, -5, -10, -15]);
+            const cost = 100;
+            const sale = cost + pick([5, 10, 15, 20, -5, -10]);
+            const realGain = sale - cost;
+            return { question: `You sell an AFS bond originally costing $${cost} for $${sale}. AOCI balance before sale is $${aociBalance}. What gain/loss is recognized in NI on the sale?`, type: 'numeric', answer: realGain,
+                explanation: `The gain/loss in NI is based on original cost: $${sale} - $${cost} = $${realGain}. AOCI ($${aociBalance}) is recycled out separately.` };
+        }
+
+        function genTotalIncome() {
+            const methods = [
+                { method: 'HTM', total: 13 },
+                { method: 'FV through NI', total: 13 },
+                { method: 'AFS', total: 13 },
+            ];
+            const m = pick(methods);
+            return { question: `Using the class example ($100 investment, MV $90→$120, $3 interest/dividend, sell $110): what is the TOTAL income over the life under ${m.method}?`, type: 'numeric', answer: m.total,
+                explanation: `All three passive methods produce the same total income of $13. The difference is timing, not total.` };
+        }
+
+        function genSecurityType() {
+            // options: 0=Yes, 1=No
+            const scenarios = [
+                { desc: 'Can AFS be used for equity securities purchased after 2018?', answer: 1, explain: 'Since ASU 2016-01 (2018), equity securities must use FV through NI. AFS is only for debt.' },
+                { desc: 'Can HTM be used for equity securities?', answer: 1, explain: 'HTM is only for debt securities. Equity has no maturity date.' },
+                { desc: 'Is FV through NI available for debt securities?', answer: 0, explain: 'Debt held for trading uses FV through NI.' },
+            ];
+            const s = pick(scenarios);
+            return { question: s.desc, type: 'mc', answer: s.answer, explanation: s.explain, options: ['Yes', 'No'] };
+        }
+
+        QuizEngine.init({
+            questionGenerators: [
+                genClassification, genClassification, genClassification,
+                genDividendTreatment, genDividendTreatment, genDividendTreatment,
+                genUnrealizedGL, genUnrealizedGL,
+                genGainOnSale, genGainOnSale,
+                genEquityIncome, genEquityIncome,
+                genEquityBalance, genEquityBalance,
+                genFVNIUnrealized,
+                genAFSRecycling,
+                genTotalIncome,
+                genSecurityType,
+            ],
+            accentColor: 'violet',
+            qCopies: 4,
+        });
+    </script>
+</body>
+</html>
