@@ -480,15 +480,43 @@
                 </a>
 
                 <!-- Stockholders' Equity -->
-                <a href="stockholders-equity.html" class="block bg-[#0c0d11]/60 rounded-2xl p-6 border border-white/[0.03] hover:border-fuchsia-500/20 hover:bg-fuchsia-500/[0.02] transition-all duration-300 group">
+                <a href="stockholders-equity.html" class="card card-enter block bg-[#0f1117]/80 rounded-2xl p-6 border border-white/[0.06] backdrop-blur-sm" style="--accent-border: rgba(232,121,249,0.3); --accent-glow: rgba(232,121,249,0.06); animation-delay: 0.64s">
                     <div class="flex items-start justify-between mb-4">
-                        <div class="icon-wrap bg-fuchsia-500/10 border border-fuchsia-500/10 group-hover:bg-fuchsia-500/20 transition-colors">
+                        <div class="icon-wrap bg-fuchsia-500/10 border border-fuchsia-500/15">
                             <svg class="w-5 h-5 text-fuchsia-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
                         </div>
                         <span class="lec-badge bg-fuchsia-500/10 text-fuchsia-400/80 border border-fuchsia-500/10">L 19&ndash;20</span>
                     </div>
-                    <h3 class="text-[0.95rem] font-semibold text-white/90 mb-2 tracking-tight group-hover:text-fuchsia-400 transition-colors">Stockholders' Equity</h3>
-                    <p class="text-slate-500 text-[0.8rem] leading-relaxed font-light">Stock issuance, treasury stock, dividends, and stock splits.</p>
+                    <h3 class="text-[0.95rem] font-semibold text-white/90 mb-2 tracking-tight">Stockholders' Equity</h3>
+                    <p class="text-slate-500 text-[0.8rem] mb-4 leading-relaxed font-light">Stock issuance, treasury stock, dividends, and stock splits.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="tag bg-fuchsia-500/[0.07] text-fuchsia-400/70 border border-fuchsia-500/10">Issuance</span>
+                            <span class="tag bg-fuchsia-500/[0.07] text-fuchsia-400/70 border border-fuchsia-500/10">Dividends</span>
+                            <span class="tag bg-fuchsia-500/[0.07] text-fuchsia-400/70 border border-fuchsia-500/10">Buybacks</span>
+                        </div>
+                        <svg class="card-arrow w-4 h-4 text-fuchsia-400/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+                    </div>
+                </a>
+
+                <!-- Intercompany Investments -->
+                <a href="intercompany-investments.html" class="card card-enter block bg-[#0f1117]/80 rounded-2xl p-6 border border-white/[0.06] backdrop-blur-sm" style="--accent-border: rgba(167,139,250,0.3); --accent-glow: rgba(167,139,250,0.06); animation-delay: 0.72s">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="icon-wrap bg-violet-500/10 border border-violet-500/15">
+                            <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"/></svg>
+                        </div>
+                        <span class="lec-badge bg-violet-500/10 text-violet-400/80 border border-violet-500/10">L 21&ndash;22</span>
+                    </div>
+                    <h3 class="text-[0.95rem] font-semibold text-white/90 mb-2 tracking-tight">Intercompany Investments</h3>
+                    <p class="text-slate-500 text-[0.8rem] mb-4 leading-relaxed font-light">HTM, FV-NI, AFS, Equity Method, OCI &amp; recycling.</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="tag bg-violet-500/[0.07] text-violet-400/70 border border-violet-500/10">Classification</span>
+                            <span class="tag bg-violet-500/[0.07] text-violet-400/70 border border-violet-500/10">OCI</span>
+                            <span class="tag bg-violet-500/[0.07] text-violet-400/70 border border-violet-500/10">Equity Method</span>
+                        </div>
+                        <svg class="card-arrow w-4 h-4 text-violet-400/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"/></svg>
+                    </div>
                 </a>
             </div>
 
@@ -498,17 +526,6 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                <!-- Intercompany Investments -->
-                <a href="intercompany-investments.html" class="block bg-[#0c0d11]/60 rounded-2xl p-6 border border-white/[0.03] hover:border-violet-500/20 hover:bg-violet-500/[0.02] transition-all duration-300 group">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="icon-wrap bg-violet-500/10 border border-violet-500/10 group-hover:bg-violet-500/20 transition-colors">
-                            <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"/></svg>
-                        </div>
-                        <span class="lec-badge bg-violet-500/10 text-violet-400/80 border border-violet-500/10">L 21&ndash;22</span>
-                    </div>
-                    <h3 class="text-[0.95rem] font-semibold text-white/90 mb-2 tracking-tight group-hover:text-violet-400 transition-colors">Intercompany Investments</h3>
-                    <p class="text-slate-500 text-[0.8rem] leading-relaxed font-light">HTM, FV-NI, AFS, Equity Method, OCI &amp; recycling.</p>
-                </a>
 
                 <!-- Statement of Cash Flows -->
                 <div class="card-disabled block bg-[#0c0d11]/60 rounded-2xl p-6 border border-white/[0.03]">
