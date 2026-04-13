@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statement of Cash Flows | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="animations.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        :root { --accent: #34d399; --accent-bg: rgba(52,211,153,0.08); --accent-border-subtle: rgba(52,211,153,0.15); }
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(52,211,153,0.15); }
+        .tab-btn.active { border-color: #34d399; color: #34d399; background: rgba(52,211,153,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+        .scf-section-cfo { border-left: 3px solid #34d399; }
+        .scf-section-cfi { border-left: 3px solid #60a5fa; }
+        .scf-section-cff { border-left: 3px solid #fb923c; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
+    <script>
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = '#334155';
+    </script>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="back-link" style="--accent: #34d399">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(52,211,153,0.1)">
+                <svg class="text-emerald-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"/></svg>
+            </div>
+            <div>
+                <h1>Statement of Cash Flows</h1>
+                <p class="subtitle">Lectures 23&ndash;24 &mdash; Indirect method, operating/investing/financing classification &amp; free cash flow</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(52,211,153,0.1); color: rgba(52,211,153,0.8); border: 1px solid rgba(52,211,153,0.1)">L 23&ndash;24</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('concepts')" id="tab-concepts" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">SCF Concepts</button>
+            <button onclick="switchTab('indirect')" id="tab-indirect" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Indirect Method</button>
+            <button onclick="switchTab('classify')" id="tab-classify" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Classification</button>
+            <button onclick="switchTab('fcf')" id="tab-fcf" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">FCF &amp; Patterns</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: SCF CONCEPTS ======================== -->
+        <div id="panel-concepts" class="tab-panel active">
+
+            <!-- Card 1: Profit ≠ Cash -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Profit &ne; Survival</h2>
+                <div class="bg-rose-500/10 rounded-lg p-4 border border-rose-500/30 mb-4">
+                    <p class="text-sm text-rose-300"><strong>The Paradox:</strong> A company can report <strong>record profits</strong> on the income statement and <em>still run out of cash</em>. Net income tells you what was <em>earned</em>, not what was <em>collected</em>. You pay employees, suppliers, and lenders with <strong>cash</strong>, not net income.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-bold text-emerald-400 text-sm mb-2">Home Depot (1985)</h3>
+                        <p class="text-sm text-slate-300">Profitable on paper, came within weeks of bankruptcy. Rapid expansion consumed all cash despite strong earnings.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-bold text-emerald-400 text-sm mb-2">General Motors (2009)</h3>
+                        <p class="text-sm text-slate-300">Reported profits but exhausted liquidity. Filed Chapter 11 with billions in unpayable obligations.</p>
+                    </div>
+                </div>
+                <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/30">
+                    <p class="text-sm text-emerald-300"><strong>Key insight:</strong> Accrual accounting records economic events, not cash exchanges. The SCF bridges the gap.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Three Questions -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Three Questions the SCF Answers</h2>
+                <div class="space-y-3">
+                    <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                        <p class="text-sm text-emerald-300"><strong>1. Can the company pay its bills?</strong></p>
+                        <p class="text-sm text-slate-300">Does the business generate enough cash from operations to cover its obligations?</p>
+                    </div>
+                    <div class="bg-blue-500/10 rounded-lg p-4 border border-blue-500/20">
+                        <p class="text-sm text-blue-300"><strong>2. Where is the cash coming from?</strong></p>
+                        <p class="text-sm text-slate-300">Operations? Selling assets? Borrowing? Each source tells a different story about health.</p>
+                    </div>
+                    <div class="bg-orange-500/10 rounded-lg p-4 border border-orange-500/20">
+                        <p class="text-sm text-orange-300"><strong>3. Where is the cash going?</strong></p>
+                        <p class="text-sm text-slate-300">Investing in growth? Paying down debt? Returning capital to shareholders? The pattern reveals strategy.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: SCF Structure -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">The SCF at a Glance</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <table class="w-full text-sm text-slate-300">
+                            <thead>
+                                <tr class="border-b border-slate-600">
+                                    <th class="text-left py-2 text-slate-400" colspan="2">Statement of Cash Flows</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-emerald-500/10"><td class="py-2 px-3 font-bold text-emerald-400">Cash from Operations (CFO)</td><td class="text-right py-2 px-3 text-emerald-400">XX</td></tr>
+                                <tr class="bg-blue-500/10"><td class="py-2 px-3 font-bold text-blue-400">Cash from Investing (CFI)</td><td class="text-right py-2 px-3 text-blue-400">(XX)</td></tr>
+                                <tr class="bg-orange-500/10"><td class="py-2 px-3 font-bold text-orange-400">Cash from Financing (CFF)</td><td class="text-right py-2 px-3 text-orange-400">XX</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td class="py-2 px-3">Net change in cash</td><td class="text-right py-2 px-3">XX</td></tr>
+                                <tr><td class="py-2 px-3">+ Beginning cash balance</td><td class="text-right py-2 px-3">XX</td></tr>
+                                <tr class="border-t-2 border-slate-500 font-bold"><td class="py-2 px-3">Ending cash balance</td><td class="text-right py-2 px-3 text-emerald-400">XX</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="scf-section-cfo bg-slate-900/60 rounded-lg p-3">
+                            <p class="text-sm font-bold text-emerald-400">CFO &mdash; Operating</p>
+                            <p class="text-xs text-slate-400">Selling goods, paying employees, collecting receivables</p>
+                        </div>
+                        <div class="scf-section-cfi bg-slate-900/60 rounded-lg p-3">
+                            <p class="text-sm font-bold text-blue-400">CFI &mdash; Investing</p>
+                            <p class="text-xs text-slate-400">Buying/selling equipment and long-term investments</p>
+                        </div>
+                        <div class="scf-section-cff bg-slate-900/60 rounded-lg p-3">
+                            <p class="text-sm font-bold text-orange-400">CFF &mdash; Financing</p>
+                            <p class="text-xs text-slate-400">Issuing stock/debt, repaying loans, paying dividends</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Cash and Cash Equivalents -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Cash and Cash Equivalents</h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-slate-300 mb-3">The SCF explains changes in <span class="text-emerald-400 font-semibold">cash and cash equivalents</span>:</p>
+                        <ul class="text-sm text-slate-300 space-y-2">
+                            <li>Cash on hand and in bank accounts</li>
+                            <li><strong class="text-emerald-400">Cash equivalents</strong>: short-term, highly liquid investments</li>
+                            <li>Easily convertible to a known amount of cash</li>
+                            <li>Initial maturities of <strong>three months or less</strong></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/30 mb-3">
+                            <p class="text-sm text-emerald-300"><strong>Examples:</strong> Money market accounts, Treasury bills, commercial paper</p>
+                        </div>
+                        <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                            <p class="text-xs text-slate-400"><em>Buying/selling cash equivalents is part of managing cash &mdash; they&rsquo;re treated as cash itself, not as investing activities.</em></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-emerald-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">The SCF connects directly to the balance sheet: <strong class="text-white">A = L + SE</strong>. The ending cash balance on the SCF equals the Cash line on the balance sheet. Every non-cash adjustment in the indirect method maps to another balance sheet or income statement item.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 2: INDIRECT METHOD ======================== -->
+        <div id="panel-indirect" class="tab-panel">
+
+            <!-- Card 1: Two Methods -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Two Methods, Same Answer</h2>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                        <h3 class="font-bold text-emerald-400 mb-2">Direct Method</h3>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300 w-full">
+                                <tr><td>Cash from customers</td><td class="text-right">$X</td></tr>
+                                <tr><td>Cash to suppliers</td><td class="text-right">(X)</td></tr>
+                                <tr><td>Cash to employees</td><td class="text-right">(X)</td></tr>
+                                <tr><td>Interest paid</td><td class="text-right">(X)</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">$X</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2 italic">More transparent, but data-intensive.</p>
+                    </div>
+                    <div class="bg-orange-500/10 rounded-lg p-4 border border-orange-500/20">
+                        <h3 class="font-bold text-orange-400 mb-2">Indirect Method</h3>
+                        <div class="bg-slate-800/80 rounded p-3 text-sm">
+                            <table class="font-mono text-slate-300 w-full">
+                                <tr><td>Net Income</td><td class="text-right">$X</td></tr>
+                                <tr><td>+ Non-cash expenses</td><td class="text-right">X</td></tr>
+                                <tr><td>&minus; Non-cash income</td><td class="text-right">(X)</td></tr>
+                                <tr><td>&plusmn; Working capital &Delta;</td><td class="text-right">&plusmn;X</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">$X</td></tr>
+                            </table>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2 italic">Simpler. <strong>Used by ~98% of companies.</strong></p>
+                    </div>
+                </div>
+                <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/30">
+                    <p class="text-sm text-emerald-300"><strong>Key insight:</strong> Both methods produce the <strong>exact same CFO</strong>. They differ only in presentation. CFI and CFF are identical under both methods.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: The Complete Framework -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">The Complete Indirect Method Framework</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <tbody>
+                            <tr class="bg-slate-700/50"><td class="py-2 px-3 font-bold text-white" colspan="2">Starting Point</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">Net Income</td><td class="text-right py-2 px-3 text-slate-300">$X</td></tr>
+                            <tr class="bg-blue-500/10"><td class="py-2 px-3 font-bold text-blue-400" colspan="2">Non-cash expenses and income</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">+ Depreciation, amortization, SBC</td><td class="text-right py-2 px-3 text-slate-300">X</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">&minus; Unrealized gains</td><td class="text-right py-2 px-3 text-slate-300">(X)</td></tr>
+                            <tr class="bg-orange-500/10"><td class="py-2 px-3 font-bold text-orange-400" colspan="2">Non-operating items in NI</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">+ Losses on sale of assets</td><td class="text-right py-2 px-3 text-slate-300">X</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">&minus; Gains on sale of assets</td><td class="text-right py-2 px-3 text-slate-300">(X)</td></tr>
+                            <tr class="bg-emerald-500/10"><td class="py-2 px-3 font-bold text-emerald-400" colspan="2">Changes in operating working capital</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">+ Decrease in current assets (A/R, inventory)</td><td class="text-right py-2 px-3 text-slate-300">X</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">&minus; Increase in current assets</td><td class="text-right py-2 px-3 text-slate-300">(X)</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">+ Increase in current liabilities (A/P, accrued exp.)</td><td class="text-right py-2 px-3 text-slate-300">X</td></tr>
+                            <tr><td class="py-2 px-3 pl-6 text-slate-300">&minus; Decrease in current liabilities</td><td class="text-right py-2 px-3 text-slate-300">(X)</td></tr>
+                            <tr class="border-t-2 border-slate-500 font-bold"><td class="py-2 px-3 text-emerald-400">= Cash Flow from Operations (CFO)</td><td class="text-right py-2 px-3 text-emerald-400">$X</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Card 3: Working Capital Rules -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Working Capital Adjustment Rules</h2>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-blue-500/10 rounded-lg p-4 border border-blue-500/20">
+                        <h3 class="font-bold text-blue-400 mb-2">Current Assets</h3>
+                        <p class="text-xs text-slate-400 mb-2">(A/R, Inventory, Prepaid)</p>
+                        <table class="w-full text-sm text-slate-300">
+                            <thead><tr class="bg-slate-700/50"><th class="text-left py-1 px-2">Change</th><th class="text-left py-1 px-2">Cash</th><th class="text-left py-1 px-2">Adjust</th></tr></thead>
+                            <tbody>
+                                <tr><td class="py-1 px-2">Increase &uarr;</td><td class="py-1 px-2">Used</td><td class="py-1 px-2 text-rose-400 font-bold">&minus; Subtract</td></tr>
+                                <tr><td class="py-1 px-2">Decrease &darr;</td><td class="py-1 px-2">Freed</td><td class="py-1 px-2 text-emerald-400 font-bold">+ Add</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                        <h3 class="font-bold text-emerald-400 mb-2">Current Liabilities</h3>
+                        <p class="text-xs text-slate-400 mb-2">(A/P, Accrued Exp., Unearned Rev.)</p>
+                        <table class="w-full text-sm text-slate-300">
+                            <thead><tr class="bg-slate-700/50"><th class="text-left py-1 px-2">Change</th><th class="text-left py-1 px-2">Cash</th><th class="text-left py-1 px-2">Adjust</th></tr></thead>
+                            <tbody>
+                                <tr><td class="py-1 px-2">Increase &uarr;</td><td class="py-1 px-2">Kept</td><td class="py-1 px-2 text-emerald-400 font-bold">+ Add</td></tr>
+                                <tr><td class="py-1 px-2">Decrease &darr;</td><td class="py-1 px-2">Spent</td><td class="py-1 px-2 text-rose-400 font-bold">&minus; Subtract</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/30">
+                    <p class="text-sm text-emerald-300"><strong>Key insight:</strong> Opposites &mdash; asset up &rarr; subtract from NI. Liability up &rarr; add to NI. The indirect method &ldquo;undoes&rdquo; accrual accounting to get back to cash.</p>
+                </div>
+            </div>
+
+            <!-- Card 4: Non-Cash & Non-Operating -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Non-Cash &amp; Non-Operating Adjustments</h2>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-bold text-emerald-400 text-sm mb-2">Add Back Non-Cash Expenses</h3>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li><span class="text-emerald-400">+ Depreciation</span> &mdash; reduces NI but no cash leaves</li>
+                            <li><span class="text-emerald-400">+ Amortization</span> &mdash; same logic as depreciation</li>
+                            <li><span class="text-emerald-400">+ Stock-based compensation</span> &mdash; expense recognized, no cash paid</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-bold text-emerald-400 text-sm mb-2">Remove Non-Operating Gains/Losses</h3>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li><span class="text-rose-400">&minus; Gain on sale of asset</span> &mdash; full proceeds go to CFI</li>
+                            <li><span class="text-emerald-400">+ Loss on sale of asset</span> &mdash; full proceeds go to CFI</li>
+                            <li><span class="text-rose-400">&minus; Unrealized gains</span> &mdash; no cash involved</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                    <p class="text-sm text-amber-300"><strong>Important:</strong> Gains/losses on asset sales create a &ldquo;double-counting&rdquo; problem. The gain is in NI (CFO), but the full sale proceeds appear in CFI. Remove the gain from CFO so the cash is only counted once.</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-emerald-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">The indirect method starts with net income (which flows into <strong class="text-white">SE</strong> via retained earnings) and adjusts for changes in <strong class="text-white">A</strong> and <strong class="text-white">L</strong> to arrive at the change in Cash (an asset). Every adjustment maps back to <strong class="text-white">A = L + SE</strong>.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 3: CLASSIFICATION ======================== -->
+        <div id="panel-classify" class="tab-panel">
+
+            <!-- Card 1: Operating -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Cash Flow from Operations (CFO)</h2>
+                <div class="scf-section-cfo bg-slate-900/60 rounded-lg p-4 mb-4">
+                    <p class="text-sm text-slate-300 mb-3">Cash generated or used by the company&rsquo;s <strong class="text-emerald-400">core business activities</strong>.</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-emerald-400 font-bold mb-1">Inflows (+)</p>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Cash collected from customers</li>
+                                <li>Interest received</li>
+                                <li>Dividends received</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-xs text-rose-400 font-bold mb-1">Outflows (&minus;)</p>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Cash paid to suppliers</li>
+                                <li>Cash paid to employees (wages)</li>
+                                <li>Interest paid</li>
+                                <li>Income taxes paid</li>
+                                <li>Operating lease payments</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Investing -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-blue-400 mb-4">Cash Flow from Investing (CFI)</h2>
+                <div class="scf-section-cfi bg-slate-900/60 rounded-lg p-4 mb-4">
+                    <p class="text-sm text-slate-300 mb-3">Cash spent on or received from <strong class="text-blue-400">long-term assets and investments</strong>.</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-emerald-400 font-bold mb-1">Inflows (+)</p>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Sale of PP&amp;E</li>
+                                <li>Sale of investments</li>
+                                <li>Collection of notes receivable</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-xs text-rose-400 font-bold mb-1">Outflows (&minus;)</p>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Purchase of PP&amp;E (CapEx)</li>
+                                <li>Purchase of investments</li>
+                                <li>Lending (notes receivable)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Financing -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-orange-400 mb-4">Cash Flow from Financing (CFF)</h2>
+                <div class="scf-section-cff bg-slate-900/60 rounded-lg p-4 mb-4">
+                    <p class="text-sm text-slate-300 mb-3">Cash from or returned to <strong class="text-orange-400">debt holders and equity holders</strong>.</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-emerald-400 font-bold mb-1">Inflows (+)</p>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Issuing common/preferred stock</li>
+                                <li>Borrowing (bonds, loans)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-xs text-rose-400 font-bold mb-1">Outflows (&minus;)</p>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Repaying debt principal</li>
+                                <li>Paying dividends</li>
+                                <li>Repurchasing (buying back) shares</li>
+                                <li>Finance lease principal payments</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Leases on the SCF -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Leases on the SCF</h2>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-emerald-500/20">
+                        <h3 class="font-bold text-emerald-400 mb-2">Finance Lease</h3>
+                        <p class="text-sm text-slate-300 mb-2">Like a purchase with a loan &mdash; payment is split:</p>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Interest portion &rarr; <span class="text-emerald-400 font-semibold">CFO</span></li>
+                            <li>Principal portion &rarr; <span class="text-orange-400 font-semibold">CFF</span></li>
+                        </ul>
+                        <p class="text-xs text-slate-400 mt-2">+ Add back ROU amortization (non-cash expense)</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-emerald-500/20">
+                        <h3 class="font-bold text-emerald-400 mb-2">Operating Lease</h3>
+                        <p class="text-sm text-slate-300 mb-2">Like a rental &mdash; single treatment:</p>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Entire payment &rarr; <span class="text-emerald-400 font-semibold">CFO</span></li>
+                        </ul>
+                        <p class="text-xs text-slate-400 mt-2">No split needed &mdash; cash effect matches expense</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5: Non-Cash Disclosures -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Non-Cash Disclosures</h2>
+                <p class="text-sm text-slate-300 mb-3">Significant transactions involving <strong>no cash</strong> are excluded from the SCF body but <strong>must be disclosed</strong> in supplemental notes:</p>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <ul class="text-sm text-slate-300 space-y-1">
+                        <li>Converting debt to equity</li>
+                        <li>Acquiring assets via lease inception</li>
+                    </ul>
+                    <ul class="text-sm text-slate-300 space-y-1">
+                        <li>Issuing stock for an acquisition</li>
+                        <li>Declaring stock dividends</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-emerald-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">CFO items affect current assets and current liabilities (working capital). CFI items affect long-term assets. CFF items affect long-term liabilities and stockholders&rsquo; equity. Each section maps to a region of <strong class="text-white">A = L + SE</strong>.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 4: FCF & PATTERNS ======================== -->
+        <div id="panel-fcf" class="tab-panel">
+
+            <!-- Card 1: Free Cash Flow -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Free Cash Flow</h2>
+                <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/30 mb-4 text-center">
+                    <p class="text-lg font-bold text-emerald-400">Free Cash Flow = CFO &minus; Capital Expenditures</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-bold text-emerald-400 text-sm mb-2">What is it?</h3>
+                        <p class="text-sm text-slate-300">Cash available <em>after</em> maintaining the asset base. Not a GAAP line item &mdash; widely used by analysts. Derived from the SCF: CFO minus CapEx (from the investing section).</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-bold text-emerald-400 text-sm mb-2">Uses of Positive FCF</h3>
+                        <ul class="text-sm text-slate-300 space-y-1">
+                            <li>Repay debt</li>
+                            <li>Pay dividends</li>
+                            <li>Buy back shares</li>
+                            <li>Fund new investments</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-emerald-500/10 rounded-lg p-3 border border-emerald-500/30">
+                    <p class="text-sm text-emerald-300"><strong>Key insight:</strong> Positive FCF means the company generates cash beyond what it needs to sustain operations &mdash; a key indicator of financial flexibility.</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Why FCF Matters -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Why FCF Matters</h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-emerald-500/10 rounded-lg p-4 border border-emerald-500/20">
+                        <h3 class="font-bold text-emerald-400 mb-2">Valuation</h3>
+                        <p class="text-sm text-slate-300">Analysts value companies by discounting <strong>future FCF</strong>. A company is worth the cash it will generate &mdash; not its accounting earnings.</p>
+                    </div>
+                    <div class="bg-blue-500/10 rounded-lg p-4 border border-blue-500/20">
+                        <h3 class="font-bold text-blue-400 mb-2">Sustainability</h3>
+                        <p class="text-sm text-slate-300">A company paying $2B in dividends with $1B in FCF is <em>borrowing to pay shareholders</em> &mdash; unsustainable.</p>
+                    </div>
+                    <div class="bg-orange-500/10 rounded-lg p-4 border border-orange-500/20">
+                        <h3 class="font-bold text-orange-400 mb-2">Earnings Quality</h3>
+                        <p class="text-sm text-slate-300">NI can be managed through estimates. FCF is harder to fake &mdash; cash either came in or it didn&rsquo;t.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-bold text-emerald-400 mb-2">Debt Capacity</h3>
+                        <p class="text-sm text-slate-300">Lenders assess FCF to determine how much debt a company can service. More FCF = more borrowing power.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Cash Flow Patterns -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">What Cash Flow Patterns Tell You</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-center py-2 px-3 text-emerald-400">CFO</th>
+                                <th class="text-center py-2 px-3 text-blue-400">CFI</th>
+                                <th class="text-center py-2 px-3 text-orange-400">CFF</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Likely Profile</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50"><td class="text-center py-2 px-3 text-emerald-400 font-bold">+</td><td class="text-center py-2 px-3 text-blue-400 font-bold">&minus;</td><td class="text-center py-2 px-3 text-orange-400 font-bold">&minus;</td><td class="py-2 px-3"><strong class="text-white">Healthy mature:</strong> generates cash, invests, returns capital</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="text-center py-2 px-3 text-emerald-400 font-bold">+</td><td class="text-center py-2 px-3 text-blue-400 font-bold">&minus;</td><td class="text-center py-2 px-3 text-orange-400 font-bold">+</td><td class="py-2 px-3"><strong class="text-white">Growth:</strong> operations + borrowing fund expansion</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="text-center py-2 px-3 text-emerald-400 font-bold">+</td><td class="text-center py-2 px-3 text-blue-400 font-bold">+</td><td class="text-center py-2 px-3 text-orange-400 font-bold">&minus;</td><td class="py-2 px-3"><strong class="text-white">Restructuring:</strong> selling assets, paying down debt</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="text-center py-2 px-3 text-rose-400 font-bold">&minus;</td><td class="text-center py-2 px-3 text-blue-400 font-bold">&minus;</td><td class="text-center py-2 px-3 text-orange-400 font-bold">+</td><td class="py-2 px-3"><strong class="text-white">Startup:</strong> burning cash, financed by investors</td></tr>
+                            <tr><td class="text-center py-2 px-3 text-rose-400 font-bold">&minus;</td><td class="text-center py-2 px-3 text-blue-400 font-bold">+</td><td class="text-center py-2 px-3 text-orange-400 font-bold">&minus;</td><td class="py-2 px-3"><strong class="text-white">Distressed:</strong> selling assets to stay afloat</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Card 4: FCF Calculator -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">FCF Calculator</h2>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">CFO ($)</label>
+                        <input type="number" id="fcf-cfo" class="w-full bg-slate-900/60 border border-slate-600 rounded px-3 py-2 text-sm" placeholder="e.g. 500000">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Capital Expenditures ($)</label>
+                        <input type="number" id="fcf-capex" class="w-full bg-slate-900/60 border border-slate-600 rounded px-3 py-2 text-sm" placeholder="e.g. 200000">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="calcFCF()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors w-full">Calculate</button>
+                    </div>
+                </div>
+                <div id="fcf-result" class="hidden bg-slate-900/60 rounded-lg p-4 border border-emerald-500/20">
+                    <div id="fcf-output"></div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-emerald-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">FCF = CFO &minus; CapEx. It measures cash available after sustaining the asset base. Companies with strong FCF have flexibility to grow equity (retained earnings), reduce liabilities (repay debt), or return capital &mdash; all moving parts of <strong class="text-white">A = L + SE</strong>.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 5: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
+
+            <!-- Example 1: Credit Sale + Inventory (Years 1-6 condensed) -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Example 1: Working Capital Effects</h2>
+                <p class="text-sm text-slate-300 mb-4">ABC Corp sells chairs at $3 each, cost $2 each. Trace how credit sales and inventory changes affect the indirect method.</p>
+
+                <!-- Step 1 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Step 1:</span>
+                            <span class="text-slate-300">Sells 60 chairs for cash ($180) and 40 on credit ($120). Buys 100 chairs for $200 cash.</span>
+                        </div>
+                        <button onclick="toggleStep('ex1', 1)" id="ex1-btn-1" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-blue-500/10 rounded p-3 border border-blue-500/20">
+                                <p class="text-xs text-blue-400 font-bold mb-1">Income Statement</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Revenue</td><td class="text-right">300</td></tr>
+                                    <tr><td>COGS</td><td class="text-right">(200)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>NI</td><td class="text-right">100</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-emerald-500/10 rounded p-3 border border-emerald-500/20">
+                                <p class="text-xs text-emerald-400 font-bold mb-1">Direct Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Cash from cust.</td><td class="text-right">180</td></tr>
+                                    <tr><td>Cash to suppl.</td><td class="text-right">(200)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">(20)</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-orange-500/10 rounded p-3 border border-orange-500/20">
+                                <p class="text-xs text-orange-400 font-bold mb-1">Indirect Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Net Income</td><td class="text-right">100</td></tr>
+                                    <tr class="text-orange-300"><td>&minus; &Delta;A/R</td><td class="text-right">(120)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">(20)</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-500/10 rounded p-2 mt-3 border border-emerald-500/30">
+                            <p class="text-xs text-emerald-300"><strong>Logic:</strong> A/R increased by $120 (asset up &rarr; subtract). Revenue included $120 that wasn&rsquo;t collected as cash.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Step 2:</span>
+                            <span class="text-slate-300">Same sales. Also collects $120 of prior A/R. Also builds inventory (buys 120 chairs, sells 100).</span>
+                        </div>
+                        <button onclick="toggleStep('ex1', 2)" id="ex1-btn-2" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-blue-500/10 rounded p-3 border border-blue-500/20">
+                                <p class="text-xs text-blue-400 font-bold mb-1">Income Statement</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Revenue</td><td class="text-right">300</td></tr>
+                                    <tr><td>COGS</td><td class="text-right">(200)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>NI</td><td class="text-right">100</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-emerald-500/10 rounded p-3 border border-emerald-500/20">
+                                <p class="text-xs text-emerald-400 font-bold mb-1">Direct Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Cash from cust.</td><td class="text-right">420</td></tr>
+                                    <tr><td>Cash to suppl.</td><td class="text-right">(240)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">180</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-orange-500/10 rounded p-3 border border-orange-500/20">
+                                <p class="text-xs text-orange-400 font-bold mb-1">Indirect Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Net Income</td><td class="text-right">100</td></tr>
+                                    <tr class="text-emerald-300"><td>+ &Delta;A/R (decrease)</td><td class="text-right">120</td></tr>
+                                    <tr class="text-orange-300"><td>&minus; &Delta;Inv (increase)</td><td class="text-right">(40)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">180</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-500/10 rounded p-2 mt-3 border border-emerald-500/30">
+                            <p class="text-xs text-emerald-300"><strong>Logic:</strong> A/R decreased by $120 (collected last period&rsquo;s credit sale &rarr; add). Inventory increased by $40 (bought 120 but only sold 100 &rarr; subtract).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Step 3:</span>
+                            <span class="text-slate-300">Same sales. Buys 100 chairs on credit (A/P increases by $200).</span>
+                        </div>
+                        <button onclick="toggleStep('ex1', 3)" id="ex1-btn-3" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-3" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-blue-500/10 rounded p-3 border border-blue-500/20">
+                                <p class="text-xs text-blue-400 font-bold mb-1">Income Statement</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Revenue</td><td class="text-right">300</td></tr>
+                                    <tr><td>COGS</td><td class="text-right">(200)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>NI</td><td class="text-right">100</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-emerald-500/10 rounded p-3 border border-emerald-500/20">
+                                <p class="text-xs text-emerald-400 font-bold mb-1">Direct Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Cash from cust.</td><td class="text-right">300</td></tr>
+                                    <tr><td>Cash to suppl.</td><td class="text-right">0</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">300</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-orange-500/10 rounded p-3 border border-orange-500/20">
+                                <p class="text-xs text-orange-400 font-bold mb-1">Indirect Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Net Income</td><td class="text-right">100</td></tr>
+                                    <tr class="text-emerald-300"><td>+ &Delta;A/P (increase)</td><td class="text-right">200</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">300</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-500/10 rounded p-2 mt-3 border border-emerald-500/30">
+                            <p class="text-xs text-emerald-300"><strong>Logic:</strong> A/P increased by $200 (liability up &rarr; add). The company received inventory but hasn&rsquo;t paid cash yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2: Non-Cash & Non-Operating -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Example 2: Depreciation &amp; Asset Sale</h2>
+                <p class="text-sm text-slate-300 mb-4">ABC Corp sells 100 chairs ($300 revenue, $200 COGS) plus faces depreciation and sells an asset.</p>
+
+                <!-- Step 1: Depreciation -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Step 1:</span>
+                            <span class="text-slate-300">Annual depreciation on warehouse is $40.</span>
+                        </div>
+                        <button onclick="toggleStep('ex2', 1)" id="ex2-btn-1" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-blue-500/10 rounded p-3 border border-blue-500/20">
+                                <p class="text-xs text-blue-400 font-bold mb-1">Income Statement</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Revenue</td><td class="text-right">300</td></tr>
+                                    <tr><td>COGS</td><td class="text-right">(200)</td></tr>
+                                    <tr><td>Depreciation</td><td class="text-right">(40)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>NI</td><td class="text-right">60</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-emerald-500/10 rounded p-3 border border-emerald-500/20">
+                                <p class="text-xs text-emerald-400 font-bold mb-1">Direct Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Cash from cust.</td><td class="text-right">300</td></tr>
+                                    <tr><td>Cash to suppl.</td><td class="text-right">(200)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">100</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-orange-500/10 rounded p-3 border border-orange-500/20">
+                                <p class="text-xs text-orange-400 font-bold mb-1">Indirect Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Net Income</td><td class="text-right">60</td></tr>
+                                    <tr class="text-emerald-300"><td>+ Depreciation</td><td class="text-right">40</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">100</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-500/10 rounded p-2 mt-3 border border-emerald-500/30">
+                            <p class="text-xs text-emerald-300"><strong>Logic:</strong> Depreciation reduced NI by $40 but no cash left the company. Add it back to convert NI to CFO.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Asset Sale with Gain -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Step 2:</span>
+                            <span class="text-slate-300">Sells old delivery truck (BV = $20) for $35 cash. Gain on sale = $15.</span>
+                        </div>
+                        <button onclick="toggleStep('ex2', 2)" id="ex2-btn-2" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="bg-blue-500/10 rounded p-3 border border-blue-500/20">
+                                <p class="text-xs text-blue-400 font-bold mb-1">Income Statement</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Operating NI</td><td class="text-right">60</td></tr>
+                                    <tr><td>Gain on sale</td><td class="text-right">15</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>NI</td><td class="text-right">75</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-emerald-500/10 rounded p-3 border border-emerald-500/20">
+                                <p class="text-xs text-emerald-400 font-bold mb-1">Direct / Full SCF</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr class="font-bold"><td>CFO</td><td class="text-right">100</td></tr>
+                                    <tr><td>Sale proceeds</td><td class="text-right">35</td></tr>
+                                    <tr class="font-bold"><td>CFI</td><td class="text-right">35</td></tr>
+                                </table>
+                            </div>
+                            <div class="bg-orange-500/10 rounded p-3 border border-orange-500/20">
+                                <p class="text-xs text-orange-400 font-bold mb-1">Indirect Method</p>
+                                <table class="font-mono text-sm text-slate-300 w-full">
+                                    <tr><td>Net Income</td><td class="text-right">75</td></tr>
+                                    <tr class="text-emerald-300"><td>+ Depreciation</td><td class="text-right">40</td></tr>
+                                    <tr class="text-rose-300"><td>&minus; Gain on sale</td><td class="text-right">(15)</td></tr>
+                                    <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">100</td></tr>
+                                    <tr><td>Sale proceeds</td><td class="text-right">35</td></tr>
+                                    <tr class="font-bold"><td>CFI</td><td class="text-right">35</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="bg-amber-500/10 rounded p-2 mt-3 border border-amber-500/30">
+                            <p class="text-xs text-amber-300"><strong>The double-counting problem:</strong> The $15 gain is in NI (CFO section). But the full $35 of cash proceeds goes to CFI. Removing the gain from CFO ensures the cash is only counted once &mdash; in CFI where the investing activity occurred.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 3: Financing Activities -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Example 3: Financing Activities &amp; SBC</h2>
+                <p class="text-sm text-slate-300 mb-4">ABC Corp issues shares, borrows, pays dividends, and grants stock compensation.</p>
+
+                <!-- Step 1: Issue shares + debt -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Step 1:</span>
+                            <span class="text-slate-300">Issues stock for $50. Borrows $80 (loan). Pays $20 interest. Pays $30 dividends.</span>
+                        </div>
+                        <button onclick="toggleStep('ex3', 1)" id="ex3-btn-1" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex3-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-orange-500/10 rounded p-3 border border-orange-500/20">
+                            <p class="text-xs text-orange-400 font-bold mb-1">Indirect Method (Financing Section)</p>
+                            <table class="font-mono text-sm text-slate-300 w-full">
+                                <tr><td>Net Income</td><td class="text-right">80</td></tr>
+                                <tr class="text-emerald-300"><td>+ Depreciation</td><td class="text-right">40</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">120</td></tr>
+                                <tr><td>CFI</td><td class="text-right">0</td></tr>
+                                <tr><td>Stock issued</td><td class="text-right">50</td></tr>
+                                <tr><td>Loan proceeds</td><td class="text-right">80</td></tr>
+                                <tr><td>Dividends paid</td><td class="text-right">(30)</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td>CFF</td><td class="text-right">100</td></tr>
+                                <tr class="border-t-2 border-slate-500 font-bold"><td>Total CF</td><td class="text-right text-emerald-400">220</td></tr>
+                            </table>
+                        </div>
+                        <div class="bg-emerald-500/10 rounded p-2 mt-3 border border-emerald-500/30">
+                            <p class="text-xs text-emerald-300"><strong>Note:</strong> Interest paid is in CFO (operating). Dividends paid and debt/equity issuances are in CFF (financing).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: SBC -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Step 2:</span>
+                            <span class="text-slate-300">Grants $25 of stock-based compensation to employees.</span>
+                        </div>
+                        <button onclick="toggleStep('ex3', 2)" id="ex3-btn-2" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex3-step-2" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-orange-500/10 rounded p-3 border border-orange-500/20">
+                            <p class="text-xs text-orange-400 font-bold mb-1">Indirect Method (SBC Adjustment)</p>
+                            <table class="font-mono text-sm text-slate-300 w-full">
+                                <tr><td>Net Income</td><td class="text-right">55</td></tr>
+                                <tr class="text-emerald-300"><td>+ Depreciation</td><td class="text-right">40</td></tr>
+                                <tr class="text-emerald-300"><td>+ Stock-based comp.</td><td class="text-right">25</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td>CFO</td><td class="text-right">120</td></tr>
+                            </table>
+                        </div>
+                        <div class="bg-emerald-500/10 rounded p-2 mt-3 border border-emerald-500/30">
+                            <p class="text-xs text-emerald-300"><strong>Logic:</strong> SBC is an expense on the income statement (reduces NI) but no cash was paid. Add it back, just like depreciation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 4: Full SCF Build -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Example 4: Complete SCF (Indirect Method)</h2>
+                <p class="text-sm text-slate-300 mb-4">Combine everything. Company has: NI = $150, Depreciation = $40, SBC = $25, Gain on sale = $10, &Delta;A/R = +$30, &Delta;Inventory = &minus;$15, &Delta;A/P = +$20, CapEx = ($80), Sale proceeds = $50, Shares issued = $60, Dividends = ($25), Beginning cash = $100.</p>
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-emerald-400 font-bold">Solution:</span>
+                            <span class="text-slate-300">Build the complete SCF</span>
+                        </div>
+                        <button onclick="toggleStep('ex4', 1)" id="ex4-btn-1" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex4-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <table class="w-full text-sm font-mono text-slate-300">
+                            <tbody>
+                                <tr class="bg-emerald-500/10"><td class="py-1 px-3 font-bold text-emerald-400" colspan="2">Cash Flow from Operations</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">Net Income</td><td class="text-right py-1 px-3">$150</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">+ Depreciation</td><td class="text-right py-1 px-3">40</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">+ Stock-based comp.</td><td class="text-right py-1 px-3">25</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">&minus; Gain on sale</td><td class="text-right py-1 px-3">(10)</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">&minus; Increase in A/R</td><td class="text-right py-1 px-3">(30)</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">+ Decrease in Inventory</td><td class="text-right py-1 px-3">15</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">+ Increase in A/P</td><td class="text-right py-1 px-3">20</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td class="py-1 px-3">CFO</td><td class="text-right py-1 px-3 text-emerald-400">$210</td></tr>
+                                <tr class="bg-blue-500/10"><td class="py-1 px-3 font-bold text-blue-400" colspan="2">Cash Flow from Investing</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">CapEx</td><td class="text-right py-1 px-3">(80)</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">Proceeds from asset sale</td><td class="text-right py-1 px-3">50</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td class="py-1 px-3">CFI</td><td class="text-right py-1 px-3 text-blue-400">($30)</td></tr>
+                                <tr class="bg-orange-500/10"><td class="py-1 px-3 font-bold text-orange-400" colspan="2">Cash Flow from Financing</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">Shares issued</td><td class="text-right py-1 px-3">60</td></tr>
+                                <tr><td class="py-1 px-3 pl-6">Dividends paid</td><td class="text-right py-1 px-3">(25)</td></tr>
+                                <tr class="border-t border-slate-600 font-bold"><td class="py-1 px-3">CFF</td><td class="text-right py-1 px-3 text-orange-400">$35</td></tr>
+                                <tr class="border-t-2 border-slate-500 font-bold"><td class="py-1 px-3">Net change in cash</td><td class="text-right py-1 px-3">$215</td></tr>
+                                <tr><td class="py-1 px-3">+ Beginning cash</td><td class="text-right py-1 px-3">100</td></tr>
+                                <tr class="border-t-2 border-emerald-500/50 font-bold"><td class="py-1 px-3 text-emerald-400">Ending cash</td><td class="text-right py-1 px-3 text-emerald-400">$315</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-3 bg-emerald-500/10 rounded p-2 border border-emerald-500/30">
+                            <p class="text-xs text-emerald-300"><strong>FCF = CFO &minus; CapEx = $210 &minus; $80 = $130.</strong> Pattern: CFO +, CFI &minus;, CFF + &rarr; Growth company (operations + new capital fund expansion).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 6: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-emerald-400">Practice Questions</h2>
+                    <div class="flex items-center gap-6 text-sm">
+                        <div><span class="text-slate-500">Score:</span> <span class="text-emerald-400 font-bold"><span id="p-correct">0</span>/<span id="p-total">0</span></span></div>
+                        <div><span class="text-slate-500">Streak:</span> <span class="text-amber-400 font-bold" id="p-streak">0</span></div>
+                        <div class="text-slate-500" id="p-progress"></div>
+                    </div>
+                </div>
+                <div id="p-question" class="mb-4 text-slate-300">Click "New Question" to begin.</div>
+                <div id="p-answer" class="mb-4"></div>
+                <div id="p-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.pNew()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-4">Journal Entry Practice</h2>
+                <div class="flex items-center gap-6 text-sm mb-4">
+                    <div class="text-slate-500" id="je-progress"></div>
+                </div>
+                <div id="je-prompt" class="mb-4 text-slate-300">Click "New Entry" to begin.</div>
+                <div id="je-lines" class="space-y-2 mb-4"></div>
+                <div id="je-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.jeNew()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Entry</button>
+                    <button onclick="QuizEngine.jeAdd()" class="bg-slate-600 hover:bg-slate-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">+ Add Line</button>
+                    <button onclick="QuizEngine.jeCheck()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Entry</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Statement of Cash Flows Study Tool</p>
+    </div>
+
+<script>
+    // ========== TAB SWITCHING ==========
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    };
+
+    // ========== TOGGLE STEP (Worked Examples) ==========
+    window.toggleStep = function(ex, n) {
+        const div = document.getElementById(ex + '-step-' + n);
+        const btn = document.getElementById(ex + '-btn-' + n);
+        if (div.classList.contains('hidden')) {
+            div.classList.remove('hidden');
+            btn.textContent = 'Hide';
+        } else {
+            div.classList.add('hidden');
+            btn.textContent = 'Show';
+        }
+    };
+
+    // ========== FCF CALCULATOR ==========
+    window.calcFCF = function() {
+        const cfo = parseFloat(document.getElementById('fcf-cfo').value);
+        const capex = parseFloat(document.getElementById('fcf-capex').value);
+        if (isNaN(cfo) || isNaN(capex)) return;
+        const fcf = cfo - capex;
+        document.getElementById('fcf-result').classList.remove('hidden');
+        const color = fcf >= 0 ? 'text-emerald-400' : 'text-rose-400';
+        const label = fcf >= 0 ? 'Positive FCF: cash available for debt repayment, dividends, buybacks, or growth.' : 'Negative FCF: the company is spending more on CapEx than it generates from operations.';
+        document.getElementById('fcf-output').innerHTML = '<p class="text-2xl font-bold ' + color + '">FCF = $' + fcf.toLocaleString() + '</p><p class="text-sm text-slate-400 mt-1">' + label + '</p>';
+    };
+</script>
+
+<script>
+// ========== PRACTICE QUESTION GENERATORS ==========
+const { rand, pick, fmt } = QuizEngine;
+
+// Helper: format dollar amounts with parentheses for negatives
+function fmtD(n) { return n >= 0 ? '$' + fmt(n) : '$(' + fmt(Math.abs(n)) + ')'; }
+
+// 1. Classification (MC) — which section?
+function genClassifyActivity() {
+    const items = [
+        { desc: 'Cash received from customers', ans: 0, opts: ['CFO', 'CFI', 'CFF'], why: 'Collecting from customers is a core operating activity.' },
+        { desc: 'Purchase of equipment for cash', ans: 1, opts: ['CFO', 'CFI', 'CFF'], why: 'Buying long-term assets is an investing activity.' },
+        { desc: 'Payment of dividends to shareholders', ans: 2, opts: ['CFO', 'CFI', 'CFF'], why: 'Returning capital to equity holders is a financing activity.' },
+        { desc: 'Proceeds from issuing common stock', ans: 2, opts: ['CFO', 'CFI', 'CFF'], why: 'Issuing equity is a financing activity.' },
+        { desc: 'Cash paid to suppliers for inventory', ans: 0, opts: ['CFO', 'CFI', 'CFF'], why: 'Paying suppliers for inventory is a core operating activity.' },
+        { desc: 'Proceeds from sale of a building', ans: 1, opts: ['CFO', 'CFI', 'CFF'], why: 'Selling long-term assets is an investing activity.' },
+        { desc: 'Repayment of bond principal', ans: 2, opts: ['CFO', 'CFI', 'CFF'], why: 'Repaying debt principal is a financing activity.' },
+        { desc: 'Interest paid on a bank loan', ans: 0, opts: ['CFO', 'CFI', 'CFF'], why: 'Under US GAAP, interest paid is classified as operating.' },
+        { desc: 'Wages paid to employees', ans: 0, opts: ['CFO', 'CFI', 'CFF'], why: 'Employee wages are a core operating cost.' },
+        { desc: 'Purchase of an equity investment', ans: 1, opts: ['CFO', 'CFI', 'CFF'], why: 'Buying investments is an investing activity.' },
+        { desc: 'Cash received from sale of equipment', ans: 1, opts: ['CFO', 'CFI', 'CFF'], why: 'Sale proceeds from long-term assets go to investing.' },
+        { desc: 'Proceeds from a new bank loan', ans: 2, opts: ['CFO', 'CFI', 'CFF'], why: 'Borrowing is a financing activity.' },
+        { desc: 'Income taxes paid', ans: 0, opts: ['CFO', 'CFI', 'CFF'], why: 'Tax payments are classified as operating under US GAAP.' },
+        { desc: 'Repurchase of treasury stock', ans: 2, opts: ['CFO', 'CFI', 'CFF'], why: 'Buying back own shares is a financing activity.' },
+        { desc: 'Finance lease principal payment', ans: 2, opts: ['CFO', 'CFI', 'CFF'], why: 'The principal portion of a finance lease payment is financing.' },
+        { desc: 'Operating lease payment', ans: 0, opts: ['CFO', 'CFI', 'CFF'], why: 'The entire operating lease payment is classified as operating.' },
+    ];
+    const s = pick(items);
+    return { question: 'Classify this cash flow: <strong>' + s.desc + '</strong>', type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 2. Indirect method adjustment direction (MC)
+function genAdjustDirection() {
+    const items = [
+        { desc: 'Depreciation expense of $50,000', ans: 0, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'Depreciation is a non-cash expense. Add it back to NI.' },
+        { desc: 'Increase in Accounts Receivable of $20,000', ans: 1, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'A/R increased = revenue was earned but cash not yet collected. Subtract.' },
+        { desc: 'Decrease in Inventory of $15,000', ans: 0, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'Inventory decreased = used up inventory previously purchased with cash. Add.' },
+        { desc: 'Increase in Accounts Payable of $10,000', ans: 0, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'A/P increased = expenses were incurred but cash not yet paid. Add.' },
+        { desc: 'Gain on sale of equipment of $8,000', ans: 1, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'Gain is non-operating. Remove it from CFO (full proceeds go to CFI). Subtract.' },
+        { desc: 'Loss on sale of investment of $5,000', ans: 0, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'Loss is non-operating. Add it back (full proceeds in CFI). Add.' },
+        { desc: 'Stock-based compensation expense of $30,000', ans: 0, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'SBC is a non-cash expense. Add it back to NI.' },
+        { desc: 'Decrease in Accounts Payable of $12,000', ans: 1, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'A/P decreased = paid off liabilities with cash. Subtract.' },
+        { desc: 'Amortization of intangible assets of $7,000', ans: 0, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'Amortization is a non-cash expense, just like depreciation. Add.' },
+        { desc: 'Unrealized gain on trading securities of $4,000', ans: 1, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'Unrealized gain increased NI but no cash was received. Subtract.' },
+        { desc: 'Increase in Prepaid Expenses of $6,000', ans: 1, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'Prepaid increased = cash was spent but not yet expensed. Subtract (current asset increase).' },
+        { desc: 'Increase in Unearned Revenue of $9,000', ans: 0, opts: ['Add to NI', 'Subtract from NI', 'No adjustment needed'], why: 'Unearned revenue increased = cash received but not yet earned. Add (current liability increase).' },
+    ];
+    const s = pick(items);
+    return { question: 'In the indirect method, how do you handle: <strong>' + s.desc + '</strong>?', type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 3. FCF calculation (numeric)
+function genFCFCalc() {
+    const cfo = pick([120000, 250000, 80000, 350000, 175000, 420000]);
+    const capex = pick([40000, 75000, 100000, 150000, 60000, 200000]);
+    const fcf = cfo - capex;
+    return { question: 'A company reports CFO of $' + fmt(cfo) + ' and Capital Expenditures of $' + fmt(capex) + '. What is the Free Cash Flow?', type: 'number', answer: fcf, explanation: 'FCF = CFO \u2212 CapEx = $' + fmt(cfo) + ' \u2212 $' + fmt(capex) + ' = ' + fmtD(fcf) };
+}
+
+// 4. CFO from indirect method (numeric)
+function genCFOCalc() {
+    const ni = pick([80, 120, 150, 200, 250]) * 1000;
+    const depr = pick([20, 30, 40, 50]) * 1000;
+    const arChange = pick([-15, -10, 10, 15, 20, 25]) * 1000;
+    const apChange = pick([-10, -5, 5, 10, 15]) * 1000;
+    const cfo = ni + depr - arChange + apChange;
+    const arLabel = arChange > 0 ? 'increase of $' + fmt(arChange) : 'decrease of $' + fmt(Math.abs(arChange));
+    const apLabel = apChange > 0 ? 'increase of $' + fmt(apChange) : 'decrease of $' + fmt(Math.abs(apChange));
+    const arExp = arChange >= 0 ? '\u2212 $' + fmt(arChange) : '+ $' + fmt(Math.abs(arChange));
+    const apExp = apChange >= 0 ? '+ $' + fmt(apChange) : '\u2212 $' + fmt(Math.abs(apChange));
+    return { question: 'Calculate CFO using the indirect method. Net Income = $' + fmt(ni) + ', Depreciation = $' + fmt(depr) + ', A/R ' + arLabel + ', A/P ' + apLabel + '.', type: 'number', answer: cfo, explanation: 'CFO = NI + Depr \u2212 \u0394A/R + \u0394A/P = $' + fmt(ni) + ' + $' + fmt(depr) + ' ' + arExp + ' ' + apExp + ' = ' + fmtD(cfo) };
+}
+
+// 5. Cash flow pattern (MC)
+function genPatternMC() {
+    const patterns = [
+        { cfo: '+', cfi: '\u2212', cff: '\u2212', ans: 0, opts: ['Healthy mature company', 'Startup', 'Distressed company', 'Growth company'], why: 'CFO+, CFI\u2212, CFF\u2212: generates cash, invests in assets, returns capital. Classic mature company.' },
+        { cfo: '\u2212', cfi: '\u2212', cff: '+', ans: 1, opts: ['Healthy mature company', 'Startup', 'Distressed company', 'Restructuring'], why: 'CFO\u2212, CFI\u2212, CFF+: burning cash, investing heavily, funded by investors. Classic startup.' },
+        { cfo: '\u2212', cfi: '+', cff: '\u2212', ans: 2, opts: ['Growth company', 'Startup', 'Distressed company', 'Healthy mature company'], why: 'CFO\u2212, CFI+, CFF\u2212: operations losing money, selling assets to stay afloat. Distressed.' },
+        { cfo: '+', cfi: '\u2212', cff: '+', ans: 3, opts: ['Restructuring', 'Distressed company', 'Healthy mature company', 'Growth company'], why: 'CFO+, CFI\u2212, CFF+: operations + new capital fund aggressive expansion. Growth phase.' },
+    ];
+    const s = pick(patterns);
+    return { question: 'A company has CFO ' + s.cfo + ', CFI ' + s.cfi + ', CFF ' + s.cff + '. What is the most likely profile?', type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 6. Non-cash disclosure (MC)
+function genNonCashMC() {
+    const items = [
+        { desc: 'A company converts $500,000 of bonds into common stock', ans: 0, why: 'No cash changes hands. Disclosed in supplemental non-cash schedule.' },
+        { desc: 'A company pays $200,000 cash to repay a bank loan', ans: 1, why: 'This involves cash \u2014 it goes in the financing section of the SCF.' },
+        { desc: 'A company signs a new 5-year finance lease (ROU asset = $300,000)', ans: 0, why: 'At lease inception, no cash moves. ROU asset and liability are created simultaneously. Non-cash disclosure.' },
+        { desc: 'A company issues 10,000 shares to acquire a competitor', ans: 0, why: 'Stock-for-stock acquisition involves no cash. Non-cash disclosure.' },
+        { desc: 'A company pays $50,000 in dividends', ans: 1, why: 'Cash dividends involve cash outflow \u2014 reported in CFF.' },
+    ];
+    const s = pick(items);
+    return { question: s.desc + '. Is this a <strong>non-cash disclosure</strong> or does it appear in the <strong>SCF body</strong>?', type: 'mc', answer: s.ans, options: ['Non-cash disclosure (supplemental)', 'Appears in SCF body'], explanation: s.why };
+}
+
+// 7. Lease SCF classification (MC)
+function genLeaseSCF() {
+    const items = [
+        { q: 'How is a finance lease payment split on the SCF?', ans: 1, opts: ['Entire payment in CFO', 'Interest in CFO, principal in CFF', 'Entire payment in CFF', 'Entire payment in CFI'], why: 'Finance lease: interest \u2192 CFO, principal \u2192 CFF. Like a loan.' },
+        { q: 'How is an operating lease payment classified on the SCF?', ans: 0, opts: ['Entire payment in CFO', 'Interest in CFO, principal in CFF', 'Entire payment in CFF'], why: 'Operating lease: entire payment \u2192 CFO. Like rent.' },
+        { q: 'In the indirect method, what adjustment is needed for a finance lease\u2019s ROU amortization?', ans: 0, opts: ['Add back to NI (non-cash expense)', 'Subtract from NI', 'No adjustment'], why: 'ROU amortization is a non-cash expense, just like depreciation. Add it back.' },
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 8. Net change in cash (numeric)
+function genNetChangeCash() {
+    const cfo = pick([80, 120, 200, 300, 150]) * 1000;
+    const cfi = pick([-50, -80, -120, -200, -60]) * 1000;
+    const cff = pick([-30, -20, 40, 60, -50]) * 1000;
+    const netChange = cfo + cfi + cff;
+    return { question: 'CFO = ' + fmtD(cfo) + ', CFI = ' + fmtD(cfi) + ', CFF = ' + fmtD(cff) + '. What is the net change in cash?', type: 'number', answer: netChange, explanation: 'Net \u0394 Cash = CFO + CFI + CFF = ' + fmtD(cfo) + ' + ' + fmtD(cfi) + ' + ' + fmtD(cff) + ' = ' + fmtD(netChange) };
+}
+
+// 9. Ending cash balance (numeric)
+function genEndingCash() {
+    const beg = pick([50, 100, 150, 200, 75]) * 1000;
+    const netChange = pick([-30, 20, 50, 80, -10, 120]) * 1000;
+    const end = beg + netChange;
+    const label = netChange >= 0 ? '$' + fmt(netChange) : '$(' + fmt(Math.abs(netChange)) + ')';
+    return { question: 'Beginning cash = $' + fmt(beg) + '. Net change in cash = ' + label + '. What is the ending cash balance?', type: 'number', answer: end, explanation: 'Ending cash = Beginning + Net change = $' + fmt(beg) + ' + ' + label + ' = ' + fmtD(end) };
+}
+
+// 10. Depreciation add-back logic (MC)
+function genDeprLogic() {
+    return { question: 'Why is depreciation added back to net income in the indirect method?', type: 'mc', answer: 1, options: ['Because depreciation generates cash', 'Because depreciation reduced NI but no cash was spent', 'Because depreciation is an investing activity', 'Because depreciation increases assets'], explanation: 'Depreciation is a non-cash expense that reduced net income. Adding it back reverses the non-cash charge to approximate cash from operations.' };
+}
+
+// 11. Gain removal logic (MC)
+function genGainLogic() {
+    const bv = pick([20, 40, 60, 80]) * 1000;
+    const proceeds = bv + pick([5, 10, 15, 20]) * 1000;
+    const gain = proceeds - bv;
+    return { question: 'Equipment with a book value of $' + fmt(bv) + ' is sold for $' + fmt(proceeds) + '. How does this appear on the SCF (indirect method)?', type: 'mc', answer: 2, options: ['Add the $' + fmt(gain) + ' gain to NI in CFO', 'Report $' + fmt(gain) + ' gain in CFI', 'Subtract $' + fmt(gain) + ' gain from CFO; report full $' + fmt(proceeds) + ' in CFI', 'No adjustment needed'], explanation: 'The gain ($' + fmt(gain) + ') is in NI, so subtract it from CFO. The full sale proceeds ($' + fmt(proceeds) + ') go to CFI. This avoids double-counting.' };
+}
+
+// 12. Working capital direction (MC)
+function genWCDirection() {
+    const items = [
+        { q: 'Inventory increased by $25,000. In the indirect method, this is:', ans: 1, opts: ['Added to NI (+$25,000)', 'Subtracted from NI (\u2212$25,000)'], why: 'Current asset increase = cash was used to build inventory. Subtract.' },
+        { q: 'Accounts Payable decreased by $18,000. In the indirect method, this is:', ans: 1, opts: ['Added to NI (+$18,000)', 'Subtracted from NI (\u2212$18,000)'], why: 'Current liability decrease = cash was spent to pay off suppliers. Subtract.' },
+        { q: 'Accounts Receivable decreased by $30,000. In the indirect method, this is:', ans: 0, opts: ['Added to NI (+$30,000)', 'Subtracted from NI (\u2212$30,000)'], why: 'Current asset decrease = collected cash from prior credit sales. Add.' },
+        { q: 'Unearned Revenue increased by $12,000. In the indirect method, this is:', ans: 0, opts: ['Added to NI (+$12,000)', 'Subtracted from NI (\u2212$12,000)'], why: 'Current liability increase = received cash not yet earned as revenue. Add.' },
+        { q: 'Prepaid Insurance increased by $8,000. In the indirect method, this is:', ans: 1, opts: ['Added to NI (+$8,000)', 'Subtracted from NI (\u2212$8,000)'], why: 'Current asset increase = cash was spent on prepaid insurance. Subtract.' },
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 13. Conceptual (MC)
+function genConceptMC() {
+    const items = [
+        { q: 'Which method of presenting CFO is used by approximately 98% of companies?', ans: 1, opts: ['Direct method', 'Indirect method'], why: 'The indirect method is far more common because it\u2019s simpler to prepare and directly reconciles NI to CFO.' },
+        { q: 'The indirect and direct methods produce different CFO amounts.', ans: 1, opts: ['True', 'False'], why: 'Both methods produce the exact same CFO. They differ only in presentation.' },
+        { q: 'Which financial statement is considered the hardest to manipulate?', ans: 2, opts: ['Income Statement', 'Balance Sheet', 'Statement of Cash Flows'], why: 'The SCF is hardest to manipulate because cash either came in or it didn\u2019t \u2014 there are fewer estimates involved.' },
+        { q: 'Free Cash Flow is a required GAAP line item on the SCF.', ans: 1, opts: ['True', 'False'], why: 'FCF is NOT a GAAP measure. It\u2019s widely used by analysts but not required on financial statements.' },
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 14. CFO with gain/loss adjustment (numeric)
+function genCFOWithGain() {
+    const ni = pick([100, 150, 200, 250]) * 1000;
+    const depr = pick([25, 35, 45]) * 1000;
+    const gainOrLoss = pick([-15, -10, 8, 12, 20]) * 1000;
+    const cfo = ni + depr - gainOrLoss;
+    const glLabel = gainOrLoss > 0 ? 'Gain on sale of $' + fmt(gainOrLoss) : 'Loss on sale of $' + fmt(Math.abs(gainOrLoss));
+    const glExp = gainOrLoss > 0 ? '\u2212 $' + fmt(gainOrLoss) : '+ $' + fmt(Math.abs(gainOrLoss));
+    return { question: 'Calculate CFO. NI = $' + fmt(ni) + ', Depreciation = $' + fmt(depr) + ', ' + glLabel + '. No working capital changes.', type: 'number', answer: cfo, explanation: 'CFO = NI + Depr \u2212 Gain (or + Loss) = $' + fmt(ni) + ' + $' + fmt(depr) + ' ' + glExp + ' = ' + fmtD(cfo) };
+}
+
+// ========== JOURNAL ENTRY GENERATORS ==========
+
+// 1. Cash sale
+function genJECashSale() {
+    const units = pick([50, 80, 100, 150, 200]);
+    const price = pick([10, 15, 20, 25]);
+    const rev = units * price;
+    return { prompt: 'Record the cash sale of ' + units + ' units at $' + price + ' each (total $' + fmt(rev) + ').', answer: [{ acct: 'Cash', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: rev }] };
+}
+
+// 2. Credit sale
+function genJECreditSale() {
+    const rev = pick([5000, 10000, 15000, 20000, 25000]);
+    return { prompt: 'Record a credit sale of $' + fmt(rev) + '.', answer: [{ acct: 'Accounts Receivable', dr: rev, cr: 0 }, { acct: 'Sales Revenue', dr: 0, cr: rev }] };
+}
+
+// 3. Collection of A/R
+function genJECollectAR() {
+    const amt = pick([8000, 12000, 18000, 25000, 30000]);
+    return { prompt: 'Record collection of $' + fmt(amt) + ' of accounts receivable.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Accounts Receivable', dr: 0, cr: amt }] };
+}
+
+// 4. Depreciation
+function genJEDepr() {
+    const amt = pick([10000, 20000, 30000, 40000, 50000]);
+    return { prompt: 'Record annual depreciation expense of $' + fmt(amt) + '.', answer: [{ acct: 'Depreciation Expense', dr: amt, cr: 0 }, { acct: 'Accumulated Depreciation', dr: 0, cr: amt }] };
+}
+
+// 5. CapEx (purchase equipment)
+function genJECapEx() {
+    const amt = pick([50000, 80000, 120000, 200000, 150000]);
+    return { prompt: 'Record the purchase of equipment for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Equipment', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+
+// 6. Issue stock
+function genJEIssueStock() {
+    const amt = pick([50000, 100000, 200000, 300000]);
+    return { prompt: 'Record the issuance of common stock for $' + fmt(amt) + ' cash.', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Common Stock', dr: 0, cr: amt }] };
+}
+
+// 7. Pay dividends
+function genJEPayDiv() {
+    const amt = pick([10000, 20000, 30000, 50000]);
+    return { prompt: 'Record payment of $' + fmt(amt) + ' in cash dividends (previously declared).', answer: [{ acct: 'Dividends Payable', dr: amt, cr: 0 }, { acct: 'Cash', dr: 0, cr: amt }] };
+}
+
+// 8. Borrow cash (loan)
+function genJEBorrow() {
+    const amt = pick([50000, 100000, 150000, 250000]);
+    return { prompt: 'Record borrowing $' + fmt(amt) + ' from a bank (long-term note payable).', answer: [{ acct: 'Cash', dr: amt, cr: 0 }, { acct: 'Notes Payable', dr: 0, cr: amt }] };
+}
+
+// 9. Sale of asset at gain
+function genJESaleGain() {
+    const cost = pick([80000, 100000, 120000]);
+    const accDepr = pick([30000, 40000, 50000]);
+    const bv = cost - accDepr;
+    const proceeds = bv + pick([5000, 10000, 15000]);
+    const gain = proceeds - bv;
+    return { prompt: 'Record sale of equipment (cost $' + fmt(cost) + ', accumulated depreciation $' + fmt(accDepr) + ') for $' + fmt(proceeds) + ' cash.', answer: [{ acct: 'Cash', dr: proceeds, cr: 0 }, { acct: 'Accumulated Depreciation', dr: accDepr, cr: 0 }, { acct: 'Equipment', dr: 0, cr: cost }, { acct: 'Gain on Sale', dr: 0, cr: gain }] };
+}
+
+// 10. SBC expense
+function genJESBC() {
+    const amt = pick([15000, 25000, 35000, 50000]);
+    return { prompt: 'Record stock-based compensation expense of $' + fmt(amt) + '.', answer: [{ acct: 'SBC Expense', dr: amt, cr: 0 }, { acct: 'Additional Paid-in Capital', dr: 0, cr: amt }] };
+}
+
+// ========== QUIZ ENGINE INIT ==========
+QuizEngine.init({
+    questionGenerators: [genClassifyActivity, genClassifyActivity, genAdjustDirection, genAdjustDirection, genFCFCalc, genCFOCalc, genPatternMC, genNonCashMC, genLeaseSCF, genNetChangeCash, genEndingCash, genDeprLogic, genGainLogic, genWCDirection, genConceptMC, genCFOWithGain],
+    jeGenerators: [genJECashSale, genJECreditSale, genJECollectAR, genJEDepr, genJECapEx, genJEIssueStock, genJEPayDiv, genJEBorrow, genJESaleGain, genJESBC],
+    jeAccounts: ['Cash', 'Accounts Receivable', 'Inventory', 'Equipment', 'Accumulated Depreciation', 'Accounts Payable', 'Notes Payable', 'Dividends Payable', 'Common Stock', 'Additional Paid-in Capital', 'Sales Revenue', 'COGS', 'Depreciation Expense', 'SBC Expense', 'Gain on Sale', 'Loss on Sale'],
+    accentColor: 'emerald',
+    qCopies: 6,
+    jeCopies: 2
+});
+</script>
+
+    <script src="cursor.js"></script>
+</body>
+</html>
