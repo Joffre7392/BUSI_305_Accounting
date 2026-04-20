@@ -1214,7 +1214,7 @@ function genROICvsROE() {
         {
             setup: 'ROIC is <strong>rising</strong> while ROE is <strong>rising faster</strong>',
             ans: 0,
-            opts: ['Better &mdash; but less better than ROE alone suggests', 'Worse &mdash; ROE is masking decline', 'Unchanged', 'Insufficient information'],
+            opts: ['Genuinely better, but ROE overstates the improvement', 'Worse &mdash; ROE is masking decline', 'Unchanged', 'Insufficient information'],
             why: 'ROIC up means the business is improving. ROE up faster means leverage (or buybacks) is amplifying that. The business is genuinely better, but ROE overstates how much better.'
         },
         {
@@ -1226,7 +1226,7 @@ function genROICvsROE() {
         {
             setup: 'ROIC is <strong>rising</strong> while ROE is <strong>falling</strong>',
             ans: 0,
-            opts: ['Unambiguously better business', 'Worse business', 'Unchanged', 'Insufficient information'],
+            opts: ['Business is better; ROE reflects a larger equity base', 'Worse business', 'Unchanged', 'Insufficient information'],
             why: 'Rare pattern. ROIC up = business improving. ROE down typically means the equity base grew (equity issuance or debt reduction). The business is genuinely better; the company is also less levered.'
         },
         {
@@ -1312,7 +1312,7 @@ function genPEFamily() {
 function genLiquidityRedFlag() {
     const items = [
         { q: 'A company\'s <strong>quick ratio</strong> is much lower than its <strong>current ratio</strong>. What does this tell you?', ans: 1, opts: ['Cash is strong', 'Inventory is propping up liquidity', 'A/R is growing', 'Nothing unusual'], why: 'Current ratio includes inventory; quick ratio strips it out. A big gap means current assets are heavy in inventory &mdash; liquidity depends on selling that inventory on time.' },
-        { q: 'Current ratio is below 1.0 and DSO (days sales outstanding) is rising. How concerning is this?', ans: 2, opts: ['Not concerning', 'Slightly concerning', 'Significantly concerning', 'Always terminal'], why: 'Current ratio &lt;1 means short-term obligations exceed current assets. Rising DSO means customers are paying more slowly. Together: the liquidity problem is getting worse, not better.' }
+        { q: 'For a <strong>manufacturer</strong> (not retail), current ratio is below 1.0, DSO is rising, <em>and</em> operating cash flow turned negative this quarter. How concerning is this combined signal?', ans: 2, opts: ['Not concerning', 'Slightly concerning', 'Significantly concerning', 'Always terminal'], why: 'For non-retail businesses, CR&lt;1 means short-term obligations exceed current assets. Rising DSO means customers are paying more slowly. Negative operating cash flow means cash isn\'t coming in fast enough to cover operations. All three together: the liquidity picture is deteriorating. (Retail and restaurants can run CR&lt;1 by design &mdash; they collect cash before paying suppliers &mdash; so the anchor industry matters.)' }
     ];
     const s = pick(items);
     return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
