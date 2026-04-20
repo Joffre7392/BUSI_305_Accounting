@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Statement Analysis | BUSI 305</title>
+    <script src="quiz-engine.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['Playfair Display', 'Georgia', 'serif'] } } } }</script>
+    <script src="animations.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        :root { --accent: #38bdf8; --accent-bg: rgba(56,189,248,0.08); --accent-border-subtle: rgba(56,189,248,0.15); }
+        html { scroll-behavior: smooth; }
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn:hover { background: rgba(56,189,248,0.15); }
+        .tab-btn.active { border-color: #38bdf8; color: #38bdf8; background: rgba(56,189,248,0.1); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        input[type="number"]::-webkit-inner-spin-button { opacity: 1; }
+        .metric-row-top { border-left: 3px solid #38bdf8; }
+        .metric-row-mid { border-left: 3px solid #a78bfa; }
+        .metric-row-low { border-left: 3px solid #94a3b8; }
+        .tripwire-box { background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(167,139,250,0.05)); border: 1px solid rgba(56,189,248,0.2); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen themed">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <a href="index.html" class="back-link" style="--accent: #38bdf8">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+        <div class="page-header">
+            <div class="icon-wrap" style="background: rgba(56,189,248,0.1)">
+                <svg class="text-sky-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v-5.5m3 5.5V8.25m3 3v-2"/></svg>
+            </div>
+            <div>
+                <h1>Financial Statement Analysis</h1>
+                <p class="subtitle">Lecture 25 &mdash; The 7 metrics that actually matter &amp; where to dig deeper</p>
+            </div>
+            <span class="lec-badge" style="background: rgba(56,189,248,0.1); color: rgba(56,189,248,0.8); border: 1px solid rgba(56,189,248,0.1)">L 25</span>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-slate-700 pb-4">
+            <button onclick="switchTab('framework')" id="tab-framework" class="tab-btn active px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Framework</button>
+            <button onclick="switchTab('eps')" id="tab-eps" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">EPS &amp; P/E</button>
+            <button onclick="switchTab('quality')" id="tab-quality" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Cash &amp; Quality</button>
+            <button onclick="switchTab('structure')" id="tab-structure" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Structure &amp; Skeptic</button>
+            <button onclick="switchTab('worked')" id="tab-worked" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Worked Examples</button>
+            <button onclick="switchTab('practice')" id="tab-practice" class="tab-btn px-4 py-2 rounded-lg border border-slate-700 text-sm font-medium">Practice Questions</button>
+        </div>
+
+        <!-- ======================== TAB 1: FRAMEWORK ======================== -->
+        <div id="panel-framework" class="tab-panel active">
+
+            <!-- The thesis -->
+            <div class="tripwire-box rounded-xl p-6 mb-6">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 bg-sky-500/20 rounded-lg flex items-center justify-center text-sky-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+                    </div>
+                    <span class="text-sky-400 font-semibold text-sm uppercase tracking-wider">The Thesis</span>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3">Every ratio is a <span class="text-sky-400">tripwire</span>, not an answer.</h2>
+                <p class="text-slate-300 leading-relaxed">A ratio tells you <em>where to look next</em>. The real work happens in <strong class="text-white">footnotes, MD&amp;A, non-GAAP reconciliations, and peer comp sets</strong>. This unit teaches you to stop treating ratios as conclusions and start treating them as questions. The 7 metrics below are the ones that <strong class="text-white">actually matter</strong> &mdash; ranked by how often they drive real decisions.</p>
+            </div>
+
+            <!-- The 7 Metrics table -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">The 7 Metrics That Actually Matter</h2>
+                <p class="text-sm text-slate-400 mb-5">Ranked by real-world importance &mdash; how often each ratio drives a buy/sell/credit/M&amp;A decision in practice.</p>
+                <div class="space-y-2">
+                    <div class="metric-row-top bg-slate-900/60 rounded-r-lg p-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs font-bold text-sky-400 bg-sky-500/20 px-2 py-0.5 rounded">#1</span>
+                                    <h3 class="font-bold text-white">EPS &amp; P/E family</h3>
+                                    <span class="text-xs text-slate-500">&mdash; the deepest dive</span>
+                                </div>
+                                <p class="text-sm text-slate-400">The bridge from accounting to markets. <strong class="text-slate-300">Nobody valuable looks at P/E without asking &ldquo;on what E?&rdquo;</strong></p>
+                            </div>
+                            <span class="text-xs text-sky-400/70 whitespace-nowrap">~30% of lecture</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-row-top bg-slate-900/60 rounded-r-lg p-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs font-bold text-sky-400 bg-sky-500/20 px-2 py-0.5 rounded">#2</span>
+                                    <h3 class="font-bold text-white">Free Cash Flow &amp; FCF Yield</h3>
+                                    <span class="text-xs text-slate-500">&mdash; the serious investor's answer</span>
+                                </div>
+                                <p class="text-sm text-slate-400">&ldquo;Is the company <em>really</em> making money?&rdquo; Cash doesn't lie; net income can.</p>
+                            </div>
+                            <span class="text-xs text-sky-400/70 whitespace-nowrap">~20% of lecture</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-row-mid bg-slate-900/60 rounded-r-lg p-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs font-bold text-purple-400 bg-purple-500/20 px-2 py-0.5 rounded">#3</span>
+                                    <h3 class="font-bold text-white">ROIC</h3>
+                                    <span class="text-xs text-slate-500">&mdash; quality-of-business metric</span>
+                                </div>
+                                <p class="text-sm text-slate-400">Separates great businesses from merely profitable ones. Capital-structure neutral.</p>
+                            </div>
+                            <span class="text-xs text-purple-400/70 whitespace-nowrap">~15% of lecture</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-row-mid bg-slate-900/60 rounded-r-lg p-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs font-bold text-purple-400 bg-purple-500/20 px-2 py-0.5 rounded">#4</span>
+                                    <h3 class="font-bold text-white">Margins (Gross / Operating / Net)</h3>
+                                    <span class="text-xs text-slate-500">&mdash; operational diagnostic</span>
+                                </div>
+                                <p class="text-sm text-slate-400">Where in the P&amp;L is value made or lost? Gross margin is the earliest warning signal.</p>
+                            </div>
+                            <span class="text-xs text-purple-400/70 whitespace-nowrap">~10% of lecture</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-row-low bg-slate-900/60 rounded-r-lg p-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs font-bold text-slate-400 bg-slate-500/20 px-2 py-0.5 rounded">#5</span>
+                                    <h3 class="font-bold text-white">Leverage (Net Debt / EBITDA)</h3>
+                                    <span class="text-xs text-slate-500">&mdash; credit &amp; M&amp;A essential</span>
+                                </div>
+                                <p class="text-sm text-slate-400">Financial risk on top of business risk. Covenant standard. Less important for big-cap equity.</p>
+                            </div>
+                            <span class="text-xs text-slate-400/70 whitespace-nowrap">~10% of lecture</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-row-low bg-slate-900/60 rounded-r-lg p-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs font-bold text-slate-400 bg-slate-500/20 px-2 py-0.5 rounded">#6</span>
+                                    <h3 class="font-bold text-white">Current Ratio / Liquidity</h3>
+                                    <span class="text-xs text-slate-500">&mdash; matters when it matters</span>
+                                </div>
+                                <p class="text-sm text-slate-400">Mostly dormant for healthy big-caps. Critical for distress, cyclicals, and small-caps.</p>
+                            </div>
+                            <span class="text-xs text-slate-400/70 whitespace-nowrap">~8% of lecture</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-row-low bg-slate-900/60 rounded-r-lg p-4">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-xs font-bold text-slate-400 bg-slate-500/20 px-2 py-0.5 rounded">#7</span>
+                                    <h3 class="font-bold text-white">SBC / Revenue (&amp; SBC / FCF)</h3>
+                                    <span class="text-xs text-slate-500">&mdash; essential for tech, marginal elsewhere</span>
+                                </div>
+                                <p class="text-sm text-slate-400">How much of &ldquo;earnings&rdquo; is paid for with <em>dilution</em> instead of cash?</p>
+                            </div>
+                            <span class="text-xs text-slate-400/70 whitespace-nowrap">~7% of lecture</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Three questions to carry forward -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Three Questions to Carry Forward</h2>
+                <p class="text-sm text-slate-400 mb-4">Every time you look at a ratio, ask these three questions before you form an opinion:</p>
+                <div class="space-y-3">
+                    <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/20">
+                        <p class="text-sm text-sky-300 mb-1"><strong>1. What's the numerator &mdash; really?</strong></p>
+                        <p class="text-sm text-slate-300">Is this GAAP or adjusted? Trailing or forward? Whose estimate? A single ratio name can hide five different calculations.</p>
+                    </div>
+                    <div class="bg-purple-500/10 rounded-lg p-4 border border-purple-500/20">
+                        <p class="text-sm text-purple-300 mb-1"><strong>2. Is the trend consistent with the story?</strong></p>
+                        <p class="text-sm text-slate-300">A ratio in isolation is noise. A <em>trend</em> is the signal. Does margin compression line up with stated guidance? Does ROIC track capital-allocation claims?</p>
+                    </div>
+                    <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/20">
+                        <p class="text-sm text-amber-300 mb-1"><strong>3. How does it compare to close peers?</strong></p>
+                        <p class="text-sm text-slate-300">&ldquo;Gross margin of 35%&rdquo; is meaningless alone. vs. industry median of 45%? A 10-point gap. vs. 28%? Pricing power.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Every ratio on this page is a <em>ratio of pieces</em> of <strong class="text-white">A = L + SE</strong> and the flows that move them. Margins are built from the income statement (flows into SE). Leverage compares L to a flow. ROIC takes a slice of SE plus L (invested capital) and compares it to an IS flow (NOPAT). The equation holds underneath every one of them.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 2: EPS & P/E ======================== -->
+        <div id="panel-eps" class="tab-panel">
+
+            <!-- The 4 EPS's -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">The Four EPS's Students Must Distinguish</h2>
+                <p class="text-sm text-slate-400 mb-5">&ldquo;EPS&rdquo; is four different numbers depending on who's asking. Confusing them is the single biggest rookie error in earnings analysis.</p>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold bg-slate-500/20 text-slate-300 px-2 py-0.5 rounded">1</span>
+                            <h3 class="font-bold text-white">GAAP Basic EPS</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2 mb-2 font-mono text-xs text-slate-300 text-center">
+                            (NI &minus; Preferred Div) / Wtd-Avg Basic Shares
+                        </div>
+                        <p class="text-xs text-slate-400">Legally mandated. Useful mainly as an input to the dilution calculation &mdash; almost no one values on this directly.</p>
+                    </div>
+                    <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded">2</span>
+                            <h3 class="font-bold text-sky-300">GAAP Diluted EPS</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2 mb-2 font-mono text-xs text-slate-300 text-center">
+                            (NI &minus; Pref Div) / Diluted Shares
+                        </div>
+                        <p class="text-xs text-slate-300"><strong>The honest GAAP number.</strong> Adds RSUs, options (treasury-stock method), and convertibles (if-converted). This is what shows up in filings.</p>
+                    </div>
+                    <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded">3</span>
+                            <h3 class="font-bold text-amber-300">Non-GAAP / Adjusted EPS</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2 mb-2 font-mono text-xs text-slate-300 text-center">
+                            GAAP EPS + company-defined add-backs
+                        </div>
+                        <p class="text-xs text-slate-300"><strong>Company-defined.</strong> Typically adds back SBC, intangible amortization from acquisitions, restructuring, and &ldquo;one-time&rdquo; items. Management picks the list.</p>
+                    </div>
+                    <div class="bg-purple-500/10 rounded-lg p-4 border border-purple-500/30">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-bold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">4</span>
+                            <h3 class="font-bold text-purple-300">Street / Consensus EPS</h3>
+                        </div>
+                        <div class="bg-slate-800/80 rounded p-2 mb-2 font-mono text-xs text-slate-300 text-center">
+                            Mean / median of sell-side estimates
+                        </div>
+                        <p class="text-xs text-slate-300"><strong>Almost always non-GAAP.</strong> FactSet vs. Refinitiv vs. Bloomberg can give different numbers. The &ldquo;beat/miss&rdquo; depends on which consensus you use.</p>
+                    </div>
+                </div>
+                <div class="bg-rose-500/10 rounded-lg p-3 mt-4 border border-rose-500/30">
+                    <p class="text-sm text-rose-300"><strong>The trap:</strong> A headline like &ldquo;Company beats EPS by $0.05&rdquo; is comparing <em>company non-GAAP</em> to <em>sell-side consensus non-GAAP</em>. The GAAP number could have missed. Always ask: <em>which EPS?</em></p>
+                </div>
+            </div>
+
+            <!-- What analysts actually do (on earnings day) -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">What Analysts Actually Do (Earnings Day)</h2>
+                <p class="text-sm text-slate-400 mb-4">The press release hits. You have 10 minutes before the stock moves. Here's the order of operations.</p>
+                <div class="space-y-2">
+                    <div class="flex items-start gap-3 bg-slate-900/60 rounded-lg p-3">
+                        <span class="text-sky-400 font-bold text-sm mt-0.5">1.</span>
+                        <div>
+                            <p class="text-sm text-white font-semibold">Headline EPS vs. consensus</p>
+                            <p class="text-xs text-slate-400">Beat, miss, or in-line? First read &mdash; then immediately stop trusting it.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-900/60 rounded-lg p-3">
+                        <span class="text-sky-400 font-bold text-sm mt-0.5">2.</span>
+                        <div>
+                            <p class="text-sm text-white font-semibold">Revenue vs. consensus</p>
+                            <p class="text-xs text-slate-400">EPS can be engineered through buybacks, tax, and SBC. <strong class="text-slate-300">Revenue is much harder to fake.</strong> A revenue miss with an EPS beat is a <em>red flag</em>, not a win.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-900/60 rounded-lg p-3">
+                        <span class="text-sky-400 font-bold text-sm mt-0.5">3.</span>
+                        <div>
+                            <p class="text-sm text-white font-semibold">Forward guidance</p>
+                            <p class="text-xs text-slate-400">Often moves the stock more than the print. &ldquo;Beat and raise&rdquo; vs. &ldquo;beat and lower&rdquo; are completely different outcomes.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-900/60 rounded-lg p-3">
+                        <span class="text-sky-400 font-bold text-sm mt-0.5">4.</span>
+                        <div>
+                            <p class="text-sm text-white font-semibold">Quality of the beat</p>
+                            <p class="text-xs text-slate-400">Revenue-driven (good). Margin-driven (good). Opex discipline (mixed). Tax rate (bad &mdash; rate can't keep dropping). Buybacks (cosmetic). New non-GAAP add-backs (suspect).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold text-sky-400 mt-6 mb-3">Within the first hour</h3>
+                <div class="space-y-2">
+                    <div class="flex items-start gap-3 bg-slate-900/60 rounded-lg p-3">
+                        <span class="text-amber-400 font-bold text-sm mt-0.5">5.</span>
+                        <div>
+                            <p class="text-sm text-white font-semibold">Non-GAAP reconciliation table</p>
+                            <p class="text-xs text-slate-400">The real story. Compare this quarter's add-backs line by line to last quarter. <strong class="text-slate-300">Did new items appear? Did &ldquo;one-time&rdquo; restructuring show up for the 6th consecutive quarter?</strong></p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-900/60 rounded-lg p-3">
+                        <span class="text-amber-400 font-bold text-sm mt-0.5">6.</span>
+                        <div>
+                            <p class="text-sm text-white font-semibold">Share count trend</p>
+                            <p class="text-xs text-slate-400">Down = buybacks supporting EPS. Flat <em>despite</em> buybacks = SBC issuance canceling the repurchases &mdash; so employees, not shareholders, got the benefit.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 bg-slate-900/60 rounded-lg p-3">
+                        <span class="text-amber-400 font-bold text-sm mt-0.5">7.</span>
+                        <div>
+                            <p class="text-sm text-white font-semibold">Effective tax rate</p>
+                            <p class="text-xs text-slate-400">A beat driven by tax dropping from 24% to 18% <strong class="text-rose-400">isn't a real beat</strong>. The rate can't keep falling forever.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P/E Family -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">The P/E Family &mdash; Pick Your E</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Ratio</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Formula</th>
+                                <th class="text-left py-2 px-3 text-slate-400">When It's Useful</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold text-sky-300">Trailing P/E</td>
+                                <td class="py-2 px-3 font-mono text-xs">Price / EPS (last 4 Q)</td>
+                                <td class="py-2 px-3">Historical, clean, backward-looking. Uncontroversial but stale.</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold text-sky-300">Forward P/E</td>
+                                <td class="py-2 px-3 font-mono text-xs">Price / Consensus EPS (next 4 Q)</td>
+                                <td class="py-2 px-3"><strong class="text-slate-100">What markets actually use.</strong> But sensitive to GAAP vs. non-GAAP choice.</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold text-sky-300">PEG</td>
+                                <td class="py-2 px-3 font-mono text-xs">(Forward P/E) / (Growth rate %)</td>
+                                <td class="py-2 px-3">Normalizes P/E for growth. Rough heuristic &mdash; sub-1.0 is &ldquo;cheap for the growth.&rdquo;</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold text-sky-300">EV/EBITDA</td>
+                                <td class="py-2 px-3 font-mono text-xs">(Market Cap + Net Debt) / EBITDA</td>
+                                <td class="py-2 px-3">Capital-structure neutral. Comparing across companies with different leverage.</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold text-sky-300">P/S</td>
+                                <td class="py-2 px-3 font-mono text-xs">Price / Sales/share</td>
+                                <td class="py-2 px-3">When earnings don't exist &mdash; early-stage, cyclical trough, or pre-profitability tech.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-semibold text-sky-300">P/B</td>
+                                <td class="py-2 px-3 font-mono text-xs">Price / Book Value/share</td>
+                                <td class="py-2 px-3">Legacy metric. Still dominant for banks and insurers, irrelevant for tech.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-sky-500/10 rounded-lg p-3 mt-4 border border-sky-500/30">
+                    <p class="text-sm text-sky-300"><strong>Practitioner punchline:</strong> Nobody valuable looks at P/E without first asking &ldquo;on <em>what</em> E?&rdquo; The E you pick changes the answer more than the P.</p>
+                </div>
+            </div>
+
+            <!-- Red flags for EPS -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-rose-500/30 mb-6">
+                <h2 class="text-2xl font-bold text-rose-400 mb-4">EPS Red Flags</h2>
+                <div class="grid md:grid-cols-2 gap-3">
+                    <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                        <p class="text-sm text-rose-300 font-semibold mb-1">Non-GAAP growing while GAAP stagnates</p>
+                        <p class="text-xs text-slate-400">The add-back list is doing the work. Management is paid on non-GAAP; the widening gap is the warning.</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                        <p class="text-sm text-rose-300 font-semibold mb-1">Add-back list growing or adding novel items</p>
+                        <p class="text-xs text-slate-400">If &ldquo;CEO transition costs&rdquo; became a new line this quarter, someone decided it should be excluded from how you measure them.</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                        <p class="text-sm text-rose-300 font-semibold mb-1">&ldquo;One-time&rdquo; items that appear quarterly</p>
+                        <p class="text-xs text-slate-400">Six consecutive quarters of restructuring costs means restructuring <em>is</em> the business.</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                        <p class="text-sm text-rose-300 font-semibold mb-1">Share count flat or rising despite buybacks</p>
+                        <p class="text-xs text-slate-400">Gross buybacks + SBC = what really happened. Watch <em>net</em> dilution.</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                        <p class="text-sm text-rose-300 font-semibold mb-1">Abnormally low or volatile tax rate</p>
+                        <p class="text-xs text-slate-400">18% &ldquo;effective rate&rdquo; on a 21% statutory rate needs a footnote explanation.</p>
+                    </div>
+                    <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/20">
+                        <p class="text-sm text-rose-300 font-semibold mb-1">EPS beats, revenue misses &mdash; repeatedly</p>
+                        <p class="text-xs text-slate-400">Demand is softening; cost cuts and tax tricks are holding up the number until they can't.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dig deeper -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Where to Dig Deeper</h2>
+                <p class="text-sm text-slate-400 mb-4">When an EPS number raises a question, these are the primary sources:</p>
+                <ul class="space-y-2 text-sm text-slate-300">
+                    <li class="flex gap-3"><span class="text-sky-400 font-bold">&rarr;</span><span><strong class="text-white">EPS footnote in 10-K/10-Q</strong> &mdash; full reconciliation of basic vs. diluted shares, list of antidilutive securities, detail on convertibles.</span></li>
+                    <li class="flex gap-3"><span class="text-sky-400 font-bold">&rarr;</span><span><strong class="text-white">Non-GAAP reconciliation table</strong> &mdash; usually at the end of the earnings press release. Read every line. For each: <em>would I agree this is non-recurring?</em></span></li>
+                    <li class="flex gap-3"><span class="text-sky-400 font-bold">&rarr;</span><span><strong class="text-white">Share repurchase disclosure + SBC disclosure</strong> &mdash; net dilution = issuance &minus; repurchases. Negative number = shareholders got something back.</span></li>
+                    <li class="flex gap-3"><span class="text-sky-400 font-bold">&rarr;</span><span><strong class="text-white">Cash flow statement, financing section</strong> &mdash; actual dollars spent on buybacks, versus dollars announced in buyback press releases.</span></li>
+                    <li class="flex gap-3"><span class="text-sky-400 font-bold">&rarr;</span><span><strong class="text-white">Proxy (DEF 14A)</strong> &mdash; if non-GAAP EPS is the comp metric, management has an incentive to <em>expand</em> the add-back list. Check the compensation discussion.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 3: CASH & QUALITY ======================== -->
+        <div id="panel-quality" class="tab-panel">
+
+            <!-- FCF -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Free Cash Flow &mdash; The Serious Investor's Metric</h2>
+                <p class="text-sm text-slate-300 mb-4">Earnings are an opinion; cash is a fact. FCF is what's left after the business has reinvested enough to stay alive. It's the ceiling on <em>everything</em>: dividends, buybacks, debt reduction, M&amp;A.</p>
+
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div>
+                        <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/30 mb-3">
+                            <p class="text-xs text-sky-400 font-bold mb-1 uppercase tracking-wider">Textbook formula</p>
+                            <p class="text-center font-mono text-lg text-white">FCF = CFO &minus; CapEx</p>
+                        </div>
+                        <div class="bg-slate-900/60 rounded-lg p-3 border border-slate-600">
+                            <p class="text-xs text-slate-400 font-bold mb-1 uppercase tracking-wider">FCF Yield</p>
+                            <p class="text-center font-mono text-base text-slate-300">FCF / Market Cap</p>
+                            <p class="text-xs text-slate-500 mt-1 text-center italic">Equivalently: FCF-per-share / Price</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-400 font-bold mb-2 uppercase tracking-wider">FCF Yield &mdash; rules of thumb</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center bg-emerald-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-emerald-300">&gt;8%</span>
+                                <span class="text-xs text-slate-400">Cheap or broken &mdash; dig in</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-sky-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-sky-300">5&ndash;8%</span>
+                                <span class="text-xs text-slate-400">Worth a look</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-amber-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-amber-300">2&ndash;5%</span>
+                                <span class="text-xs text-slate-400">Priced for growth</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-rose-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-rose-300">&lt;2%</span>
+                                <span class="text-xs text-slate-400">Priced for <em>heroic</em> growth</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold text-sky-400 mb-2">Where FCF Is Used in Practice</h3>
+                <ul class="space-y-1 text-sm text-slate-300 mb-4 list-disc pl-5">
+                    <li>Every PE / LBO model &mdash; the DCF is built on FCF, not net income</li>
+                    <li>Buffett's &ldquo;owner earnings&rdquo; &mdash; conceptually FCF with a capex tweak</li>
+                    <li>Credit analysis &mdash; bondholders get paid from cash, not earnings</li>
+                    <li>The <em>ceiling</em> on capital return (dividends + buybacks)</li>
+                </ul>
+
+                <div class="bg-rose-500/10 rounded-lg p-4 border border-rose-500/30">
+                    <p class="text-sm text-rose-300 font-semibold mb-2">FCF Red Flags</p>
+                    <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                        <li>CFO &lt; Net Income persistently (earnings aren't converting to cash)</li>
+                        <li>&ldquo;Adjusted FCF&rdquo; that adds SBC back &mdash; SBC <em>is</em> compensation, just paid in stock</li>
+                        <li>CapEx running well below D&amp;A for years &mdash; the business is under-investing</li>
+                        <li>Working capital a persistent tailwind &mdash; stretching suppliers can't last forever</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ROIC -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">ROIC &mdash; The Quality Metric</h2>
+                <p class="text-sm text-slate-300 mb-4">ROIC asks: <em>is the underlying business good at turning capital into profit</em> &mdash; independent of how it's financed? A high-ROIC business with modest leverage beats a mediocre business juiced with debt. It's the metric the best long-term investors (Terry Smith, Nick Sleep, Chuck Akre) watch above all others.</p>
+
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div>
+                        <div class="bg-purple-500/10 rounded-lg p-4 border border-purple-500/30 mb-3">
+                            <p class="text-xs text-purple-400 font-bold mb-1 uppercase tracking-wider">Formula</p>
+                            <p class="text-center font-mono text-lg text-white">ROIC = NOPAT / Invested Capital</p>
+                            <p class="text-xs text-slate-400 mt-2 text-center"><em>NOPAT</em> = Operating Income &times; (1 &minus; tax rate)</p>
+                            <p class="text-xs text-slate-400 text-center"><em>Invested Capital</em> = Equity + Debt &minus; Cash (roughly)</p>
+                        </div>
+                        <div class="bg-sky-500/10 rounded-lg p-3 border border-sky-500/30">
+                            <p class="text-sm text-sky-300"><strong>The benchmark:</strong> ROIC &minus; WACC. A business that consistently earns above its cost of capital <em>creates</em> value. One that earns below <em>destroys</em> it, no matter how fast it grows.</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-400 font-bold mb-3 uppercase tracking-wider">ROIC &mdash; rules of thumb</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center bg-rose-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-rose-300">&lt;10%</span>
+                                <span class="text-xs text-slate-400">Mediocre business</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-amber-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-amber-300">10&ndash;15%</span>
+                                <span class="text-xs text-slate-400">Average</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-sky-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-sky-300">15&ndash;25%</span>
+                                <span class="text-xs text-slate-400">Good</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-emerald-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-emerald-300">25%+</span>
+                                <span class="text-xs text-slate-400">Exceptional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold text-sky-400 mb-2">Where to Dig</h3>
+                <ul class="space-y-1 text-sm text-slate-300 mb-4 list-disc pl-5">
+                    <li><strong class="text-white">Definition variants:</strong> with or without goodwill, after-tax or pretax, invested capital measured how? Compare companies using the <em>same</em> definition.</li>
+                    <li><strong class="text-white">Segment ROIC:</strong> Consolidated ROIC can hide wildly divergent businesses (e.g., AWS vs. Amazon retail).</li>
+                    <li><strong class="text-white">Persistence:</strong> A single year of high ROIC is noise. 10 years of 20%+ is a moat.</li>
+                    <li><strong class="text-white">ROIC vs. WACC spread:</strong> The spread, not the level, is what creates shareholder value per dollar reinvested.</li>
+                </ul>
+
+                <div class="bg-rose-500/10 rounded-lg p-4 border border-rose-500/30">
+                    <p class="text-sm text-rose-300 font-semibold mb-2">ROIC Red Flags</p>
+                    <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                        <li>ROIC declining while ROE is rising &mdash; the business got worse, but leverage is hiding it</li>
+                        <li>ROIC below WACC but management still reinvesting heavily &mdash; value destruction at scale</li>
+                        <li>Big gap between ROIC-including-goodwill and ROIC-excluding-goodwill &mdash; acquisitions aren't earning their purchase price</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ROIC vs ROE -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">ROIC vs. ROE &mdash; The Leverage Question</h2>
+                <p class="text-sm text-slate-300 mb-4">ROE (Return on Equity) is the older, simpler cousin of ROIC. But it's <em>polluted by leverage</em>: a company that borrows a lot and buys back shares can lift ROE without the business changing at all. ROIC strips this away.</p>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="text-sm font-bold text-white mb-2">When ROE rises <em>faster</em> than ROIC</h3>
+                        <p class="text-xs text-slate-300 mb-2">The gap is leverage or buybacks &mdash; <em>financial engineering</em>. The underlying business improved, but shareholders are getting most of the benefit from a smaller equity base, not a better business.</p>
+                        <p class="text-xs text-amber-300"><strong>Directional read:</strong> Better, but less better than ROE suggests.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <h3 class="text-sm font-bold text-white mb-2">When ROIC rises and ROE <em>falls</em></h3>
+                        <p class="text-xs text-slate-300 mb-2">Rare, but tells a clean story: the business got better (ROIC up) while the company de-levered or issued equity (ROE down from denominator growth). Watch for balance sheet repair.</p>
+                        <p class="text-xs text-emerald-300"><strong>Directional read:</strong> Unambiguously better business.</p>
+                    </div>
+                </div>
+                <div class="bg-sky-500/10 rounded-lg p-3 mt-4 border border-sky-500/30">
+                    <p class="text-sm text-sky-300"><strong>Rule:</strong> When ROE and ROIC diverge, trust ROIC for the <em>business</em> question. ROE tells you about <em>ownership structure</em>, which is a different question.</p>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">ROIC's denominator is invested capital = Debt + Equity &minus; Cash, i.e., the L-and-SE side of <strong class="text-white">A = L + SE</strong> minus the most liquid piece of A. ROIC essentially asks: <em>given the financing the company actually uses, how well is that capital working?</em> FCF, meanwhile, is the cash-basis analogue of net income &mdash; it feeds back into cash on the A side.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 4: STRUCTURE & SKEPTIC ======================== -->
+        <div id="panel-structure" class="tab-panel">
+
+            <!-- Margins -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Margins &mdash; Where Value Is Made or Lost</h2>
+                <p class="text-sm text-slate-300 mb-4">Each margin strips off a different layer of the income statement. The <em>trend</em> and the <em>level relative to peers</em> matter more than any absolute number.</p>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/30">
+                        <p class="text-xs text-sky-400 font-bold uppercase tracking-wider mb-1">Gross Margin</p>
+                        <p class="text-center font-mono text-sm text-white mb-2">(Revenue &minus; COGS) / Revenue</p>
+                        <p class="text-xs text-slate-300"><strong class="text-sky-300">Pricing power &amp; unit economics.</strong> The earliest warning indicator &mdash; if GM compresses, something upstream has changed (input costs, pricing, mix).</p>
+                    </div>
+                    <div class="bg-purple-500/10 rounded-lg p-4 border border-purple-500/30">
+                        <p class="text-xs text-purple-400 font-bold uppercase tracking-wider mb-1">Operating Margin</p>
+                        <p class="text-center font-mono text-sm text-white mb-2">Operating Income / Revenue</p>
+                        <p class="text-xs text-slate-300"><strong class="text-purple-300">Operating leverage.</strong> When revenue grows faster than opex, operating margin expands. When it doesn't, the model is broken.</p>
+                    </div>
+                    <div class="bg-amber-500/10 rounded-lg p-4 border border-amber-500/30">
+                        <p class="text-xs text-amber-400 font-bold uppercase tracking-wider mb-1">Net Margin</p>
+                        <p class="text-center font-mono text-sm text-white mb-2">Net Income / Revenue</p>
+                        <p class="text-xs text-slate-300"><strong class="text-amber-300">Post-everything.</strong> Affected by tax &amp; interest expense. Least useful for comparing <em>businesses</em>; most useful for comparing <em>earnings power</em> across capital structures.</p>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold text-sky-400 mb-2">What to dig into</h3>
+                <ul class="space-y-1 text-sm text-slate-300 mb-4 list-disc pl-5">
+                    <li><strong class="text-white">Segment margins</strong> &mdash; consolidated can hide divergence. Amazon's AWS and retail have totally different margin profiles.</li>
+                    <li><strong class="text-white">YoY change, not absolute level</strong> &mdash; a 45% GM is meaningless; a 45% GM that was 50% a year ago is a story.</li>
+                    <li><strong class="text-white">Gross margin decomposition:</strong> volume / price / mix / input costs &mdash; which one moved?</li>
+                </ul>
+
+                <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/30">
+                    <p class="text-sm text-rose-300"><strong>Red flag:</strong> Net margin rising while operating margin falls &mdash; tax engineering, not business improvement. Also: margin expansion entirely from opex cuts (can't keep cutting forever).</p>
+                </div>
+            </div>
+
+            <!-- Leverage -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Leverage &mdash; Financial Risk on Top of Business Risk</h2>
+                <div class="grid md:grid-cols-2 gap-5 mb-4">
+                    <div>
+                        <div class="bg-sky-500/10 rounded-lg p-4 border border-sky-500/30 mb-3">
+                            <p class="text-xs text-sky-400 font-bold uppercase tracking-wider mb-1">Workhorse ratio</p>
+                            <p class="text-center font-mono text-base text-white">Net Debt / EBITDA</p>
+                            <p class="text-xs text-slate-400 mt-1 text-center"><em>Net Debt = Total Debt &minus; Cash</em></p>
+                        </div>
+                        <p class="text-sm text-slate-300">Used as a covenant standard in credit, as a sizing metric in LBOs, and as an M&amp;A-capacity gauge for strategic buyers. A stable 2x levered company isn't the same animal as a 6x levered company, even if the income statements look similar.</p>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-400 font-bold mb-3 uppercase tracking-wider">Net Debt / EBITDA &mdash; rules of thumb</p>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center bg-emerald-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-emerald-300">&lt;2&times;</span>
+                                <span class="text-xs text-slate-400">Conservative</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-sky-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-sky-300">2&ndash;4&times;</span>
+                                <span class="text-xs text-slate-400">Typical corporate</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-amber-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-amber-300">4&ndash;6&times;</span>
+                                <span class="text-xs text-slate-400">Levered (LBO-like)</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-rose-500/10 rounded px-3 py-2">
+                                <span class="text-sm text-rose-300">&gt;6&times;</span>
+                                <span class="text-xs text-slate-400">Distressed territory</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-bold text-sky-400 mb-2">Where to dig</h3>
+                <ul class="space-y-1 text-sm text-slate-300 mb-4 list-disc pl-5">
+                    <li><strong class="text-white">Off-balance-sheet items:</strong> pensions, legal reserves, factored receivables, purchase commitments &mdash; these behave like debt</li>
+                    <li><strong class="text-white">Debt maturity schedule</strong> &mdash; a maturity wall is a refinancing risk, not a leverage problem</li>
+                    <li><strong class="text-white">Fixed vs. floating rate mix</strong> &mdash; matters enormously when rates move</li>
+                    <li><strong class="text-white">Covenant headroom &amp; interest coverage</strong> (EBITDA / Interest) &mdash; 3x+ is comfortable, 1.5x is a problem</li>
+                </ul>
+
+                <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/30">
+                    <p class="text-sm text-rose-300"><strong>Red flags:</strong> Leverage rising while EBITDA is flat (debt-funded growth that isn't growing). EBITDA is &ldquo;adjusted&rdquo; (same non-GAAP trick as EPS, but on the leverage side). Buybacks funded by <em>new</em> debt. Near-term maturity wall without committed refinancing.</p>
+                </div>
+            </div>
+
+            <!-- Liquidity -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Liquidity &mdash; Matters When It Matters</h2>
+                <p class="text-sm text-slate-300 mb-4">For a healthy big-cap, liquidity ratios are mostly dormant &mdash; the company has ample cash and a revolving credit line. They become <em>urgent</em> for cyclicals at the bottom of the cycle, for small-caps without credit facilities, and for any company heading into distress. Don't ignore them, but don't over-weight them either.</p>
+
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Ratio</th>
+                                <th class="text-left py-2 px-3 text-slate-400">Formula</th>
+                                <th class="text-left py-2 px-3 text-slate-400">What it tells you</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold text-sky-300">Current Ratio</td>
+                                <td class="py-2 px-3 font-mono text-xs">Current Assets / Current Liabilities</td>
+                                <td class="py-2 px-3">Broadest measure. &gt;1 = current assets cover short-term obligations.</td>
+                            </tr>
+                            <tr class="border-b border-slate-700/50">
+                                <td class="py-2 px-3 font-semibold text-sky-300">Quick Ratio</td>
+                                <td class="py-2 px-3 font-mono text-xs">(Cash + ST Invest + A/R) / CL</td>
+                                <td class="py-2 px-3">Strips out inventory. Useful when inventory is slow-moving or illiquid.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2 px-3 font-semibold text-sky-300">Cash Ratio</td>
+                                <td class="py-2 px-3 font-mono text-xs">(Cash + ST Invest) / CL</td>
+                                <td class="py-2 px-3">Strictest. Can the company pay its bills <em>today</em>, without touching inventory or A/R?</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/30">
+                    <p class="text-sm text-rose-300"><strong>Red flags:</strong> Current ratio below 1.0 <em>combined with</em> rising DSO (customers paying slower). Quick ratio much less than current ratio (inventory is propping up liquidity). Cash ratio falling while current assets rise (the quality of current assets is deteriorating).</p>
+                </div>
+            </div>
+
+            <!-- SBC -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">SBC &mdash; Compensation Paid in Dilution</h2>
+                <p class="text-sm text-slate-300 mb-4">Stock-based compensation is <strong>real compensation</strong>. The company isn't paying cash &mdash; it's paying by handing over a piece of the company. Calling SBC &ldquo;non-cash&rdquo; misses the point: the cost shows up in <em>dilution</em>, not cash outflow. This is why &ldquo;adjusted FCF&rdquo; that excludes SBC is a red herring.</p>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">SBC / Revenue &mdash; tech screen</p>
+                        <div class="space-y-1 text-xs">
+                            <div class="flex justify-between bg-emerald-500/10 rounded px-2 py-1"><span class="text-emerald-300">&lt;5%</span><span class="text-slate-400">Restrained</span></div>
+                            <div class="flex justify-between bg-sky-500/10 rounded px-2 py-1"><span class="text-sky-300">5&ndash;15%</span><span class="text-slate-400">Typical tech</span></div>
+                            <div class="flex justify-between bg-amber-500/10 rounded px-2 py-1"><span class="text-amber-300">15&ndash;25%</span><span class="text-slate-400">Yellow flag</span></div>
+                            <div class="flex justify-between bg-rose-500/10 rounded px-2 py-1"><span class="text-rose-300">&gt;25%</span><span class="text-slate-400">Red flag</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">SBC / FCF &mdash; the sharper cut</p>
+                        <p class="text-xs text-slate-300 mb-2">If SBC is a large % of FCF, it means a large fraction of the company's distributable cash is really going to employees as equity compensation. The &ldquo;remaining&rdquo; cash available for shareholders is smaller than it appears.</p>
+                        <p class="text-xs text-slate-400 italic">SBC/FCF &gt; 50% in &ldquo;profitable&rdquo; tech companies is surprisingly common.</p>
+                    </div>
+                </div>
+
+                <div class="bg-rose-500/10 rounded-lg p-3 border border-rose-500/30">
+                    <p class="text-sm text-rose-300"><strong>Red flags:</strong> SBC growing faster than revenue (comp inflation without leverage). Share count rising despite announced buybacks (buybacks just offsetting issuance &mdash; shareholders get nothing). SBC exceeds GAAP net income (the whole profit is being &ldquo;paid&rdquo; in dilution).</p>
+                </div>
+            </div>
+
+            <!-- THE SKEPTIC'S LENS -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-rose-500/40 mb-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-8 h-8 bg-rose-500/20 rounded-lg flex items-center justify-center text-rose-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-rose-400">The Skeptic's Lens &mdash; Signs Something's Off</h2>
+                </div>
+                <p class="text-sm text-slate-300 mb-4">A consolidated checklist you can apply to <em>any</em> company. Not every item is disqualifying &mdash; each is a question that deserves an answer before you form a view.</p>
+
+                <div class="space-y-3">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-sky-400 font-bold mb-2 uppercase tracking-wider">Earnings quality</p>
+                        <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                            <li>Non-GAAP EPS rising while GAAP EPS is flat or declining</li>
+                            <li>&ldquo;One-time&rdquo; restructuring costs that appear every quarter</li>
+                            <li>Add-back list growing or adding novel items</li>
+                            <li>EPS beat driven by tax rate, not operations</li>
+                            <li>Share count flat despite reported buybacks (SBC is the story)</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-emerald-400 font-bold mb-2 uppercase tracking-wider">Cash quality</p>
+                        <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                            <li>CFO persistently below net income</li>
+                            <li>&ldquo;Adjusted FCF&rdquo; that adds SBC back to CFO</li>
+                            <li>CapEx running well below D&amp;A for multiple years</li>
+                            <li>Working capital a recurring tailwind (stretching payables)</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-purple-400 font-bold mb-2 uppercase tracking-wider">Business quality</p>
+                        <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                            <li>Gross margin declining for multiple consecutive quarters</li>
+                            <li>Net margin up while operating margin down (tax-engineering gain)</li>
+                            <li>ROIC falling while ROE rising (leverage masking deterioration)</li>
+                            <li>ROIC below WACC with continued heavy reinvestment</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-amber-400 font-bold mb-2 uppercase tracking-wider">Capital structure</p>
+                        <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                            <li>Leverage rising while EBITDA is flat</li>
+                            <li>EBITDA reported on an &ldquo;adjusted&rdquo; basis</li>
+                            <li>Buybacks funded by new debt (not retained cash)</li>
+                            <li>Near-term debt maturity wall without refinancing in place</li>
+                            <li>Current ratio &lt;1 with rising DSO</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-rose-400 font-bold mb-2 uppercase tracking-wider">Ownership &amp; incentives</p>
+                        <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                            <li>SBC &gt;20% of revenue (and growing)</li>
+                            <li>SBC exceeds net income</li>
+                            <li>Non-GAAP EPS is the management compensation metric (check the proxy)</li>
+                            <li>Insider selling heavy; insider buying absent</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back to the Equation -->
+            <div class="bg-gradient-to-r from-emerald-500/10 via-slate-800/50 to-sky-500/10 rounded-lg p-4 border border-emerald-500/30">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center text-emerald-400 text-xs font-bold">=</div>
+                    <span class="text-emerald-400 font-semibold text-sm uppercase tracking-wider">Back to the Equation</span>
+                </div>
+                <p class="text-sm text-slate-300">Margins decompose the income statement flow into SE. Leverage compares the L side to an IS flow. Liquidity compares current pieces of A to current pieces of L. SBC moves stock (issued from SE) to employees in exchange for services (expense against SE). The same <strong class="text-white">A = L + SE</strong> is rearranging under every ratio on this page.</p>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 5: WORKED EXAMPLES ======================== -->
+        <div id="panel-worked" class="tab-panel">
+
+            <!-- Example 1: Non-GAAP Bridge -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Example 1: Non-GAAP EPS Bridge</h2>
+                <p class="text-sm text-slate-300 mb-4"><em>MegaSoft Inc.</em> reports the following results for FY25 (stylized teaching data, in millions of dollars except EPS):</p>
+
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4">
+                    <table class="w-full text-sm font-mono text-slate-300">
+                        <tbody>
+                            <tr><td class="py-1">GAAP Net Income</td><td class="text-right py-1">$80,000</td></tr>
+                            <tr><td class="py-1">Diluted weighted-avg shares</td><td class="text-right py-1">8,000</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="py-1 text-sky-300">GAAP Diluted EPS</td><td class="text-right py-1 text-sky-300">$10.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="text-sm text-slate-300 mb-3">Company-provided non-GAAP reconciliation (pretax add-backs):</p>
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4">
+                    <table class="w-full text-sm font-mono text-slate-300">
+                        <tbody>
+                            <tr><td class="py-1 pl-4">+ Stock-based compensation</td><td class="text-right py-1">$7,000</td></tr>
+                            <tr><td class="py-1 pl-4">+ Intangible amortization (from acquisitions)</td><td class="text-right py-1">2,000</td></tr>
+                            <tr><td class="py-1 pl-4">+ &ldquo;One-time&rdquo; restructuring</td><td class="text-right py-1">1,000</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="py-1">Total pretax add-backs</td><td class="text-right py-1">$10,000</td></tr>
+                            <tr><td class="py-1 pl-4 text-rose-300">&minus; Tax on add-backs (@ 20%)</td><td class="text-right py-1 text-rose-300">(2,000)</td></tr>
+                            <tr class="border-t border-slate-600 font-bold"><td class="py-1">After-tax add-backs</td><td class="text-right py-1">$8,000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-sky-400 font-bold">Solution:</span>
+                            <span class="text-slate-300">Compute non-GAAP EPS and interpret the beat.</span>
+                        </div>
+                        <button onclick="toggleStep('ex1', 1)" id="ex1-btn-1" class="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex1-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-sky-500/10 rounded p-3 border border-sky-500/20 mb-3">
+                            <p class="text-sm text-sky-300 font-semibold mb-2">Step 1: Bridge GAAP NI to non-GAAP NI</p>
+                            <div class="font-mono text-sm text-slate-300 space-y-1">
+                                <p>Non-GAAP NI = GAAP NI + After-tax add-backs</p>
+                                <p class="pl-8">= $80,000 + $8,000 = <span class="text-sky-300 font-bold">$88,000</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-sky-500/10 rounded p-3 border border-sky-500/20 mb-3">
+                            <p class="text-sm text-sky-300 font-semibold mb-2">Step 2: Divide by diluted shares</p>
+                            <div class="font-mono text-sm text-slate-300 space-y-1">
+                                <p>Non-GAAP EPS = $88,000 / 8,000 = <span class="text-sky-300 font-bold">$11.00</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                            <p class="text-sm text-amber-300 font-semibold mb-1">Step 3: Interpret</p>
+                            <p class="text-xs text-slate-300">If sell-side consensus was <strong>$10.80</strong>, the company &ldquo;beat&rdquo; by $0.20. But look at what drove the $1.00 gap between GAAP ($10.00) and non-GAAP ($11.00):</p>
+                            <ul class="text-xs text-slate-300 mt-2 space-y-1 list-disc pl-5">
+                                <li><strong class="text-rose-300">$0.70 from SBC</strong> &mdash; real compensation paid in dilution. Not a &ldquo;one-time&rdquo; anything.</li>
+                                <li><strong class="text-amber-300">$0.20 from intangible amortization</strong> &mdash; defensible if acquisitions are truly finished; suspect if the company keeps acquiring.</li>
+                                <li><strong class="text-amber-300">$0.10 from restructuring</strong> &mdash; defensible <em>only if</em> this is genuinely non-recurring. Check prior quarters.</li>
+                            </ul>
+                            <p class="text-xs text-slate-300 mt-2"><strong>The skeptic's read:</strong> the beat is mostly cosmetic. GAAP growth is the number that deserves real attention.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2: FCF + FCF Yield -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Example 2: FCF &amp; FCF Yield</h2>
+                <p class="text-sm text-slate-300 mb-4">Same company, FY25 cash flow summary (in millions except per-share and price data):</p>
+
+                <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600 mb-4">
+                    <table class="w-full text-sm font-mono text-slate-300">
+                        <tbody>
+                            <tr><td class="py-1">Cash from Operations (CFO)</td><td class="text-right py-1">$120,000</td></tr>
+                            <tr><td class="py-1 text-rose-300">&minus; Capital Expenditures</td><td class="text-right py-1 text-rose-300">(50,000)</td></tr>
+                            <tr><td class="py-1">Diluted shares</td><td class="text-right py-1">8,000</td></tr>
+                            <tr><td class="py-1">Share price</td><td class="text-right py-1">$350.00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-sky-400 font-bold">Solution:</span>
+                            <span class="text-slate-300">Compute FCF, FCF/share, FCF yield, then interpret.</span>
+                        </div>
+                        <button onclick="toggleStep('ex2', 1)" id="ex2-btn-1" class="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex2-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-sky-500/10 rounded p-3 border border-sky-500/20 mb-3">
+                            <p class="text-sm text-sky-300 font-semibold mb-2">Step 1: FCF</p>
+                            <div class="font-mono text-sm text-slate-300">
+                                <p>FCF = CFO &minus; CapEx = $120,000 &minus; $50,000 = <span class="text-sky-300 font-bold">$70,000</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-sky-500/10 rounded p-3 border border-sky-500/20 mb-3">
+                            <p class="text-sm text-sky-300 font-semibold mb-2">Step 2: FCF per share</p>
+                            <div class="font-mono text-sm text-slate-300">
+                                <p>FCF / share = $70,000 / 8,000 = <span class="text-sky-300 font-bold">$8.75</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-sky-500/10 rounded p-3 border border-sky-500/20 mb-3">
+                            <p class="text-sm text-sky-300 font-semibold mb-2">Step 3: FCF yield</p>
+                            <div class="font-mono text-sm text-slate-300 space-y-1">
+                                <p>FCF Yield = FCF / share &divide; Price = $8.75 / $350.00 = <span class="text-sky-300 font-bold">2.50%</span></p>
+                                <p class="text-xs text-slate-500 italic">Equivalently: Market cap = $350 &times; 8,000 = $2,800,000M. FCF / Market Cap = $70,000 / $2,800,000 = 2.50%.</p>
+                            </div>
+                        </div>
+                        <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                            <p class="text-sm text-amber-300 font-semibold mb-1">Interpretation</p>
+                            <p class="text-xs text-slate-300">A 2.5% FCF yield falls in the <strong class="text-amber-300">&ldquo;priced for growth&rdquo;</strong> band (2&ndash;5%). The market is paying ~40 times current FCF, which is fine if FCF grows rapidly from here and risky if it doesn't. Compare with a 3-year Treasury &mdash; the equity is offering <em>less</em> current yield than risk-free debt. All the return has to come from growth.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 3: ROIC vs ROE divergence -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Example 3: ROIC vs. ROE Divergence</h2>
+                <p class="text-sm text-slate-300 mb-4">The same company reports these two-year trends (in millions):</p>
+
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-sm font-mono">
+                        <thead>
+                            <tr class="border-b border-slate-600">
+                                <th class="text-left py-2 px-3 text-slate-400">Metric</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Year 1</th>
+                                <th class="text-right py-2 px-3 text-slate-400">Year 2</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-300">
+                            <tr class="border-b border-slate-700/50"><td class="py-1 px-3">NOPAT</td><td class="text-right py-1 px-3">$2,000</td><td class="text-right py-1 px-3">$2,400</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-1 px-3">Invested Capital</td><td class="text-right py-1 px-3">$10,000</td><td class="text-right py-1 px-3">$11,000</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-1 px-3">Net Income</td><td class="text-right py-1 px-3">$1,600</td><td class="text-right py-1 px-3">$2,000</td></tr>
+                            <tr class="border-b border-slate-700/50"><td class="py-1 px-3">Avg. Stockholders' Equity</td><td class="text-right py-1 px-3">$8,000</td><td class="text-right py-1 px-3">$7,000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="text-xs text-slate-500 italic mb-4">Between Year 1 and Year 2, the company bought back ~$1,000M of stock and added $1,000M of debt to fund it.</p>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-sky-400 font-bold">Solution:</span>
+                            <span class="text-slate-300">Compute ROIC and ROE for both years, then decide what each tells you.</span>
+                        </div>
+                        <button onclick="toggleStep('ex3', 1)" id="ex3-btn-1" class="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex3-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="grid md:grid-cols-2 gap-4 mb-3">
+                            <div class="bg-purple-500/10 rounded p-3 border border-purple-500/30">
+                                <p class="text-sm text-purple-300 font-semibold mb-2">ROIC</p>
+                                <div class="font-mono text-xs text-slate-300 space-y-1">
+                                    <p>Year 1: 2,000 / 10,000 = <span class="text-purple-300 font-bold">20.0%</span></p>
+                                    <p>Year 2: 2,400 / 11,000 = <span class="text-purple-300 font-bold">21.8%</span></p>
+                                    <p class="text-xs text-slate-400 mt-1">&Delta; = <span class="text-emerald-300">+180 bp</span></p>
+                                </div>
+                            </div>
+                            <div class="bg-sky-500/10 rounded p-3 border border-sky-500/30">
+                                <p class="text-sm text-sky-300 font-semibold mb-2">ROE</p>
+                                <div class="font-mono text-xs text-slate-300 space-y-1">
+                                    <p>Year 1: 1,600 / 8,000 = <span class="text-sky-300 font-bold">20.0%</span></p>
+                                    <p>Year 2: 2,000 / 7,000 = <span class="text-sky-300 font-bold">28.6%</span></p>
+                                    <p class="text-xs text-slate-400 mt-1">&Delta; = <span class="text-emerald-300">+860 bp</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-amber-500/10 rounded p-3 border border-amber-500/30">
+                            <p class="text-sm text-amber-300 font-semibold mb-1">What it means</p>
+                            <p class="text-xs text-slate-300 mb-2">Both metrics are up. ROIC is up <strong>~180 basis points</strong> &mdash; the underlying business has gotten modestly more productive. ROE is up <strong>~860 basis points</strong>, most of which comes from a smaller equity base (buybacks) funded by new debt.</p>
+                            <p class="text-xs text-slate-300"><strong>Directional read for the exam:</strong> Business getting <strong class="text-emerald-300">better</strong> (ROIC up). But if you look only at ROE, you'd overstate the improvement by ~5&times;. The extra ROE came from financial engineering, not operational quality.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 4: Quality of the beat -->
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-sky-400 mb-4">Example 4: Quality of the Beat</h2>
+                <p class="text-sm text-slate-300 mb-4">A Q4 earnings release from &ldquo;<em>Acme Software</em>&rdquo; (stylized teaching data):</p>
+
+                <div class="grid md:grid-cols-2 gap-3 mb-4">
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">Reported</p>
+                        <table class="w-full text-sm font-mono text-slate-300">
+                            <tbody>
+                                <tr><td class="py-1">Non-GAAP EPS</td><td class="text-right py-1 text-emerald-300">$2.10</td></tr>
+                                <tr><td class="py-1">Revenue</td><td class="text-right py-1">$49.0B</td></tr>
+                                <tr><td class="py-1">Effective tax rate</td><td class="text-right py-1">18%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">Consensus</p>
+                        <table class="w-full text-sm font-mono text-slate-300">
+                            <tbody>
+                                <tr><td class="py-1">Non-GAAP EPS</td><td class="text-right py-1">$2.00</td></tr>
+                                <tr><td class="py-1">Revenue</td><td class="text-right py-1">$50.0B</td></tr>
+                                <tr><td class="py-1">Expected tax rate</td><td class="text-right py-1">24%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="flex items-center justify-between bg-slate-900/60 rounded-lg p-4 border border-slate-600">
+                        <div>
+                            <span class="text-sky-400 font-bold">Solution:</span>
+                            <span class="text-slate-300">Strip out the tax effect. Is this still a beat?</span>
+                        </div>
+                        <button onclick="toggleStep('ex4', 1)" id="ex4-btn-1" class="bg-sky-600 hover:bg-sky-500 text-white text-sm px-4 py-2 rounded-lg font-medium transition-colors">Show</button>
+                    </div>
+                    <div id="ex4-step-1" class="hidden mt-2 bg-slate-900/40 rounded-lg p-4 border border-slate-700">
+                        <div class="bg-sky-500/10 rounded p-3 border border-sky-500/20 mb-3">
+                            <p class="text-sm text-sky-300 font-semibold mb-2">Step 1: Back out pretax EPS</p>
+                            <div class="font-mono text-sm text-slate-300 space-y-1">
+                                <p>Pretax EPS = $2.10 &divide; (1 &minus; 0.18) = $2.10 / 0.82 = <span class="text-sky-300 font-bold">$2.56</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-sky-500/10 rounded p-3 border border-sky-500/20 mb-3">
+                            <p class="text-sm text-sky-300 font-semibold mb-2">Step 2: Re-apply the <em>consensus</em> tax rate</p>
+                            <div class="font-mono text-sm text-slate-300 space-y-1">
+                                <p>Tax-normalized EPS = $2.56 &times; (1 &minus; 0.24) = $2.56 &times; 0.76 = <span class="text-sky-300 font-bold">$1.95</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-rose-500/10 rounded p-3 border border-rose-500/30">
+                            <p class="text-sm text-rose-300 font-semibold mb-1">What the headline hid</p>
+                            <ul class="text-xs text-slate-300 space-y-1 list-disc pl-5">
+                                <li><strong class="text-rose-300">Revenue missed by $1.0B (2%)</strong> &mdash; demand was weaker than expected</li>
+                                <li>The $0.10 EPS beat evaporates at consensus tax rate: <strong class="text-rose-300">tax-normalized EPS would have been $1.95, a $0.05 miss</strong></li>
+                                <li>The entire beat came from a lower tax rate, not operations</li>
+                                <li>Effective rate dropped from 24% to 18% &mdash; you can't keep doing this forever</li>
+                            </ul>
+                            <p class="text-xs text-slate-300 mt-2"><strong>The skeptic's read:</strong> This is a <em>low-quality beat</em>. The business lost on the top line; the EPS line was rescued by a one-time tax benefit. Expect the stock to trade <em>down</em> on the print despite the &ldquo;beat.&rdquo;</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================== TAB 6: PRACTICE QUESTIONS ======================== -->
+        <div id="panel-practice" class="tab-panel">
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-sky-400">Practice Questions</h2>
+                    <div class="flex items-center gap-6 text-sm">
+                        <div><span class="text-slate-500">Score:</span> <span class="text-emerald-400 font-bold"><span id="p-correct">0</span>/<span id="p-total">0</span></span></div>
+                        <div><span class="text-slate-500">Streak:</span> <span class="text-amber-400 font-bold" id="p-streak">0</span></div>
+                        <div class="text-slate-500" id="p-progress"></div>
+                    </div>
+                </div>
+                <div id="p-question" class="mb-4 text-slate-300">Click "New Question" to begin.</div>
+                <div id="p-answer" class="mb-4"></div>
+                <div id="p-feedback" class="mb-4"></div>
+                <div class="flex gap-3">
+                    <button onclick="QuizEngine.pNew()" class="bg-sky-600 hover:bg-sky-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">New Question</button>
+                    <button onclick="QuizEngine.pCheck()" id="p-check-btn" class="hidden bg-sky-600 hover:bg-sky-500 text-white px-5 py-2 rounded-lg font-medium transition-colors">Check Answer</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="max-w-7xl mx-auto px-4 py-8 mt-8 border-t border-slate-700">
+        <p class="text-slate-500 text-sm text-center">BUSI 305 &mdash; Intro to Financial Accounting &mdash; Financial Statement Analysis Study Tool</p>
+    </div>
+
+<script>
+    // ========== TAB SWITCHING ==========
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('panel-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    };
+
+    // ========== TOGGLE STEP (Worked Examples) ==========
+    window.toggleStep = function(ex, n) {
+        const div = document.getElementById(ex + '-step-' + n);
+        const btn = document.getElementById(ex + '-btn-' + n);
+        if (div.classList.contains('hidden')) {
+            div.classList.remove('hidden');
+            btn.textContent = 'Hide';
+        } else {
+            div.classList.add('hidden');
+            btn.textContent = 'Show';
+        }
+    };
+</script>
+
+<script>
+// ========== PRACTICE QUESTION GENERATORS ==========
+const { rand, pick, fmt } = QuizEngine;
+
+// Helpers
+function fmtPct(x, dp) { return (x * 100).toFixed(dp == null ? 1 : dp) + '%'; }
+function fmtD(n) { return n >= 0 ? '$' + fmt(n) : '$(' + fmt(Math.abs(n)) + ')'; }
+
+// 1. Basic EPS computation (numeric)
+function genBasicEPS() {
+    const ni = pick([80, 90, 100, 120, 150]) * 1000;   // in millions
+    const pref = pick([0, 0, 2000, 5000, 8000]);        // preferred dividends
+    const shares = pick([8000, 10000, 12000, 15000]);
+    const eps = (ni - pref) / shares;
+    const prefTxt = pref > 0 ? ', preferred dividends of $' + fmt(pref) + 'M' : '';
+    return {
+        question: 'A company reports Net Income of $' + fmt(ni) + 'M' + prefTxt + ', and weighted-average basic shares of ' + fmt(shares) + 'M. What is GAAP Basic EPS? (Enter as dollars per share, e.g. 10.00)',
+        type: 'number',
+        answer: Math.round(eps * 100) / 100,
+        tolerance: 0.02,
+        explanation: 'Basic EPS = (NI \u2212 Preferred Div) / Wtd-Avg Basic Shares = ($' + fmt(ni) + ' \u2212 $' + fmt(pref) + ') / ' + fmt(shares) + ' = $' + eps.toFixed(2)
+    };
+}
+
+// 2. Non-GAAP bridge (numeric)
+function genNonGAAPBridge() {
+    const gaapNI = pick([80, 100, 120, 150]) * 1000;
+    const shares = pick([8000, 10000, 12000]);
+    const addBackPretax = pick([8000, 10000, 12000, 15000]);
+    const taxRate = pick([0.18, 0.20, 0.21, 0.22]);
+    const addBackAfterTax = Math.round(addBackPretax * (1 - taxRate));
+    const nonGaapNI = gaapNI + addBackAfterTax;
+    const nonGaapEPS = nonGaapNI / shares;
+    return {
+        question: 'GAAP NI = $' + fmt(gaapNI) + 'M, diluted shares = ' + fmt(shares) + 'M. Total pretax non-GAAP add-backs (SBC + amortization + restructuring) = $' + fmt(addBackPretax) + 'M. Tax rate on those add-backs = ' + fmtPct(taxRate, 0) + '. What is Non-GAAP EPS? (Enter as dollars per share.)',
+        type: 'number',
+        answer: Math.round(nonGaapEPS * 100) / 100,
+        tolerance: 0.03,
+        explanation: 'After-tax add-back = $' + fmt(addBackPretax) + ' \u00d7 (1 \u2212 ' + fmtPct(taxRate, 0) + ') = $' + fmt(addBackAfterTax) + 'M. Non-GAAP NI = $' + fmt(gaapNI) + ' + $' + fmt(addBackAfterTax) + ' = $' + fmt(nonGaapNI) + 'M. Non-GAAP EPS = $' + fmt(nonGaapNI) + ' / ' + fmt(shares) + ' = $' + nonGaapEPS.toFixed(2)
+    };
+}
+
+// 3. FCF calculation (numeric)
+function genFCF() {
+    const cfo = pick([80, 100, 120, 150, 200]) * 1000;
+    const capex = pick([30, 40, 50, 60, 80]) * 1000;
+    const fcf = cfo - capex;
+    return {
+        question: 'A company reports CFO = $' + fmt(cfo) + 'M and Capital Expenditures = $' + fmt(capex) + 'M. What is Free Cash Flow? (Enter in $M.)',
+        type: 'number',
+        answer: fcf,
+        explanation: 'FCF = CFO \u2212 CapEx = $' + fmt(cfo) + ' \u2212 $' + fmt(capex) + ' = $' + fmt(fcf) + 'M'
+    };
+}
+
+// 4. FCF Yield (numeric, as percentage)
+function genFCFYield() {
+    const fcf = pick([50, 70, 100, 150, 200]) * 1000;
+    const mcap = pick([2000000, 2500000, 2800000, 3000000, 3500000]);
+    const yieldPct = Math.round((fcf / mcap) * 10000) / 100;  // round to 2dp
+    return {
+        question: 'A company has FCF = $' + fmt(fcf) + 'M and market capitalization = $' + fmt(mcap) + 'M. What is FCF Yield? (Enter as a percentage, e.g. 3.5 for 3.5%.)',
+        type: 'number',
+        answer: yieldPct,
+        tolerance: 0.1,
+        explanation: 'FCF Yield = FCF / Market Cap = $' + fmt(fcf) + ' / $' + fmt(mcap) + ' = ' + yieldPct.toFixed(2) + '%'
+    };
+}
+
+// 5. FCF yield interpretation (MC)
+function genFCFYieldInterp() {
+    const items = [
+        { y: 1.5, ans: 3, why: 'Below 2% is &ldquo;priced for heroic growth&rdquo; &mdash; the equity offers less current yield than risk-free debt.' },
+        { y: 3.0, ans: 2, why: '2&ndash;5% is the &ldquo;priced for growth&rdquo; band. Compare with peers and growth expectations.' },
+        { y: 6.5, ans: 1, why: '5&ndash;8% is &ldquo;worth a look&rdquo; &mdash; attractive current yield, potentially interesting valuation.' },
+        { y: 9.5, ans: 0, why: '&gt;8% means either &ldquo;cheap&rdquo; or &ldquo;broken.&rdquo; Dig into why the market is offering this much current yield.' }
+    ];
+    const s = pick(items);
+    return {
+        question: 'A company has an FCF yield of ' + s.y.toFixed(1) + '%. Which rule-of-thumb band does this fall in?',
+        type: 'mc',
+        answer: s.ans,
+        options: ['&gt;8%: cheap or broken', '5&ndash;8%: worth a look', '2&ndash;5%: priced for growth', '&lt;2%: priced for heroic growth'],
+        explanation: s.why
+    };
+}
+
+// 6. ROIC calculation (numeric, as percentage)
+function genROIC() {
+    const nopat = pick([1500, 2000, 2500, 3000, 4000]);
+    const ic = pick([10000, 12000, 15000, 18000, 20000]);
+    const roic = Math.round((nopat / ic) * 10000) / 100;
+    return {
+        question: 'A company reports NOPAT = $' + fmt(nopat) + 'M and Invested Capital = $' + fmt(ic) + 'M. What is ROIC? (Enter as a percentage.)',
+        type: 'number',
+        answer: roic,
+        tolerance: 0.2,
+        explanation: 'ROIC = NOPAT / Invested Capital = $' + fmt(nopat) + ' / $' + fmt(ic) + ' = ' + roic.toFixed(2) + '%'
+    };
+}
+
+// 7. ROIC threshold interpretation (MC)
+function genROICThreshold() {
+    const items = [
+        { r: 8, ans: 0, why: 'Under 10% is a mediocre business. Consistent sub-10% ROIC means capital is not being put to productive use.' },
+        { r: 12, ans: 1, why: '10\u201315% is typical &mdash; average corporate returns. Nothing to write home about, nothing broken.' },
+        { r: 20, ans: 2, why: '15\u201325% is &ldquo;good.&rdquo; Clear signs of pricing power, moat, or capital efficiency.' },
+        { r: 30, ans: 3, why: 'Above 25% is exceptional &mdash; sustained returns at this level usually indicate a durable competitive advantage.' }
+    ];
+    const s = pick(items);
+    return {
+        question: 'A company has ROIC of ' + s.r + '%. Where does this fall in practitioner rules of thumb?',
+        type: 'mc',
+        answer: s.ans,
+        options: ['Under 10%: mediocre', '10&ndash;15%: average', '15&ndash;25%: good', '25%+: exceptional'],
+        explanation: s.why
+    };
+}
+
+// 8. ROIC vs ROE directional (MC) — this mirrors the exam question
+function genROICvsROE() {
+    const items = [
+        {
+            setup: 'ROIC is <strong>rising</strong> while ROE is <strong>rising faster</strong>',
+            ans: 0,
+            opts: ['Better &mdash; but less better than ROE alone suggests', 'Worse &mdash; ROE is masking decline', 'Unchanged', 'Insufficient information'],
+            why: 'ROIC up means the business is improving. ROE up faster means leverage (or buybacks) is amplifying that. The business is genuinely better, but ROE overstates how much better.'
+        },
+        {
+            setup: 'ROIC is <strong>declining</strong> while ROE is <strong>rising</strong>',
+            ans: 1,
+            opts: ['Better business', 'Worse business, leverage masking decline', 'Unchanged', 'Insufficient information'],
+            why: 'The underlying business is deteriorating (ROIC down). The ROE increase is entirely from leverage or a smaller equity base. This is a classic red flag.'
+        },
+        {
+            setup: 'ROIC is <strong>rising</strong> while ROE is <strong>falling</strong>',
+            ans: 0,
+            opts: ['Unambiguously better business', 'Worse business', 'Unchanged', 'Insufficient information'],
+            why: 'Rare pattern. ROIC up = business improving. ROE down typically means the equity base grew (equity issuance or debt reduction). The business is genuinely better; the company is also less levered.'
+        },
+        {
+            setup: 'ROIC is <strong>flat</strong> while ROE is <strong>rising sharply</strong>',
+            ans: 1,
+            opts: ['Better business', 'Financial engineering, not business improvement', 'Unchanged operationally', 'Insufficient information'],
+            why: 'If ROIC is flat, the business hasn\'t changed. All the ROE move is from leverage or buybacks. ROE is telling you about capital structure, not quality.'
+        }
+    ];
+    const s = pick(items);
+    return {
+        question: 'Year-over-year, a company reports: ' + s.setup + '. What is the directional read on <em>business quality</em>?',
+        type: 'mc',
+        answer: s.ans,
+        options: s.opts,
+        explanation: s.why
+    };
+}
+
+// 9. Margin interpretation (MC)
+function genMarginInterp() {
+    const items = [
+        { q: 'A company\'s <strong>gross margin</strong> has declined four consecutive quarters. Which is the best first hypothesis?', ans: 0, opts: ['Input costs, pricing pressure, or mix shift', 'Increased tax rate', 'New debt issuance', 'Higher SG&A spend'], why: 'Gross margin = (Revenue \u2212 COGS) / Revenue. A persistent decline points to something between pricing, unit costs, or mix. Tax and SG&A don\'t touch gross margin.' },
+        { q: 'A company reports <strong>net margin rising</strong> while <strong>operating margin is flat</strong>. What\'s the most likely explanation?', ans: 1, opts: ['Operational improvement', 'Lower tax rate or lower interest expense', 'Margin expansion from cost cuts', 'Better pricing power'], why: 'Operating margin captures everything above tax and interest. If it\'s flat while net margin is up, the gap is either tax or interest &mdash; neither of which reflects business improvement.' },
+        { q: 'Gross margin is up, operating margin is <strong>down</strong>. What\'s happening?', ans: 2, opts: ['Revenue is declining', 'Input costs are rising', 'SG&A is growing faster than gross profit', 'Tax rate rose'], why: 'Gross margin up means the product economics got better. Operating margin down means opex (SG&A, R&D) is growing faster than gross profit. Classic scaling-issue signal.' }
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 10. Leverage threshold (MC)
+function genLeverageThreshold() {
+    const items = [
+        { nd: 1.5, ans: 0, why: 'Under 2\u00d7 is conservative &mdash; well within covenant headroom for most corporates.' },
+        { nd: 3.0, ans: 1, why: '2\u20134\u00d7 is typical for a profitable corporate. Covenants usually cap around 3.5\u20134\u00d7.' },
+        { nd: 5.0, ans: 2, why: '4\u20136\u00d7 is levered territory &mdash; typical for an LBO or a company with strong, stable cash flow.' },
+        { nd: 7.5, ans: 3, why: 'Above 6\u00d7 is distressed. Covenants likely breached; refinancing risk is real.' }
+    ];
+    const s = pick(items);
+    return {
+        question: 'A company has Net Debt / EBITDA of ' + s.nd.toFixed(1) + '\u00d7. Where does this fall in standard rules of thumb?',
+        type: 'mc',
+        answer: s.ans,
+        options: ['Conservative (&lt;2&times;)', 'Typical corporate (2&ndash;4&times;)', 'Levered (4&ndash;6&times;)', 'Distressed (&gt;6&times;)'],
+        explanation: s.why
+    };
+}
+
+// 11. SBC red flag (MC)
+function genSBCRedFlag() {
+    const items = [
+        { q: 'A tech company reports SBC of 22% of revenue. Is this a warning sign?', ans: 1, opts: ['No, that\'s normal for tech', 'Yes, this is in the yellow-flag zone', 'No, below 25% is fine', 'Irrelevant to business quality'], why: '15&ndash;25% SBC/Revenue is yellow-flag territory for tech. It flags that a meaningful share of &ldquo;profit&rdquo; is being paid to employees in dilution, and the gap between GAAP and non-GAAP is likely large.' },
+        { q: 'Share count is <strong>flat</strong> despite the company announcing and executing $5B of buybacks. What does this tell you?', ans: 2, opts: ['Buybacks are effective at returning capital', 'Revenue is growing', 'SBC issuance is canceling the buybacks &mdash; shareholders got nothing', 'Tax rate is falling'], why: 'If shares don\'t fall after buybacks, new shares issued (via SBC vesting) are offsetting the repurchases. Shareholders got zero net benefit; employees captured the value.' },
+        { q: 'A company reports &ldquo;Adjusted FCF&rdquo; that adds SBC back to CFO. How should you treat this?', ans: 1, opts: ['Accept the higher number &mdash; SBC is non-cash', 'Reject it &mdash; SBC is real compensation, just paid in dilution', 'Use it for forecasting', 'It doesn\'t affect valuation'], why: 'SBC is a non-cash <em>accounting</em> expense, but it\'s real <em>compensation</em>. Adding it back hides the cost. The honest number is FCF without the SBC add-back.' }
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 12. Quality-of-beat (MC)
+function genQualityOfBeat() {
+    const items = [
+        { q: 'A company beats EPS by $0.05 but <strong>misses revenue</strong> by 2%. What is the correct skeptical read?', ans: 2, opts: ['Strong beat &mdash; buy the stock', 'Neutral print', 'Low-quality beat &mdash; operations are softening', 'Ignore revenue; EPS is what matters'], why: 'Revenue is much harder to engineer than EPS. A revenue miss with an EPS beat usually means cost cuts, tax, or buybacks are saving the print &mdash; while underlying demand is deteriorating.' },
+        { q: 'A company beats EPS by $0.10. The effective tax rate dropped from 24% to 18%. Same revenue and operating income as consensus. How should you read this?', ans: 1, opts: ['Genuine operational beat', 'Tax-driven beat &mdash; low quality', 'Revenue beat', 'Margin expansion'], why: 'If revenue and operating income match consensus but EPS beats, the entire gap is below-the-line &mdash; here, a lower tax rate. This is mechanical, not operational.' },
+        { q: 'Company A: EPS beats by 5%, revenue beats by 4%, operating margin expanded 100bp. Company B: EPS beats by 5%, revenue miss of 1%, tax rate 5pp below consensus. Same reported EPS number. Which is the higher-quality beat?', ans: 0, opts: ['Company A', 'Company B', 'They\'re equivalent', 'Need more information'], why: 'Company A\'s EPS gain came from revenue growth and margin expansion &mdash; durable drivers. Company B\'s is tax-driven on a revenue miss. Same headline EPS, totally different quality.' }
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 13. P/E family (MC)
+function genPEFamily() {
+    const items = [
+        { q: 'You want to compare two companies with very different leverage. Which multiple is most appropriate?', ans: 2, opts: ['Trailing P/E', 'Forward P/E', 'EV / EBITDA', 'P/B'], why: 'EV/EBITDA is capital-structure neutral &mdash; enterprise value includes debt and cash, and EBITDA is pre-interest. Best tool for comparing businesses with different financing.' },
+        { q: 'A pre-profitability tech company has negative earnings. Which valuation multiple is <em>least</em> misleading?', ans: 1, opts: ['Trailing P/E', 'P/S', 'P/B', 'Forward P/E'], why: 'With no earnings, P/E is undefined or meaningless. P/S (Price / Sales) at least anchors to revenue, which is measurable. P/B is used mainly for banks/insurers.' },
+        { q: 'What does a PEG ratio below 1.0 conventionally suggest?', ans: 0, opts: ['Cheap relative to growth', 'Expensive relative to growth', 'Overvalued', 'Nothing &mdash; PEG is unreliable'], why: 'PEG = (Forward P/E) / (Growth rate). PEG &lt;1 is the rough heuristic for &ldquo;cheap for the growth&rdquo; &mdash; though the rule has plenty of exceptions.' }
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 14. Liquidity red flag (MC)
+function genLiquidityRedFlag() {
+    const items = [
+        { q: 'A company\'s <strong>quick ratio</strong> is much lower than its <strong>current ratio</strong>. What does this tell you?', ans: 1, opts: ['Cash is strong', 'Inventory is propping up liquidity', 'A/R is growing', 'Nothing unusual'], why: 'Current ratio includes inventory; quick ratio strips it out. A big gap means current assets are heavy in inventory &mdash; liquidity depends on selling that inventory on time.' },
+        { q: 'Current ratio is below 1.0 and DSO (days sales outstanding) is rising. How concerning is this?', ans: 2, opts: ['Not concerning', 'Slightly concerning', 'Significantly concerning', 'Always terminal'], why: 'Current ratio &lt;1 means short-term obligations exceed current assets. Rising DSO means customers are paying more slowly. Together: the liquidity problem is getting worse, not better.' }
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// 15. GAAP vs Non-GAAP (MC)
+function genGAAPvsNonGAAP() {
+    const items = [
+        { q: 'Management\'s compensation is tied to <strong>non-GAAP EPS</strong>. What effect does this create?', ans: 1, opts: ['No effect on reporting', 'Incentive to expand the add-back list', 'Incentive to increase GAAP EPS', 'Reduces earnings management'], why: 'When pay depends on non-GAAP EPS, management has a direct incentive to classify more items as excludable. Check the proxy (DEF 14A) to see which metric is used for comp.' },
+        { q: 'A company has reported &ldquo;one-time&rdquo; restructuring charges in <strong>six consecutive quarters</strong>. What is the appropriate reader response?', ans: 1, opts: ['Accept them as non-recurring', 'Treat restructuring as an ongoing cost of doing business', 'Ignore them', 'Reduce the discount rate'], why: '&ldquo;One-time&rdquo; events that recur every quarter are not one-time. If it happens routinely, it\'s part of operating costs and belongs in operating margin.' }
+    ];
+    const s = pick(items);
+    return { question: s.q, type: 'mc', answer: s.ans, options: s.opts, explanation: s.why };
+}
+
+// ========== QUIZ ENGINE INIT ==========
+QuizEngine.init({
+    questionGenerators: [
+        genBasicEPS, genBasicEPS,
+        genNonGAAPBridge, genNonGAAPBridge, genNonGAAPBridge,
+        genFCF, genFCF,
+        genFCFYield, genFCFYield,
+        genFCFYieldInterp,
+        genROIC,
+        genROICThreshold,
+        genROICvsROE, genROICvsROE,
+        genMarginInterp,
+        genLeverageThreshold,
+        genSBCRedFlag, genSBCRedFlag,
+        genQualityOfBeat, genQualityOfBeat,
+        genPEFamily,
+        genLiquidityRedFlag,
+        genGAAPvsNonGAAP
+    ],
+    jeGenerators: [],
+    jeAccounts: [],
+    accentColor: 'sky',
+    qCopies: 4,
+    jeCopies: 1
+});
+</script>
+
+    <script src="cursor.js"></script>
+</body>
+</html>
